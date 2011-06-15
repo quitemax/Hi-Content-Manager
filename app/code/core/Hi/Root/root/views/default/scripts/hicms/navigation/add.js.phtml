@@ -1,0 +1,13 @@
+function deleteRow(id) {
+    if (confirm("<?php echo $this->translate("areYouSureToDeleteThisElement");?>")) {
+        window.location = "<?php echo $this->baseUrl.'/hicms/navigation/delete/id/'?>" + id;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function goBack() {
+    window.location = "<?php echo $this->baseUrl.'/hicms/navigation/list/'?>";
+}
+

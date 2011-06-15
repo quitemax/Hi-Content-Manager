@@ -1,0 +1,22 @@
+SetEnv APPLICATION_ENV development
+
+RewriteEngine On
+#files & dirs
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+
+
+#admin
+#RewriteCond %{REQUEST_URI}  root(.*)
+#RewriteRule ^root(.*)$ root.php [NC,L]
+
+#admin
+#RewriteCond %{REQUEST_URI}  admin(.*)
+#RewriteRule ^admin(.*)$ admin.php [NC,L]
+
+#service
+#RewriteRule ^.*$ service.php [NC,L]
+        
+        
