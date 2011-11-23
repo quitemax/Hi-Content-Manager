@@ -13,7 +13,7 @@ define('PS', PATH_SEPARATOR);
 
 define('BASE_PATH', dirname(dirname(__FILE__)));
 
-define('APPLICATION_PATH', BASE_PATH . DS . 'app');
+define('MODULES_PATH', BASE_PATH . DS . 'modules');
 
 define('LIBRARY_PATH', BASE_PATH . DS . 'libs');
 
@@ -31,7 +31,7 @@ define('BASE_URL', '/sohi/Hi-Content-Manager/public');
 
 
 /*
- * Ensure libraries is on include_path
+ * Ensure libraries are on include_path
  */
 set_include_path(implode(PS, array(
     realpath(LIBRARY_ZEND_PATH),
@@ -44,7 +44,10 @@ set_include_path(implode(PS, array(
  * application enviroment
  *
  */
-define('APPLICATION_ENV', 'development');
+// Define application environment
+defined('APPLICATION_ENV')
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+//define('APPLICATION_ENV', 'development');
 
 /**
  * autoloader
@@ -63,41 +66,88 @@ define('APPLICATION_ENV', 'development');
 //        'fallback_autoloader' => true,
 //    ),
 //));
+require_once 'Zend/Loader/AutoloaderFactory.php';
+Zend\Loader\AutoloaderFactory::factory(
+    array(
+        'Zend\Loader\StandardAutoloader' => array(
+            'prefixes' => array(
+                'Hi' => LIBRARY_PATH . '/Hi',
+             ),
+             'fallback_autoloader' => true,
+        )
+    )
+);
 
 
+/*
+ * Application config
+ */
+$appConfig = include __DIR__ . '/../configs/application.config.php';
+
+
+
+/*
+ * Application module autoloader
+ */
+$moduleLoader = new Zend\Loader\ModuleAutoloader($appConfig['module_paths']);
+$moduleLoader->register();
+
+/*
+ * Application module manager
+ */
+$moduleManager = new Zend\Module\Manager($appConfig['modules']);
+$listenerOptions = new Zend\Module\Listener\ListenerOptions($appConfig['module_listener_options']);
+$moduleManager->setDefaultListenerOptions($listenerOptions);
+$moduleManager->loadModules();
 
 
 /*
  * Create application
  */
-/** Hi\Application */
-require_once 'Hi/Application.php';
-use Hi\Application as Application;
-
-$application = new Application(
-    APPLICATION_ENV,
-    array (
-        'bootstrap'             => array(
-            'path'      => APPLICATION_PATH . '/bootstrap/Bootstrap.php',
-            'class'     => 'Bootstrap',
-        ),
-        'autoloadernamespaces'  => array(
-            'Hi' => LIBRARY_PATH . DS . 'Hi',
-        ),
-        'config'                => APPLICATION_PATH . '/etc/config/default.dev.php',
-    )
-);
+///** Hi\Application */
+//require_once 'Hi/Application.php';
+//use Hi\Application as Application;
+//
+//$application = new Application(
+//    APPLICATION_ENV,
+//    array (
+//        'bootstrap'             => array(
+//            'path'      => APPLICATION_PATH . '/bootstrap/Bootstrap.php',
+//            'class'     => 'Bootstrap',
+//        ),
+//        'autoloadernamespaces'  => array(
+//            'Hi' => LIBRARY_PATH . DS . 'Hi',
+//        ),
+//        'config'                => APPLICATION_PATH . '/etc/config/default.dev.php',
+//    )
+//);
 
 /**
  * bootstrap and run
  */
+//try {
+//    $application
+//        ->bootstrap()
+//        ->run();
+//}
+//catch (Exception $e) {
+//    echo "<pre>";
+//    var_dump($e);
+//    echo "<pre>";
+//}
+
+
+/*
+ * Create application, bootstrap, and run
+ */
 try {
-    $application
-        ->bootstrap()
-        ->run();
+    $bootstrap      = new Zend\Mvc\Bootstrap($moduleManager->getMergedConfig());
+    $application    = new Zend\Mvc\Application;
+    $bootstrap->bootstrap($application);
+    $application->run()->send();
 }
 catch (Exception $e) {
     echo "<pre>";
-    var_dump($e);
+    print_r($e);
     echo "<pre>";
 }
