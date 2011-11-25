@@ -6,8 +6,8 @@ return array(
     ),
     'modules' => array(
         'Core',
-        'Exercises',
-        'ZendDeveloperTools',
+//        'Exercises',
+//        'ZendDeveloperTools',
     ),
     'module_listener_options' => array(
         'config_cache_enabled'     => false,

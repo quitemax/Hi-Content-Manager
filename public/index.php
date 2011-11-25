@@ -45,9 +45,10 @@ set_include_path(implode(PS, array(
  *
  */
 // Define application environment
+define('APPLICATION_ENV', 'development');
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
-//define('APPLICATION_ENV', 'development');
+
 
 /**
  * autoloader
