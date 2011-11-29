@@ -87,61 +87,62 @@ $appConfig = include __DIR__ . '/../configs/application.config.php';
 
 
 
-/*
- * Application module autoloader
- */
-$moduleLoader = new Zend\Loader\ModuleAutoloader($appConfig['module_paths']);
-$moduleLoader->register();
-
-/*
- * Application module manager
- */
-$moduleManager = new Zend\Module\Manager($appConfig['modules']);
-$listenerOptions = new Zend\Module\Listener\ListenerOptions($appConfig['module_listener_options']);
-$moduleManager->setDefaultListenerOptions($listenerOptions);
-$moduleManager->loadModules();
-
-
-/*
- * Create application
- */
-///** Hi\Application */
-//require_once 'Hi/Application.php';
-//use Hi\Application as Application;
-//
-//$application = new Application(
-//    APPLICATION_ENV,
-//    array (
-//        'bootstrap'             => array(
-//            'path'      => APPLICATION_PATH . '/bootstrap/Bootstrap.php',
-//            'class'     => 'Bootstrap',
-//        ),
-//        'autoloadernamespaces'  => array(
-//            'Hi' => LIBRARY_PATH . DS . 'Hi',
-//        ),
-//        'config'                => APPLICATION_PATH . '/etc/config/default.dev.php',
-//    )
-//);
-
-/**
- * bootstrap and run
- */
-//try {
-//    $application
-//        ->bootstrap()
-//        ->run();
-//}
-//catch (Exception $e) {
-//    echo "<pre>";
-//    var_dump($e);
-//    echo "<pre>";
-//}
-
-
-/*
- * Create application, bootstrap, and run
- */
 try {
+    /*
+     * Application module autoloader
+     */
+    $moduleLoader = new Zend\Loader\ModuleAutoloader($appConfig['module_paths']);
+    $moduleLoader->register();
+
+    /*
+     * Application module manager
+     */
+    $moduleManager = new Zend\Module\Manager($appConfig['modules']);
+    $listenerOptions = new Zend\Module\Listener\ListenerOptions($appConfig['module_listener_options']);
+    $moduleManager->setDefaultListenerOptions($listenerOptions);
+    $moduleManager->loadModules();
+
+
+    /*
+     * Create application
+     */
+    ///** Hi\Application */
+    //require_once 'Hi/Application.php';
+    //use Hi\Application as Application;
+    //
+    //$application = new Application(
+    //    APPLICATION_ENV,
+    //    array (
+    //        'bootstrap'             => array(
+    //            'path'      => APPLICATION_PATH . '/bootstrap/Bootstrap.php',
+    //            'class'     => 'Bootstrap',
+    //        ),
+    //        'autoloadernamespaces'  => array(
+    //            'Hi' => LIBRARY_PATH . DS . 'Hi',
+    //        ),
+    //        'config'                => APPLICATION_PATH . '/etc/config/default.dev.php',
+    //    )
+    //);
+
+    /**
+     * bootstrap and run
+     */
+    //try {
+    //    $application
+    //        ->bootstrap()
+    //        ->run();
+    //}
+    //catch (Exception $e) {
+    //    echo "<pre>";
+    //    var_dump($e);
+    //    echo "<pre>";
+    //}
+
+
+    /*
+     * Create application, bootstrap, and run
+     */
+
     $bootstrap      = new Zend\Mvc\Bootstrap($moduleManager->getMergedConfig());
     $application    = new Zend\Mvc\Application;
     $bootstrap->bootstrap($application);
