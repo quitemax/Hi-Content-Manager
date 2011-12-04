@@ -1,0 +1,51 @@
+<strong>Module:</strong>        Exercises &raquo;
+<strong>Controller:</strong>    workout &raquo;
+<strong>Action:</strong>        index
+
+<?php
+    $title = 'My workouts';
+    $this->headTitle($title);
+?>
+<h1><?php echo $this->escape($title); ?></h1>
+<p><a href="<?php echo $this->url('exercises-workout-add');?>">Add new workout</a></p>
+<table border="1" cellpadding="2">
+    <tr>
+        <th>id</th>
+        <th>date</th>
+        <th>calories_burned</th>
+        <th>elapsed_time</th>
+        <th>actions</th>
+
+    </tr>
+    <?php if (count($workouts)):?>
+    <?php foreach($workouts as $workout) : ?>
+    <tr>
+        <td align="right">
+            <?php echo $workout->id?>
+        </td>
+        <td align="right">
+            <?php echo $workout->date?>
+        </td>
+        <td align="right">
+            <?php echo $workout->calories_burned?> kcal
+        </td>
+        <td align="right">
+            <?php echo $workout->elapsed_time?>
+        </td>
+        <td align="right">
+            <a href="<?php echo $this->url('exercises-workout-edit') . '?id=' . $workout->id ;?>">Edit</a>
+            <a href="<?php echo $this->url('exercises-workout-delete') . '?id=' . $workout->id?>">Delete</a>
+            <a href="<?php echo $this->url('exercises-workout-exercise') . '?id=' . $workout->id?>">Exercises</a>
+            <a href="<?php echo $this->url('exercises-workout-exercise-add') . '?id=' . $workout->id?>">Add exercise</a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+    <?php else :?>
+        <tr>
+            <td colspan="7" align="center">
+                No workouts
+            </td>
+        </tr>
+    <?php endif;?>
+</table>
+

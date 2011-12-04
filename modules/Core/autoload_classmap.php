@@ -1,5 +1,5 @@
 <?php
 return array(
-//    'Exercises\Controller\SkeletonController' => __DIR__ . '/src/Exercises/Controller/SkeletonController.php',
-//    'Exercises\Module'                        => __DIR__ . '/Module.php',
+    'ZendSkeletonModule\Controller\SkeletonController' => __DIR__ . '/src/ZendSkeletonModule/Controller/SkeletonController.php',
+    'ZendSkeletonModule\Module'                        => __DIR__ . '/Module.php',
 );

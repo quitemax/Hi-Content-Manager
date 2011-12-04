@@ -1,0 +1,17 @@
+<strong>Module:</strong>        Exercises &raquo;
+<strong>Controller:</strong>    workout &raquo;
+<strong>Action:</strong>        add
+
+<?php
+    $title = 'Add new workout ';
+    $this->headTitle($title);
+?>
+<h1><?php echo $this->escape($title); ?></h1>
+<?php
+    $form->setAction(
+        $this->url(
+        	'exercises-workout-add'
+        )
+    )->setView($this);
+
+    echo $form;

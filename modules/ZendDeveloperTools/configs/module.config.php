@@ -7,12 +7,20 @@ return array(
         'instance' => array(
             'Zend\View\PhpRenderer' => array(
                 'parameters' => array(
+                    'resolver' => 'Zend\View\TemplatePathStack',
                     'options'  => array(
                         'script_paths' => array(
-                            'developer-tools' => __DIR__ . '/../views',
+                            'ZendDeveloperTools' => __DIR__ . '/../views',
                         ),
                     ),
                 ),
+            ),
+            'Zend\View\TemplatePathStack' => array(
+                'parameters' => array(
+                    'paths' => array(
+                        'ZendDeveloperTools' => __DIR__ . '/../views',
+                    ),
+                )
             ),
         ),
     ),

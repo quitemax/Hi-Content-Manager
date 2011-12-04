@@ -1,0 +1,17 @@
+<strong>Module:</strong>        Exercises &raquo;
+<strong>Controller:</strong>    checkup &raquo;
+<strong>Action:</strong>        edit
+
+<?php
+    $title = 'Edit checkup';
+    $this->headTitle($title);
+?>
+<h1><?php echo $this->escape($title); ?></h1>
+<?php
+    $form->setAction(
+        $this->url(
+        	'exercises-checkup-edit'
+        )
+    )->setView($this);
+
+    echo $form;

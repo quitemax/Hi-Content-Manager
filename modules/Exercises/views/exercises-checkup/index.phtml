@@ -1,0 +1,59 @@
+<strong>Module:</strong>        Exercises &raquo;
+<strong>Controller:</strong>    checkup &raquo;
+<strong>Action:</strong>        index
+
+<?php
+    $title = 'My checkups';
+    $this->headTitle($title);
+?>
+<h1><?php echo $this->escape($title); ?></h1>
+
+<p><a href="<?php echo $this->url('exercises-checkup-add');?>">Add new checkup</a>
+</p>
+<table border="1" cellpadding="2">
+    <tr>
+        <th>id</th>
+        <th>date</th>
+        <th>weight</th>
+        <th>height</th>
+        <th>biceps_circumference</th>
+        <th>waist_circumference</th>
+        <th>actions</th>
+
+    </tr>
+    <?php if (count($checkups)):?>
+    <?php foreach($checkups as $checkup) : ?>
+    <tr>
+        <td align="right">
+            <?php echo $checkup->id?>
+        </td>
+        <td align="right">
+            <?php echo $checkup->date?>
+        </td>
+        <td align="right">
+            <?php echo $checkup->weight?> kg
+        </td>
+        <td align="right">
+            <?php echo $checkup->height?> m
+        </td>
+        <td align="right">
+            <?php echo $checkup->biceps_circumference?> cm
+        </td>
+        <td align="right">
+            <?php echo $checkup->waist_circumference?> cm
+        </td>
+        <td align="right">
+            <a href="<?php echo $this->url('exercises-checkup-edit') . '?id=' . $checkup->id ;?>">Edit</a>
+            <a href="<?php echo $this->url('exercises-checkup-delete') . '?id=' . $checkup->id?>">Delete</a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+    <?php else :?>
+        <tr>
+            <td colspan="7" align="center">
+                No checkups
+            </td>
+        </tr>
+    <?php endif;?>
+</table>
+

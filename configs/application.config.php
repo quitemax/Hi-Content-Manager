@@ -6,7 +6,8 @@ return array(
     ),
     'modules' => array(
         'Core',
-//        'Exercises',
+        'Exercises',
+//        'ZendSkeletonModule',
 //        'ZendDeveloperTools',
     ),
     'module_listener_options' => array(
