@@ -20,7 +20,7 @@ class CheckupForm extends Form
     {
         $this->setName('checkup');
 
-        $id = new Element\Hidden('id');
+        $id = new Element\Hidden('checkup_id');
         $id->addFilter('Int');
 
         $date = new Element\Text('date');

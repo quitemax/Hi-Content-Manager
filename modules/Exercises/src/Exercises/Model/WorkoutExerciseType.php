@@ -15,12 +15,51 @@ use Zend\Db\Table\AbstractTable;
 class WorkoutExerciseType extends AbstractTable
 {
     protected $_name = 'workout_exercise_type';
+    protected $_all;
+
+    const FORM_TYPE_CLOCK = '0';
+    const FORM_TYPE_LIFTING = '1';
+
+
+    public function getAllForSelect()
+    {
+        $array = array(
+            ''    => ' -- ',
+        );
+
+        $sqlSelect = $this->_db->select();
+
+        $sqlSelect->from(
+            array( 'wet' => $this->_name ),
+            array(
+            	'wet.type_id',
+            	'wet.name',
+            )
+        );
+
+        $sqlSelect->order('wet.group_id', 'asc');
+//        $sqlSelect->joinLeft(
+//            array('wet' => 'workout_exercise_type'),
+//            'we.workout_exercise_type_id = wet.id',
+//            'wet.*'
+//        );
+
+
+        $stmt = $this->_db->query($sqlSelect);
+        $rows = $stmt->fetchAll(\Zend\Db\Db::FETCH_ASSOC);
+
+        foreach ($rows as $row) {
+            $array[$row['type_id']] = $row['name'];
+        }
+
+        return $array;
+    }
 
 
     public function getWorkoutExerciseType($id)
     {
         $id = (int) $id;
-        $row = $this->fetchRow('id = ' . $id);
+        $row = $this->fetchRow('type_id = ' . $id);
         if (!$row) {
             throw new Exception("Could not find row $id");
         }
@@ -34,12 +73,12 @@ class WorkoutExerciseType extends AbstractTable
 
     public function updateWorkoutExerciseType($id, $values)
     {
-        $this->update($this->_normalizeValues($values), 'id = ' . (int) $id);
+        $this->update($this->_normalizeValues($values), 'type_id = ' . (int) $id);
     }
 
     public function deleteWorkoutExerciseType($id)
     {
-        $this->delete('id =' . (int) $id);
+        $this->delete('type_id =' . (int) $id);
     }
 
     protected function _normalizeValues(array $values)

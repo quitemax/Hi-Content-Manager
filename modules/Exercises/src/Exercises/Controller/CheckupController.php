@@ -37,12 +37,12 @@ class CheckupController extends ActionController
             if ($form->isValid($formData)) {
 
                 $values = $form->getValues();
-                unset($values['id']);
+                unset($values['checkup_id']);
 
                 $this->_checkup->addCheckup($values);
 
 //              // Redirect to list
-                return $this->redirect()->toRoute('exercises-checkup');
+                return $this->redirect()->toRoute('exercises-checkup-home');
             }
         }
         return array('form' => $form);
@@ -57,30 +57,37 @@ class CheckupController extends ActionController
 
         $request = $this->getRequest();
 
+        $checkup = 0;
+
         if ($request->isPost()) {
             $formData = $request->post()->toArray();
 
             if ($form->isValid($formData)) {
 
-                $id = $form->getValue('id');
+                $id = $form->getValue('checkup_id');
 
                 $values = $form->getValues();
-                unset($values['id']);
+                unset($values['checkup_id']);
 
                 if ($this->_checkup->getCheckup($id)) {
                     $this->_checkup->updateCheckup($id, $values);
                 }
 
 //              // Redirect to list
-                return $this->redirect()->toRoute('exercises-checkup');
+                return $this->redirect()->toRoute('exercises-checkup-home');
             }
         } else {
-            $id = $request->query()->get('id', 0);
+            $id = $request->query()->get('checkup_id', 0);
             if ($id > 0) {
-                $form->populate($this->_checkup->getCheckup($id));
+                $checkup = $this->_checkup->getCheckup($id);
+                $form->populate($checkup->toArray());
+
             }
         }
-        return array('form' => $form);
+        return array(
+            'form' => $form,
+            'checkup' => $checkup,
+        );
 
     }
 
@@ -91,14 +98,18 @@ class CheckupController extends ActionController
         if ($request->isPost()) {
             $del = $request->post()->get('del', 'No');
             if ($del == 'Yes') {
-                $id = (int) $request->post()->get('id');
+                $id = (int) $request->post()->get('checkup_id');
+                echo "<pre>" . '"$id" ';
+                 print_r($id);
+                echo "</pre>";
+
                 $this->_checkup->deleteCheckup($id);
             }
             // Redirect to list of albums
-            return $this->redirect()->toRoute('exercises-checkup');
+            return $this->redirect()->toRoute('exercises-checkup-home');
         }
 
-        $id = $request->query()->get('id', 0);
+        $id = $request->query()->get('checkup_id', 0);
         return array('checkup' => $this->_checkup->getCheckup($id));
 
     }

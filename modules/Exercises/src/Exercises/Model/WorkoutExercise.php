@@ -17,10 +17,41 @@ class WorkoutExercise extends AbstractTable
     protected $_name = 'workout_exercise';
 
 
+
+
     public function getWorkoutExercises($id)
     {
         $id = (int) $id;
-        $rows = $this->fetchAll('workout_id = ' . $id);
+
+        //
+        $sqlSelect = $this->_db->select();
+
+        $sqlSelect->from(
+            array( 'we' => $this->_name),
+            'we.*'
+        );
+
+        $sqlSelect->where('we.workout_id = ' . $id);
+        $sqlSelect->order('we.order', 'asc');
+        $sqlSelect->joinLeft(
+            array('wet' => 'workout_exercise_type'),
+            'we.type_id = wet.type_id',
+            'wet.*'
+        );
+
+        $stmt = $this->_db->query($sqlSelect);
+        $rows = $stmt->fetchAll(\Zend\Db\Db::FETCH_ASSOC);
+
+        $data  = array(
+            'table'    => $this,
+            'data'     => $rows,
+            'rowClass' => $this->getRowClass(),
+            'stored'   => true
+        );
+
+        $rowsetClass = $this->getRowsetClass();
+        $rows =  new $rowsetClass($data);
+
         if (!$rows) {
             throw new Exception("Could not find workout $id rows");
         }

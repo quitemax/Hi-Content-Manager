@@ -20,7 +20,7 @@ class WorkoutForm extends Form
     {
         $this->setName('workout');
 
-        $id = new Element\Hidden('id');
+        $id = new Element\Hidden('workout_id');
         $id->addFilter('Int');
 
         $date = new Element\Text('date');

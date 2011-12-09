@@ -41,7 +41,7 @@ public function init(Manager $moduleManager)
         $viewListener->registerStaticListeners($events, $locator);
 
         $view->doctype('HTML5');
-        $view->headTitle()->append('exercises');
+
         $this->view = $view;
 
         //

@@ -41,8 +41,9 @@ return array(
             ),
             'Exercises\Controller\WorkoutExerciseController' => array(
                 'parameters' => array(
-                    'workout' => 'Exercises\Model\Workout',
+                    'workout'  => 'Exercises\Model\Workout',
                     'exercise' => 'Exercises\Model\WorkoutExercise',
+                    'type'     => 'Exercises\Model\WorkoutExerciseType',
                 ),
             ),
             'Exercises\Model\Checkup' => array(
@@ -60,6 +61,12 @@ return array(
                 	'config' => 'Zend\Db\Adapter\Mysqli',
                 )
             ),
+            'Exercises\Model\WorkoutExerciseType' => array(
+                'parameters' => array(
+                	'config' => 'Zend\Db\Adapter\Mysqli',
+                )
+            ),
+
 
         ),
     ),
@@ -85,7 +92,7 @@ return array(
                 ),
             ),
         ),
-        'exercises-checkup' => array(
+        'exercises-checkup-home' => array(
             'type'    => 'Literal',
             'options' => array(
                 'route' => '/exercises/checkup',
@@ -125,7 +132,7 @@ return array(
                 ),
             ),
         ),
-        'exercises-workout' => array(
+        'exercises-workout-home' => array(
             'type'    => 'Literal',
             'options' => array(
                 'route' => '/exercises/workout',
@@ -165,7 +172,7 @@ return array(
                 ),
             ),
         ),
-        'exercises-workout-exercise' => array(
+        'exercises-workout-exercise-home' => array(
             'type'    => 'Literal',
             'options' => array(
                 'route' => '/exercises/workout/exercise',

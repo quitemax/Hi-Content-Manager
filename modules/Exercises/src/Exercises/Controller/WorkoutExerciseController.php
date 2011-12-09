@@ -10,6 +10,7 @@ class WorkoutExerciseController extends ActionController
 {
     protected $_workout;
     protected $_exercise;
+    protected $_exerciseType;
 
     public function setWorkout($workout)
     {
@@ -23,9 +24,11 @@ class WorkoutExerciseController extends ActionController
         return $this;
     }
 
-
-
-
+    public function setType($type)
+    {
+        $this->_exerciseType = $type;
+        return $this;
+    }
 
     public function indexAction()
     {
@@ -33,22 +36,40 @@ class WorkoutExerciseController extends ActionController
 
         $request = $this->getRequest();
 
-        $id = $request->query()->get('id', 0);
+        $id = $request->query()->get('workout_id', 0);
 
-        if ($id > 0) {
-            $returnArray['workout'] = $this->_workout->getWorkout($id);
-            $returnArray['exercises'] = $this->_exercise->getWorkoutExercises($id);
+        if ($id <= 0) {
+            return $this->redirect()->toRoute('exercises-workout-home');
         }
 
+        return array(
+            'workout'   => $this->_workout->getWorkout($id),
+            'exercises' => $this->_exercise->getWorkoutExercises($id),
+        );
 
-        return $returnArray;
     }
 
-    public function addAction() {
+    public function addAction()
+    {
+        $request = $this->getRequest();
+
+        $id = $request->query()->get('workout_id', 0);
+
+        if ($id <= 0) {
+            return $this->redirect()->toRoute('exercises-workout-home');
+        }
+
+        $workout = $this->_workout->getWorkout($id);
+
+        if (!$workout) {
+            return $this->redirect()->toRoute('exercises-workout-home');
+        }
 
         $form = new WorkoutExerciseForm();
 
         $form->submit->setLabel('Add');
+        $form->workout_id->setValue($id);
+        $form->type_id->setMultiOptions($this->_exerciseType->getAllForSelect());
 
         $request = $this->getRequest();
 
@@ -56,17 +77,25 @@ class WorkoutExerciseController extends ActionController
             $formData = $request->post()->toArray();
 
             if ($form->isValid($formData)) {
-
                 $values = $form->getValues();
-                unset($values['id']);
+
+                unset($values['exercise_id']);
 
                 $this->_exercise->addWorkoutExercise($values);
 
 //              // Redirect to list
-                return $this->redirect()->toRoute('exercises-workout');
+                return $this->redirect()->toUrl(
+                    $this->url()->fromRoute(
+                        'exercises-workout-exercise-home'
+                    ) . '?workout_id=' . $workout->workout_id
+                );
+
             }
         }
-        return array('form' => $form);
+        return array(
+            'form'        => $form,
+            'workout'     => $workout,
+        );
 
     }
 

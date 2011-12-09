@@ -1,21 +1,36 @@
-<strong>Module:</strong>        Exercises &raquo;
-<strong>Controller:</strong>    workout &raquo;
-<strong>Action:</strong>        delete
-
-<?php
-$title = 'Delete workout';
-$this->headTitle($title);
-?>
-<h1><?php echo $this->escape($title); ?></h1>
-<p>Are you sure that you want to delete
-'<?php echo $this->escape($workout['date']); ?>' workout?
-</p>
-<?php
-$url = $this->url('exercises-workout-delete'); ?>
-<form action="<?php echo $url; ?>" method="post">
-<div>
-<input type="hidden" name="id" value="<?php echo (int)$workout['id']; ?>" />
-<input type="submit" name="del" value="Yes" />
-<input type="submit" name="del" value="No" />
+<div id="breadcrumb">
+    &raquo;<a href="<?php echo $this->url('home');?>">Core/index/index</a>
+    &raquo;<a class="" href="<?php echo $this->url('exercises-home');?>">Exercises/index/index</a>
+    &raquo;<a class="" href="<?php echo $this->url('exercises-workout-home');?>">Exercises/workout/index</a>
+    &raquo;Exercises/workout/delete
 </div>
-</form>
+<div id="menu">
+    <div class="modules">
+        <a class="selected" href="<?php echo $this->url('exercises-home');?>" >Exercises</a>
+    </div>
+    <div class="module-elements">
+        <a  href="<?php echo $this->url('exercises-checkup-home');?>" >Checkups</a>
+        <a class="selected" href="<?php echo $this->url('exercises-workout-home');?>" >Workouts</a>
+        <a href="<?php //echo $this->url('exercises-workout-type');?>" >Workout Types</a>
+        <a href="<?php //echo $this->url('exercises-workout-group');?>" >Workout Groups</a>
+    </div>
+</div>
+<div id="content">
+    <?php
+    $title = 'Delete workout';
+    $this->headTitle($title);
+    ?>
+    <h1><?php echo $this->escape($title); ?></h1>
+    <p>Are you sure that you want to delete
+    '<?php echo $this->escape($workout->date); ?>' workout?
+    </p>
+    <?php
+    $url = $this->url('exercises-workout-delete') . '?workout_id=' . (int)$workout->workout_id; ?>
+    <form action="<?php echo $url; ?>" method="post">
+    <div>
+    <input type="hidden" name="workout_id" value="<?php echo (int)$workout->workout_id; ?>" />
+    <input type="submit" name="del" value="Yes" />
+    <input type="submit" name="del" value="No" />
+    </div>
+    </form>
+</div>

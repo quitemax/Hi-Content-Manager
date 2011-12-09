@@ -19,7 +19,7 @@ class WorkoutController extends ActionController
     public function indexAction()
     {
         return array(
-        	'workouts' => $this->_workout->fetchAll(),
+        	'workouts' => $this->_workout->getWorkouts(),
         );
     }
 
@@ -37,12 +37,12 @@ class WorkoutController extends ActionController
             if ($form->isValid($formData)) {
 
                 $values = $form->getValues();
-                unset($values['id']);
+                unset($values['workout_id']);
 
                 $this->_workout->addWorkout($values);
 
 //              // Redirect to list
-                return $this->redirect()->toRoute('exercises-workout');
+                return $this->redirect()->toRoute('exercises-workout-home');
             }
         }
         return array('form' => $form);
@@ -57,31 +57,38 @@ class WorkoutController extends ActionController
 
         $request = $this->getRequest();
 
+        $workout = 0;
+
         if ($request->isPost()) {
             $formData = $request->post()->toArray();
 
             if ($form->isValid($formData)) {
 
-                $id = $form->getValue('id');
+                $id = $form->getValue('workout_id');
 
                 $values = $form->getValues();
 
-                unset($values['id']);
+                unset($values['workout_id']);
 
                 if ($this->_workout->getWorkout($id)) {
                     $this->_workout->updateWorkout($id, $values);
                 }
 
 //              // Redirect to list
-                return $this->redirect()->toRoute('exercises-workout');
+                return $this->redirect()->toRoute('exercises-workout-home');
             }
         } else {
-            $id = $request->query()->get('id', 0);
+            $id = $request->query()->get('workout_id', 0);
             if ($id > 0) {
-                $form->populate($this->_workout->getWorkout($id));
+                $workout = $this->_workout->getWorkout($id);
+                $form->populate($workout->toArray());
+
             }
         }
-        return array('form' => $form);
+        return array(
+            'form' => $form,
+            'workout' => $workout,
+        );
 
     }
 
@@ -92,14 +99,14 @@ class WorkoutController extends ActionController
         if ($request->isPost()) {
             $del = $request->post()->get('del', 'No');
             if ($del == 'Yes') {
-                $id = (int) $request->post()->get('id');
+                $id = (int) $request->post()->get('workout_id');
                 $this->_workout->deleteWorkout($id);
             }
             // Redirect to list of albums
-            return $this->redirect()->toRoute('exercises-workout');
+            return $this->redirect()->toRoute('exercises-workout-home');
         }
 
-        $id = $request->query()->get('id', 0);
+        $id = $request->query()->get('workout_id', 0);
         return array('workout' => $this->_workout->getWorkout($id));
 
     }

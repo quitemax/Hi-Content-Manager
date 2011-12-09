@@ -1,58 +1,137 @@
-<strong>Module:</strong>        Exercises &raquo;
-<strong>Controller:</strong>    workoutExercise &raquo;
-<strong>Action:</strong>        index
+<div id="breadcrumb">
+    &raquo;<a href="<?php echo $this->url('home');?>">Core/index/index</a>
+    &raquo;<a class="" href="<?php echo $this->url('exercises-home');?>">Exercises/index/index</a>
+    &raquo;<a class="selected" href="<?php echo $this->url('exercises-workout-home');?>">Exercises/workout/index</a>
+    &raquo;Exercises/workout/exercise/index
 
-<?php
-    $title = 'My workouts';
-    $this->headTitle($title);
-?>
-<h1><?php echo $this->escape($title); ?></h1>
-<p><a href="<?php echo $this->url('exercises-workout-exercise-add');?>">Add new exercise</a></p>
-<?php
-//echo "<pre>" . '"$workout" ';
-// print_r($workout);
-//echo "</pre>";
-//echo "<pre>" . '"$exercises" ';
-// print_r($exercises);
-//echo "</pre>";
+</div>
+<div id="menu">
+    <div class="modules">
+        <a class="selected" href="<?php echo $this->url('exercises-home');?>" >Exercises</a>
+    </div>
+    <div class="module-elements">
+        <a class="selected" href="<?php echo $this->url('exercises-checkup-home');?>" >Checkups</a>
+        <a href="<?php echo $this->url('exercises-workout-home');?>" >Workouts</a>
+        <a href="<?php //echo $this->url('exercises-workout-type');?>" >Workout Types</a>
+        <a href="<?php //echo $this->url('exercises-workout-group');?>" >Workout Groups</a>
+    </div>
+</div>
+<div id="content">
+    <?php if ($workout):?>
+        <?php
+            $title = 'Workout ' . $workout->date . ' ( id: ' . $workout->workout_id . ' ) ' . ' exercises';
+            $this->headTitle($title);
+        ?>
+        <h1><?php echo $this->escape($title); ?></h1>
+        <p><a href="<?php echo $this->url('exercises-workout-exercise-add') . '?workout_id=' . $workout->workout_id;?>">Add new exercise</a></p>
+        <?php
+        //echo "<pre>" . '"$workout" ';
+        // print_r($workout);
+        //echo "</pre>";
+        //echo "<pre>" . '"$exercises" ';
+        // print_r($exercises);
+        //echo "</pre>";
 
-?>
-<table border="1" cellpadding="2">
-    <tr>
-        <th>id</th>
-        <th>date</th>
-        <th>calories_burned</th>
-        <th>elapsed_time</th>
-        <th>actions</th>
+        ?>
+        <table border="1" cellpadding="2">
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>order</th>
+                <th>results</th>
+                <th>actions</th>
 
-    </tr>
-    <?php if (count($exercises)):?>
-    <?php foreach($exercises as $exercise) : ?>
-    <tr>
-        <td align="right">
-            <?php echo $workout->id?>
-        </td>
-        <td align="right">
-            <?php echo $workout->date?>
-        </td>
-        <td align="right">
-            <?php echo $workout->calories_burned?> kcal
-        </td>
-        <td align="right">
-            <?php echo $workout->elapsed_time?>
-        </td>
-        <td align="right">
-            <a href="<?php echo $this->url('exercises-workout-exercise-edit') . '?id=' . $workout->id ;?>">Edit</a>
-            <a href="<?php echo $this->url('exercises-workout-exercise-delete') . '?id=' . $workout->id?>">Delete</a>
-        </td>
-    </tr>
-    <?php endforeach; ?>
-    <?php else :?>
-        <tr>
-            <td colspan="7" align="center">
-                No exercises
-            </td>
-        </tr>
+            </tr>
+            <?php if (count($exercises)):?>
+            <?php foreach($exercises as $exercise) : ?>
+            <?php
+    //    echo "<pre>" . '"$exercise" ';
+    //     print_r($exercise);
+    //    echo "</pre>";
+
+
+        ?>
+            <tr>
+                <td align="right">
+                    <?php echo $exercise->exercise_id?>
+                </td>
+                <td align="right">
+                    <?php echo $exercise->name?>
+                </td>
+                <td align="right">
+                    <?php echo $exercise->order?>
+                </td>
+                <td align="right">
+                    <?php if ($exercise->form_type == Exercises\Model\WorkoutExerciseType::FORM_TYPE_CLOCK):?>
+                    <table border="0" cellpadding="2">
+                        <tr>
+                            <th>elapsed_time</th>
+                            <th>speed</th>
+                            <th>angle</th>
+                            <th>level</th>
+                            <th>distance</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $exercise->elapsed_time?> s</td>
+                            <td><?php echo $exercise->speed?> km</td>
+                            <td><?php echo $exercise->angle?> &#778;</td>
+                            <td><?php echo $exercise->level?></td>
+                            <td><?php echo $exercise->distance?> km</td>
+                        </tr>
+                    </table>
+                    <?php elseif ($exercise->form_type == Exercises\Model\WorkoutExerciseType::FORM_TYPE_LIFTING):?>
+                    <table border="0" cellpadding="2">
+                        <tr>
+                            <th>series 1</th>
+                            <th>series 2</th>
+                            <th>series 3</th>
+                            <th>series 4</th>
+                            <th>series 5</th>
+                            <th>series 6</th>
+                        </tr>
+                        <tr>
+                            <td><?php echo $exercise->lifting_series_1_weight?> kg</td>
+                            <td><?php echo $exercise->lifting_series_2_weight?> kg</td>
+                            <td><?php echo $exercise->lifting_series_3_weight?> kg</td>
+                            <td><?php echo $exercise->lifting_series_4_weight?> kg</td>
+                            <td><?php echo $exercise->lifting_series_5_weight?> kg</td>
+                            <td><?php echo $exercise->lifting_series_6_weight?> kg</td>
+                        </tr>
+                        <tr>
+                            <td><?php echo $exercise->lifting_series_1_count?></td>
+                            <td><?php echo $exercise->lifting_series_2_count?></td>
+                            <td><?php echo $exercise->lifting_series_3_count?></td>
+                            <td><?php echo $exercise->lifting_series_4_count?></td>
+                            <td><?php echo $exercise->lifting_series_5_count?></td>
+                            <td><?php echo $exercise->lifting_series_6_count?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo $exercise->lifting_series_1_break?> s</td>
+                            <td><?php echo $exercise->lifting_series_2_break?> s</td>
+                            <td><?php echo $exercise->lifting_series_3_break?> s</td>
+                            <td><?php echo $exercise->lifting_series_4_break?> s</td>
+                            <td><?php echo $exercise->lifting_series_5_break?> s</td>
+                            <td><?php echo $exercise->lifting_series_6_break?> s</td>
+                        </tr>
+
+                    </table>
+                    <?php endif;?>
+                </td>
+                <td align="right">
+                    <a href="<?php echo $this->url('exercises-workout-exercise-edit') . '?exercise_id=' . $exercise->exercise_id ;?>">Edit</a>
+                    <a href="<?php echo $this->url('exercises-workout-exercise-delete') . '?exercise_id=' . $exercise->exercise_id?>">Delete</a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            <?php else :?>
+                <tr>
+                    <td colspan="7" align="center">
+                        No exercises
+                    </td>
+                </tr>
+            <?php endif;?>
+        </table>
+    <?php else:?>
+    	Wrong workout...
     <?php endif;?>
-</table>
-
+</div>

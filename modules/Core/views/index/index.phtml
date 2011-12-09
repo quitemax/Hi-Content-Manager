@@ -1,8 +1,11 @@
-<br />
-<strong>Module:</strong>        Core &raquo;
-<strong>Controller:</strong>    index &raquo;
-<strong>Action:</strong>        index &raquo;
-Var: <?php echo $this->core;?>
-<pre><?php //print_r($this->vars['content']);?></pre>
-<pre><?php //print_r($this->vars['var']);?></pre>
-<pre><?php //print_r($this->vars->getRawValues());?></pre>
+<div id="breadcrumb">
+    &raquo;<a class="selected" href="<?php echo $this->url('home');?>">Core/index/index</a>
+</div>
+<div id="menu">
+	<div class="modules">
+        <a class="" href="<?php echo $this->url('exercises-home');?>" >Exercises</a>
+    </div>
+</div>
+<div id="content">
+    Var: <?php echo $this->core;?>
+</div>

@@ -142,7 +142,6 @@ try {
     /*
      * Create application, bootstrap, and run
      */
-
     $bootstrap      = new Zend\Mvc\Bootstrap($moduleManager->getMergedConfig());
     $application    = new Zend\Mvc\Application;
     $bootstrap->bootstrap($application);
