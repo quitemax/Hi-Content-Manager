@@ -47,13 +47,11 @@ class WorkoutExerciseForm extends Form
 
         $speed = new Element\Text('speed');
         $speed->setLabel('speed')
-            ->addValidator('Float')
             ->setValue('0');
 
 
         $angle = new Element\Text('angle');
         $angle->setLabel('angle')
-            ->addValidator('Float')
             ->setValue('0');
 
         $level = new Element\Text('level');
@@ -63,7 +61,6 @@ class WorkoutExerciseForm extends Form
 
         $lifting_series_1_weight = new Element\Text('lifting_series_1_weight');
         $lifting_series_1_weight->setLabel('lifting_series_1_weight')
-            ->addValidator('Float')
             ->setValue('0');
         $lifting_series_1_count = new Element\Text('lifting_series_1_count');
         $lifting_series_1_count->setLabel('lifting_series_1_count')
@@ -78,7 +75,6 @@ class WorkoutExerciseForm extends Form
 
         $lifting_series_2_weight = new Element\Text('lifting_series_2_weight');
         $lifting_series_2_weight->setLabel('lifting_series_2_weight')
-            ->addValidator('Float')
             ->setValue('0');
         $lifting_series_2_count = new Element\Text('lifting_series_2_count');
         $lifting_series_2_count->setLabel('lifting_series_2_count')
@@ -92,7 +88,6 @@ class WorkoutExerciseForm extends Form
 
         $lifting_series_3_weight = new Element\Text('lifting_series_3_weight');
         $lifting_series_3_weight->setLabel('lifting_series_3_weight')
-            ->addValidator('Float')
             ->setValue('0');
         $lifting_series_3_count = new Element\Text('lifting_series_3_count');
         $lifting_series_3_count->setLabel('lifting_series_3_count')
@@ -106,7 +101,6 @@ class WorkoutExerciseForm extends Form
 
         $lifting_series_4_weight = new Element\Text('lifting_series_4_weight');
         $lifting_series_4_weight->setLabel('lifting_series_4_weight')
-            ->addValidator('Float')
             ->setValue('0');
         $lifting_series_4_count = new Element\Text('lifting_series_4_count');
         $lifting_series_4_count->setLabel('lifting_series_4_count')
@@ -121,7 +115,6 @@ class WorkoutExerciseForm extends Form
 
         $lifting_series_5_weight = new Element\Text('lifting_series_5_weight');
         $lifting_series_5_weight->setLabel('lifting_series_5_weight')
-            ->addValidator('Float')
             ->setValue('0');
         $lifting_series_5_count = new Element\Text('lifting_series_5_count');
         $lifting_series_5_count->setLabel('lifting_series_5_count')
@@ -136,7 +129,6 @@ class WorkoutExerciseForm extends Form
 
         $lifting_series_6_weight = new Element\Text('lifting_series_6_weight');
         $lifting_series_6_weight->setLabel('lifting_series_6_weight')
-            ->addValidator('Float')
             ->setValue('0');
         $lifting_series_6_count = new Element\Text('lifting_series_6_count');
         $lifting_series_6_count->setLabel('lifting_series_6_count')

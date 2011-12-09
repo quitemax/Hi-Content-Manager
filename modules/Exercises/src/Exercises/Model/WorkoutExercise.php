@@ -17,11 +17,19 @@ class WorkoutExercise extends AbstractTable
     protected $_name = 'workout_exercise';
 
 
-
-
-    public function getWorkoutExercises($id)
+    public function getWorkoutExercise($id)
     {
         $id = (int) $id;
+        $row = $this->fetchRow('exercise_id = ' . $id);
+        if (!$row) {
+            throw new \Exception("Could not find row $id");
+        }
+        return $row;
+    }
+
+    public function getWorkoutExercises($workoutId)
+    {
+        $workoutId = (int) $workoutId;
 
         //
         $sqlSelect = $this->_db->select();
@@ -31,7 +39,7 @@ class WorkoutExercise extends AbstractTable
             'we.*'
         );
 
-        $sqlSelect->where('we.workout_id = ' . $id);
+        $sqlSelect->where('we.workout_id = ' . $workoutId);
         $sqlSelect->order('we.order', 'asc');
         $sqlSelect->joinLeft(
             array('wet' => 'workout_exercise_type'),
@@ -53,7 +61,7 @@ class WorkoutExercise extends AbstractTable
         $rows =  new $rowsetClass($data);
 
         if (!$rows) {
-            throw new Exception("Could not find workout $id rows");
+            throw new Exception("Could not find workout $workoutId rows");
         }
         return $rows;
     }
@@ -65,12 +73,12 @@ class WorkoutExercise extends AbstractTable
 
     public function updateWorkoutExercise($id, $values)
     {
-        $this->update($this->_normalizeValues($values), 'id = ' . (int) $id);
+        $this->update($this->_normalizeValues($values), 'exercise_id = ' . (int) $id);
     }
 
     public function deleteWorkoutExercise($id)
     {
-        $this->delete('id =' . (int) $id);
+        $this->delete('exercise_id =' . (int) $id);
     }
 
     protected function _normalizeValues(array $values)

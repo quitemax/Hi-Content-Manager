@@ -23,7 +23,10 @@
             $this->headTitle($title);
         ?>
         <h1><?php echo $this->escape($title); ?></h1>
-        <p><a href="<?php echo $this->url('exercises-workout-exercise-add') . '?workout_id=' . $workout->workout_id;?>">Add new exercise</a></p>
+        <p>
+            <a href="<?php echo $this->url('exercises-workout-exercise-add') . '?workout_id=' . $workout->workout_id;?>">Add new exercise</a>
+            <a href="<?php echo $this->url('exercises-workout-home');?>">Back</a>
+        </p>
         <?php
         //echo "<pre>" . '"$workout" ';
         // print_r($workout);

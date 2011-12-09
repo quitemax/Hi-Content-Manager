@@ -6,6 +6,7 @@ return array(
     ),
     'modules' => array(
         'Core',
+        'SpiffyDoctrine',
         'Exercises',
 //        'ZendSkeletonModule',
 //        'ZendDeveloperTools',
