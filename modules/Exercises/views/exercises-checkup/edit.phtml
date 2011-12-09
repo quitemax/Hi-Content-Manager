@@ -1,0 +1,32 @@
+<div id="breadcrumb">
+    &raquo;<a href="<?php echo $this->url('home');?>">Core/index/index</a>
+    &raquo;<a class="" href="<?php echo $this->url('exercises-home');?>">Exercises/index/index</a>
+    &raquo;<a class="selected" href="<?php echo $this->url('exercises-checkup-home');?>">Exercises/checkup/index</a>
+    &raquo;Exercises/checkup/edit
+</div>
+<div id="menu">
+    <div class="modules">
+        <a class="selected" href="<?php echo $this->url('exercises-home');?>" >Exercises</a>
+    </div>
+    <div class="module-elements">
+        <a class="selected" href="<?php echo $this->url('exercises-checkup-home');?>" >Checkups</a>
+        <a href="<?php echo $this->url('exercises-workout-home');?>" >Workouts</a>
+        <a href="<?php //echo $this->url('exercises-workout-type');?>" >Workout Types</a>
+        <a href="<?php //echo $this->url('exercises-workout-group');?>" >Workout Groups</a>
+    </div>
+</div>
+<div id="content">
+    <?php
+        $title = 'Edit checkup';
+        $this->headTitle($title);
+    ?>
+    <h1><?php echo $this->escape($title); ?></h1>
+    <?php
+        $form->setAction(
+            $this->url(
+            	'exercises-checkup-edit'
+            ) . '?checkup_id=' . $checkup->checkup_id
+        )->setView($this);
+
+        echo $form;?>
+</div>

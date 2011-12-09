@@ -1,12 +1,14 @@
 <?php echo $this->doctype() ?>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <?php echo $this->headTitle() ?>
+    <?php //echo $this->headLink()->prependStylesheet($this->url('home') . '/css/site.css') ?>
 
 </head>
 <body>
-<?php echo $this->raw('content'); ?>
+    <div id="body">
+        <?php echo $this->raw('content'); ?>
+    </div>
 </body>
 </html>

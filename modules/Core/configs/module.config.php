@@ -1,22 +1,25 @@
 <?php
 $config = array();
+
+/**
+ * PRODUCTION
+ */
 $config['production'] = array(
-    'bootstrap_class' => 'Core\Bootstrap',
-    'layout'          => 'layouts/layout.phtml',
+    'display_exceptions' => true,
     'view' => array(
         'layout' => 'layouts/layout.phtml',
     ),
-    'display_exceptions' => true,
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'core-page'         => 'Core\Controller\PageController',
+                'index' => 'Core\Controller\IndexController',
+                'error' => 'Core\Controller\ErrorController',
                 'view'              => 'Zend\View\PhpRenderer',
                 'view-resolver'     => 'Zend\View\TemplatePathStack',
             ),
-            'Zend\View\PhpRenderer' => array(
+            'view' => array(
                 'parameters' => array(
-                    'resolver' => 'Zend\View\TemplatePathStack',
+                    'resolver' => 'view-resolver',
                     'options'  => array(
                         'script_paths' => array(
                             'Core' => __DIR__ . '/../views',
@@ -24,13 +27,23 @@ $config['production'] = array(
                     ),
                 ),
             ),
-//            'view-resolver' => array(
-//                'parameters' => array(
-//                    'paths' => array(
-//                        'Core' => __DIR__ . '/../views',
-//                    ),
-//                )
-//            ),
+            'view-resolver' => array(
+                'parameters' => array(
+                    'paths' => array(
+                        'Core' => __DIR__ . '/../views',
+                    ),
+                )
+            ),
+            'Zend\Db\Adapter\Mysqli' => array(
+                'parameters' => array(
+                    'config' => array(
+                        'host' => 'localhost',
+                        'username' => 'root',
+                        'password' => '',
+                        'dbname' => 'exercise',
+                    ),
+                ),
+            ),
         ),
     ),
     'routes' => array(
@@ -39,8 +52,8 @@ $config['production'] = array(
             'options' => array(
                 'regex' => '/.*',
                 'defaults' => array(
-                    'controller' => 'core-page',
-                    'action'     => '404',
+                    'controller' => 'error',
+                    'action'     => 'error',
                 ),
                 'spec' => '404',
             ),
@@ -50,45 +63,28 @@ $config['production'] = array(
             'options' => array(
                 'route' => '/',
                 'defaults' => array(
-                    'controller' => 'core-page',
-                    'action'     => 'home',
+                    'controller' => 'index',
+                    'action'     => 'index',
                 ),
             ),
         ),
-//        'default' => array(
-//            'type'    => 'Zend\Mvc\Router\Http\Segment',
-//            'options' => array(
-//                'route'    => '/[:controller[/:action]]',
-//                'constraints' => array(
-//                    'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-//                    'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-//                ),
-//                'defaults' => array(
-//                    'controller' => 'index',
-//                    'action'     => 'index',
-//                ),
-//            ),
-//        ),
-//        'home' => array(
-//            'type' => 'Zend\Mvc\Router\Http\Literal',
-//            'options' => array(
-//                'route'    => '/',
-//                'defaults' => array(
-//                    'controller' => 'index',
-//                    'action'     => 'index',
-//                ),
-//            ),
-//        ),
     ),
 );
 
+/**
+ * staging
+ */
 $config['staging']     = $config['production'];
 
+/**
+ * testing
+ */
 $config['testing']     = $config['production'];
 $config['testing']['display_exceptions']    = true;
 
+/**
+ * development
+ */
 $config['development'] = $config['production'];
-//$config['development']['disqus']['key']         = "phlyboyphly";
-//$config['development']['disqus']['development'] = 1;
 $config['development']['display_exceptions']    = true;
 return $config;

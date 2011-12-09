@@ -1,0 +1,34 @@
+<div id="breadcrumb">
+    &raquo;<a href="<?php echo $this->url('home');?>">Core/index/index</a>
+    &raquo;<a class="" href="<?php echo $this->url('exercises-home');?>">Exercises/index/index</a>
+    &raquo;Exercises/error/error
+</div>
+<div id="menu">
+    <div class="modules">
+        <a class="selected" href="<?php echo $this->url('exercises-home');?>" >Exercises</a>
+    </div>
+    <div class="module-elements">
+        <a href="<?php echo $this->url('exercises-checkup-home');?>" >Checkups</a>
+        <a href="<?php echo $this->url('exercises-workout-home');?>" >Workouts</a>
+        <a href="<?php //echo $this->url('exercises-workout-type');?>" >Workout Types</a>
+        <a href="<?php //echo $this->url('exercises-workout-group');?>" >Workout Groups</a>
+    </div>
+</div>
+<div id="content">
+    <h1>Exercises</h1>
+    <h1>An error occurred in Exercises Module</h1>
+    <h2><?php echo $this->message ?></h2>
+
+    <?php if (isset($this->exception)): ?>
+
+    <h3>Exception information:</h3>
+    <p>
+        <b>Message:</b> <?php echo $this->exception->getMessage() ?>
+    </p>
+
+    <h3>Stack trace:</h3>
+    <pre><?php echo $this->exception->getTraceAsString() ?></pre>
+
+    <?php endif ?>
+</div>
+

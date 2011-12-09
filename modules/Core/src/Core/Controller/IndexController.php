@@ -1,6 +1,6 @@
 <?php
 
-namespace Exercises\Controller;
+namespace Core\Controller;
 
 use Zend\Mvc\Controller\ActionController;
 
@@ -8,6 +8,6 @@ class IndexController extends ActionController
 {
     public function indexAction()
     {
-        return array('var' => 'Exercises');
+        return array('core' => 'core');
     }
 }
