@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="WorkoutExercise" table="workout_exercise">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="exerciseId" type="integer" column="exercise_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="workoutId" type="integer" column="workout_id"/>
+    <field name="typeId" type="integer" column="type_id"/>
+    <field name="order" type="integer" column="order"/>
+    <field name="elapsedTime" type="time" column="elapsed_time"/>
+    <field name="speed" type="decimal" column="speed"/>
+    <field name="angle" type="decimal" column="angle"/>
+    <field name="level" type="integer" column="level"/>
+    <field name="liftingSeries1Count" type="integer" column="lifting_series_1_count"/>
+    <field name="liftingSeries1Break" type="time" column="lifting_series_1_break"/>
+    <field name="liftingSeries2Count" type="integer" column="lifting_series_2_count"/>
+    <field name="liftingSeries2Break" type="time" column="lifting_series_2_break"/>
+    <field name="liftingSeries3Count" type="integer" column="lifting_series_3_count"/>
+    <field name="liftingSeries3Break" type="time" column="lifting_series_3_break"/>
+    <field name="liftingSeries4Count" type="integer" column="lifting_series_4_count"/>
+    <field name="liftingSeries4Break" type="time" column="lifting_series_4_break"/>
+    <field name="liftingSeries5Count" type="integer" column="lifting_series_5_count"/>
+    <field name="liftingSeries5Break" type="time" column="lifting_series_5_break"/>
+    <field name="liftingSeries6Count" type="integer" column="lifting_series_6_count"/>
+    <field name="liftingSeries6Break" type="time" column="lifting_series_6_break"/>
+    <field name="distance" type="decimal" column="distance"/>
+    <field name="liftingSeries1Weight" type="decimal" column="lifting_series_1_weight"/>
+    <field name="liftingSeries2Weight" type="decimal" column="lifting_series_2_weight"/>
+    <field name="liftingSeries3Weight" type="decimal" column="lifting_series_3_weight"/>
+    <field name="liftingSeries4Weight" type="decimal" column="lifting_series_4_weight"/>
+    <field name="liftingSeries5Weight" type="decimal" column="lifting_series_5_weight"/>
+    <field name="liftingSeries6Weight" type="decimal" column="lifting_series_6_weight"/>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

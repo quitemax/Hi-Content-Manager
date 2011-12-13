@@ -65,7 +65,7 @@
                     <?php echo $exercise->order?>
                 </td>
                 <td align="right">
-                    <?php if ($exercise->form_type == Exercises\Model\WorkoutExerciseType::FORM_TYPE_CLOCK):?>
+                    <?php if ($exercise->form_type == Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_CLOCK):?>
                     <table border="0" cellpadding="2">
                         <tr>
                             <th>elapsed_time</th>
@@ -82,7 +82,7 @@
                             <td><?php echo $exercise->distance?> km</td>
                         </tr>
                     </table>
-                    <?php elseif ($exercise->form_type == Exercises\Model\WorkoutExerciseType::FORM_TYPE_LIFTING):?>
+                    <?php elseif ($exercise->form_type == Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_LIFTING):?>
                     <table border="0" cellpadding="2">
                         <tr>
                             <th>series 1</th>

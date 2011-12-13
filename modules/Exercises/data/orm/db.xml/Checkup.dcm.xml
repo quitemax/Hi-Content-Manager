@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Checkup" table="checkup">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="checkupId" type="integer" column="checkup_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="date" type="datetime" column="date"/>
+    <field name="weight" type="float" column="weight"/>
+    <field name="height" type="float" column="height"/>
+    <field name="bicepsCircumference" type="float" column="biceps_circumference"/>
+    <field name="imgFront" type="text" column="img_front"/>
+    <field name="imgSide" type="text" column="img_side"/>
+    <field name="waistCircumference" type="text" column="waist_circumference"/>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

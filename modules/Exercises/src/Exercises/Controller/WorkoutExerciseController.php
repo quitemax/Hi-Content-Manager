@@ -42,6 +42,8 @@ class WorkoutExerciseController extends ActionController
             return $this->redirect()->toRoute('exercises-workout-home');
         }
 
+
+
         return array(
             'workout'   => $this->_workout->getWorkout($id),
             'exercises' => $this->_exercise->getWorkoutExercises($id),

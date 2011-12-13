@@ -31,43 +31,47 @@ return array(
             ),
             'Exercises\Controller\CheckupController' => array(
                 'parameters' => array(
-                    'checkup' => 'Exercises\Model\Checkup',
+                    'checkup' => 'Exercises\Model\DbTable\Checkup',
                 ),
             ),
             'Exercises\Controller\WorkoutController' => array(
                 'parameters' => array(
-                    'workout' => 'Exercises\Model\Workout',
+                    'workout' => 'Exercises\Model\DbTable\Workout',
+                    'view' => 'view',
                 ),
             ),
             'Exercises\Controller\WorkoutExerciseController' => array(
                 'parameters' => array(
-                    'workout'  => 'Exercises\Model\Workout',
-                    'exercise' => 'Exercises\Model\WorkoutExercise',
-                    'type'     => 'Exercises\Model\WorkoutExerciseType',
+                    'workout'  => 'Exercises\Model\DbTable\Workout',
+                    'exercise' => 'Exercises\Model\DbTable\WorkoutExercise',
+                    'type'     => 'Exercises\Model\DbTable\WorkoutExerciseType',
                 ),
             ),
-            'Exercises\Model\Checkup' => array(
+            'Exercises\Model\DbTable\Checkup' => array(
                 'parameters' => array(
                 	'config' => 'Zend\Db\Adapter\Mysqli',
                 )
             ),
-            'Exercises\Model\Workout' => array(
+            'Exercises\Model\DbTable\Workout' => array(
                 'parameters' => array(
-                	'config' => 'Zend\Db\Adapter\Mysqli',
-                )
-            ),
-            'Exercises\Model\WorkoutExercise' => array(
-                'parameters' => array(
-                	'config' => 'Zend\Db\Adapter\Mysqli',
-                )
-            ),
-            'Exercises\Model\WorkoutExerciseType' => array(
-                'parameters' => array(
-                	'config' => 'Zend\Db\Adapter\Mysqli',
-                )
-            ),
+                    'config'       => 'Zend\Db\Adapter\Mysqli',
 
 
+                )
+            ),
+            'Exercises\Model\DbTable\WorkoutExercise' => array(
+                'parameters' => array(
+                    'config' => 'Zend\Db\Adapter\Mysqli',
+                )
+            ),
+            'Exercises\Model\DbTable\WorkoutExerciseType' => array(
+                'parameters' => array(
+                    'config' => 'Zend\Db\Adapter\Mysqli',
+                    'dependentTables' => array(
+                        'Exercises\Model\DbTable\WorkoutExercise',
+                    ),
+                )
+            ),
         ),
     ),
     'routes' => array(

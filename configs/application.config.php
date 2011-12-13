@@ -5,8 +5,8 @@ return array(
         realpath(__DIR__ . '/../vendors'),
     ),
     'modules' => array(
+//        'SpiffyDoctrine',
         'Core',
-        'SpiffyDoctrine',
         'Exercises',
 //        'ZendSkeletonModule',
 //        'ZendDeveloperTools',

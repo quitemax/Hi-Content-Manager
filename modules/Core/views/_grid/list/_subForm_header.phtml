@@ -1,0 +1,33 @@
+<tr class="listHeader">
+    <?php if ($this->checkboxEnable):?>
+    <th class="all" width="30px" align="left">
+        <?php echo $this->element->getElement('all');?>
+    </th>
+    <?php endif;?>
+    <?php if ($this->columnTitles) foreach ($this->columnTitles as $name => $title):?>
+        <th class="<?php if ($name == $this->sortField):?>sort<?php endif;?>">
+            <?php if (isset($this->columnSortable[$name]) && $this->columnSortable[$name]):?>
+                <?php if ($name == $this->sortField && $this->sortFieldDirection=='asc'):?>
+                    &Delta;
+                <?php elseif ($name == $this->sortField && $this->sortFieldDirection=='desc'):?>
+                    &nabla;
+                <?php endif;?>
+            <a href="?form=<?php echo $this->subFormId?>&sort=<?php echo $name?>">
+            <?php endif;?>
+                <?php echo $title;?>
+            <?php if (isset($this->columnSortable[$name]) && $this->columnSortable[$name]):?>
+            </a>
+                <?php if ($name == $this->sortField && $this->sortFieldDirection=='asc'):?>
+                    &Delta;
+                <?php elseif ($name == $this->sortField && $this->sortFieldDirection=='desc'):?>
+                    &nabla;
+                <?php endif;?>
+            <?php endif;?>
+        </th>
+    <?php endforeach;?>
+    <?php if ($this->actions):?>
+    <th class="actions">
+        <?php echo $this->translate($this->actionsTitle);?>
+    </th>
+    <?php endif;?>
+</tr>

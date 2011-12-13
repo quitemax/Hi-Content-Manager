@@ -1,0 +1,17 @@
+<div id="<?php echo $this->subFormId;?>" class="listSubForm">
+    <a name="<?php echo $this->subFormId;?>" ></a>
+    <table class="listTitle" cellspacing="0" cellpadding="2" border="0" width="100%">
+        <tr class="">
+            <th class=""
+                <?php if (isset($this->colspan)):?>
+                colspan="<?php echo $this->colspan ?>"
+                <?php endif;?>
+                align="center">
+                    <?php echo $this->subFormName ?>
+            </th>
+        </tr>
+    </table>
+    <table class="listContent" cellspacing="0" cellpadding="2" border="0" width="100%">
+        <?php echo $this->content;?>
+    </table>
+</div>

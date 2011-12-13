@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="WorkoutExerciseType" table="workout_exercise_type">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="typeId" type="integer" column="type_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="string" column="name" length="255"/>
+    <field name="img" type="text" column="img"/>
+    <field name="description" type="text" column="description"/>
+    <field name="groupId" type="integer" column="group_id"/>
+    <field name="formType" type="integer" column="form_type"/>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>
