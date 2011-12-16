@@ -2,10 +2,13 @@
 
 namespace Exercises\Controller;
 
+use Hi\Grid\SubForm\Rowset\Db;
+
 use Zend\Mvc\Controller\ActionController,
     Exercises\Model\Workout,
     Exercises\Form\WorkoutForm,
-    Exercises\Form\WorkoutGridForm;
+    Exercises\Form\WorkoutGridForm,
+    Exercises\Form\WorkoutGridForm\WorkoutRowsetSubForm;
 
 class WorkoutController extends ActionController
 {
@@ -35,93 +38,30 @@ class WorkoutController extends ActionController
         /**
          * BUILDING LIST
          */
-//        $list = new Hi_Record_SubForm_List_Db(
-//            array(
-//                'title'     => $this->view->translate('navigationItemsList'),
-//                'name'      => 'navigationList',
-//                'langs'     => $hicmsLangsDbTable->getLangs(),
-//                'model'     => $hicmsNavigationItemsDbTable,
-//                'view'      => $this->view,
-//            )
-//        );
-
-
-//    $list->processRequest($this->_request);
+        $list = new WorkoutRowsetSubForm(
+            array(
+                'model' => $this->_workout,
+            )
+////            array(
+////                'langs'     => $hicmsLangsDbTable->getLangs(),
+////                'model'     => $hicmsNavigationItemsDbTable,
+////            )
+        );
+        $list->setView($this->_view);
+        $list->processRequest($this->getRequest());
 //
 //        $this->view->headScript()->appendScript(
 //            $this->view->render(
 //                'navigation/list.js'
 //            )
 //        );
-//
-//        /**
-//         * RECORD ACTIONS
-//         */
-//        $list->addRecordAction(
-//            'edit',
-//            'image',
-//            array(
-//                'label'     => $this->view->translate('edit'),
-//                'image'     => $this->_publicUrl.'/img/admin/icons/record/edit.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => 'editRow(__ID__);return false;',
-//            )
-//        );
-//        $list->addRecordAction(
-//            'delete',
-//            'image',
-//            array(
-//                'label'     => $this->view->translate('delete'),
-//                'image'     => $this->_publicUrl . '/img/admin/icons/record/delete.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => 'deleteRow(__ID__);return false;',
-//            )
-//        );
-//        $list->addRecordAction(
-//            'cache',
-//            'image',
-//            array(
-//                'label'     => $this->view->translate('cache'),
-//                'image'     => $this->_publicUrl . '/img/admin/icons/record/cache.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => '',
-//            )
-//        );
-//
-//        /**
-//         * LIST ACTIONS
-//         */
-//        $list->addListAction(
-//            'add',
-//            'image',
-//            array(
-//                'label'     => $this->view->translate('add'),
-//                'class'     => 'actionImage',
-//                'image'     => $this->_publicUrl . '/img/admin/icons/record/new.png',
-//                'onclick'   => 'addRow();return false;',
-//            )
-//        );
-//
-//        //
-//        $list->addListAction(
-//            'save',
-//            'image',
-//            array(
-//                'label'     => $this->view->translate('save'),
-//                'class'     => 'actionImage',
-//                'image'     => $this->_publicUrl . '/img/admin/icons/record/save.png',
-//            )
-//        );
-//
-//
-//        $list->build();
-//        $form->addSubForm($list, $list->getName());
-//
-//        $this->view->list = $form;
-//
-//        /**
-//         * POST
-//         */
+
+        $list->build();
+        $form->addSubForm($list, $list->getName());
+
+        /**
+         * POST
+         */
 //        if ($this->_request->isPost()) {
 //
 //            if ($form->isValid($this->_request->getPost())) {

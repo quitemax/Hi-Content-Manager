@@ -30,6 +30,7 @@ define('MEDIA_PATH', PUBLIC_PATH . DS . 'media');
 define('BASE_URL', '/sohi/Hi-Content-Manager/public');
 
 
+
 /*
  * Ensure libraries are on include_path
  */

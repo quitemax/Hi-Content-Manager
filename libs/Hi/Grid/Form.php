@@ -32,7 +32,7 @@ class Form extends ZendForm
     /**#@+
      * Form default partial decorator directory
      */
-    const HEADER_DEFAULT_PARTIALS_DIR = '_grid/_form/';
+    const HEADER_DEFAULT_PARTIALS_DIR = '_grid/_form';
 	/**#@-*/
 
     /**
@@ -70,6 +70,19 @@ class Form extends ZendForm
      * @var string
      */
     protected $_partialsDir = self::HEADER_DEFAULT_PARTIALS_DIR;
+
+
+	/**
+     * Set form state from options array
+     *
+     * @param  array $options
+     * @return Form
+     */
+    public function setOptions(array $options)
+    {
+        return parent::setOptions($options);
+//        return $this;
+    }
 
     /**
      * Sets title
@@ -144,7 +157,7 @@ class Form extends ZendForm
                array(
                     'ViewScript',
                     array(
-                        'viewScript'    => $this->_partialsDir.'_form.phtml',
+                        'viewScript'    => $this->_partialsDir . '/_form.phtml',
                         'title'         => $this->_title,
                         'placement'     => false,
                         'formId'        => $formId,
@@ -159,11 +172,7 @@ class Form extends ZendForm
     	$this  ->setEnctype(ZendForm::ENCTYPE_MULTIPART);
 
     	//
-    	$subFormHeader = new SubForm(
-    	   array(
-    	       'disableLoadDefaultDecorators' => true,
-    	   )
-    	);
+    	$subFormHeader = new SubForm();
 
 
     	$tmpElement = new Element\Hidden('formId');
@@ -209,7 +218,7 @@ class Form extends ZendForm
                 array(
                     'ViewScript',
                     array(
-                        'viewScript'    => $this->_partialsDir.'_form_header.phtml',
+                        'viewScript'    => $this->_partialsDir . '/_form_header.phtml',
                         'title'         => $this->_title,
                         'placement'     => false,
                         'formId'        => $formId,

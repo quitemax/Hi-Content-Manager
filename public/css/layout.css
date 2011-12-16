@@ -1,0 +1,480 @@
+/****************************************************
+ * admin/css/layout.css
+ */
+
+/****************************************************
+ * HTML ENTITIES
+ *
+ ****************************************************/
+
+body {
+	background-color:#e8e8e8;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	margin:0;
+}
+
+form { 
+	margin: 0px; 
+	padding:0px;
+}
+
+textarea, input, select, button {
+	font-size:11px;
+	border:1px solid #888888;
+}
+
+label {
+	
+}
+/****************************************************
+ * LAYOUT
+ *
+ ****************************************************/
+
+/****************************************************
+ * top
+ */
+
+/*****************************************************
+ * form header
+ */
+.formHeader {
+    background-color: #404040;
+    color:#ffffff;
+}
+
+.formHeader tr.formHeader{
+    
+}
+
+.formHeader th.formHeader{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/*****************************************************
+ * row
+ */
+.rowSubForm {
+    background-color: #e8e8e8;
+    margin:0px 0px 10px 0px;
+}
+
+/**
+ * row title
+ */
+
+table.rowTitle {
+}
+
+table.rowTitle tr{
+    background-color: #d8d8d8;
+    color:#000;
+}
+
+table.rowTitle tr th{
+    background-color: #a8a8a8;
+    color:#000;
+	cursor: pointer;
+	font-size: 13px;
+}
+
+/**
+ * row's row
+ */
+table.rowContent tr{
+    background-color: #d0d0d0;
+}
+table.rowContent tr th{
+    background-color: #d0d0d0;
+
+    border-top: 1px solid #f0f0f0;
+}
+
+table.rowContent tr td{
+    background-color: #e8e8e8;
+    border-top: 1px solid #f0f0f0;
+}
+
+table.rowContent tr.even th{
+    background-color: #c8c8c8;
+
+    border-top: 1px solid #f0f0f0;
+}
+
+table.rowContent tr.even td{
+    background-color: #e0e0e0;
+    border-top: 1px solid #f0f0f0;
+}
+
+
+/**
+ * multilang
+ */
+table.rowContent tr td table.multilang{
+    background-color: #e8e8e8;
+}
+
+table.rowContent tr td table.multilang tr{
+    background-color: #e4e4e4;
+}
+table.rowContent tr td table.multilang tr th{
+    background-color: #e4e4e4;
+	border-top:0px none;
+}
+
+table.rowContent tr td table.multilang tr td{
+    background-color: #e8e8e8;
+	border-top:0px none;
+
+}
+
+/**
+ * row's actions
+ */
+table.rowContent tr.actions{
+    background-color: #e4e4e4;
+}
+
+table.rowContent tr.actions th{
+    background-color: #e8e8e8;
+    border-top: 1px solid #f0f0f0;
+}
+
+table.rowContent tr.actions td{
+    background-color: #e8e8e8;
+    border-top: 1px solid #f0f0f0;
+}
+
+table.rowContent tr.actions td .actionImage{
+    background-color: #585858;
+    color:#f0f0f0;
+    font-weight: bold;
+    border: 1px solid #f0f0f0;
+}
+
+table.rowContent tr.actions td .actionSubmit{
+    background: #585858 url(../img/icons/list/template.png) repeat-x left bottom;
+    color:#f0f0f0;
+    font-weight: bold;
+    border: 1px solid #f0f0f0;
+    height:20px;
+}
+
+
+
+/*****************************************************
+ * LIST
+ */
+.listSubForm {
+    background-color: #e8e8e8;
+    margin:0px 0px 10px 0px;
+}
+
+table.listTitle {
+}
+
+/**
+ * list title
+ */
+.listTitle tr{
+    background-color: #d8d8d8;
+    color:#000;
+}
+
+.listTitle tr th{
+    background-color: #a8a8a8;
+    color:#000;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/**
+ * list filter
+ */
+.listContent  tr.listFilter{
+    font-size: 11px;
+    font-weight: normal;
+    background-color: #d0d0d0;
+}
+
+.listContent tr.listFilter th {
+    font-size: 11px;
+    font-weight: normal;
+    background-color: #d0d0d0;
+}
+
+/*filterTitle*/
+.listContent  tr.listFilter th table.filterTitle{
+
+}
+
+.listContent  tr.listFilter th table.filterTitle tr{
+
+}
+
+.listContent  tr.listFilter th table.filterTitle tr td{
+    font-weight: bold;
+}
+
+/*filterContent*/
+.listContent tr.listFilter th table.filterContent{
+    background-color: #c0c0c0;
+}
+
+.listContent tr.listFilter th table.filterContent tr{
+    font-size: 11px;
+    font-weight: normal;
+    background-color: #c0c0c0;
+}
+
+.listContent tr.listFilter th table.filterContent tr td{
+    font-size: 11px;
+    font-weight: normal;
+    background-color: #c0c0c0;
+}
+
+.listContent tr.listFilter th table.filterContent tr td div{
+    float:left;
+    display:inline;
+    margin:4px 16px 4px 0px;
+}
+
+.listContent tr.listFilter th table.filterContent tr td div .actionSubmit{
+    background: #585858 url(../img/icons/list/template.png) repeat-x left bottom;
+    color:#f0f0f0;
+    font-weight: bold;
+    border: 1px solid #f0f0f0;
+    height:17px;
+}
+
+/**
+ * list info
+ */
+.listContent  tr.listInfo th .elementsCount{
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.listContent tr.listInfo th .perPage{
+    font-size: 11px;
+    font-weight: normal;
+}
+
+/**
+ * list's headers
+ */
+.listContent tr.listHeader{
+    background-color: #d0d0d0;
+}
+
+.listContent tr.listHeader th.all{
+    background-color: #d0d0d0;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listHeader th{
+    background-color: #d0d0d0;
+
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listHeader th.sort{
+    background-color: #a6a6a6;
+    color:#ffffff;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listHeader th a{
+    color:#000;
+
+}
+
+.listContent tr.listHeader th.sort a{
+    color:#ffffff;
+    font-weight: bold;
+}
+
+.listContent tr.listHeader th.actions{
+    background-color: #d0d0d0;
+    border-top: 1px solid #f0f0f0;
+}
+
+/**
+ * list's row
+ */
+.listContent tr.listRow{
+    background-color: #e0e0e0;
+
+}
+
+.listContent tr.listRow td{
+    background-color: #e0e0e0;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listRow td.idCheckbox{
+    background-color: #e0e0e0;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listRow td.idCheckboxEven{
+    background-color: #d8d8d8;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listRow td.rowId{
+    background-color: #e0e0e0;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listRow td.rowIdEven{
+    background-color: #d8d8d8;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listRow td.rowIdSort{
+    background-color: #c8c8c8;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listRow td.rowIdSortEven{
+    background-color: #c0c0c0;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listRow td.text{
+    background-color: #e0e0e0;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listRow td.textEven{
+    background-color: #d8d8d8;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listRow td.textSort{
+    background-color: #c8c8c8;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+.listContent tr.listRow td.textSortEven{
+    background-color: #c0c0c0;
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+}
+
+
+
+.listContent tr.listRow td.rowActions{
+    background-color: #e0e0e0;
+    border-top: 1px solid #f0f0f0;
+}
+
+.listContent tr.listRow td.rowActionsEven{
+    background-color: #d8d8d8;
+    border-top: 1px solid #f0f0f0;
+}
+
+.listContent tr.listRow td .actionImage{
+    background-color: #585858;
+    color:#f0f0f0;
+    border: 1px solid #f0f0f0;
+    font-weight: bold;
+}
+
+.listContent tr.listPagination{
+    background-color: #e8e8e8;
+    border-top: 1px solid #f0f0f0;
+}
+
+.listContent tr.listPagination td.main{
+    background-color: #e8e8e8;
+    border-top: 1px solid #f0f0f0;
+}
+
+.listContent tr.listPagination td a{
+    color:#000000;
+    margin:0px 1px 0px 1px;
+}
+
+.listContent tr.listPagination td .current{
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.listContent tr.listActions{
+    background-color: #e8e8e8;
+
+}
+
+.listContent tr.listActions td{
+    background-color: #e8e8e8;
+
+}
+
+.listContent tr.listActions td .actionImage{
+    background-color: #585858;
+    color:#f0f0f0;
+    font-weight: bold;
+    border: 1px solid #f0f0f0;
+}
+
+.listContent tr.listActions td .actionSubmit{
+    background: #585858 url(../img/icons/list/template.png) repeat-x left bottom;
+    color:#f0f0f0;
+    font-weight: bold;
+    border: 1px solid #f0f0f0;
+    height:20px;
+}
+
+
+/*****************************************************
+ * tree
+ */
+.tree {
+    background-color: #e0e0e0;
+}
+
+/**
+ * tree title
+ */
+table.treeTitle {
+
+} 
+ 
+table.treeTitle tr{
+    background-color: #e8e8e8;
+    color:#000;
+}
+
+table.treeTitle tr th{
+    background-color: #888888;
+    color:#eee;
+}
+
+/**
+ * tree tree
+ */
+.treeContent{
+    background-color: #e8e8e8;
+}
+
+
+
+
+

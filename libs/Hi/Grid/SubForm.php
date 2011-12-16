@@ -22,5 +22,9 @@ use Zend\Form\SubForm as ZendSubForm;
  */
 class SubForm extends ZendSubForm
 {
-
+    /**
+     * Should we disable loading the default decorators?
+     * @var bool
+     */
+    protected $_disableLoadDefaultDecorators = true;
 }
