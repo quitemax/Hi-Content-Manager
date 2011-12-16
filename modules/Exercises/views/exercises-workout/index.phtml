@@ -21,51 +21,7 @@
         $this->headTitle($title);
     ?>
     <h1><?php echo $this->escape($title); ?></h1>
-    <p><a href="<?php echo $this->url('exercises-workout-add');?>">Add new workout</a></p>
-    <?php echo $form;?>
-    <table border="1" cellpadding="2">
-        <tr>
-            <th>id</th>
-            <th>date</th>
-            <th>calories_burned</th>
-            <th>elapsed_time</th>
-            <th>exercises_count</th>
-            <th>actions</th>
 
-        </tr>
-        <?php if (count($workouts)):?>
-        <?php foreach($workouts as $workout) : ?>
-        <tr>
-            <td align="right">
-                <?php echo $workout->workout_id?>
-            </td>
-            <td align="right">
-                <?php echo $workout->date?>
-            </td>
-            <td align="right">
-                <?php echo $workout->calories_burned?> kcal
-            </td>
-            <td align="right">
-                <?php echo $workout->elapsed_time?>
-            </td>
-            <td align="right">
-                <?php echo $workout->exercises_count?>
-            </td>
-            <td align="right">
-                <a href="<?php echo $this->url('exercises-workout-edit') . '?workout_id=' . $workout->workout_id ;?>">Edit</a>
-                <a href="<?php echo $this->url('exercises-workout-delete') . '?workout_id=' . $workout->workout_id?>">Delete</a>
-                <a href="<?php echo $this->url('exercises-workout-exercise-home') . '?workout_id=' . $workout->workout_id?>">Exercises</a>
-                <a href="<?php echo $this->url('exercises-workout-exercise-add') . '?workout_id=' . $workout->workout_id?>">Add exercise</a>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-        <?php else :?>
-            <tr>
-                <td colspan="7" align="center">
-                    No workouts
-                </td>
-            </tr>
-        <?php endif;?>
-    </table>
+    <?php echo $form;?>
 </div>
 

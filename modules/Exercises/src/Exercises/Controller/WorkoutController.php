@@ -28,12 +28,14 @@ class WorkoutController extends ActionController
 
     public function indexAction()
     {
-
         /**
          * Grid FORM
          */
-        $form = new WorkoutGridForm();
-        $form->setView($this->_view);
+        $form = new WorkoutGridForm(
+            array(
+                'view' => $this->_view,
+            )
+        );
 
         /**
          * BUILDING LIST
@@ -41,23 +43,30 @@ class WorkoutController extends ActionController
         $list = new WorkoutRowsetSubForm(
             array(
                 'model' => $this->_workout,
+                'view' => $this->_view,
             )
-////            array(
-////                'langs'     => $hicmsLangsDbTable->getLangs(),
-////                'model'     => $hicmsNavigationItemsDbTable,
-////            )
         );
-        $list->setView($this->_view);
-        $list->processRequest($this->getRequest());
-//
-//        $this->view->headScript()->appendScript(
-//            $this->view->render(
-//                'navigation/list.js'
-//            )
-//        );
 
+        //
+        $list->processRequest($this->getRequest());
+
+        //
         $list->build();
+
+        //
         $form->addSubForm($list, $list->getName());
+
+        //
+        $this->_view->headScript()->appendScript(
+            $this->_view->render(
+                'exercises-workout/index.js',
+                array(
+                    'delete' => $this->url()->fromRoute('exercises-workout-delete/wildcard', array('workout_id' => '')),
+                    'edit' => $this->url()->fromRoute('exercises-workout-edit/wildcard', array('workout_id' => '')),
+                    'add' => $this->url()->fromRoute('exercises-workout-add'),
+                )
+            )
+        );
 
         /**
          * POST
@@ -120,8 +129,8 @@ class WorkoutController extends ActionController
 //        \HiZend\Debug\Debug::precho($this->_view);
 
         return array(
-        	'form' => $form,
-        	'workouts' => $this->_workout->getWorkouts(),
+            'form' => $form,
+            'workouts' => $this->_workout->getWorkouts(),
         );
     }
 
@@ -152,10 +161,13 @@ class WorkoutController extends ActionController
     {
         $request = $this->getRequest();
 
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('workout_id', 0);
+
         $form = new WorkoutForm();
         $form->submit->setLabel('Edit');
 
-        $id = $request->query()->get('workout_id', 0);
+
         if ($id > 0) {
             if ($workoutRow = $this->_workout->getWorkout($id)) {
                 $form->populate($workoutRow->toArray());
@@ -197,6 +209,8 @@ class WorkoutController extends ActionController
     {
         $request = $this->getRequest();
 
+
+
         if ($request->isPost()) {
             $del = $request->post()->get('del', 'No');
             if ($del == 'Yes') {
@@ -208,7 +222,9 @@ class WorkoutController extends ActionController
             return $this->redirect()->toRoute('exercises-workout-home');
         }
 
-        $id = $request->query()->get('workout_id', 0);
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('workout_id', 0);
+
         return array('workout' => $this->_workout->getWorkout($id));
 
     }

@@ -51,6 +51,11 @@ class Module implements AutoloaderProvider
         $view->headTitle()->setSeparator(' :: ')
                           ->setAutoEscape(false)
                           ->append('sohi');
+        $view->headMeta()->appendHttpEquiv(
+            'Content-Type',
+            'text/html; charset=UTF-8'
+        );
+
         $this->view = $view;
 
         //

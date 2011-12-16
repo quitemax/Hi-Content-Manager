@@ -80,6 +80,11 @@ class Form extends ZendForm
      */
     public function setOptions(array $options)
     {
+        //
+        if (isset($options['view'])) {
+            $this->setView($options['view']);
+        }
+
         return parent::setOptions($options);
 //        return $this;
     }

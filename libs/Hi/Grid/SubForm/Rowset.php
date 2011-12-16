@@ -835,12 +835,12 @@ class Rowset extends GridSubForm
                 ),
             )
         );
-//
-//        $this->_view->headScript()->appendScript(
-//            $this->_view->render(
-//                $this->_partialsDir.'_subForm.js'
-//            )
-//        );
+
+        $this->_view->headScript()->appendScript(
+            $this->_view->render(
+                $this->_partialsDir . '/_subForm.js'
+            )
+        );
     }
 
     /**

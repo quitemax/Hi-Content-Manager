@@ -27,4 +27,20 @@ class SubForm extends ZendSubForm
      * @var bool
      */
     protected $_disableLoadDefaultDecorators = true;
+
+    /**
+     * Set form state from options array
+     *
+     * @param  array $options
+     * @return Form
+     */
+    public function setOptions(array $options)
+    {
+        //
+        if (isset($options['view'])) {
+            $this->setView($options['view']);
+        }
+
+        return parent::setOptions($options);
+    }
 }

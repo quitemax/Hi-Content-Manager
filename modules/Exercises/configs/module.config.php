@@ -165,6 +165,12 @@ return array(
                     'action'     => 'edit',
                 ),
             ),
+            'may_terminate' => true,
+            'child_routes'  => array(
+                'wildcard' => array(
+                    'type'    => 'wildcard',
+                ),
+            ),
         ),
         'exercises-workout-delete' => array(
             'type'    => 'Literal',
@@ -173,6 +179,12 @@ return array(
                 'defaults' => array(
                     'controller' => 'exercises-workout',
                     'action'     => 'delete',
+                ),
+            ),
+            'may_terminate' => true,
+            'child_routes'  => array(
+                'wildcard' => array(
+                    'type'    => 'wildcard',
                 ),
             ),
         ),

@@ -11,8 +11,10 @@ class WorkoutRowsetSubForm extends GridDbTableRowset
 
     public function init()
     {
+        //
         $this->setName($this->_name);
         parent::init();
+
 
 
 
@@ -39,16 +41,7 @@ class WorkoutRowsetSubForm extends GridDbTableRowset
                 'onclick'   => 'deleteRow(__ID__);return false;',
             )
         );
-//        $this->addRecordAction(
-//            'cache',
-//            'image',
-//            array(
-//                'label'     => 'cache',
-//                'image'     => $this->_publicUrl . '/img/admin/icons/record/cache.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => '',
-//            )
-//        );
+
 
         /**
          * LIST ACTIONS
