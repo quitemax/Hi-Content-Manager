@@ -5,7 +5,7 @@
     <?php echo $this->headMeta(); ?>
 
     <?php //$this->headLink()->appendStylesheet(PROJECT_PATH.PUBLIC_PATH.'/hicmsAdmin/css/layout.css', 'screen',  true);?>
-    <?php //echo $this->headLink()->prependStylesheet($this->url('home') . '/css/site.css') ?>
+    <?php echo $this->headLink()->prependStylesheet($this->url('home') . '/css/site.css') ?>
     <?php echo $this->headLink(); ?>
     <?php echo $this->headStyle(); ?>
 
@@ -17,6 +17,64 @@
 </head>
 <body>
     <div id="body">
+        <div id="nav-container">
+            <ul id="nav">
+                <li id="" class="level-0 nav-1 level-top first parent">
+                    <a class="" href="<?php echo $this->url('exercises-home');?>">
+                        <span>Exercises</span>
+                    </a>
+                    <ul class="">
+                        <li id="" class="">
+                            <a class="" href="<?php echo $this->url('exercises-checkup-home');?>">
+                                <span>Checkups</span>
+                            </a>
+                        </li>
+                        <li id="" class="">
+                            <a class="" href="<?php echo $this->url('exercises-workout-home');?>">
+                                <span>Workouts</span>
+                            </a>
+                        </li>
+                        <li id="" class="">
+                            <a class="" href="<?php //echo $this->url('exercises-home');?>">
+                                <span>Workout Types</span>
+                            </a>
+                        </li>
+                        <li id="" class="">
+                            <a class="" href="<?php //echo $this->url('exercises-home');?>">
+                                <span>Workout Groups</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="" class="level-0 nav-2 level-top last parent">
+                    <a class="" href="">
+                        <span>Nutrients</span>
+                    </a>
+                    <ul class="">
+                        <li id="" class="">
+                            <a class="" href="">
+                                <span>Checkups</span>
+                            </a>
+                        </li>
+                        <li id="" class="">
+                            <a class="" href="">
+                                <span>Workouts</span>
+                            </a>
+                        </li>
+                        <li id="" class="">
+                            <a class="" href="">
+                                <span>Workout Types</span>
+                            </a>
+                        </li>
+                        <li id="" class="">
+                            <a class="" href="">
+                                <span>Workout Groups</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
         <?php echo $this->raw('content'); ?>
     </div>
     <?php echo $this->inlineScript(); ?>
