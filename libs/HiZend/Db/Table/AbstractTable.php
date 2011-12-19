@@ -10,7 +10,8 @@ namespace HiZend\Db\Table;
  * @license
  */
 
-use Zend\Db\Table\AbstractTable as ZendAbstractTable;
+use Zend\Db\Table\AbstractTable as ZendAbstractTable,
+    Zend\Db\Select;
 
 /**
  * Refited Zend_Db_Table class for use with HiCms
@@ -359,24 +360,24 @@ class AbstractTable extends ZendAbstractTable
 
     public function getCountLastSql()
     {
-//        if ($this->_lastSql instanceof Zend_Db_Select) {
+        if ($this->_lastSql instanceof Select) {
 //
 //            //
-//            $lastSql = $this->_lastSql;
-//
-//            $lastSql->reset(Zend_Db_Select::COLUMNS);
-//            $lastSql->reset(Zend_Db_Select::GROUP);
-//            $lastSql->reset(Zend_Db_Select::ORDER);
-//            $lastSql->reset(Zend_Db_Select::LIMIT_COUNT);
-//            $lastSql->reset(Zend_Db_Select::LIMIT_OFFSET);
-//
-//            $lastSql->columns('COUNT(*) as count');
-//
-////            echo $lastSql;
-//            return $this->_db->fetchOne($lastSql);
-//        } else {
-//          return false;
-//        }
+            $lastSql = $this->_lastSql;
+
+            $lastSql->reset(Select::COLUMNS);
+            $lastSql->reset(Select::GROUP);
+            $lastSql->reset(Select::ORDER);
+            $lastSql->reset(Select::LIMIT_COUNT);
+            $lastSql->reset(Select::LIMIT_OFFSET);
+
+            $lastSql->columns('COUNT(*) as count');
+
+//            echo $lastSql;
+            return $this->_db->fetchOne($lastSql);
+        } else {
+          return false;
+        }
     }
 
 //    /*

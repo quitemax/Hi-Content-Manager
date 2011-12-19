@@ -10,9 +10,10 @@
 
 namespace Hi\Grid\SubForm;
 
-use Hi\Grid\Element\CheckboxRow;
-
-use Hi\Grid\SubForm as GridSubForm,
+use Hi\Grid\Element\CheckboxRow,
+    Hi\Grid\SubForm as GridSubForm,
+    Zend\Session\Container as SessionContainer,
+    Hi\Paginator\Paginator,
     Hi\Grid\Element;
 /**
  * Hi_Grid_Rowset
@@ -136,13 +137,13 @@ class Rowset extends GridSubForm
      */
     protected $_primaryKey = null;
 
-//    /**
-//     * Session that's used to remember sorting options
-//     *
-//     * @var Zend_Session_Namespace
-//     */
-//    protected $_rowsetSession = null;
-//
+    /**
+     * Session that's used to remember sorting options
+     *
+     * @var SessionContainer
+     */
+    protected $_rowsetSession = null;
+
     /**
      * Rowset colspan
      *
@@ -150,12 +151,12 @@ class Rowset extends GridSubForm
      */
     protected $_colspan = self::DEFAULT_COLSPAN;
 
-//    /**
-//     *
-//     *
-//     * @var int
-//     */
-//    protected $_paginationAvailablePerPage = null;
+    /**
+     *
+     *
+     * @var int
+     */
+    protected $_paginationAvailablePerPage = null;
 
     /**
      *
@@ -212,29 +213,33 @@ class Rowset extends GridSubForm
             $this->_name = self::DEFAULT_ID . md5(microtime());
         }
 
-//        $this->_rowsetSession = new Zend_Session_Namespace($options['name'] . 'RowsetSession');
+        if (!isset($options['session'])) {
+            $this->_rowsetSession = new SessionContainer($this->_name . 'RowsetSession');
+        } else {
+
+        }
 
         //
-//        if (!isset($this->_rowsetSession->page)){
-//            $this->_rowsetSession->page = 1;
-//        }
-//
-//        //
-//        if (!isset($this->_rowsetSession->perPage)){
-//            $this->_rowsetSession->perPage = 10;
-//        }
-//
-//        //
-//        if (!isset($this->_rowsetSession->sortField)){
-//            $this->_rowsetSession->sortField = null;
-//        }
-//
-//        //
-//        if (!isset($this->_rowsetSession->sortFieldDirection)){
-//            $this->_rowsetSession->sortFieldDirection = null;
-//        }
-//
-//        //
+        if (!isset($this->_rowsetSession->page)){
+            $this->_rowsetSession->page = 1;
+        }
+
+        //
+        if (!isset($this->_rowsetSession->perPage)){
+            $this->_rowsetSession->perPage = 10;
+        }
+
+        //
+        if (!isset($this->_rowsetSession->sortField)){
+            $this->_rowsetSession->sortField = null;
+        }
+
+        //
+        if (!isset($this->_rowsetSession->sortFieldDirection)){
+            $this->_rowsetSession->sortFieldDirection = null;
+        }
+
+        //
 //        if (!isset($this->_rowsetSession->lang)){
 //            if (!isset($this->_langs) || !is_array($this->_langs) || !count($this->_langs)) {
 //                $langSess = new Zend_Session_Namespace('lang');
@@ -243,9 +248,9 @@ class Rowset extends GridSubForm
 //                $this->_rowsetSession->lang = $this->_langs[0];
 //            }
 //        }
-//
-//        //
-//        $this->_paginationAvailablePerPage = $this->_defaultAvailablePerPage;
+
+        //
+        $this->_paginationAvailablePerPage = $this->_defaultAvailablePerPage;
 
         return parent::setOptions($options);
     }
@@ -327,52 +332,56 @@ class Rowset extends GridSubForm
      */
     public function processRequest($request)
     {
-//        $query = $request->getQuery();
-//        if (!$request->isPost()) {
-//            if (isset($query['form']) && $query['form'] == $this->getName()) {
-//                foreach ($query as $name => $value) {
-//                    switch($name) {
-//                        case 'p':
-//                            if ($value>=1) {
-//                                $this->_rowsetSession->page = (int)$value;
-//                            }
-//                            break;
-//                        case 'perPage':
-//                            if (in_array($value, $this->_paginationAvailablePerPage)) {
-//                                $this->_rowsetSession->perPage = (int)$value;
-//                                $this->_rowsetSession->page = 1;
-//                            }
-//                            break;
+//        \HiZend\Debug\Debug::dump($request);
+//        \HiZend\Debug\Debug::dump($request->query());
+//        \HiZend\Debug\Debug::dump(get_class($request));
+//        \HiZend\Debug\Debug::dump(get_class_methods($request));
+        $query = $request->query();
+        if (!$request->isPost()) {
+            if (isset($query['form']) && $query['form'] == $this->getName()) {
+                foreach ($query as $name => $value) {
+                    switch($name) {
+                        case 'p':
+                            if ($value>=1) {
+                                $this->_rowsetSession->page = (int)$value;
+                            }
+                            break;
+                        case 'perPage':
+                            if (in_array($value, $this->_paginationAvailablePerPage)) {
+                                $this->_rowsetSession->perPage = (int)$value;
+                                $this->_rowsetSession->page = 1;
+                            }
+                            break;
 //                        case 'lang':
 //                            if (in_array($value, $this->_langs)) {
 //                                $this->_rowsetSession->lang = $value;
 //                                $this->_rowsetSession->page = 1;
 //                            }
 //                            break;
-//                        case 'sort':
-//                            if (!isset($this->_rowsetSession->sortField)) {
-//                                $this->_rowsetSession->sortField = $value;
-//                                $this->_rowsetSession->sortFieldDirection = 'asc';
-//                            } else {
-//                                if ($this->_rowsetSession->sortField == $value) {
-//                                    if ($this->_rowsetSession->sortFieldDirection == 'asc') {
-//                                        $this->_rowsetSession->sortFieldDirection = 'desc';
-//                                    } else if ($this->_rowsetSession->sortFieldDirection == 'desc'){
-//                                        $this->_rowsetSession->sortField = null;
-//                                        $this->_rowsetSession->sortFieldDirection = null;
-//                                    }
-//                                } else {
-//                                    $this->_rowsetSession->sortField = $value;
-//                                    $this->_rowsetSession->sortFieldDirection = 'asc';
-//                                }
-//                            }
-//                            break;
-//                        default:
-//                            break;
-//                    }
-//                }
-//            }
-//        } else {
+                        case 'sort':
+                            if (!isset($this->_rowsetSession->sortField)) {
+                                $this->_rowsetSession->sortField = $value;
+                                $this->_rowsetSession->sortFieldDirection = 'asc';
+                            } else {
+                                if ($this->_rowsetSession->sortField == $value) {
+                                    if ($this->_rowsetSession->sortFieldDirection == 'asc') {
+                                        $this->_rowsetSession->sortFieldDirection = 'desc';
+                                    } else if ($this->_rowsetSession->sortFieldDirection == 'desc'){
+                                        $this->_rowsetSession->sortField = null;
+                                        $this->_rowsetSession->sortFieldDirection = null;
+                                    }
+                                } else {
+                                    $this->_rowsetSession->sortField = $value;
+                                    $this->_rowsetSession->sortFieldDirection = 'asc';
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        } else {
 //            $post = $request->getPost();
 //            if (isset($post[$this->getName()]['filter'])) {
 //                $filter = $post[$this->getName()]['filter'];
@@ -387,7 +396,7 @@ class Rowset extends GridSubForm
 //                }
 //            }
 //
-//        }
+        }
     }
 
     /**
@@ -628,8 +637,8 @@ class Rowset extends GridSubForm
             }
         }
     }
-//
-//
+
+
 //    /**
 //     *
 //     *
@@ -639,69 +648,69 @@ class Rowset extends GridSubForm
 //    public function getLang() {
 //        return $this->_rowsetSession->lang;
 //    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return void
-//     */
-//    public function setSortField($sortField) {
-//        $this->_rowsetSession->sortField = $sortField;
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return string
-//     */
-//    public function getSortField() {
-//        return $this->_rowsetSession->sortField;
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return void
-//     */
-//    public function setSortDirection($sortDirection) {
-//        $this->_rowsetSession->sortFieldDirection = $sortDirection;
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return string
-//     */
-//    public function getSortDirection() {
-//        return $this->_rowsetSession->sortFieldDirection;
-//    }
-//
-//    /**
-//     * Set page number for pagination
-//     *
-//     * @param $page int
-//     *
-//     * @return void
-//     */
-//    public function setPage($page)
-//    {
-//        $this->_rowsetSession->page = $page;
-//    }
-//
-//    /**
-//     * Get page number for pagination
-//     *
-//     *
-//     * @return int
-//     */
-//    public function getPage()
-//    {
-//        return $this->_rowsetSession->page;
-//    }
+
+    /**
+     *
+     *
+     *
+     * @return void
+     */
+    public function setSortField($sortField) {
+        $this->_rowsetSession->sortField = $sortField;
+    }
+
+    /**
+     *
+     *
+     *
+     * @return string
+     */
+    public function getSortField() {
+        return $this->_rowsetSession->sortField;
+    }
+
+    /**
+     *
+     *
+     *
+     * @return void
+     */
+    public function setSortDirection($sortDirection) {
+        $this->_rowsetSession->sortFieldDirection = $sortDirection;
+    }
+
+    /**
+     *
+     *
+     *
+     * @return string
+     */
+    public function getSortDirection() {
+        return $this->_rowsetSession->sortFieldDirection;
+    }
+
+    /**
+     * Set page number for pagination
+     *
+     * @param $page int
+     *
+     * @return void
+     */
+    public function setPage($page)
+    {
+        $this->_rowsetSession->page = $page;
+    }
+
+    /**
+     * Get page number for pagination
+     *
+     *
+     * @return int
+     */
+    public function getPage()
+    {
+        return $this->_rowsetSession->page;
+    }
 
     /**
      * Set elements count for pagination
@@ -716,27 +725,27 @@ class Rowset extends GridSubForm
         $this->_paginationAllElementsCount = $count;
     }
 
-//    /**
-//     * Sets the per page count for pagination
-//     *
-//     * @param $perPage int
-//     *
-//     * @return void
-//     */
-//    public function setPerPage($perPage)
-//    {
-//        $this->_rowsetSession->perPage = $perPage;
-//    }
-//
-//    /**
-//     * Gets the per page count for pagination
-//     *
-//     * @return int
-//     */
-//    public function getPerPage()
-//    {
-//        return $this->_rowsetSession->perPage;
-//    }
+    /**
+     * Sets the per page count for pagination
+     *
+     * @param $perPage int
+     *
+     * @return void
+     */
+    public function setPerPage($perPage)
+    {
+        $this->_rowsetSession->perPage = $perPage;
+    }
+
+    /**
+     * Gets the per page count for pagination
+     *
+     * @return int
+     */
+    public function getPerPage()
+    {
+        return $this->_rowsetSession->perPage;
+    }
 //
 //    /**
 //     *
@@ -776,43 +785,43 @@ class Rowset extends GridSubForm
 //        }
 //        return $this->_rowsetSession->filter;
 //    }
-//
-//    /**
-//     * Sets the available per page options
-//     *
-//     * @param $perPage int
-//     *
-//     * @return void
-//     */
-//    public function setAvailablePerPage($availablePerPage = array())
-//    {
-//        $this->_paginationAvailablePerPage = $availablePerPage;
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return array
-//     */
-//    public function getAvailablePerPage() {
-//        return $this->_paginationAvailablePerPage;
-//    }
-//
-//    /**
-//     * Sets the row checkboxes
-//     *
-//     * @param $set bool
-//     *
-//     * @return void
-//     */
-//    public function setActiveRowCheckbox($set = true)
-//    {
-//        $this->_rowCheckBoxEnable = $set;
-//    }
-//
-//
-//
+
+    /**
+     * Sets the available per page options
+     *
+     * @param $perPage int
+     *
+     * @return void
+     */
+    public function setAvailablePerPage($availablePerPage = array())
+    {
+        $this->_paginationAvailablePerPage = $availablePerPage;
+    }
+
+    /**
+     *
+     *
+     *
+     * @return array
+     */
+    public function getAvailablePerPage() {
+        return $this->_paginationAvailablePerPage;
+    }
+
+    /**
+     * Sets the row checkboxes
+     *
+     * @param $set bool
+     *
+     * @return void
+     */
+    public function setActiveRowCheckbox($set = true)
+    {
+        $this->_rowCheckBoxEnable = $set;
+    }
+
+
+
     /**
      *
      *
@@ -1159,10 +1168,10 @@ class Rowset extends GridSubForm
         $this->addSubForm($rowsetSubForm, 'rows');
 
 
-//        /**
-//         * rowset paginator and langs
-//         */
-//        $this->addSubForm($this->_buildSubFormPaginatorAndLangs(), 'paginatorLangs');
+        /**
+         * rowset paginator and langs
+         */
+        $this->addSubForm($this->_buildSubFormPaginatorAndLangs(), 'paginatorLangs');
 
 
         /**
@@ -1486,11 +1495,11 @@ class Rowset extends GridSubForm
                         'colspan'           => $this->_colspan,
                         'actionsTitle'      => self::DEFAULT_ACTIONS_TITLE,
                         'elementsCount'     => $this->_countData,
-//                        'elementsAllCount'  => $this->_paginationAllElementsCount,
-//                        'elementsFrom'      => $this->_rowsetSession->perPage * ($this->_rowsetSession->page - 1) + 1,
-//                        'elementsTo'        => ($this->_rowsetSession->perPage * ($this->_rowsetSession->page - 1)) + $this->_countData,
-//                        'perPage'           => $this->_rowsetSession->perPage,
-//                        'availablePerPage'  => $this->_paginationAvailablePerPage,
+                        'elementsAllCount'  => $this->_paginationAllElementsCount,
+                        'elementsFrom'      => $this->_rowsetSession->perPage * ($this->_rowsetSession->page - 1) + 1,
+                        'elementsTo'        => ($this->_rowsetSession->perPage * ($this->_rowsetSession->page - 1)) + $this->_countData,
+                        'perPage'           => $this->_rowsetSession->perPage,
+                        'availablePerPage'  => $this->_paginationAvailablePerPage,
                     ),
                 ),
             )
@@ -1522,8 +1531,8 @@ class Rowset extends GridSubForm
                         'checkboxEnable'    => $this->_rowCheckBoxEnable,
                         'columnTitles'      => $this->_getColumnTitles(),
                         'columnSortable'    => $this->_getColumnSortable(),
-//                        'sortField'         => $this->_rowsetSession->sortField,
-//                        'sortFieldDirection'=> $this->_rowsetSession->sortFieldDirection,
+                        'sortField'         => $this->_rowsetSession->sortField,
+                        'sortFieldDirection'=> $this->_rowsetSession->sortFieldDirection,
                         'actions'           => $countRowActions,
                         'actionsTitle'      => self::DEFAULT_ACTIONS_TITLE,
                     ),
@@ -1537,46 +1546,46 @@ class Rowset extends GridSubForm
 
         return $rowsetHeaderSubForm;
     }
-//
-//    /**
-//     *
-//     *
-//     * @return Zend_Form_SubForm
-//     */
-//    protected function _buildSubFormPaginatorAndLangs()
-//    {
-//        $recordRowsetPaginatorLangsSubForm = new Zend_Form_SubForm(
-//            array('disableLoadDefaultDecorators' => true)
-//        );
-//
-//        //
-//        $paginator = new Hi_Paginator();
-//        $paginator->setCurrentPage($this->_rowsetSession->page);
-//        $paginator->setAllItemsCount($this->_paginationAllElementsCount);
-//        $paginator->setItemsPerPage($this->_rowsetSession->perPage);
-//        $paginator->setLink('', '?form=' . $this->getName() . '&p=');
-//
-//        //
-//        $recordRowsetPaginatorLangsSubForm ->setDecorators(
-//            array(
-//                array('FormElements'),
-//                array(
-//                    'ViewScript',
-//                    array(
-//                        'viewScript'    => $this->_partialsDir.'_subForm_pagination_and_langs.phtml',
-//                        'placement'     => false,
-//                        'colspan'       => $this->_colspan,
-//                        'paginatorData' => $paginator->getBuildData(),
+
+    /**
+     *
+     *
+     * @return Zend_Form_SubForm
+     */
+    protected function _buildSubFormPaginatorAndLangs()
+    {
+        $gridRowsetPaginatorLangsSubForm = new GridSubForm();
+
+        //
+        $paginator = new Paginator();
+        $paginator->setCurrentPage($this->_rowsetSession->page);
+        $paginator->setAllItemsCount($this->_paginationAllElementsCount);
+        $paginator->setItemsPerPage($this->_rowsetSession->perPage);
+        $paginator->setLink('', '?form=' . $this->getName() . '&p=');
+//\HiZend\Debug\Debug::precho($paginator);
+//\HiZend\Debug\Debug::precho($paginator->getBuildData());
+
+        //
+        $gridRowsetPaginatorLangsSubForm ->setDecorators(
+            array(
+                array('FormElements'),
+                array(
+                    'ViewScript',
+                    array(
+                        'viewScript'    => $this->_partialsDir . '/_subForm_pagination_and_langs.phtml',
+                        'placement'     => false,
+                        'colspan'       => $this->_colspan,
+                        'paginatorData' => $paginator->getBuildData(),
 //                        'subFormId'     => $this->getName(),
 //                        'langs'         => $this->_langs,
 //                        'lang'          => $this->_rowsetSession->lang,
-//                    ),
-//                ),
-//            )
-//        );
-//
-//        return $recordRowsetPaginatorLangsSubForm;
-//    }
+                    ),
+                ),
+            )
+        );
+
+        return $gridRowsetPaginatorLangsSubForm;
+    }
 
     /**
      *

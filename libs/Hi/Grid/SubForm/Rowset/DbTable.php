@@ -29,19 +29,19 @@ class DbTable extends GridRowset
      */
     protected $_model = null;
 
-//    /**
-//     *
-//     *
-//     * @var array
-//     */
-//    protected $_cols = null;
+    /**
+     *
+     *
+     * @var array
+     */
+    protected $_cols = null;
 
-//    /**
-//     *
-//     *
-//     * @var array
-//     */
-//    protected $_where = null;
+    /**
+     *
+     *
+     * @var array
+     */
+    protected $_where = null;
 
 
 	/**
@@ -259,73 +259,73 @@ class DbTable extends GridRowset
 
     }
 
-//    /**
-//     *
-//     *
-//     *
-//     * @return int
-//     */
-//    public function setDbWhere($where = null)
-//    {
-//        if ($where !== null) {
-//            $this->_where = $where;
-//        }
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return int
-//     */
-//    public function getDbWhere()
-//    {
-//        return $this->_where;
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return string
-//     */
-//    public function getDbOrder()
-//    {
-//        if ($this->_listSession->sortField === null) {
-//            return null;
-//        } else {
-//            return  $this->_listSession->sortField
-//                    . ' '
-//                    . $this->_listSession->sortFieldDirection;
-//        }
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return int
-//     */
-//    public function getDbLimit()
-//    {
-//        return $this->_listSession->perPage;
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return int
-//     */
-//    public function getDbOffset()
-//    {
-//        if ($this->_listSession->page>1) {
-//            return ($this->_listSession->page-1)*$this->_listSession->perPage;
-//        } else {
-//            return 0;
-//        }
-//
-//    }
+    /**
+     *
+     *
+     *
+     * @return int
+     */
+    public function setDbWhere($where = null)
+    {
+        if ($where !== null) {
+            $this->_where = $where;
+        }
+    }
+
+    /**
+     *
+     *
+     *
+     * @return int
+     */
+    public function getDbWhere()
+    {
+        return $this->_where;
+    }
+
+    /**
+     *
+     *
+     *
+     * @return string
+     */
+    public function getDbOrder()
+    {
+        if ($this->_rowsetSession->sortField === null) {
+            return null;
+        } else {
+            return  $this->_rowsetSession->sortField
+                    . ' '
+                    . $this->_rowsetSession->sortFieldDirection;
+        }
+    }
+
+    /**
+     *
+     *
+     *
+     * @return int
+     */
+    public function getDbLimit()
+    {
+        return $this->_rowsetSession->perPage;
+    }
+
+    /**
+     *
+     *
+     *
+     * @return int
+     */
+    public function getDbOffset()
+    {
+        if ($this->_rowsetSession->page>1) {
+            return ($this->_rowsetSession->page-1)*$this->_rowsetSession->perPage;
+        } else {
+            return 0;
+        }
+
+    }
 
     /**
      * Builds
@@ -343,18 +343,22 @@ class DbTable extends GridRowset
 //        if ($this->_model->hasBehaviour('i18n')) {
 //
 //            //
-//            $this->_model->getBehaviour('i18n')->setLang($this->_listSession->lang);
+//            $this->_model->getBehaviour('i18n')->setLang($this->_rowsetSession->lang);
 //        }
 
         //
         $rowset = $this-> _model -> getRowset(
-//            $this->_where,
-//            $this->getDbOrder(),
-//            $this->_listSession->perPage,
-//            $this->getDbOffset(),
-//            null
+            $this->getDbWhere(),
+            $this->getDbOrder(),
+            $this->getDbLimit(),
+            $this->getDbOffset()/*,
+            null*/
         );
-//    \HiZend\Debug\Debug::precho($rowset);
+//    \HiZend\Debug\Debug::dump($this->getDbWhere());
+//    \HiZend\Debug\Debug::dump($this->getDbOrder());
+//    \HiZend\Debug\Debug::dump($this->getDbLimit());
+//    \HiZend\Debug\Debug::dump($this->getDbOffset());
+//    \HiZend\Debug\Debug::dump($this->_model -> getCountLastSql());
         //
         $rowsetCount = $this->_model -> getCountLastSql();
 

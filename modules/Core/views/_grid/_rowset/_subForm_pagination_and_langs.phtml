@@ -23,9 +23,9 @@
                                 && count ($this->paginatorData['pages']) > 1):?>
 
                         <?php if ($this->paginatorData['currentPage']==$this->paginatorData['firstPage']):?>
-                          <span ><?php echo $this->translate('previousPage')?></span>
+                          <span ><?php echo 'previousPage'?></span>
                         <?php else:?>
-                          <a href="<?php echo $this->paginatorData['buttons']['before']['link']?>"><?php echo $this->translate('previousPage')?></a>
+                          <a href="<?php echo $this->paginatorData['buttons']['before']['link']?>"><?php echo 'previousPage'?></a>
                         <?php endif;?>
 
                         <?php if ($this->paginatorData['buttons']['first']['dots']):?>
@@ -58,9 +58,9 @@
                         <?php endif;?>
 
                         <?php if ($this->paginatorData['currentPage']==$this->paginatorData['lastPage']):?>
-                          <span ><?php echo $this->translate('nextPage')?></span>
+                          <span ><?php echo 'nextPage'?></span>
                         <?php else:?>
-                          <a href="<?php echo $this->paginatorData['buttons']['after']['link']?>"><?php echo $this->translate('nextPage')?></a>
+                          <a href="<?php echo $this->paginatorData['buttons']['after']['link']?>"><?php echo 'nextPage'?></a>
                         <?php endif;?>
 
                     <?php endif;?>
