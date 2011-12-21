@@ -197,6 +197,12 @@ return array(
                     'action'     => 'index',
                 ),
             ),
+            'may_terminate' => true,
+            'child_routes'  => array(
+                'wildcard' => array(
+                    'type'    => 'wildcard',
+                ),
+            ),
         ),
         'exercises-workout-exercise-add' => array(
             'type'    => 'Literal',
@@ -205,6 +211,12 @@ return array(
                 'defaults' => array(
                     'controller' => 'exercises-workout-exercise',
                     'action'     => 'add',
+                ),
+            ),
+            'may_terminate' => true,
+            'child_routes'  => array(
+                'wildcard' => array(
+                    'type'    => 'wildcard',
                 ),
             ),
         ),
@@ -217,6 +229,12 @@ return array(
                     'action'     => 'edit',
                 ),
             ),
+            'may_terminate' => true,
+            'child_routes'  => array(
+                'wildcard' => array(
+                    'type'    => 'wildcard',
+                ),
+            ),
         ),
         'exercises-workout-exercise-delete' => array(
             'type'    => 'Literal',
@@ -225,6 +243,12 @@ return array(
                 'defaults' => array(
                     'controller' => 'exercises-workout-exercise',
                     'action'     => 'delete',
+                ),
+            ),
+            'may_terminate' => true,
+            'child_routes'  => array(
+                'wildcard' => array(
+                    'type'    => 'wildcard',
                 ),
             ),
         ),

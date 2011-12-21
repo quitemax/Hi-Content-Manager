@@ -64,6 +64,8 @@ class WorkoutController extends ActionController
                     'delete' => $this->url()->fromRoute('exercises-workout-delete/wildcard', array('workout_id' => '')),
                     'edit' => $this->url()->fromRoute('exercises-workout-edit/wildcard', array('workout_id' => '')),
                     'add' => $this->url()->fromRoute('exercises-workout-add'),
+                    'exercises' => $this->url()->fromRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => '')),
+                    'addExercise' => $this->url()->fromRoute('exercises-workout-exercise-add/wildcard', array('workout_id' => '')),
                 )
             )
         );

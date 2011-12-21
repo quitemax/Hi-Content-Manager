@@ -9,13 +9,7 @@
         <table width="100%">
             <tr>
                 <td width="15%" align="left">
-                    <?php if (is_array($this->langs)):?>
-                        <?php foreach ($this->langs as $lang):?>
-                            <a
-                                href="?form=<?php echo $this->subFormId;?>&lang=<?php echo $lang;?>"
-                                ><?php if ($lang == $this->lang) :?><b><?php endif;?>[<?php echo mb_strtoupper($lang, 'utf-8');?>]<?php if ($lang == $this->lang) :?></b><?php endif;?></a>
-                        <?php endforeach;?>
-                    <?php endif;?>
+
                 </td>
                 <td align="center">
                     <?php if (  isset($this->paginatorData['pages'])

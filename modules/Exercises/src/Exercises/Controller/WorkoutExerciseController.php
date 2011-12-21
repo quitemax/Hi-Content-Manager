@@ -36,7 +36,8 @@ class WorkoutExerciseController extends ActionController
 
         $request = $this->getRequest();
 
-        $id = $request->query()->get('workout_id', 0);
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('workout_id', 0);
 
         if ($id <= 0) {
             return $this->redirect()->toRoute('exercises-workout-home');

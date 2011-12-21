@@ -75,8 +75,21 @@
                 </li>
             </ul>
         </div>
+
         <?php echo $this->raw('content'); ?>
     </div>
+    <?php
+    $this->inlineScript()->appendScript(
+        '
+        function abta() {
+
+        }
+
+
+        '
+    );
+
+    ?>
     <?php echo $this->inlineScript(); ?>
 </body>
 </html>

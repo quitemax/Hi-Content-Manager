@@ -125,6 +125,7 @@ label {
     padding: 0;
     text-align: left;
     width: 1200px;
+    
 }
 
 
@@ -133,7 +134,7 @@ label {
     float: left;
     display: inline;
     position: relative;
-    margin: 0px 0px 0px 10px;
+    margin: 0px 2px 0px 10px;
     padding: 8px 0px 0px 0px;
 }
 #nav li.level-top a {
@@ -150,9 +151,30 @@ label {
     
 }
 #nav li.level-top ul {
-	display:none;
+/*	display:none;*/
+	left: -10px;
+    padding-bottom: 3px;
+    position: absolute;
+    top: 27px;
+    width: 189px;
+/*    border-bottom: 1px solid #fff;*/
+/*    border-left: 1px solid #fff;*/
+/*    border-right: 1px solid #fff;*/
 }
 
+#nav li.level-top ul li{
+    background-color: #585858;
+/*    margin: 0px 2px 0px 10px;*/
+    padding: 2px 0px 2px 6px;
+/*    border-bottom: 1px dashed #fff;*/
+}
+
+#nav li.level-top ul li a{
+    font-weight: bold;
+}
+#nav li.level-top ul li a:hover{
+    font-weight: bold;
+}
 
 
 
@@ -197,7 +219,7 @@ label {
 /*****************************************************
  * form header
  */
-/*
+
 .formHeader {
     background-color: #404040;
     color:#ffffff;
@@ -210,7 +232,9 @@ label {
 .formHeader th.formHeader{
     font-weight: bold;
     font-size: 16px;
-}*/
+    text-align: left;
+    padding: 4px 0px 4px 20px;
+}
 
 /*****************************************************
  * row
@@ -339,15 +363,18 @@ table.listTitle {
  * list title
  */
 .listTitle tr{
-    background-color: #d8d8d8;
+/*    background-color: #d8d8d8;*/
     color:#000;
 }
 
 .listTitle tr th{
-    background-color: #a8a8a8;
+/*    background-color: #a8a8a8;*/
     color:#000;
     font-size: 13px;
     cursor: pointer;
+    text-align: left;;
+    font-weight: bold;
+    padding: 2px 0px 2px 40px;
 }
 
 /**
@@ -421,7 +448,20 @@ table.listTitle {
     font-size: 11px;
     font-weight: normal;
 }
+.listContent tr.listInfo td.main{
+    background-color: #e8e8e8;
+    border-top: 1px solid #f0f0f0;
+}
 
+.listContent tr.listInfo td a{
+    color:#000000;
+    margin:0px 1px 0px 1px;
+}
+
+.listContent tr.listInfo td .current{
+    font-weight: bold;
+    font-size: 13px;
+}
 /**
  * list's headers
  */

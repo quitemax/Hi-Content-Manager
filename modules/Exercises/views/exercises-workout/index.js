@@ -14,3 +14,11 @@ function editRow(id) {
 function addRow() {
     window.location = "<?php echo $add; ?>";
 }
+
+function exercises(id) {
+    window.location = "<?php echo $exercises; ?>" + id ;
+}
+
+function addExercise(id) {
+    window.location = "<?php echo $addExercise; ?>" + id ;
+}

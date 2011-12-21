@@ -877,14 +877,25 @@ class Rowset extends GridSubForm
 //        }
 
         /**
+         * rowset actions subform
+         */
+        $this->addSubForm($this->_buildSubFormRowsetActions(), 'actions');
+
+        /**
          * info tab
          */
         $this->addSubForm($this->_buildSubFormInfo(), 'info');
+
+
+
+
+
 
         /**
          * rowset header
          */
         $this->addSubForm($this->_buildSubFormHeader(), 'header');
+
 
 
 
@@ -989,11 +1000,11 @@ class Rowset extends GridSubForm
 ////                        Zend_Debug::dump($dataRow, '$dataRow');
 //\HiZend\Debug\Debug::precho($field, 'field');
 //                        Zend_Debug::dump($field, 'field');
-//                        if ($field['name'] == $this->_rowsetSession->sortField) {
-//                            $field['options']['sort'] = true;
-//                        } else {
+                        if ($field['name'] == $this->_rowsetSession->sortField) {
+                            $field['options']['sort'] = true;
+                        } else {
                                 $field['options']['sort'] = false;
-//                        }
+                        }
                         $field['options']['even'] = $dataEven;
 
                         switch ($field['type']) {
@@ -1167,17 +1178,13 @@ class Rowset extends GridSubForm
 
         $this->addSubForm($rowsetSubForm, 'rows');
 
-
         /**
-         * rowset paginator and langs
+         * rowset bottom paginator
          */
-        $this->addSubForm($this->_buildSubFormPaginatorAndLangs(), 'paginatorLangs');
+        $this->addSubForm($this->_buildSubFormBottomPaginator(), 'bottomPaginator');
 
 
-        /**
-         * rowset actions subform
-         */
-        $this->addSubForm($this->_buildSubFormRowsetActions(), 'actions');
+
 
     }
 
@@ -1482,6 +1489,14 @@ class Rowset extends GridSubForm
      */
     protected function _buildSubFormInfo()
     {
+        //
+        $paginator = new Paginator();
+        $paginator->setCurrentPage($this->_rowsetSession->page);
+        $paginator->setAllItemsCount($this->_paginationAllElementsCount);
+        $paginator->setItemsPerPage($this->_rowsetSession->perPage);
+        $paginator->setLink('', '?form=' . $this->getName() . '&p=');
+
+
         $rowsetInfoSubForm = new GridSubForm();
         $rowsetInfoSubForm ->setDecorators(
             array(
@@ -1500,6 +1515,7 @@ class Rowset extends GridSubForm
                         'elementsTo'        => ($this->_rowsetSession->perPage * ($this->_rowsetSession->page - 1)) + $this->_countData,
                         'perPage'           => $this->_rowsetSession->perPage,
                         'availablePerPage'  => $this->_paginationAvailablePerPage,
+                        'paginatorData'     => $paginator->getBuildData(),
                     ),
                 ),
             )
@@ -1552,7 +1568,7 @@ class Rowset extends GridSubForm
      *
      * @return Zend_Form_SubForm
      */
-    protected function _buildSubFormPaginatorAndLangs()
+    protected function _buildSubFormBottomPaginator()
     {
         $gridRowsetPaginatorLangsSubForm = new GridSubForm();
 
@@ -1562,8 +1578,6 @@ class Rowset extends GridSubForm
         $paginator->setAllItemsCount($this->_paginationAllElementsCount);
         $paginator->setItemsPerPage($this->_rowsetSession->perPage);
         $paginator->setLink('', '?form=' . $this->getName() . '&p=');
-//\HiZend\Debug\Debug::precho($paginator);
-//\HiZend\Debug\Debug::precho($paginator->getBuildData());
 
         //
         $gridRowsetPaginatorLangsSubForm ->setDecorators(
@@ -1572,13 +1586,10 @@ class Rowset extends GridSubForm
                 array(
                     'ViewScript',
                     array(
-                        'viewScript'    => $this->_partialsDir . '/_subForm_pagination_and_langs.phtml',
+                        'viewScript'    => $this->_partialsDir . '/_subForm_bottom_pagination.phtml',
                         'placement'     => false,
                         'colspan'       => $this->_colspan,
                         'paginatorData' => $paginator->getBuildData(),
-//                        'subFormId'     => $this->getName(),
-//                        'langs'         => $this->_langs,
-//                        'lang'          => $this->_rowsetSession->lang,
                     ),
                 ),
             )
@@ -1603,9 +1614,12 @@ class Rowset extends GridSubForm
                 array(
                     'ViewScript',
                     array(
-                        'viewScript'    => $this->_partialsDir . '/_subForm_actions.phtml',
+                        'viewScript'    => $this->_partialsDir . '/_subForm_actions_and_langs.phtml',
                         'placement'     => false,
                         'colspan'       => $this->_colspan,
+//                        'subFormId'     => $this->getName(),
+//                        'langs'         => $this->_langs,
+//                        'lang'          => $this->_rowsetSession->lang,
                     ),
                 ),
             )
@@ -2373,43 +2387,50 @@ class Rowset extends GridSubForm
 //        return $tmpElement;
 //    }
 
-//    /**
-//     *
-//     *
-//     * @return Zend_Form_Element_Submit
-//     */
-//    protected function _buildRowActionSubmit($name, $options = array())
-//    {
-//        $tmpElement = new Zend_Form_Element_Submit(
-//            $name,
-//            array(
-//                'disableLoadDefaultDecorators'  =>  true
-//            )
-//        );
-//
-//        if ($options) {
-//            foreach ($options as $optionName => $option) {
-//                switch ($optionName) {
-//                    case 'label':
-//                        $tmpElement->setLabel($option);
-//                        break;
-//                    case 'class':
-//                        $tmpElement->setAttrib('class', $option);
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        }
+    /**
+     *
+     *
+     * @return Zend_Form_Element_Submit
+     */
+    protected function _buildRowActionSubmit($name, $options = array())
+    {
+        $tmpElement = new Element\Submit(
+            $name
+        );
+
+        if ($options) {
+            foreach ($options as $optionName => $option) {
+                switch ($optionName) {
+                    case 'label':
+                        $tmpElement->setLabel($option);
+                        break;
+                    case 'class':
+                        $tmpElement->setAttrib('class', $option);
+                        break;
+                    case 'onclick':
+                        if (strpos($option, '__ID__') !== false) {
+                            $option = str_replace(
+                                '__ID__',
+                                $this->_currentRowIdValue,
+                                $option
+                            );
+                        }
+                        $tmpElement->setAttrib('onclick', $option);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
 //
 //        $tmpElement->setDecorators(
 //            array(
 //                array('ViewHelper')
 //            )
 //        );
-//
-//        return $tmpElement;
-//    }
+
+        return $tmpElement;
+    }
 
     /**
      *
@@ -2460,20 +2481,18 @@ class Rowset extends GridSubForm
         return $tmpElement;
     }
 
-//    /**
-//     *
-//     *
-//     * @return Zend_Form_Element_Submit
-//     */
-//    protected function _buildRowsetActionSubmit($name, $options = array())
-//    {
-//        $tmpElement = new Zend_Form_Element_Submit(
-//            $name,
-//            array(
-//                'disableLoadDefaultDecorators'  =>  true
-//            )
-//        );
-//
+    /**
+     *
+     *
+     * @return Zend_Form_Element_Submit
+     */
+    protected function _buildRowsetActionSubmit($name, $options = array())
+    {
+        $tmpElement = new Element\Submit(
+            $name,
+            $options
+        );
+
 //        if ($options) {
 //            foreach ($options as $optionName => $option) {
 //                switch ($optionName) {
@@ -2494,9 +2513,9 @@ class Rowset extends GridSubForm
 //                array('ViewHelper'),
 //            )
 //        );
-//
-//        return $tmpElement;
-//    }
+
+        return $tmpElement;
+    }
 
     /**
      *

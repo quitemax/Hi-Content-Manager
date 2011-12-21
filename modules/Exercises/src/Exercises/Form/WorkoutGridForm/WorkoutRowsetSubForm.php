@@ -23,7 +23,7 @@ class WorkoutRowsetSubForm extends GridDbTableRowset
          */
         $this->addRowAction(
             'edit',
-            'image',
+            'submit',
             array(
                 'label'     => 'edit',
                 'image'     => BASE_URL . '/img/grid/icons/edit.png',
@@ -33,12 +33,32 @@ class WorkoutRowsetSubForm extends GridDbTableRowset
         );
         $this->addRowAction(
             'delete',
-            'image',
+            'submit',
             array(
                 'label'     => 'delete',
                 'image'     => BASE_URL . '/img/grid/icons/delete.png',
                 'class'     => 'actionImage',
                 'onclick'   => 'deleteRow(__ID__);return false;',
+            )
+        );
+        $this->addRowAction(
+            'exercises',
+            'submit',
+            array(
+                'label'     => 'exercises',
+                'image'     => BASE_URL . '/img/grid/icons/delete.png',
+                'class'     => 'actionImage',
+                'onclick'   => 'exercises(__ID__);return false;',
+            )
+        );
+        $this->addRowAction(
+            'add-exercise',
+            'submit',
+            array(
+                'label'     => 'add exercise',
+                'image'     => BASE_URL . '/img/grid/icons/delete.png',
+                'class'     => 'actionImage',
+                'onclick'   => 'addExercise(__ID__);return false;',
             )
         );
 
@@ -48,9 +68,9 @@ class WorkoutRowsetSubForm extends GridDbTableRowset
          */
         $this->addRowsetAction(
             'add',
-            'image',
+            'submit',
             array(
-                'label'     => 'add',
+                'label'     => 'add workout',
                 'class'     => 'actionImage',
                 'image'     => BASE_URL . '/img/grid/icons/new.png',
                 'onclick'   => 'addRow();return false;',
@@ -60,9 +80,9 @@ class WorkoutRowsetSubForm extends GridDbTableRowset
         //
         $this->addRowsetAction(
             'save',
-            'image',
+            'submit',
             array(
-                'label'     => 'save',
+                'label'     => 'save selected',
                 'class'     => 'actionImage',
                 'image'     => BASE_URL . '/img/grid/icons/save.png',
             )
