@@ -45,6 +45,7 @@ return array(
                     'workout'  => 'Exercises\Model\DbTable\Workout',
                     'exercise' => 'Exercises\Model\DbTable\WorkoutExercise',
                     'type'     => 'Exercises\Model\DbTable\WorkoutExerciseType',
+                    'view' => 'view',
                 ),
             ),
             'Exercises\Model\DbTable\Checkup' => array(

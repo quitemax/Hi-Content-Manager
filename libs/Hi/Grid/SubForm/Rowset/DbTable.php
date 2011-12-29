@@ -41,7 +41,19 @@ class DbTable extends GridRowset
      *
      * @var array
      */
-    protected $_where = null;
+    protected $_dbWhere = null;
+    /**
+     *
+     *
+     * @var array
+     */
+    protected $_dbOrder = null;
+    /**
+     *
+     *
+     * @var array
+     */
+    protected $_loadAll = null;
 
 
 	/**
@@ -63,6 +75,12 @@ class DbTable extends GridRowset
         return parent::setOptions($options);
     }
 
+    public function init()
+    {
+        parent::init();
+
+        $this->_setup();
+    }
     /**
      *
      *
@@ -71,7 +89,7 @@ class DbTable extends GridRowset
      */
     protected function _setup()
     {
-        $model = $this->_model;
+//        $model = $this->_model;
 
         $modelInfo = $this->_model->info();
 //        \HiZend\Debug\Debug::precho($modelInfo);
@@ -124,6 +142,18 @@ class DbTable extends GridRowset
 	                        array(
 	                            'label'     => $name,
 	                            'sortable'  => true,
+	                            'size'    => 7,
+	                        )
+	                    );
+	                    break;
+	                case 'decimal':
+	                    $this->addField(
+	                        $name,
+	                        'input',
+	                        array(
+	                            'label'     => $name,
+	                            'sortable'  => true,
+	                            'size'    => 9,
 	                        )
 	                    );
 	                    break;
@@ -181,6 +211,7 @@ class DbTable extends GridRowset
 	                        array(
 	                            'label'     => $name,
 	                            'sortable'  => true,
+	                            'size'    => 10,
 	                        )
 	                    );
 	                    break;
@@ -268,7 +299,7 @@ class DbTable extends GridRowset
     public function setDbWhere($where = null)
     {
         if ($where !== null) {
-            $this->_where = $where;
+            $this->_dbWhere = $where;
         }
     }
 
@@ -280,8 +311,66 @@ class DbTable extends GridRowset
      */
     public function getDbWhere()
     {
-        return $this->_where;
+        return $this->_dbWhere;
     }
+    /**
+     *
+     *
+     *
+     * @return int
+     */
+    public function setLoadAll($load = false)
+    {
+        $this->_loadAll = $load;
+    }
+
+    /**
+     * Adds a field to record rowset
+     *
+     * @param $name string
+     * @param $type string
+     * @param $options array
+     * @param $position int
+     *
+     * @return void
+     */
+    public function getFieldsNames()
+    {
+        $fieldTmp = array();
+
+        if ($this->_loadAll) {
+            $modelInfo = $this->_model->info();
+//            \HiZend\Debug\Debug::dump($modelInfo);
+            $fieldTmp = $modelInfo['cols'];
+        } else {
+            foreach ($this->_fields as $key => $field) {
+    //            \HiZend\Debug\Debug::dump($key);
+    //            \HiZend\Debug\Debug::dump($field);
+                if ($field['type'] == 'custom') {
+                    continue;
+                }
+
+                if (isset($field['options']['sql'])) {
+                    $fieldTmp[$field['name']] = $field['options']['sql'];
+                } else {
+                    $fieldTmp[] = $field['name'];
+                }
+            }
+        }
+//        $fieldTmp = array(
+//            'name'     => $name,
+//            'type'     => $type,
+//            'options'  => $options,
+//        );
+//        if ($position===null) {
+//            $position = 10*(count($this->_fields)+1);
+//        }
+//        $this->_fields[$position] = $fieldTmp;
+
+//        \HiZend\Debug\Debug::precho($fieldTmp);
+        return $fieldTmp;
+    }
+
 
     /**
      *
@@ -291,12 +380,53 @@ class DbTable extends GridRowset
      */
     public function getDbOrder()
     {
-        if ($this->_rowsetSession->sortField === null) {
-            return null;
-        } else {
-            return  $this->_rowsetSession->sortField
-                    . ' '
-                    . $this->_rowsetSession->sortFieldDirection;
+//        if (!isset($this->_dbOrder)) {
+            if ($this->_rowsetSession->sortField === null) {
+                if ($this->_dbOrder !== null) {
+                return $this->_dbOrder;
+                } else {
+                    return null;
+                }
+            } else {
+                return  $this->_rowsetSession->sortField
+                        . ' '
+                        . $this->_rowsetSession->sortFieldDirection;
+            }
+//        } else {
+//            if ($this->_rowsetSession->sortField === null) {
+//                return $this->_dbOrder;
+//            } else {
+//                $order = array(
+//                    $this->_rowsetSession->sortField
+//                    . ' '
+//                    . $this->_rowsetSession->sortFieldDirection
+//                );
+//                $order += $this->_dbOrder;
+//                return  $this->_rowsetSession->sortField
+//                        . ' '
+//                        . $this->_rowsetSession->sortFieldDirection;
+//            }
+//        }
+    }
+
+    /**
+     *
+     *
+     *
+     * @return int
+     */
+    public function addDbOrder($order = null, $direction = null)
+    {
+        if ($order !== null && $direction !== null) {
+            if (!is_array($this->_dbOrder)) {
+                $this->_dbOrder = array();
+            }
+//            \HiZend\Debug\Debug::dump($order);
+//            \HiZend\Debug\Debug::dump($direction);
+//            \HiZend\Debug\Debug::dump($order . ' ' . $direction);
+//            \HiZend\Debug\Debug::dump($this->_dbOrder);
+            $this->_dbOrder = $order . ' ' . $direction;
+////            $this->_rowsetSession->sortFieldDirection = $direction;
         }
     }
 
@@ -335,7 +465,7 @@ class DbTable extends GridRowset
     public function build()
     {
 
-        $this->_setup();
+
 
 //        \HiZend\Debug\Debug::precho($this->_fields);
 
@@ -345,15 +475,17 @@ class DbTable extends GridRowset
 //            //
 //            $this->_model->getBehaviour('i18n')->setLang($this->_rowsetSession->lang);
 //        }
-
+//\HiZend\Debug\Debug::dump($this->getDbOrder());
         //
         $rowset = $this-> _model -> getRowset(
             $this->getDbWhere(),
             $this->getDbOrder(),
             $this->getDbLimit(),
-            $this->getDbOffset()/*,
-            null*/
+            $this->getDbOffset(),
+            $this->getFieldsNames()
         );
+//    \HiZend\Debug\Debug::dump($rowset->toArray());
+//    \HiZend\Debug\Debug::dump($this);
 //    \HiZend\Debug\Debug::dump($this->getDbWhere());
 //    \HiZend\Debug\Debug::dump($this->getDbOrder());
 //    \HiZend\Debug\Debug::dump($this->getDbLimit());

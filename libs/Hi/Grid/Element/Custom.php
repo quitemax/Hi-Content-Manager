@@ -9,7 +9,7 @@
  */
 namespace Hi\Grid\Element;
 
-use Zend\Form\Element\Text as ZendInput;
+use Zend\Form\Element\Text as ZendText;
 
 /**
  * Hi_Record_Form
@@ -20,7 +20,7 @@ use Zend\Form\Element\Text as ZendInput;
  * @license
  * @version    2.0
  */
-class Input extends ZendInput
+class Custom extends ZendText
 {
     /**
      * Should we disable loading the default decorators?
@@ -35,6 +35,8 @@ class Input extends ZendInput
     protected $_viewScriptPath = '';
     protected $_sort = '';
     protected $_even = '';
+    protected $_values = '';
+    protected $_row = '';
 
     /**
      * Set form state from options array
@@ -45,11 +47,26 @@ class Input extends ZendInput
     public function setOptions(array $options)
     {
         //
+        if (isset($options['row'])) {
+            $this->_row = $options['row'];
+            unset($options['row']);
+        } else {
+            $this->_row = null;;
+        }
+
         if (isset($options['sort'])) {
             $this->_sort = $options['sort'];
             unset($options['sort']);
         } else {
             $this->_sort = null;;
+        }
+
+        //
+        if (isset($options['values']) && is_array($options['values'])) {
+            $this->_values = $options['values'];
+            unset($options['values']);
+        } else {
+            $this->_values = null;;
         }
 
         //
@@ -79,7 +96,6 @@ class Input extends ZendInput
     {
         $this->setDecorators(
             array(
-                array('ViewHelper'),
                 array(
                     'ViewScript',
                     array(
@@ -87,6 +103,8 @@ class Input extends ZendInput
                         'placement'     => false,
                         'sort'          => $this->_sort,
                         'even'          => $this->_even,
+                        'values'        => $this->_values,
+                        'row'        => $this->_row,
                     ),
                 ),
             )

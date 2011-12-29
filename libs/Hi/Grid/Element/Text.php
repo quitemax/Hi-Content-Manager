@@ -35,6 +35,7 @@ class Text extends ZendText
     protected $_viewScriptPath = '';
     protected $_sort = '';
     protected $_even = '';
+    protected $_values = '';
 
     /**
      * Set form state from options array
@@ -49,7 +50,15 @@ class Text extends ZendText
             $this->_sort = $options['sort'];
             unset($options['sort']);
         } else {
-            throw new \Exception("You must provide a sort path here.");
+            $this->_sort = null;;
+        }
+
+        //
+        if (isset($options['values']) && is_array($options['values'])) {
+            $this->_values = $options['values'];
+            unset($options['values']);
+        } else {
+            $this->_values = null;;
         }
 
         //
@@ -86,6 +95,7 @@ class Text extends ZendText
                         'placement'     => false,
                         'sort'          => $this->_sort,
                         'even'          => $this->_even,
+                        'values'        => $this->_values,
                     ),
                 ),
             )

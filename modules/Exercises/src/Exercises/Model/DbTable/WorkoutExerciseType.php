@@ -16,6 +16,7 @@ use HiZend\Db\Table\AbstractTable;
 class WorkoutExerciseType extends AbstractTable
 {
     protected $_name = 'workout_exercise_type';
+    protected $_prfx = 'wet';
     protected $_all;
 
     const FORM_TYPE_CLOCK = '0';

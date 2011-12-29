@@ -58,19 +58,8 @@ class Rowset extends GridSubForm
      */
     protected $_partialsDir = self::DEFAULT_PARTIALS_DIR;
 
-    /**
-     * Title
-     *
-     * @var string
-     */
-    protected $_title = '';
 
-    /**
-     * Title
-     *
-     * @var string
-     */
-    protected $_name = '';
+
 //
 //    /**
 //     * Langs in use
@@ -95,6 +84,15 @@ class Rowset extends GridSubForm
     protected $_fields = array();
 
     /**
+     *
+     *
+     * @var array
+     */
+    protected $_lastPosition = 10;
+
+
+
+    /**
      * Row actions
      *
      * @var array
@@ -107,13 +105,13 @@ class Rowset extends GridSubForm
      * @var array
      */
     protected $_rowsetActions = array();
-//
-//    /**
-//     * Whole rowset actions
-//     *
-//     * @var array
-//     */
-//    protected $_filterFields = array();
+
+    /**
+     * Whole rowset actions
+     *
+     * @var array
+     */
+    protected $_filterFields = array();
 
     /**
      * Rows values data
@@ -425,10 +423,12 @@ class Rowset extends GridSubForm
             'options'  => $options,
         );
         if ($position===null) {
-            $position = 10*(count($this->_fields)+1);
+            $position = $this->_lastPosition;
+            $this->_lastPosition += 10;;
         }
         $this->_fields[$position] = $fieldTmp;
     }
+
 
     /**
      *
@@ -601,12 +601,53 @@ class Rowset extends GridSubForm
             throw new Exception ('The options param in Hi_Record_Row->setFieldOptions() should be an array!');
         }
 
+//        \HiZend\Debug\Debug::dump($this->_fields);
         foreach ($this->_fields as $key => $field) {
             if ($field['name'] == $name) {
                 if (is_array($field['options'])) {
                     $this->_fields[$key]['options'] += $options;
                 } else {
                     $this->_fields[$key]['options'] = $options;
+                }
+            }
+        }
+//        \HiZend\Debug\Debug::dump($this->_fields);
+    }
+
+	/**
+     *
+     *
+     * @param $name string
+     * @param $options string
+     *
+     * @return
+     */
+    public function setFieldType($name, $type) {
+
+        foreach ($this->_fields as $key => $field) {
+            if ($field['name'] == $name) {
+                if (is_string($type)) {
+                    $this->_fields[$key]['type'] = $type;
+                }
+            }
+        }
+    }
+
+	/**
+     *
+     *
+     * @param $name string
+     * @param $options string
+     *
+     * @return
+     */
+    public function setAllFieldType($type) {
+
+//        \HiZend\Debug\Debug::precho($this->_fields);
+        foreach ($this->_fields as $key => $field) {
+            if ($field['type'] != 'id') {
+                if (is_string($type)) {
+                    $this->_fields[$key]['type'] = $type;
                 }
             }
         }
@@ -829,6 +870,11 @@ class Rowset extends GridSubForm
      */
     public function init()
     {
+        parent::init();
+
+
+
+
         $this ->setDecorators(
             array(
                 array('FormElements'),
@@ -869,12 +915,7 @@ class Rowset extends GridSubForm
 
         $this->_countData = count($this->_data);
 
-//        /**
-//         * filter tab
-//         */
-//        if (count ($this->_filterFields)) {
-//            $this->addSubForm($this->_buildSubFormFilter(), 'filter');
-//        }
+
 
         /**
          * rowset actions subform
@@ -887,7 +928,12 @@ class Rowset extends GridSubForm
         $this->addSubForm($this->_buildSubFormInfo(), 'info');
 
 
-
+        /**
+         * filter tab
+         */
+        if (count ($this->_filterFields)) {
+            $this->addSubForm($this->_buildSubFormFilter(), 'filter');
+        }
 
 
 
@@ -921,7 +967,7 @@ class Rowset extends GridSubForm
                 $dataRow = array();
                 if (isset($this->_data[$i]))
                     $dataRow = $this->_data[$i];
-                $dataEven = ($i%2);
+                    $dataEven = ($i%2);
 //                Zend_Debug::dump($this->_primaryKey);
 //                Zend_Debug::dump($dataRow);
 //                Zend_Debug::dump(isset($dataRow[$this->_primaryKey]));
@@ -952,6 +998,7 @@ class Rowset extends GridSubForm
                             array(
                                 'viewScript' => $this->_partialsDir . '/_subForm_row.phtml',
                                 'placement' => false,
+                                'even' => $dataEven,
                             ),
                         ),
                     )
@@ -997,14 +1044,13 @@ class Rowset extends GridSubForm
                  */
                 if ($this->_fields) {
                     foreach ($this->_fields as $position => $field) {
-////                        Zend_Debug::dump($dataRow, '$dataRow');
-//\HiZend\Debug\Debug::precho($field, 'field');
-//                        Zend_Debug::dump($field, 'field');
+
                         if ($field['name'] == $this->_rowsetSession->sortField) {
                             $field['options']['sort'] = true;
                         } else {
                                 $field['options']['sort'] = false;
                         }
+
                         $field['options']['even'] = $dataEven;
 
                         switch ($field['type']) {
@@ -1020,15 +1066,15 @@ class Rowset extends GridSubForm
                                 );
                                 break;
                             case 'text':
-//                                $gridRowItemSubForm->addElement(
-//                                    $this->_buildRowTextField(
-//                                        $field['name'],
-//                                        isset($dataRow[$field['name']])
-//                                        ? $dataRow[$field['name']]
-//                                        : null,
-//                                        $field['options']
-//                                    )
-//                                );
+                                $gridRowItemSubForm->addElement(
+                                    $this->_buildRowTextField(
+                                        $field['name'],
+                                        isset($dataRow[$field['name']])
+                                        ? $dataRow[$field['name']]
+                                        : null,
+                                        $field['options']
+                                    )
+                                );
                                 break;
                             case 'input':
                                 $gridRowItemSubForm->addElement(
@@ -1098,6 +1144,15 @@ class Rowset extends GridSubForm
 //                                    ),
 //                                    $field['name']
 //                                );
+                                break;
+                            case 'custom':
+                                $gridRowItemSubForm->addElement(
+                                    $this->_buildRowCustomField(
+                                        $field['name'],
+                                        $dataRow,
+                                        $field['options']
+                                    )
+                                );
                                 break;
                             default:
                                 $gridRowItemSubForm->addElement(
@@ -1765,44 +1820,48 @@ class Rowset extends GridSubForm
 
         return $tmpElement;
     }
+
+    /**
+     *
+     *
+     * @return Zend_Form_Element_Text
+     */
+    protected function _buildRowTextField ($name, $value, $options)
+    {
+
+        $options['viewScript'] = $this->_partialsDir . '/_field_text.phtml';
+        $options['description'] = $value;
+
+//        \HiZend\Debug\Debug::precho($options);
+
+        $tmpElement = new Element\Text(
+            $name,
+            $options
+        );
+//        $tmpElement->setRequired(true);
 //
-//    /**
-//     *
-//     *
-//     * @return Zend_Form_Element_Text
-//     */
-//    protected function _buildRowTextField ($name, $value, $options)
-//    {
-//        $tmpElement = new Zend_Form_Element_Text(
-//            $name,
-//            array(
-//                'disableLoadDefaultDecorators'  =>  true
+//        $tmpElement->addFilter(
+//            new Zend_Filter_StripTags()
+//        );
+//        $tmpElement->addFilter(
+//            new Zend_Filter_StringTrim()
+//        );
+//        $tmpElement->addFilter(
+//            new Zend_Filter_Alnum()
+//        );
+//        $tmpElement->addFilter(
+//            new Zend_Filter_StringToLower(
+//                array(
+//                    'encoding' => 'UTF-8',
+//                )
 //            )
 //        );
-////        $tmpElement->setRequired(true);
-////
-////        $tmpElement->addFilter(
-////            new Zend_Filter_StripTags()
-////        );
-////        $tmpElement->addFilter(
-////            new Zend_Filter_StringTrim()
-////        );
-////        $tmpElement->addFilter(
-////            new Zend_Filter_Alnum()
-////        );
-////        $tmpElement->addFilter(
-////            new Zend_Filter_StringToLower(
-////                array(
-////                    'encoding' => 'UTF-8',
-////                )
-////            )
-////        );
 //        $tmpElement->setDescription($value);
-//
+
 //        //
 //        $sort = null;
-//
-//        //
+
+        //
 //        if ($options) {
 //            foreach ($options as $optionName => $option) {
 //                switch ($optionName) {
@@ -1817,13 +1876,13 @@ class Rowset extends GridSubForm
 //                }
 //            }
 //        }
-//
+
 //        $tmpElement->setDecorators(
 //            array(
 //                array(
 //                    'ViewScript',
 //                    array(
-//                        'viewScript'    => $this->_partialsDir.'_field_text.phtml',
+//                        'viewScript'    => $this->_partialsDir . '/_field_text.phtml',
 //                        'placement'     => false,
 //                        'sort'          => $sort,
 //                        'even'          =>  $even,
@@ -1831,9 +1890,86 @@ class Rowset extends GridSubForm
 //                ),
 //            )
 //        );
+
+        return $tmpElement;
+    }
+
+    /**
+     *
+     *
+     * @return Zend_Form_Element_Text
+     */
+    protected function _buildRowCustomField ($name, $values, $options)
+    {
+
+
+        if (!isset($options['viewScript'])) {
+            $options['viewScript'] = $this->_partialsDir . '/_field_custom.phtml';
+        }
+        $options['row'] = $values;
+//        \HiZend\Debug\Debug::precho($options);
+
+//        \HiZend\Debug\Debug::precho($options);
+
+        $tmpElement = new Element\Custom(
+            $name,
+            $options
+        );
+//        $tmpElement->setRequired(true);
 //
-//        return $tmpElement;
-//    }
+//        $tmpElement->addFilter(
+//            new Zend_Filter_StripTags()
+//        );
+//        $tmpElement->addFilter(
+//            new Zend_Filter_StringTrim()
+//        );
+//        $tmpElement->addFilter(
+//            new Zend_Filter_Alnum()
+//        );
+//        $tmpElement->addFilter(
+//            new Zend_Filter_StringToLower(
+//                array(
+//                    'encoding' => 'UTF-8',
+//                )
+//            )
+//        );
+//        $tmpElement->setDescription($value);
+
+//        //
+//        $sort = null;
+
+        //
+//        if ($options) {
+//            foreach ($options as $optionName => $option) {
+//                switch ($optionName) {
+//                    case 'sort':
+//                        $sort = $option;
+//                        break;
+//                    case 'even':
+//                        $even = $option;
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        }
+
+//        $tmpElement->setDecorators(
+//            array(
+//                array(
+//                    'ViewScript',
+//                    array(
+//                        'viewScript'    => $this->_partialsDir . '/_field_text.phtml',
+//                        'placement'     => false,
+//                        'sort'          => $sort,
+//                        'even'          =>  $even,
+//                    ),
+//                ),
+//            )
+//        );
+
+        return $tmpElement;
+    }
 
 
 

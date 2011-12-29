@@ -12,8 +12,22 @@ class WorkoutRowsetSubForm extends GridDbTableRowset
     public function init()
     {
         //
-        $this->setName($this->_name);
         parent::init();
+
+
+        $this->addField(
+            'exercises_count',
+            'text',
+            array(
+                'label'     => 'exercises_count',
+                'sortable'  => true,
+                'sql'    => '(' . $this->_model->getWorkoutExercisesCountSql() . ')',
+            )
+        );
+
+        $this->setAllFieldType(
+            'text'
+        );
 
 
 
@@ -77,16 +91,16 @@ class WorkoutRowsetSubForm extends GridDbTableRowset
             )
         );
 
-        //
-        $this->addRowsetAction(
-            'save',
-            'submit',
-            array(
-                'label'     => 'save selected',
-                'class'     => 'actionImage',
-                'image'     => BASE_URL . '/img/grid/icons/save.png',
-            )
-        );
+//        //
+//        $this->addRowsetAction(
+//            'save',
+//            'submit',
+//            array(
+//                'label'     => 'save selected',
+//                'class'     => 'actionImage',
+//                'image'     => BASE_URL . '/img/grid/icons/save.png',
+//            )
+//        );
 
 
     }

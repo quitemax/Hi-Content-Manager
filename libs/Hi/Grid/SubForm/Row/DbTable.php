@@ -8,19 +8,20 @@
  * @license
  */
 
-/** @see Hi_Record_SubForm_Row */
-//require_once 'Hi/Record/SubForm/Row.php';
+namespace Hi\Grid\SubForm\Row;
+
+use Hi\Grid\SubForm\Row as GridRow;
 
 /**
- * Hi_Record_SubForm_Row_Db
+ * Db
  *
  * @category   Hi
- * @package    Hi_Record
+ * @package    Hi_Grid
  * @copyright  Copyright (c) 2009 Piotr Maxymilian Socha
  * @license
  * @version    2.0
  */
-class Hi_Record_SubForm_Row_Db extends Hi_Record_SubForm_Row
+class DbTable extends GridRow
 {
     /**
      *
@@ -29,36 +30,38 @@ class Hi_Record_SubForm_Row_Db extends Hi_Record_SubForm_Row
      */
     protected $_model = null;
 
-    /**
-     *
-     *
-     * @var array
-     */
-    protected $_cols = null;
+//    /**
+//     *
+//     *
+//     * @var array
+//     */
+//    protected $_cols = null;
 
 
 
     /**
-     * Creates an instance of Hi_Record_SubForm_Row_Db
+     * Set form state from options array
      *
-     * @param $options array
-     *
-     * @return
+     * @param  array $options
+     * @return Form
      */
-    public function __construct( $options = null )
+    public function setOptions(array $options)
     {
         //
         if (isset($options['model'])) {
             $this->_model = $options['model'];
             unset($options['model']);
         } else {
-            throw new Exception("You must give an instance of HiZend_Db_Table here.");
+            throw new Exception("You must give an instance of HiZend\Db\Table here.");
         }
 
-        //
-        parent::__construct($options);
+        return parent::setOptions($options);
+    }
 
-        //
+    public function init()
+    {
+        parent::init();
+
         $this->_setup();
     }
 
@@ -70,14 +73,13 @@ class Hi_Record_SubForm_Row_Db extends Hi_Record_SubForm_Row
      */
     protected function _setup()
     {
-//        $model = $this->_model;
-
         $modelInfo = $this->_model->info();
+//        \HiZend\Debug\Debug::precho($modelInfo);
 //        Zend_Debug::dump($modelInfo);
-
-//        if (!count($cols)) {
 //
-//        }
+////        if (!count($cols)) {
+////
+////        }
         foreach ($modelInfo['metadata'] as $name => $fieldMetadata) {
             if ($fieldMetadata['PRIMARY']) {
                 $this->setPrimaryKey($name);
@@ -85,7 +87,7 @@ class Hi_Record_SubForm_Row_Db extends Hi_Record_SubForm_Row
                     $name,
                     'id',
                     array(
-                        'label'     => $this->_view->translate($name),
+                        'label'     => $name,
                     )
                 );
                 continue;
@@ -98,7 +100,7 @@ class Hi_Record_SubForm_Row_Db extends Hi_Record_SubForm_Row
                                 $name,
                                 'checkbox',
                                 array(
-                                    'label'     => $this->_view->translate($name),
+                                    'label'     => $name,
                                 )
                             );
                         }
@@ -109,7 +111,7 @@ class Hi_Record_SubForm_Row_Db extends Hi_Record_SubForm_Row
                                 $name,
                                 'input',
                                 array(
-                                    'label'     => $this->_view->translate($name),
+                                    'label'     => $name,
                                     'size'    => 3,
                                 )
                             );
@@ -120,7 +122,58 @@ class Hi_Record_SubForm_Row_Db extends Hi_Record_SubForm_Row
                             $name,
                             'input',
                             array(
-                                'label'     => $this->_view->translate($name),
+                                'label'         => $name,
+                                'defaultValue'  => '0',
+                            )
+                        );
+                        break;
+                    case 'date':
+                        $this->addField(
+                            $name,
+                            'input',
+                            array(
+                                'label'     => $name,
+                                'defaultValue'  => '0000-00-00',
+                            )
+                        );
+                        break;
+                    case 'datetime':
+                        $this->addField(
+                            $name,
+                            'input',
+                            array(
+                                'label'     => $name,
+                                'defaultValue'  => '0000-00-00 00:00:00',
+                            )
+                        );
+                        break;
+                    case 'time':
+                        $this->addField(
+                            $name,
+                            'input',
+                            array(
+                                'label'     => $name,
+                                'defaultValue'  => '00:00:00',
+                            )
+                        );
+                        break;
+                    case 'decimal':
+                        $this->addField(
+                            $name,
+                            'input',
+                            array(
+                                'label'     => $name,
+                                'defaultValue'  => '0',
+                            )
+                        );
+                        break;
+                    case 'float':
+                        $this->addField(
+                            $name,
+                            'input',
+                            array(
+                                'label'     => $name,
+                                'defaultValue'  => '0',
                             )
                         );
                         break;
@@ -139,7 +192,7 @@ class Hi_Record_SubForm_Row_Db extends Hi_Record_SubForm_Row
                             $name,
                             'input',
                             array(
-                                'label'     => $this->_view->translate($name),
+                                'label'     => $name,
                             )
                         );
                         break;
@@ -148,7 +201,7 @@ class Hi_Record_SubForm_Row_Db extends Hi_Record_SubForm_Row
                             $name,
                             'text',
                             array(
-                                'label'     => $this->_view->translate($name),
+                                'label'     => $name,
                             )
                         );
                         break;
@@ -156,59 +209,60 @@ class Hi_Record_SubForm_Row_Db extends Hi_Record_SubForm_Row
                         break;
                 }
             } else {
-                switch($fieldMetadata['DATA_TYPE']) {
-                    case 'tinyint':
-//                        Zend_Debug::dump($metadata);
-                        $this->addField(
-                            $name,
-                            'multilangCheckbox',
-                            array(
-                                'label'     => $this->_view->translate($name),
-                            )
-                        );
-                        break;
-                    case 'int':
-//                        Zend_Debug::dump($metadata);
-                        $this->addField(
-                            $name,
-                            'multilangInput',
-                            array(
-                                'label'     => $this->_view->translate($name),
-                            )
-                        );
-                        break;
-                    case 'char':
-                        $this->addField(
-                            $name,
-                            'multilangInput',
-                            array(
-                                'label'     => $this->_view->translate($name),
-                            )
-                        );
-                        break;
-                    case 'varchar':
-                        $this->addField(
-                            $name,
-                            'multilangInput',
-                            array(
-                                'label'     => $this->_view->translate($name),
-                            )
-                        );
-                        break;
-                    case 'text':
-                        $this->addField(
-                            $name,
-                            'multilangTextarea',
-                            array(
-                                'label'     => $this->_view->translate($name),
-                            )
-                        );
-                        break;
-                    default:
-                        break;
-                }
+//                switch($fieldMetadata['DATA_TYPE']) {
+//                    case 'tinyint':
+////                        Zend_Debug::dump($metadata);
+//                        $this->addField(
+//                            $name,
+//                            'multilangCheckbox',
+//                            array(
+//                                'label'     => $this->_view->translate($name),
+//                            )
+//                        );
+//                        break;
+//                    case 'int':
+////                        Zend_Debug::dump($metadata);
+//                        $this->addField(
+//                            $name,
+//                            'multilangInput',
+//                            array(
+//                                'label'     => $this->_view->translate($name),
+//                            )
+//                        );
+//                        break;
+//                    case 'char':
+//                        $this->addField(
+//                            $name,
+//                            'multilangInput',
+//                            array(
+//                                'label'     => $this->_view->translate($name),
+//                            )
+//                        );
+//                        break;
+//                    case 'varchar':
+//                        $this->addField(
+//                            $name,
+//                            'multilangInput',
+//                            array(
+//                                'label'     => $this->_view->translate($name),
+//                            )
+//                        );
+//                        break;
+//                    case 'text':
+//                        $this->addField(
+//                            $name,
+//                            'multilangTextarea',
+//                            array(
+//                                'label'     => $this->_view->translate($name),
+//                            )
+//                        );
+//                        break;
+//                    default:
+//                        break;
+//                }
             }
         }
+//        \HiZend\Debug\Debug::precho($this->_fields);
     }
 
 
@@ -220,12 +274,12 @@ class Hi_Record_SubForm_Row_Db extends Hi_Record_SubForm_Row
      */
     public function build()
     {
-        //
-        if ($this->_model->hasBehaviour('i18n')) {
-//            //
-//            $this->_model->getBehaviour('i18n')->setLang($this->_listSession->lang);
-        }
-
+//        //
+//        if ($this->_model->hasBehaviour('i18n')) {
+////            //
+////            $this->_model->getBehaviour('i18n')->setLang($this->_listSession->lang);
+//        }
+//
         //
         if (isset($this->_dataPrimaryKeyValue) && !isset($this->_data)) {
             $model = $this->_model;

@@ -34,6 +34,18 @@ class Workout extends AbstractTable
         return $row;
     }
 
+    public function getWorkoutExercisesCountSql()
+    {
+        //
+        $sqlSubSelect = $this->_db->select();
+        $sqlSubSelect->from(
+            array( 'workout_exercise'),
+            'COUNT(*)'
+        );
+        $sqlSubSelect->where('workout_id = ' . $this->_prfx . '.workout_id');
+        return $sqlSubSelect;
+    }
+
     public function getWorkouts()
     {
         //

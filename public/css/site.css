@@ -152,21 +152,28 @@ label {
 }
 #nav li.level-top ul {
 /*	display:none;*/
-	left: -10px;
+	left: -10000px;
     padding-bottom: 3px;
     position: absolute;
-    top: 27px;
+    top: 23px;
     width: 189px;
-/*    border-bottom: 1px solid #fff;*/
-/*    border-left: 1px solid #fff;*/
-/*    border-right: 1px solid #fff;*/
+
+}
+
+#nav li.level-top ul.active {
+/*  display:none;*/
+    left: 0px;
+
 }
 
 #nav li.level-top ul li{
     background-color: #585858;
 /*    margin: 0px 2px 0px 10px;*/
-    padding: 2px 0px 2px 6px;
+    padding: 4px 0px 4px 6px;
 /*    border-bottom: 1px dashed #fff;*/
+}
+#nav li.level-top ul li a{
+   font-size: 11px;
 }
 
 #nav li.level-top ul li a{
@@ -239,16 +246,16 @@ label {
 /*****************************************************
  * row
  */
-/*
+
 .rowSubForm {
     background-color: #e8e8e8;
     margin:0px 0px 10px 0px;
 }
-*/
+
 /**
  * row title
  */
-/*
+
 table.rowTitle {
 }
 
@@ -258,22 +265,25 @@ table.rowTitle tr{
 }
 
 table.rowTitle tr th{
-    background-color: #a8a8a8;
-    color:#000;
-    cursor: pointer;
+        color:#000;
     font-size: 13px;
+    cursor: pointer;
+    text-align: left;;
+    font-weight: bold;
+    padding: 2px 0px 2px 40px;
 }
-*/
+
 /**
  * row's row
  */
-/*table.rowContent tr{
+table.rowContent tr{
     background-color: #d0d0d0;
 }
 table.rowContent tr th{
     background-color: #d0d0d0;
 
     border-top: 1px solid #f0f0f0;
+    padding: 4px 0px 4px 0px;
 }
 
 table.rowContent tr td{
@@ -290,7 +300,7 @@ table.rowContent tr.even th{
 table.rowContent tr.even td{
     background-color: #e0e0e0;
     border-top: 1px solid #f0f0f0;
-}*/
+}
 
 
 /**
@@ -317,7 +327,7 @@ table.rowContent tr td table.multilang tr td{
 /**
  * row's actions
  */
-/*table.rowContent tr.actions{
+table.rowContent tr.actions{
     background-color: #e4e4e4;
 }
 
@@ -344,7 +354,7 @@ table.rowContent tr.actions td .actionSubmit{
     font-weight: bold;
     border: 1px solid #f0f0f0;
     height:20px;
-}*/
+}
 
 
 
@@ -516,6 +526,7 @@ table.listTitle {
     background-color: #e0e0e0;
     border-top: 1px solid #f0f0f0;
     border-right: 1px solid #f0f0f0;
+    
 }
 
 .listContent tr.listRow td.idCheckbox{
@@ -524,10 +535,10 @@ table.listTitle {
     border-right: 1px solid #f0f0f0;
 }
 
-.listContent tr.listRow td.idCheckboxEven{
+.listContent tr.listRow.even td.idCheckbox{
     background-color: #d8d8d8;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
 }
 
 .listContent tr.listRow td.rowId{
@@ -536,46 +547,51 @@ table.listTitle {
     border-right: 1px solid #f0f0f0;
 }
 
-.listContent tr.listRow td.rowIdEven{
+.listContent tr.listRow.even td.rowId{
     background-color: #d8d8d8;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
 }
 
-.listContent tr.listRow td.rowIdSort{
+.listContent tr.listRow td.rowId.sort{
     background-color: #c8c8c8;
     border-top: 1px solid #f0f0f0;
     border-right: 1px solid #f0f0f0;
+    
 }
 
-.listContent tr.listRow td.rowIdSortEven{
+.listContent tr.listRow.even td.rowId.sort{
     background-color: #c0c0c0;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
 }
 
 .listContent tr.listRow td.text{
     background-color: #e0e0e0;
     border-top: 1px solid #f0f0f0;
     border-right: 1px solid #f0f0f0;
+    padding-left:4px;
 }
 
-.listContent tr.listRow td.textEven{
+.listContent tr.listRow.even td.text{
     background-color: #d8d8d8;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+    padding-left:4px;
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
 }
 
-.listContent tr.listRow td.textSort{
+.listContent tr.listRow td.text.sort{
+	padding-left:4px;
     background-color: #c8c8c8;
     border-top: 1px solid #f0f0f0;
     border-right: 1px solid #f0f0f0;
 }
 
-.listContent tr.listRow td.textSortEven{
+.listContent tr.listRow.even td.text.sort{
+	padding-left:4px;
     background-color: #c0c0c0;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
 }
 
 
@@ -585,9 +601,9 @@ table.listTitle {
     border-top: 1px solid #f0f0f0;
 }
 
-.listContent tr.listRow td.rowActionsEven{
+.listContent tr.listRow.even td.rowActions{
     background-color: #d8d8d8;
-    border-top: 1px solid #f0f0f0;
+/*    border-top: 1px solid #f0f0f0;*/
 }
 
 .listContent tr.listRow td .actionImage{
@@ -675,7 +691,27 @@ table.treeTitle tr th{
 }*/
 
 
+table#clockType th{
+	padding:4px 4px 4px 4px;
+	background-color: #D8D8D8;
+	border-right: 1px solid #F0F0F0;
+    border-top: 1px solid #F0F0F0;
+}
 
+table#clockType td{
+    padding:4px 4px 4px 4px;
+}
+
+
+table#liftingType th{
+	padding:4px 4px 4px 4px;
+	background-color: #D8D8D8;
+	border-right: 1px solid #F0F0F0;
+    border-top: 1px solid #F0F0F0;
+}
+table#liftingType td {
+	padding:4px 4px 4px 4px;
+}
 
 
 

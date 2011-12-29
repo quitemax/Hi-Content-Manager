@@ -81,6 +81,16 @@
     <?php
     $this->inlineScript()->appendScript(
         '
+         $(document).ready(function() {
+           $("ul#nav li.level-top").mouseenter(function(){
+                $(this).find("ul").addClass("active");
+            });
+
+            $("ul#nav li.level-top").mouseleave(function(){
+                $(this).find("ul").removeClass("active");
+            });
+         });
+
         function abta() {
 
         }

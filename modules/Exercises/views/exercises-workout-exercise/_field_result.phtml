@@ -1,0 +1,78 @@
+<td class="text <?php if ($this->sort):?>sort<?php endif;?>" >
+  <?php if (is_array($values)):?>
+      <?php echo isset($values[$this->element->getDescription()])?$values[$this->element->getDescription()]:$this->element->getDescription();?>
+  <?php else:?>
+      <?php echo $this->element->getDescription();?>
+  <?php endif;?>
+  <?php //echo $this->element->getDescription();?>
+  <?php
+//      \HiZend\Debug\Debug::dump($row);
+//      \HiZend\Debug\Debug::dump($values);
+      $type = array();
+      foreach ($values as $key => $value ) {
+        if (isset($value['type_id']) && isset($row['type_id']) && $row['type_id'] == $value['type_id']) {
+            $type = $value;
+        }
+      }
+//      \HiZend\Debug\Debug::dump($type);
+  ?>
+
+
+
+
+
+  <?php if (isset($type['form_type']) && $type['form_type'] == Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_CLOCK):?>
+    <table border="0" cellpadding="0" id="clockType">
+        <tr>
+            <th>elapsed_time</th>
+            <th>speed</th>
+            <th>angle</th>
+            <th>level</th>
+            <th>distance</th>
+        </tr>
+        <tr>
+            <td><?php echo $row['elapsed_time'];?> s</td>
+            <td><?php echo $row['speed'];?> km</td>
+            <td><?php echo $row['angle'];?> &#778;</td>
+            <td><?php echo $row['level'];?></td>
+            <td><?php echo $row['distance'];?> km</td>
+        </tr>
+    </table>
+    <?php elseif (isset($type['form_type']) && $type['form_type'] == Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_LIFTING):?>
+    <table border="0" cellpadding="0" id="liftingType">
+        <tr>
+            <th>series 1</th>
+            <th>series 2</th>
+            <th>series 3</th>
+            <th>series 4</th>
+            <th>series 5</th>
+            <th>series 6</th>
+        </tr>
+        <tr>
+            <td><?php echo $row['lifting_series_1_weight'];?> kg</td>
+            <td><?php echo $row['lifting_series_2_weight'];?> kg</td>
+            <td><?php echo $row['lifting_series_3_weight'];?> kg</td>
+            <td><?php echo $row['lifting_series_4_weight'];?> kg</td>
+            <td><?php echo $row['lifting_series_5_weight'];?> kg</td>
+            <td><?php echo $row['lifting_series_6_weight'];?> kg</td>
+        </tr>
+        <tr>
+            <td>x <?php echo $row['lifting_series_1_count'];?></td>
+            <td>x <?php echo $row['lifting_series_2_count'];?></td>
+            <td>x <?php echo $row['lifting_series_3_count'];?></td>
+            <td>x <?php echo $row['lifting_series_4_count'];?></td>
+            <td>x <?php echo $row['lifting_series_5_count'];?></td>
+            <td>x <?php echo $row['lifting_series_6_count'];?></td>
+        </tr>
+        <tr>
+            <td><?php echo $row['lifting_series_1_break'];?> s</td>
+            <td><?php echo $row['lifting_series_2_break'];?> s</td>
+            <td><?php echo $row['lifting_series_3_break'];?> s</td>
+            <td><?php echo $row['lifting_series_4_break'];?> s</td>
+            <td><?php echo $row['lifting_series_5_break'];?> s</td>
+            <td><?php echo $row['lifting_series_6_break'];?> s</td>
+        </tr>
+
+    </table>
+    <?php endif;  ?>
+</td>

@@ -1,32 +1,16 @@
 <div id="breadcrumb">
-    &raquo;<a href="<?php echo $this->url('home');?>">Core/index/index</a>
-    &raquo;<a class="" href="<?php echo $this->url('exercises-home');?>">Exercises/index/index</a>
-    &raquo;<a class="" href="<?php echo $this->url('exercises-checkup-home');?>">Exercises/workout/index</a>
-    &raquo;Exercises/workout/edit
-</div>
-<div id="menu">
-    <div class="modules">
-        <a class="selected" href="<?php echo $this->url('exercises-home');?>" >Exercises</a>
-    </div>
-    <div class="module-elements">
-        <a  href="<?php echo $this->url('exercises-checkup-home');?>" >Checkups</a>
-        <a class="selected" href="<?php echo $this->url('exercises-workout-home');?>" >Workouts</a>
-        <a href="<?php //echo $this->url('exercises-workout-type');?>" >Workout Types</a>
-        <a href="<?php //echo $this->url('exercises-workout-group');?>" >Workout Groups</a>
-    </div>
+    &raquo; <a href="<?php echo $this->url('home');?>">Core</a>
+    &raquo; <a class="" href="<?php echo $this->url('exercises-home');?>">Exercises</a>
+    &raquo; <a class="" href="<?php echo $this->url('exercises-checkup-home');?>">Workout</a>
+    &raquo; <a class="" href="<?php echo $this->url('exercises-checkup-home');?>">edit</a>
 </div>
 <div id="content">
-<?php
-    $title = 'Edit workout';
-    $this->headTitle($title);
-?>
-<h1><?php echo $this->escape($title); ?></h1>
-<?php
-    $form->setAction(
-        $this->url(
-        	'exercises-workout-edit'
-        ) . '?workout_id=' . (int)$workout->workout_id
-    )->setView($this);
-
-    echo $form;?>
+	<div class="page-title">
+        <?php
+            $title = 'Edit workout (ID: ' . $id . ')';
+            $this->headTitle($title);
+        ?>
+        <h1><?php echo $this->escape($title); ?></h1>
+    </div>
+<?php echo $form;?>
 </div>

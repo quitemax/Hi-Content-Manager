@@ -29,6 +29,9 @@ class WorkoutExercise extends AbstractTable
         ),
     );
 
+    protected $_rowClass = 'Exercises\Model\WorkoutExerciseRow';
+    protected $_rowsetClass = 'Exercises\Model\WorkoutExerciseRowset';
+
     public function getWorkoutExercise($id)
     {
         $id = (int) $id;

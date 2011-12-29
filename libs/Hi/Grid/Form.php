@@ -32,8 +32,14 @@ class Form extends ZendForm
     /**#@+
      * Form default partial decorator directory
      */
-    const HEADER_DEFAULT_PARTIALS_DIR = '_grid/_form';
+    const DEFAULT_PARTIALS_DIR = '_grid/_form';
 	/**#@-*/
+
+    /**#@+
+     * Form id template
+     */
+    const DEFAULT_ID = 'formDefaultId';
+    /**#@-*/
 
     /**
      * Title
@@ -41,6 +47,13 @@ class Form extends ZendForm
      * @var string
      */
     protected $_title = '';
+
+    /**
+     * Title
+     *
+     * @var string
+     */
+    protected $_name = '';
 
     /**
      * Langs in use
@@ -69,7 +82,7 @@ class Form extends ZendForm
      *
      * @var string
      */
-    protected $_partialsDir = self::HEADER_DEFAULT_PARTIALS_DIR;
+    protected $_partialsDir = self::DEFAULT_PARTIALS_DIR;
 
 
 	/**
@@ -80,6 +93,14 @@ class Form extends ZendForm
      */
     public function setOptions(array $options)
     {
+        //
+        if (!isset($this->_name) || trim($this->_name) == '') {
+            $this->_name = self::DEFAULT_ID . md5(microtime());
+
+        }
+
+        $this->setName($this->_name);
+
         //
         if (isset($options['view'])) {
             $this->setView($options['view']);

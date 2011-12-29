@@ -3,19 +3,29 @@
 namespace Exercises\Controller;
 
 use Zend\Mvc\Controller\ActionController,
-    Exercises\Model\WorkoutExercise,
-    Exercises\Form\WorkoutExerciseForm;
+    Exercises\Model\DbTable\Workout,
+    Exercises\Model\DbTable\WorkoutExercise,
+    Exercises\Model\DbTable\WorkoutExerciseType,
+    Exercises\Form\WorkoutExerciseGridForm,
+    Exercises\Form\WorkoutExerciseGridForm\WorkoutExerciseRowsetSubForm,
+    Exercises\Form\WorkoutExerciseGridForm\WorkoutExerciseRowSubForm;
 
 class WorkoutExerciseController extends ActionController
 {
     protected $_workout;
     protected $_exercise;
     protected $_exerciseType;
+    protected $_view;
 
     public function setWorkout($workout)
     {
         $this->_workout = $workout;
         return $this;
+    }
+
+    public function setView($view)
+    {
+        $this->_view = $view;
     }
 
     public function setExercise($exercise)
@@ -32,7 +42,6 @@ class WorkoutExerciseController extends ActionController
 
     public function indexAction()
     {
-        $returnArray = array();
 
         $request = $this->getRequest();
 
@@ -43,11 +52,84 @@ class WorkoutExerciseController extends ActionController
             return $this->redirect()->toRoute('exercises-workout-home');
         }
 
+        /**
+         * Grid FORM
+         */
+        $form = new WorkoutExerciseGridForm(
+            array(
+                'view' => $this->_view,
+            )
+        );
+
+        /**
+         * BUILDING LIST
+         */
+        $list = new WorkoutExerciseRowsetSubForm(
+            array(
+                'model' => $this->_exercise,
+                'view' => $this->_view,
+            )
+        );
+//
+//        \HiZend\Debug\Debug::precho($this->_exerciseType->getAllForSelect());
+        $list->setFieldOptions('type_id', array(
+            'values' => $this->_exerciseType->getAllForSelect(),
+        ));
+
+//        $list->setFieldOptions('result', array(
+//            'values' => $this->_exerciseType->getRowset()->toArray(),
+//            'viewScript' => 'exercises-workout-exercise/_field_result.phtml',
+//        ));
+
+        $list->addField(
+            'results',
+            'custom',
+            array(
+                'label' => 'results',
+                'sortable' => false,
+                'values' => $this->_exerciseType->getRowset()->toArray(),
+                'viewScript' => 'exercises-workout-exercise/_field_result.phtml',
+            )
+        );
+
+        $list->setDbWhere('we.workout_id = ' . (int)$id);
+
+        //
+        $list->processRequest($this->getRequest());
+
+        //
+        $list->build();
+
+        //
+        $form->addSubForm($list, $list->getName());
+
+        //
+        $this->_view->headScript()->appendScript(
+            $this->_view->render(
+                'exercises-workout-exercise/index.js',
+                array(
+//                    'delete' => $this->url()->fromRoute('exercises-workout-delete/wildcard', array('workout_id' => '')),
+//                    'edit' => $this->url()->fromRoute('exercises-workout-edit/wildcard', array('workout_id' => '')),
+//                    'add' => $this->url()->fromRoute('exercises-workout-add'),
+//                    'exercises' => $this->url()->fromRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => '')),
+//                    'addExercise' => $this->url()->fromRoute('exercises-workout-exercise-add/wildcard', array('workout_id' => '')),
+                )
+            )
+        );
+//
+//        return array(
+//            'form' => $form,
+//        );
+//        $returnArray = array();
+
+
+
 
 
         return array(
+            'form' => $form,
             'workout'   => $this->_workout->getWorkout($id),
-            'exercises' => $this->_exercise->getWorkoutExercises($id),
+//            'exercises' => $this->_exercise->getWorkoutExercises($id),
         );
 
     }
