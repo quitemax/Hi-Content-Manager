@@ -6,9 +6,9 @@ use Zend\Mvc\Controller\ActionController,
     Exercises\Model\DbTable\Workout,
     Exercises\Model\DbTable\WorkoutExercise,
     Exercises\Model\DbTable\WorkoutExerciseType,
-    Exercises\Form\WorkoutExerciseGridForm,
-    Exercises\Form\WorkoutExerciseGridForm\WorkoutExerciseRowsetSubForm,
-    Exercises\Form\WorkoutExerciseGridForm\WorkoutExerciseRowSubForm;
+    Exercises\Form\WorkoutExerciseGrid,
+    Exercises\Form\WorkoutExerciseGrid\ExerciseRowset,
+    Exercises\Form\WorkoutExerciseGrid\ExerciseRow;
 
 class WorkoutExerciseController extends ActionController
 {
@@ -40,6 +40,11 @@ class WorkoutExerciseController extends ActionController
         return $this;
     }
 
+    /**
+     *  INDEX
+     *
+     * Enter description here ...
+     */
     public function indexAction()
     {
 
@@ -55,7 +60,7 @@ class WorkoutExerciseController extends ActionController
         /**
          * Grid FORM
          */
-        $form = new WorkoutExerciseGridForm(
+        $form = new WorkoutExerciseGrid(
             array(
                 'view' => $this->_view,
             )
@@ -64,7 +69,7 @@ class WorkoutExerciseController extends ActionController
         /**
          * BUILDING LIST
          */
-        $list = new WorkoutExerciseRowsetSubForm(
+        $list = new ExerciseRowset(
             array(
                 'model' => $this->_exercise,
                 'view' => $this->_view,
@@ -108,37 +113,32 @@ class WorkoutExerciseController extends ActionController
             $this->_view->render(
                 'exercises-workout-exercise/index.js',
                 array(
-//                    'delete' => $this->url()->fromRoute('exercises-workout-delete/wildcard', array('workout_id' => '')),
-//                    'edit' => $this->url()->fromRoute('exercises-workout-edit/wildcard', array('workout_id' => '')),
-//                    'add' => $this->url()->fromRoute('exercises-workout-add'),
-//                    'exercises' => $this->url()->fromRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => '')),
-//                    'addExercise' => $this->url()->fromRoute('exercises-workout-exercise-add/wildcard', array('workout_id' => '')),
+                    'back' => $this->url()->fromRoute('exercises-workout-home'),
+                    'delete' => $this->url()->fromRoute('exercises-workout-exercise-delete/wildcard', array('exercise_id' => '')),
+                    'edit' => $this->url()->fromRoute('exercises-workout-exercise-edit/wildcard', array('exercise_id' => '')),
+                    'add' => $this->url()->fromRoute('exercises-workout-exercise-add/wildcard', array('workout_id' => $id)),
                 )
             )
         );
-//
-//        return array(
-//            'form' => $form,
-//        );
-//        $returnArray = array();
-
-
-
-
 
         return array(
             'form' => $form,
             'workout'   => $this->_workout->getWorkout($id),
-//            'exercises' => $this->_exercise->getWorkoutExercises($id),
         );
 
     }
 
+    /**
+     *  ADD
+     *
+     * Enter description here ...
+     */
     public function addAction()
     {
         $request = $this->getRequest();
 
-        $id = $request->query()->get('workout_id', 0);
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('workout_id', 0);
 
         if ($id <= 0) {
             return $this->redirect()->toRoute('exercises-workout-home');
@@ -150,31 +150,73 @@ class WorkoutExerciseController extends ActionController
             return $this->redirect()->toRoute('exercises-workout-home');
         }
 
-        $form = new WorkoutExerciseForm();
+        /**
+         * Grid FORM
+         */
+        $form = new WorkoutExerciseGrid(
+            array(
+                'view' => $this->_view,
+            )
+        );
 
-        $form->submit->setLabel('Add');
-        $form->workout_id->setValue($id);
-        $form->type_id->setMultiOptions($this->_exerciseType->getAllForSelect());
+        /**
+         * BUILDING Row
+         */
+        $row = new ExerciseRow(
+            array(
+                'model' => $this->_exercise,
+                'view' => $this->_view,
+            )
+        );
 
-        $request = $this->getRequest();
+        $row->setFieldOptions('type_id', array(
+            'values' => $this->_exerciseType->getAllForSelect(),
+            'onchange' => 'exerciseType(this);',
+        ));
+        $row->setFieldOptions('workout_id', array(
+            'value' => $id,
+        ));
+        //
+        $row->build();
 
-        if ($request->isPost()) {
-            $formData = $request->post()->toArray();
+        //
+        $form->addSubForm($row, $row->getName());
+
+        //
+        $this->_view->headScript()->appendScript(
+            $this->_view->render(
+                'exercises-workout-exercise/add.js',
+                array(
+                    'back' => $this->url()->fromRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id)),
+                    'formTypesData' => $this->_exerciseType->getRowset()->toArray(),
+                )
+            )
+        );
+
+
+        /**
+         * POST
+         */
+        if ($this->getRequest()->isPost()) {
+
+            $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
-                $values = $form->getValues();
 
-                unset($values['exercise_id']);
+                if (    isset($formData['header']['formId'])
+                        && $formData['header']['formId'] == 'WorkoutExerciseGridForm') {
 
-                $this->_exercise->addWorkoutExercise($values);
+                    if (isset($formData['WorkoutExerciseRow']['actions']['save'])) {
 
-//              // Redirect to list
-                return $this->redirect()->toUrl(
-                    $this->url()->fromRoute(
-                        'exercises-workout-exercise-home'
-                    ) . '?workout_id=' . $workout->workout_id
-                );
+                        if (is_array($formData['WorkoutExerciseRow']['row'])){
+                            $newRow = $this->_exercise->createRow($formData['WorkoutExerciseRow']['row']);
+                            $newRow->save();
+//
+                            return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id));
+                        }
 
+                    }
+                }
             }
         }
         return array(
@@ -184,12 +226,19 @@ class WorkoutExerciseController extends ActionController
 
     }
 
+    /**
+     *  EDIT
+     *
+     * Enter description here ...
+     */
     public function editAction()
     {
 
         $request = $this->getRequest();
 
-        $id = $request->query()->get('exercise_id', 0);
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('exercise_id', 0);
+
         if ($id <= 0) {
             return $this->redirect()->toRoute('exercises-workout-home');
         }
@@ -200,57 +249,108 @@ class WorkoutExerciseController extends ActionController
             return $this->redirect()->toRoute('exercises-workout-home');
         }
 
-        $form = new WorkoutExerciseForm();
+        $workoutId = $exercise->workout_id;
 
-        $form->submit->setLabel('Edit');
-        $form->type_id->setMultiOptions($this->_exerciseType->getAllForSelect());
+        $workout = $this->_workout->getWorkout($workoutId);
+
+        if (!$workout) {
+            return $this->redirect()->toRoute('exercises-workout-home');
+        }
+
+        /**
+         * Grid FORM
+         */
+        $form = new WorkoutExerciseGrid(
+            array(
+                'view' => $this->_view,
+            )
+        );
+
+        /**
+         * BUILDING Row
+         */
+        $row = new ExerciseRow(
+            array(
+                'model' => $this->_exercise,
+                'view' => $this->_view,
+            )
+        );
+
+        //
+        $row->setRowId($id);
+
+        $row->setFieldOptions('type_id', array(
+            'values' => $this->_exerciseType->getAllForSelect(),
+            'onchange' => 'exerciseType(this);',
+        ));
+        $row->setFieldOptions('workout_id', array(
+            'value' => $id,
+        ));
+
+        //
+        $row->build();
+
+        //
+        $form->addSubForm($row, $row->getName());
+
+        //
+        $this->_view->headScript()->appendScript(
+            $this->_view->render(
+                'exercises-workout-exercise/edit.js',
+                array(
+                    'back' => $this->url()->fromRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $workoutId)),
+                    'formTypesData' => $this->_exerciseType->getRowset()->toArray(),
+                )
+            )
+        );
 
 
+        /**
+         * POST
+         */
+        if ($this->getRequest()->isPost()) {
 
-        $workout = 0;
-
-
-
-        if ($request->isPost()) {
-            $formData = $request->post()->toArray();
+            $formData = $this->getRequest()->post()->toArray();
 
             if ($form->isValid($formData)) {
 
-                $id = $form->getValue('exercise_id');
+                if (    isset($formData['header']['formId'])
+                        && $formData['header']['formId'] == 'WorkoutExerciseGridForm') {
 
-                $values = $form->getValues();
+                    if (isset($formData['WorkoutExerciseRow']['actions']['save'])) {
 
-                unset($values['exercise_id']);
+                        if (is_array($formData['WorkoutExerciseRow']['row'])){
+                            \HiZend\Debug\Debug::precho($formData['WorkoutExerciseRow']['row']);
 
-                    $this->_exercise->updateWorkoutExercise($id, $values);
-                    $exercise = $this->_exercise->getWorkoutExercise($id);
+                            $exercise->setFromArray($formData['WorkoutExerciseRow']['row']);
+                            $exercise->save();
 
-//              // Redirect to list
-                return $this->redirect()->toUrl(
-                    $this->url()->fromRoute(
-                        'exercises-workout-exercise-home'
-                    ) . '?workout_id=' . $exercise->workout_id
-                );
+                            return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $workoutId));
+                        }
+
+                    }
+                }
             }
-        } else {
-
-                $form->populate($exercise->toArray());
-
         }
-        //return array('form' => $form);
-        return array(
-            'form' => $form,
-//            'workout' => $workout,
-            'exercise' => $exercise,
-        );
 
+        return array(
+            'form'        => $form,
+            'workout'     => $workout,
+        );
     }
 
+    /**
+     *  DELETE
+     *
+     * Enter description here ...
+     */
     public function deleteAction()
     {
         $request = $this->getRequest();
 
-        $id = $request->query()->get('exercise_id', 0);
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('exercise_id', 0);
+
         if ($id <= 0) {
             return $this->redirect()->toRoute('exercises-workout-home');
         }
@@ -261,23 +361,12 @@ class WorkoutExerciseController extends ActionController
             return $this->redirect()->toRoute('exercises-workout-home');
         }
 
+        $workoutId = $exercise->workout_id;
 
-        if ($request->isPost()) {
-            $del = $request->post()->get('del', 'No');
-            if ($del == 'Yes') {
-                $id = (int) $request->post()->get('exercise_id');
-                $this->_exercise->deleteWorkoutExercise($id);
-            }
-            // Redirect to list of albums
-            return $this->redirect()->toUrl(
-                    $this->url()->fromRoute(
-                        'exercises-workout-exercise-home'
-                    ) . '?workout_id=' . $exercise->workout_id
-            );
-        }
+        $exercise->delete();
 
-        $id = $request->query()->get('exercise_id', 0);
-        return array('exercise' => $this->_exercise->getWorkoutExercise($id));
+
+        return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $workoutId));
 
     }
 

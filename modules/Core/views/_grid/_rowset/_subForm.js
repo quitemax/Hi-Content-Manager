@@ -7,10 +7,10 @@ function perPage(subFormId) {
 
 function checkAll(subFormId) {
 	var checked = $('#' + subFormId + '-header-all').attr('checked');
-	if (checked === true) {
+	if (checked === 'checked') {
 		$('#' + subFormId + ' td.idCheckbox :checkbox').attr('checked', true);
 		$('#' + subFormId + ' td.idCheckboxEven :checkbox').attr('checked', true);
-	} else if (checked === false) {
+	} else {
 		$('#' + subFormId + ' td.idCheckbox :checkbox').attr('checked', false);
 		$('#' + subFormId + ' td.idCheckboxEven :checkbox').attr('checked', false);
 	}

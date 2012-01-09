@@ -1,6 +1,6 @@
 <?php
 
-namespace Exercises\Form\WorkoutGridForm;
+namespace Exercises\Form\WorkoutGrid;
 
 //use Zend\Db\Table\AbstractTable;
 //    Zend\Di\Locator,
@@ -16,7 +16,7 @@ namespace Exercises\Form\WorkoutGridForm;
 
 use Hi\Grid\SubForm\Row\DbTable as GridDbTableRow;
 
-class WorkoutRowSubForm extends GridDbTableRow
+class WorkoutRow extends GridDbTableRow
 {
     protected $_title = 'WorkoutRow';
     protected $_name = 'WorkoutRow';
@@ -50,6 +50,8 @@ class WorkoutRowSubForm extends GridDbTableRow
 //                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
             )
         );
+
+
 
     }
 }

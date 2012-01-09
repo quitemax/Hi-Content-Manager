@@ -7,9 +7,9 @@ use Hi\Grid\SubForm\Rowset\Db;
 use Zend\Mvc\Controller\ActionController,
     Exercises\Model\DbTable\Workout,
 //    Exercises\Form\WorkoutForm,
-    Exercises\Form\WorkoutGridForm,
-    Exercises\Form\WorkoutGridForm\WorkoutRowsetSubForm,
-    Exercises\Form\WorkoutGridForm\WorkoutRowSubForm;
+    Exercises\Form\WorkoutGrid,
+    Exercises\Form\WorkoutGrid\WorkoutRowset,
+    Exercises\Form\WorkoutGrid\WorkoutRow;
 
 class WorkoutController extends ActionController
 {
@@ -37,7 +37,7 @@ class WorkoutController extends ActionController
         /**
          * Grid FORM
          */
-        $form = new WorkoutGridForm(
+        $form = new WorkoutGrid(
             array(
                 'view' => $this->_view,
             )
@@ -46,7 +46,7 @@ class WorkoutController extends ActionController
         /**
          * BUILDING LIST
          */
-        $list = new WorkoutRowsetSubForm(
+        $list = new WorkoutRowset(
             array(
                 'model' => $this->_workout,
                 'view' => $this->_view,
@@ -92,7 +92,7 @@ class WorkoutController extends ActionController
         /**
          * Grid FORM
          */
-        $form = new WorkoutGridForm(
+        $form = new WorkoutGrid(
             array(
                 'view' => $this->_view,
             )
@@ -101,10 +101,20 @@ class WorkoutController extends ActionController
         /**
          * BUILDING Row
          */
-        $row = new WorkoutRowSubForm(
+        $row = new WorkoutRow(
             array(
                 'model' => $this->_workout,
                 'view' => $this->_view,
+            )
+        );
+
+        $row->addAction(
+            'saveAdd',
+            'submit',
+            array(
+                'label'     => 'save and add exercise',
+                'class'     => 'actionImage',
+//                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
             )
         );
 //
@@ -136,12 +146,15 @@ class WorkoutController extends ActionController
                         && $formData['header']['formId'] == 'WorkoutGridForm') {
 
 
-                    if (isset($formData['WorkoutRow']['actions']['save'])) {
+                    if (isset($formData['WorkoutRow']['actions']['save']) || isset($formData['WorkoutRow']['actions']['saveAdd'])) {
 
                         if (is_array($formData['WorkoutRow']['row'])){
                             $newRow = $this->_workout->createRow($formData['WorkoutRow']['row']);
                             $newRow->save();
 
+                            if(isset($formData['WorkoutRow']['actions']['saveAdd'])) {
+                                return $this->redirect()->toRoute('exercises-workout-exercise-add/wildcard', array('workout_id' => $newRow->workout_id));
+                            }
                             return $this->redirect()->toRoute('exercises-workout-home');
                         }
 
@@ -175,7 +188,7 @@ class WorkoutController extends ActionController
         /**
          * Grid FORM
          */
-        $form = new WorkoutGridForm(
+        $form = new WorkoutGrid(
             array(
                 'view' => $this->_view,
             )
@@ -184,7 +197,7 @@ class WorkoutController extends ActionController
         /**
          * BUILDING Row
          */
-        $row = new WorkoutRowSubForm(
+        $row = new WorkoutRow(
             array(
                 'model' => $this->_workout,
                 'view' => $this->_view,
@@ -248,6 +261,11 @@ class WorkoutController extends ActionController
 
     }
 
+    /**
+     *  DELETE
+     *
+     * Enter description here ...
+     */
     public function deleteAction()
     {
 //        $request = $this->getRequest();

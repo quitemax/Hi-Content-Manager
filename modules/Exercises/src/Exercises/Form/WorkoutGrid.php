@@ -18,21 +18,21 @@ use Hi\Grid\Form;
 //use Zend\Form\Form,
 //    Zend\Form\Element;
 
-class WorkoutExerciseGridForm extends Form
+class WorkoutGrid extends Form
 {
     /**
      * Title
      *
      * @var string
      */
-    protected $_title = 'WorkoutExerciseGrid';
+    protected $_title = 'WorkoutGrid';
 
     /**
      * Title
      *
      * @var string
      */
-    protected $_name = 'WorkoutExerciseGridForm';
+    protected $_name = 'WorkoutGridForm';
 
     public function init()
     {

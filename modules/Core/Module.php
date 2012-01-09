@@ -56,6 +56,8 @@ class Module implements AutoloaderProvider
             'text/html; charset=UTF-8'
         );
 
+        $view->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js', 'text/javascript');
+
         $this->view = $view;
 
         //

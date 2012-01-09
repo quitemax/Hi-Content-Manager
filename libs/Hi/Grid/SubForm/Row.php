@@ -165,6 +165,77 @@ class Row extends GridSubForm
 
 //        $this->_setup();
     }
+
+/**
+     *
+     *
+     * @param $name string
+     * @param $options string
+     *
+     * @return
+     */
+    public function setFieldType($name, $type) {
+
+        foreach ($this->_fields as $key => $field) {
+            if ($field['name'] == $name) {
+                if (is_string($type)) {
+                    $this->_fields[$key]['type'] = $type;
+                }
+            }
+        }
+    }
+
+/**
+     *
+     *
+     * @param $name string
+     * @param $position int
+     *
+     * @return void
+     */
+    public function setFieldPosition($name, $position) {
+        //
+        $position = (int) $position;
+
+        //
+        while (isset($this->_fields[$position])) {
+            $position += 1;
+        }
+
+        //
+        foreach ($this->_fields as $key => $field) {
+            if ($field['name'] == $name) {
+                unset($this->_fields[$key]);
+                $this->_fields[$position] = $field;
+            }
+        }
+    }
+
+/**
+     *
+     *
+     * @param $name string
+     * @param $options array
+     *
+     * @return
+     */
+    public function setFieldOptions($name, $options) {
+        if (!is_array($options)) {
+            throw new Exception ('The options param in Hi_Record_Row->setFieldOptions() should be an array!');
+        }
+
+//        \HiZend\Debug\Debug::dump($this->_fields);
+        foreach ($this->_fields as $key => $field) {
+            if ($field['name'] == $name) {
+                if (is_array($field['options'])) {
+                    $this->_fields[$key]['options'] += $options;
+                } else {
+                    $this->_fields[$key]['options'] = $options;
+                }
+            }
+        }
+//        \HiZend\Debug\Debug::dump($this->_fields);
+    }
 //
 //    /**
 //     * Creates an instance of Hi_Record_SubForm_Row
@@ -413,13 +484,14 @@ class Row extends GridSubForm
 //            \HiZend\Debug\Debug::dump($this->_data[$field['name']]);
             //
             $value = null;
-            if (isset($this->_data[$field['name']])) {
+            if (isset($this->_data[$field['name']]) && $this->_data[$field['name']] !== null) {
                 $value = $this->_data[$field['name']];
             } else if (isset($field['options']['value'])){
                 $value = $field['options']['value'];
             } else if (isset($field['options']['defaultValue'])){
                 $value = $field['options']['defaultValue'];
             }
+//            \HiZend\Debug\Debug::dump($field['name']);
 //            \HiZend\Debug\Debug::dump($value);
         	//
             switch ($field['type']) {
@@ -462,13 +534,13 @@ class Row extends GridSubForm
 //                    );
                     break;
                 case 'hidden':
-//                    $rowSubform->addElement(
-//                        $this->_buildFieldHidden(
-//                            $field['name'],
-//                            $value,
-//                            $field['options']
-//                        )
-//                    );
+                    $rowSubform->addElement(
+                        $this->_buildFieldHidden(
+                            $field['name'],
+                            $value,
+                            $field['options']
+                        )
+                    );
                     break;
                 case 'checkbox':
 //                    $rowSubform->addElement(
@@ -498,13 +570,13 @@ class Row extends GridSubForm
 //                    );
                     break;
                 case 'select':
-//                    $rowSubform->addElement(
-//                        $this->_buildFieldSelect(
-//                            $field['name'],
-//                            $value,
-//                            $field['options']
-//                        )
-//                    );
+                    $rowSubform->addElement(
+                        $this->_buildFieldSelect(
+                            $field['name'],
+                            $value,
+                            $field['options']
+                        )
+                    );
                     break;
                 case 'multilangText':
 //                    $rowSubform->addElement(
@@ -814,20 +886,23 @@ class Row extends GridSubForm
 //        return $tmpElement;
 //    }
 //
-//
-//    /**
-//     *
-//     *
-//     */
-//    protected function _buildFieldHidden ($name, $value, $options)
-//    {
-//        $tmpElement = new Zend_Form_Element_Hidden(
-//            $name,
-//            array(
-//                'disableLoadDefaultDecorators'  =>  true
-//            )
-//        );
-//
+
+    /**
+     *
+     *
+     */
+    protected function _buildFieldHidden ($name, $value, $options)
+    {
+        $options['viewScript'] = $this->_partialsDir . '/_field_hidden.phtml';
+        $options['value'] = $value;
+
+        $tmpElement = new Element\Hidden(
+            $name,
+            $options
+        );
+
+//        \HiZend\Debug\Debug::precho($name);
+
 //        $even = 0;
 //
 //        if ($options) {
@@ -865,25 +940,31 @@ class Row extends GridSubForm
 //                ),
 //            )
 //        );
-//
-//
-//
-//        return $tmpElement;
-//    }
-//
-//    /**
-//     *
-//     *
-//     */
-//    protected function _buildFieldSelect ($name, $value, $options)
-//    {
-//        $tmpElement = new Zend_Form_Element_Select(
-//            $name,
-//            array(
-//                'disableLoadDefaultDecorators'  =>  true
-//            )
-//        );
-//
+
+
+
+        return $tmpElement;
+    }
+
+    /**
+     *
+     *
+     */
+    protected function _buildFieldSelect ($name, $value, $options)
+    {
+
+        $options['viewScript'] = $this->_partialsDir . '/_field_select.phtml';
+        $options['value'] = $value;
+
+//        \HiZend\Debug\Debug::precho($options);
+
+        $tmpElement = new Element\Select(
+            $name,
+            $options
+        );
+//\HiZend\Debug\Debug::precho($tmpElement);
+
+
 //        $even = 0;
 //
 //        if ($options) {
@@ -926,25 +1007,12 @@ class Row extends GridSubForm
 //                }
 //            }
 //        }
-//
-//        $tmpElement->setValue($value);
-//
-//        $tmpElement->setDecorators(
-//            array(
-//                array('ViewHelper'),
-//                array(
-//                    'ViewScript',
-//                    array(
-//                        'viewScript'    => $this->_partialsDir.'_field_select.phtml',
-//                        'placement'     => false,
-//                        'even'          => $even,
-//                    ),
-//                ),
-//            )
-//        );
-//
-//        return $tmpElement;
-//    }
+
+        $tmpElement->setValue($value);
+
+
+        return $tmpElement;
+    }
 //
 //
 //

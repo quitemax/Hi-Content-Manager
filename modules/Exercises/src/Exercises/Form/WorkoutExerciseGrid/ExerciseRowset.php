@@ -1,9 +1,9 @@
 <?php
-namespace Exercises\Form\WorkoutExerciseGridForm;
+namespace Exercises\Form\WorkoutExerciseGrid;
 
 use Hi\Grid\SubForm\Rowset\DbTable as GridDbTableRowset;
 
-class WorkoutExerciseRowsetSubForm extends GridDbTableRowset
+class ExerciseRowset extends GridDbTableRowset
 {
 
     protected $_title = 'WorkoutExerciseRowset';
@@ -38,6 +38,12 @@ class WorkoutExerciseRowsetSubForm extends GridDbTableRowset
             'lifting_series_4_weight',
             'lifting_series_5_weight',
             'lifting_series_6_weight',
+            'hiit_speed_low',
+            'hiit_speed_high',
+            'hiit_time_low',
+            'hiit_time_high',
+            'hiit_warmup_time',
+            'hiit_interval_count',
             'distance',
         ));
 
@@ -84,7 +90,7 @@ class WorkoutExerciseRowsetSubForm extends GridDbTableRowset
                 'label'     => 'back',
                 'class'     => 'actionImage',
                 'image'     => BASE_URL . '/img/grid/icons/save.png',
-                'onclick'   => 'addRow();return false;',
+                'onclick'   => 'goBack();return false;',
             )
         );
 

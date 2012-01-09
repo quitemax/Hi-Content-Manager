@@ -1,9 +1,9 @@
 <?php
-namespace Exercises\Form\WorkoutGridForm;
+namespace Exercises\Form\WorkoutGrid;
 
 use Hi\Grid\SubForm\Rowset\DbTable as GridDbTableRowset;
 
-class WorkoutRowsetSubForm extends GridDbTableRowset
+class WorkoutRowset extends GridDbTableRowset
 {
 
     protected $_title = 'WorkoutRowset';

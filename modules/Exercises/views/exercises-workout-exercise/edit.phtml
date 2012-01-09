@@ -1,33 +1,17 @@
+<?php
+    $title = 'Edit workout ' . $workout->date . ' ' . date('l', strtotime($workout->date)) . ' ( id: ' . $workout->workout_id . ' ) ' . ' exercise';
+    $this->headTitle($title);
+?>
 <div id="breadcrumb">
-    &raquo;<a href="<?php echo $this->url('home');?>">Core/index/index</a>
-    &raquo;<a class="" href="<?php echo $this->url('exercises-home');?>">Exercises/index/index</a>
-    &raquo;<a class="" href="<?php echo $this->url('exercises-workout-home');?>">Exercises/workout/index</a>
-    &raquo;<a class="" href="<?php echo $this->url('exercises-workout-exercise-home') . '?workout_id=' . $workout->workout_id;?>">Exercises/workout/exercise/index</a>
-    &raquo;>Exercises/workout/exercise/edit
-</div>
-<div id="menu">
-    <div class="modules">
-        <a class="selected" href="<?php echo $this->url('exercises-home');?>" >Exercises</a>
-    </div>
-    <div class="module-elements">
-        <a class="selected" href="<?php echo $this->url('exercises-checkup-home');?>" >Checkups</a>
-        <a href="<?php echo $this->url('exercises-workout-home');?>" >Workouts</a>
-        <a href="<?php //echo $this->url('exercises-workout-type');?>" >Workout Types</a>
-        <a href="<?php //echo $this->url('exercises-workout-group');?>" >Workout Groups</a>
-    </div>
+    &raquo; <a href="<?php echo $this->url('home');?>">Core</a>
+    &raquo; <a class="" href="<?php echo $this->url('exercises-home');?>">Exercises</a>
+    &raquo; <a class="" href="<?php echo $this->url('exercises-workout-home');?>">Workouts</a>
+    &raquo; <a class="selected" href="<?php echo $this->url('exercises-workout-exercise-home/wildcard', array('workou_id' => $workout->workout_id));?>"><?php echo $this->escape($title); ?></a>
+
 </div>
 <div id="content">
-    <?php
-        $title = 'Edit workout exercise';
-        $this->headTitle($title);
-    ?>
-    <h1><?php echo $this->escape($title); ?></h1>
-    <?php
-        $form->setAction(
-            $this->url(
-            	'exercises-workout-exercise-edit'
-            ) . '?exercise_id=' . $exercise->exercise_id
-        )->setView($this);
-
-        echo $form;?>
+    <div class="page-title">
+        <h1><?php echo $this->escape($title); ?></h1>
+    </div>
+    <?php echo $form;?>
 </div>

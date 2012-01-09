@@ -15,10 +15,6 @@ function addRow() {
     window.location = "<?php echo $add; ?>";
 }
 
-function exercises(id) {
-    window.location = "<?php echo $exercises; ?>" + id ;
-}
-
-function goBack()) {
+function goBack() {
     window.location = "<?php echo $back; ?>";
 }

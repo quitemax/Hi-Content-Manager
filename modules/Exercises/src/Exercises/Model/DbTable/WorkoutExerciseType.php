@@ -19,8 +19,12 @@ class WorkoutExerciseType extends AbstractTable
     protected $_prfx = 'wet';
     protected $_all;
 
-    const FORM_TYPE_CLOCK = '0';
-    const FORM_TYPE_LIFTING = '1';
+    const FORM_TYPE_TREADMILL = 0;
+    const FORM_TYPE_LIFTING = 1;
+    const FORM_TYPE_HIIT_TREADMILL = 2;
+    const FORM_TYPE_ORBITREK = 3;
+    const FORM_TYPE_STRECHING = 4;
+    const FORM_TYPE_BIKE = 5;
 
 
     public function getAllForSelect()
@@ -40,6 +44,7 @@ class WorkoutExerciseType extends AbstractTable
         );
 
         $sqlSelect->order('wet.group_id', 'asc');
+        $sqlSelect->order('wet.type_id', 'asc');
 //        $sqlSelect->joinLeft(
 //            array('wet' => 'workout_exercise_type'),
 //            'we.workout_exercise_type_id = wet.id',
