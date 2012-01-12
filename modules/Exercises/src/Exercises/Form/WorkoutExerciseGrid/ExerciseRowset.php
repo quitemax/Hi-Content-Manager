@@ -45,11 +45,13 @@ class ExerciseRowset extends GridDbTableRowset
             'hiit_warmup_time',
             'hiit_interval_count',
             'distance',
+            'avg_rpm',
         ));
 
         $this->setLoadAll(true);
 
         $this->setFieldType('type_id', 'text');
+        $this->setFieldType('exercise_calories_burned', 'text');
 
         $this->addDbOrder('order', 'asc');
 
@@ -107,7 +109,7 @@ class ExerciseRowset extends GridDbTableRowset
 
         //
         $this->addRowsetAction(
-            'save',
+            'saveSelected',
             'submit',
             array(
                 'label'     => 'save selected',
@@ -118,13 +120,12 @@ class ExerciseRowset extends GridDbTableRowset
 
         //
         $this->addRowsetAction(
-            'delete',
+            'deleteSelected',
             'submit',
             array(
                 'label'     => 'delete selected',
                 'class'     => 'actionImage',
                 'image'     => BASE_URL . '/img/grid/icons/save.png',
-                'onclick'   => 'addRow();return false;',
             )
         );
 

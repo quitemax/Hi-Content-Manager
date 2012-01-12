@@ -170,5 +170,20 @@
             <td><?php echo $row['distance'];?> km</td>
         </tr>
     </table>
+    <?php elseif (isset($type['form_type']) && $type['form_type'] == Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_BIKE):?>
+    <table border="0" cellpadding="0" id="liftingType">
+        <tr>
+            <th>elapsed_time</th>
+            <th>avg rpm</th>
+            <th>level</th>
+            <th>distance</th>
+        </tr>
+        <tr>
+            <td><?php echo $row['elapsed_time'];?> </td>
+            <td><?php echo $row['avg_rpm'];?> rpm</td>
+            <td><?php echo $row['level'];?> </td>
+            <td><?php echo $row['distance'];?> km</td>
+        </tr>
+    </table>
     <?php endif;  ?>
 </td>

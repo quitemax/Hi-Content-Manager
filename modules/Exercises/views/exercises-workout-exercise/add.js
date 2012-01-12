@@ -28,7 +28,9 @@ var fields = [
 'hiit_time_high',
 'hiit_warmup_time',
 'hiit_interval_count',
-'distance'          
+'distance',
+'avg_rpm',
+'exercise_calories_burned'         
 ];
 //alert('dada');
 //
@@ -38,7 +40,8 @@ formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_
         'elapsed_time',
         'speed',
         'angle',
-        'distance' 
+        'distance' ,
+        'exercise_calories_burned'   
 ];
 formTypesToFields['F'] = [];
 formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_LIFTING;?>'] = [
@@ -60,7 +63,8 @@ formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_
 'lifting_series_3_weight',
 'lifting_series_4_weight',
 'lifting_series_5_weight',
-'lifting_series_6_weight'
+'lifting_series_6_weight',
+'exercise_calories_burned'   
 ];
 
 formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_HIIT_TREADMILL;?>'] = [
@@ -72,24 +76,30 @@ formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_
                                                                                                             'hiit_time_low',
                                                                                                             'hiit_time_high',
                                                                                                             'hiit_warmup_time',
-                                                                                                            'hiit_interval_count'
+                                                                                                            'hiit_interval_count',
+                                                                                                            'exercise_calories_burned'   
                                                                                                ];
 
 formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_ORBITREK;?>'] = [
-                                                                                                       'order',
-                                                                                                       'elapsed_time',
-                                                                                                       'speed'
+   'order',
+   'elapsed_time',
+   'speed',
+   'level',
+   'exercise_calories_burned'   
                                                                                                ];
 
 formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_STRECHING;?>'] = [
 'order',                                                                                                       
-'elapsed_time'
+'elapsed_time',
+'exercise_calories_burned'   
 ];
 
 formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_BIKE;?>'] = [
-                                                                                                       'order',
-                                                                                                       'elapsed_time',
-                                                                                                       'speed'
+   'order',
+   'elapsed_time',
+   'avg_rpm',
+   'level',
+   'exercise_calories_burned'   
                                                                                                ];
 //
 var selectOptionsToFormTypes = [];

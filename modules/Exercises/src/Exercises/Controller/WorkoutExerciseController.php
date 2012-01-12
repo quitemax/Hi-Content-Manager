@@ -121,6 +121,60 @@ class WorkoutExerciseController extends ActionController
             )
         );
 
+        /**
+         * POST
+         */
+        if ($this->getRequest()->isPost()) {
+
+            $formData = $this->getRequest()->post()->toArray();
+
+
+            if ($form->isValid($formData)) {
+                \HiZend\Debug\Debug::dump($formData);
+                if (    isset($formData['header']['formId'])
+                        && $formData['header']['formId'] == 'WorkoutExerciseGridForm') {
+
+                    if (isset($formData['WorkoutExerciseRowset']['actions']['saveSelected'])) {
+                        $allBox = $formData['WorkoutExerciseRowset']['header']['all'];
+                        $rows = $formData['WorkoutExerciseRowset']['rows'];
+
+                        foreach ($rows as $key => $row) {
+                            if ($row['id'] || $allBox) {
+                                \HiZend\Debug\Debug::dump($row['row']);
+                                \HiZend\Debug\Debug::dump($key);
+
+                                $exercise = $this->_exercise->getWorkoutExercise($key);
+                                $exercise->setFromArray($row['row']);
+                                $exercise->save();
+
+                            }
+                        }
+
+                        return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id));
+                    }
+
+                    if (isset($formData['WorkoutExerciseRowset']['actions']['deleteSelected'])) {
+//\HiZend\Debug\Debug::dump($formData);
+                        $allBox = $formData['WorkoutExerciseRowset']['header']['all'];
+                        $rows = $formData['WorkoutExerciseRowset']['rows'];
+
+                        foreach ($rows as $key => $row) {
+                            if ($row['id'] || $allBox) {
+//                                \HiZend\Debug\Debug::dump($row['row']);
+
+                                $exercise = $this->_exercise->getWorkoutExercise($key);
+                                $exercise->delete();
+
+                            }
+                        }
+
+                        return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id));
+
+                    }
+                }
+            }
+        }
+
         return array(
             'form' => $form,
             'workout'   => $this->_workout->getWorkout($id),
@@ -213,6 +267,17 @@ class WorkoutExerciseController extends ActionController
                             $newRow->save();
 //
                             return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id));
+                        }
+
+                    }
+
+                    if (isset($formData['WorkoutExerciseRow']['actions']['saveAdd'])) {
+
+                        if (is_array($formData['WorkoutExerciseRow']['row'])){
+                            $newRow = $this->_exercise->createRow($formData['WorkoutExerciseRow']['row']);
+                            $newRow->save();
+//
+                            return $this->redirect()->toRoute('exercises-workout-exercise-add/wildcard', array('workout_id' => $id));
                         }
 
                     }
