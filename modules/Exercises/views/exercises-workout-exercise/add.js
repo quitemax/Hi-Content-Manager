@@ -77,7 +77,8 @@ formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_
                                                                                                             'hiit_time_high',
                                                                                                             'hiit_warmup_time',
                                                                                                             'hiit_interval_count',
-                                                                                                            'exercise_calories_burned'   
+                                                                                                            'exercise_calories_burned',
+                                                                                                            'distance'
                                                                                                ];
 
 formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_ORBITREK;?>'] = [
@@ -85,7 +86,8 @@ formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_
    'elapsed_time',
    'speed',
    'level',
-   'exercise_calories_burned'   
+   'exercise_calories_burned',
+   'distance'
                                                                                                ];
 
 formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_STRECHING;?>'] = [
@@ -99,7 +101,8 @@ formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_
    'elapsed_time',
    'avg_rpm',
    'level',
-   'exercise_calories_burned'   
+   'exercise_calories_burned',
+   'distance'
                                                                                                ];
 //
 var selectOptionsToFormTypes = [];
