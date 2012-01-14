@@ -108,10 +108,27 @@ formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_
 var selectOptionsToFormTypes = [];
 selectOptionsToFormTypes['0'] = 'F';
 
-
 <?php if(is_array($formTypesData)) :?>
 <?php $count = count($formTypesData); $i = 1; foreach($formTypesData as $index => $value ): ?>
     selectOptionsToFormTypes['<?php echo $value['type_id'];?>'] = <?php echo $value['form_type'];?>;
+<?php endforeach ;?>
+<?php endif ;?>
+
+
+
+var lastOfType = [];
+<?php if(is_array($lastOfTypeData)) :?>
+<?php $count = count($lastOfTypeData); $i = 1; foreach($lastOfTypeData as $index => $value ): ?>
+
+	var typeTmp = [];
+	<?php if(is_array($value)) :?>
+	<?php $count = count($value); $i = 1; foreach($value as $col => $data ): ?>
+	    typeTmp['<?php echo $col;?>'] =  '<?php echo $data;?>';
+	<?php endforeach ;?>
+	<?php endif ;?>
+	
+    lastOfType['<?php echo $index;?>'] = typeTmp;
+    
 <?php endforeach ;?>
 <?php endif ;?>
 
@@ -159,4 +176,15 @@ function exerciseType(select) {
 
 function goBack() {
     window.location = "<?php echo $back;?>";
+}
+function copy() {
+	//window.location = "<?php echo $back;?>";
+	alert(document.getElementById('WorkoutExerciseRow-row-type_id').selectedIndex);
+	var fieldsOfLast = lastOfType[document.getElementById('WorkoutExerciseRow-row-type_id').selectedIndex];
+	alert(fieldsOfLast);
+	$.each(fieldsOfLast, function(index, value) { 
+		alert(index + ' ' + value);
+		  //var element = $('#WorkoutExerciseRow-row-' + value);
+		  //element.parent().parent().css('display', 'table-row');
+		});
 }

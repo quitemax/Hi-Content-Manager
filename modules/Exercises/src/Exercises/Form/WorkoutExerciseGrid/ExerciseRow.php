@@ -85,6 +85,16 @@ class ExerciseRow extends GridDbTableRow
 //                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
             )
         );
+        $this->addAction(
+            'copy',
+            'submit',
+            array(
+                'label'     => 'copy from last of type',
+                'class'     => 'actionImage',
+                'onclick'   => 'copy(); return false;',
+//                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
+            )
+        );
 
     }
 }

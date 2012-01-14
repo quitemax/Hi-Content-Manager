@@ -243,6 +243,7 @@ class WorkoutExerciseController extends ActionController
                 array(
                     'back' => $this->url()->fromRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id)),
                     'formTypesData' => $this->_exerciseType->getRowset()->toArray(),
+                    'lastOfTypeData' => $this->_exerciseType->getLastOfTypes(),
                 )
             )
         );

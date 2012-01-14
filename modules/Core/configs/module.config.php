@@ -39,7 +39,7 @@ $config['production'] = array(
                     'config' => array(
                         'host' => 'localhost',
                         'username' => 'root',
-                        'password' => 'secret',
+                        'password' => '',
                         'dbname' => 'exercises',
                     ),
                 ),

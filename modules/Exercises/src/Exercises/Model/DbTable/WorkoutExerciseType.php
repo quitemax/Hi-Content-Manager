@@ -62,6 +62,75 @@ class WorkoutExerciseType extends AbstractTable
         return $array;
     }
 
+    public function getLastOfTypes()
+    {
+        $array = array(
+//            ''    => ' -- ',
+        );
+
+        $sqlSelect = $this->_db->select();
+
+        $sqlSelect->from(
+            array( 'wet' => $this->_name ),
+            array(
+            	'wet.type_id',
+            	'wet.name',
+            )
+        );
+//        $sqlSelect->joinLeft(
+//            array( 'we' => 'workout_exercise' ),
+//            'wet.type_id = we.type_id'
+//        );
+//        $sqlSelect->joinLeft(
+//            array( 'w' => 'workout' ),
+//             'w.workout_id = we.workout_id'
+//        );
+
+
+
+//        $sqlSelect->order('wet.group_id', 'asc');
+        $sqlSelect->order('wet.type_id', 'asc');
+//        $sqlSelect->joinLeft(
+//            array('wet' => 'workout_exercise_type'),
+//            'we.workout_exercise_type_id = wet.id',
+//            'wet.*'
+//        );
+
+
+        $stmt = $this->_db->query($sqlSelect);
+        $rows = $stmt->fetchAll(\Zend\Db\Db::FETCH_ASSOC);
+
+        foreach ($rows as $row) {
+            $sqlSelect = $this->_db->select();
+            $sqlSelect->from(
+                array( 'we' => 'workout_exercise' ),
+                array(
+                	'*',
+                )
+            );
+
+            $sqlSelect->joinLeft(
+                array( 'w' => 'workout' ),
+                'w.workout_id = we.workout_id'
+            );
+
+            $sqlSelect->order('w.date desc');
+            $sqlSelect->where('we.type_id = ?', $row['type_id']);
+            $sqlSelect->limit(1, 0);
+
+//            \HiZend\Debug\Debug::dump((string)$sqlSelect);
+
+            $stmt = $this->_db->query($sqlSelect);
+            $exercise = $stmt->fetch(\Zend\Db\Db::FETCH_ASSOC);
+
+//            \HiZend\Debug\Debug::dump($exercise);
+
+            $array[$row['type_id']] = $exercise;
+        }
+
+        return $array;
+    }
+
 
     public function getWorkoutExerciseType($id)
     {
