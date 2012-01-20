@@ -130,7 +130,7 @@ class WorkoutExerciseController extends ActionController
 
 
             if ($form->isValid($formData)) {
-                \HiZend\Debug\Debug::dump($formData);
+//                \HiZend\Debug\Debug::dump($formData);
                 if (    isset($formData['header']['formId'])
                         && $formData['header']['formId'] == 'WorkoutExerciseGridForm') {
 
@@ -140,8 +140,8 @@ class WorkoutExerciseController extends ActionController
 
                         foreach ($rows as $key => $row) {
                             if ($row['id'] || $allBox) {
-                                \HiZend\Debug\Debug::dump($row['row']);
-                                \HiZend\Debug\Debug::dump($key);
+//                                \HiZend\Debug\Debug::dump($row['row']);
+//                                \HiZend\Debug\Debug::dump($key);
 
                                 $exercise = $this->_exercise->getWorkoutExercise($key);
                                 $exercise->setFromArray($row['row']);
