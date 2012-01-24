@@ -16,7 +16,7 @@ class ExerciseRowset extends GridDbTableRowset
 
         $this->removeFields(array(
             'workout_id',
-            'elapsed_time',
+            'exercise_elapsed_time',
             'speed',
             'angle',
             'level',

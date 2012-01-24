@@ -1,6 +1,6 @@
 var fields = [
 'order',
-'elapsed_time',
+'exercise_elapsed_time',
 'speed',
 'angle',
 'level',
@@ -37,7 +37,7 @@ var fields = [
 var formTypesToFields = [];
 formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_TREADMILL;?>'] = [
         'order',
-        'elapsed_time',
+        'exercise_elapsed_time',
         'speed',
         'angle',
         'distance' ,
@@ -69,7 +69,7 @@ formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_
 
 formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_HIIT_TREADMILL;?>'] = [
                                                                                                             'order',
-                                                                                                            'elapsed_time',
+                                                                                                            'exercise_elapsed_time',
 
                                                                                                             'hiit_speed_low',
                                                                                                             'hiit_speed_high',
@@ -83,7 +83,7 @@ formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_
 
 formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_ORBITREK;?>'] = [
    'order',
-   'elapsed_time',
+   'exercise_elapsed_time',
    'speed',
    'level',
    'exercise_calories_burned',
@@ -92,13 +92,13 @@ formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_
 
 formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_STRECHING;?>'] = [
 'order',                                                                                                       
-'elapsed_time',
+'exercise_elapsed_time',
 'exercise_calories_burned'   
 ];
 
 formTypesToFields['<?php echo Exercises\Model\DbTable\WorkoutExerciseType::FORM_TYPE_BIKE;?>'] = [
    'order',
-   'elapsed_time',
+   'exercise_elapsed_time',
    'avg_rpm',
    'level',
    'exercise_calories_burned',
@@ -116,24 +116,20 @@ selectOptionsToFormTypes['0'] = 'F';
 
 
 
-var lastOfType = [];
+var lastOfType = {
 <?php if(is_array($lastOfTypeData)) :?>
-<?php $count = count($lastOfTypeData); $i = 1; foreach($lastOfTypeData as $index => $value ): ?>
+<?php $countI = count($lastOfTypeData); $i = 1; foreach($lastOfTypeData as $index => $value ): ?>
 
-	var typeTmp = [];
+	'<?php echo $index;?>' : {
 	<?php if(is_array($value)) :?>
-	<?php $count = count($value); $i = 1; foreach($value as $col => $data ): ?>
-	    typeTmp['<?php echo $col;?>'] =  '<?php echo $data;?>';
+	<?php $countJ = count($value); $j = 1; foreach($value as $col => $data ): ?>
+	    '<?php echo $col;?>':'<?php echo $data;?>' <?php if ($j++ < $countJ):?>,<?php endif;?>
 	<?php endforeach ;?>
 	<?php endif ;?>
-	
-    lastOfType['<?php echo $index;?>'] = typeTmp;
-    
+	} <?php if ($i++ < $countI):?>,<?php endif;?>
 <?php endforeach ;?>
 <?php endif ;?>
-
-
-
+};
 
 function hideAll() {
 	$.each(fields, function(index, value) { 
@@ -179,12 +175,24 @@ function goBack() {
 }
 function copy() {
 	//window.location = "<?php echo $back;?>";
-	alert(document.getElementById('WorkoutExerciseRow-row-type_id').selectedIndex);
+	//alert(document.getElementById('WorkoutExerciseRow-row-type_id').selectedIndex);
 	var fieldsOfLast = lastOfType[document.getElementById('WorkoutExerciseRow-row-type_id').selectedIndex];
-	alert(fieldsOfLast);
-	$.each(fieldsOfLast, function(index, value) { 
-		alert(index + ' ' + value);
-		  //var element = $('#WorkoutExerciseRow-row-' + value);
+	//alert(fieldsOfLast);
+	$.each(fieldsOfLast, function(index, val) { 
+		//alert(index + ' ' + val);
+		  if (index != 'exercise_id' && index != 'workout_id') {
+			  
+		  
+			  var element = $('#WorkoutExerciseRow-row-' + index);
+			  if (element.length == 1) {
+				  //alert(element.value);
+				  element.attr('value',  val);
+				  //alert(element.value);
+			  }
+		  }
+		  //alert(element);
+		  //element.value = val;
 		  //element.parent().parent().css('display', 'table-row');
 		});
+	return false;
 }
