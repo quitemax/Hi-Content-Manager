@@ -9,6 +9,7 @@ return array(
                 'exercises-checkup'           => 'Exercises\Controller\CheckupController',
                 'exercises-workout'           => 'Exercises\Controller\WorkoutController',
                 'exercises-workout-exercise'  => 'Exercises\Controller\WorkoutExerciseController',
+                'exercises-workout-type'      => 'Exercises\Controller\WorkoutExerciseTypeController',
                 'view'                        => 'Zend\View\PhpRenderer',
                 'view-resolver'               => 'Zend\View\TemplatePathStack',
             ),
@@ -44,6 +45,12 @@ return array(
                 'parameters' => array(
                     'workout'  => 'Exercises\Model\DbTable\Workout',
                     'exercise' => 'Exercises\Model\DbTable\WorkoutExercise',
+                    'type'     => 'Exercises\Model\DbTable\WorkoutExerciseType',
+                    'view' => 'view',
+                ),
+            ),
+            'Exercises\Controller\WorkoutExerciseTypeController' => array(
+                'parameters' => array(
                     'type'     => 'Exercises\Model\DbTable\WorkoutExerciseType',
                     'view' => 'view',
                 ),
@@ -243,6 +250,73 @@ return array(
                 'route' => '/exercises/workout/exercise/delete',
                 'defaults' => array(
                     'controller' => 'exercises-workout-exercise',
+                    'action'     => 'delete',
+                ),
+            ),
+            'may_terminate' => true,
+            'child_routes'  => array(
+                'wildcard' => array(
+                    'type'    => 'wildcard',
+                ),
+            ),
+        ),
+        /**
+         * type
+         */
+        'exercises-workout-type-home' => array(
+            'type'    => 'Literal',
+            'options' => array(
+                'route' => '/exercises/workout/type',
+                'defaults' => array(
+                    'controller' => 'exercises-workout-type',
+                    'action'     => 'index',
+                ),
+            ),
+            'may_terminate' => true,
+            'child_routes'  => array(
+                'wildcard' => array(
+                    'type'    => 'wildcard',
+                ),
+            ),
+        ),
+        'exercises-workout-type-add' => array(
+            'type'    => 'Literal',
+            'options' => array(
+                'route' => '/exercises/workout/type/add',
+                'defaults' => array(
+                    'controller' => 'exercises-workout-type',
+                    'action'     => 'add',
+                ),
+            ),
+            'may_terminate' => true,
+            'child_routes'  => array(
+                'wildcard' => array(
+                    'type'    => 'wildcard',
+                ),
+            ),
+        ),
+        'exercises-workout-type-edit' => array(
+            'type'    => 'Literal',
+            'options' => array(
+                'route' => '/exercises/workout/type/edit',
+                'defaults' => array(
+                    'controller' => 'exercises-workout-type',
+                    'action'     => 'edit',
+                ),
+            ),
+            'may_terminate' => true,
+            'child_routes'  => array(
+                'wildcard' => array(
+                    'type'    => 'wildcard',
+                ),
+            ),
+        ),
+        'exercises-workout-type-delete' => array(
+            'type'    => 'Literal',
+            'options' => array(
+                'route' => '/exercises/workout/type/delete',
+                'defaults' => array(
+                    'controller' => 'exercises-workout-type',
                     'action'     => 'delete',
                 ),
             ),

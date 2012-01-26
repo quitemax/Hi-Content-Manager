@@ -3,23 +3,36 @@
 namespace Exercises\Controller;
 
 use Zend\Mvc\Controller\ActionController,
-    Exercises\Model\WorkoutExercise,
-    Exercises\Form\WorkoutExerciseForm;
+    Exercises\Model\DbTable\Workout,
+    Exercises\Model\DbTable\WorkoutExercise,
+    Exercises\Model\DbTable\WorkoutExerciseType;
 
-class WorkoutExerciseController extends ActionController
+class WorkoutExerciseTypeController extends ActionController
 {
-    protected $_workout;
-    protected $_exercise;
+//    protected $_workout;
+//    protected $_exercise;
+    protected $_type;
 
-    public function setWorkout($workout)
+//    public function setWorkout($workout)
+//    {
+//        $this->_workout = $workout;
+//        return $this;
+//    }
+//
+//    public function setExercise($exercise)
+//    {
+//        $this->_exercise = $exercise;
+//        return $this;
+//    }
+
+    public function setView($view)
     {
-        $this->_workout = $workout;
-        return $this;
+        $this->_view = $view;
     }
 
-    public function setExercise($exercise)
+    public function setType($type)
     {
-        $this->_exercise = $exercise;
+        $this->_type = $type;
         return $this;
     }
 
@@ -29,19 +42,19 @@ class WorkoutExerciseController extends ActionController
 
     public function indexAction()
     {
-        $returnArray = array();
-
-        $request = $this->getRequest();
-
-        $id = $request->query()->get('id', 0);
-
-        if ($id > 0) {
-            $returnArray['workout'] = $this->_workout->getWorkout($id);
-            $returnArray['exercises'] = $this->_exercise->getWorkoutExercises($id);
-        }
-
-
-        return $returnArray;
+//        $returnArray = array();
+//
+//        $request = $this->getRequest();
+//
+//        $id = $request->query()->get('id', 0);
+//
+//        if ($id > 0) {
+//            $returnArray['workout'] = $this->_workout->getWorkout($id);
+//            $returnArray['exercises'] = $this->_exercise->getWorkoutExercises($id);
+//        }
+//
+//
+//        return $returnArray;
     }
 
     public function addAction() {
