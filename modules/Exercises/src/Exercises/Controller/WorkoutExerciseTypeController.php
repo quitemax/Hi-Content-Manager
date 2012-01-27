@@ -5,7 +5,9 @@ namespace Exercises\Controller;
 use Zend\Mvc\Controller\ActionController,
     Exercises\Model\DbTable\Workout,
     Exercises\Model\DbTable\WorkoutExercise,
-    Exercises\Model\DbTable\WorkoutExerciseType;
+    Exercises\Model\DbTable\WorkoutExerciseType,
+    Exercises\Form\WorkoutExerciseTypeGrid,
+    Exercises\Form\WorkoutExerciseTypeGrid\TypeTree;
 
 class WorkoutExerciseTypeController extends ActionController
 {
@@ -55,6 +57,53 @@ class WorkoutExerciseTypeController extends ActionController
 //
 //
 //        return $returnArray;
+
+
+//        $request = $this->getRequest();
+//
+//        $routeMatch = $this->getEvent()->getRouteMatch();
+//        $id     = $routeMatch->getParam('workout_id', 0);
+//
+//        if ($id <= 0) {
+//            return $this->redirect()->toRoute('exercises-workout-home');
+//        }
+//
+//        /**
+//         * Grid FORM
+//         */
+//        $form = new WorkoutExerciseGrid(
+//            array(
+//                'view' => $this->_view,
+//            )
+//        );
+
+        $typeTree = new TypeTree(
+//                array(
+//                    'title'     => $this->view->translate('navigationElementTree'),
+//                    'name'      => 'eT', //editNavigationItemElementRow
+//                    'langs'     => $hicmsLangsDbTable->getLangs(),
+//                    'model'     => $hicmsNavigationItemsElementsDbTable,
+//                    'view'      => $this->view,
+//                )
+        );
+//
+//            $itemElementsTree->setSelectedId($elementId);
+//            $itemElementsTree->setPositionVisible(true);
+//            $itemElementsTree->setCookiePath(
+//                $this->_baseUrl
+//                . '/' . self::URL_EDIT . self::PARAM_ITEM_ID . '/' . $id . '/'
+//            );
+//            $itemElementsTree->setGlobalLink(
+//                $this->_baseUrl
+//                . '/' . self::URL_EDIT . self::PARAM_ITEM_ID . '/' . $id . '/' . self::PARAM_ELEMENT_ID . '/'
+//            );
+//
+//            $itemElementsTree->setData($itemElementsTreeData);
+
+        return array(
+            'form' => '',//$typeTree,
+            'tree'   => '',//$this->_workout->getWorkout($id),
+        );
     }
 
     public function addAction() {
