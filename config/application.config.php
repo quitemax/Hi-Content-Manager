@@ -4,6 +4,7 @@ return array(
         'Application',
         'ZfcBase',
         'ZfcUser',
+        'HiTraining',
     ),
     'module_listener_options' => array(
         'config_cache_enabled' => false,
