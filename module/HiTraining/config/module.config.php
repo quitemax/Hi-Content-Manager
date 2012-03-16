@@ -16,9 +16,9 @@ return array(
 //    ),
     'di' => array(
         'instance' => array(
-            'alias' => array(
-                'skeleton' => 'HiTraining\Controller\SkeletonController',
-            ),
+//            'alias' => array(
+//                'skeleton' => 'HiTraining\Controller\SkeletonController',
+//            ),
             'Zend\View\Resolver\TemplatePathStack' => array(
                 'parameters' => array(
                     'paths'  => array(
@@ -26,6 +26,13 @@ return array(
                     ),
                 ),
             ),
+//            'Zend\View\Resolver\TemplateMapResolver' => array(
+//                'parameters' => array(
+//                    'map'  => array(
+//                        'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
+//                    ),
+//                ),
+//            ),
 
 //            // View for the layout
 //            'Zend\Mvc\View\DefaultRenderingStrategy' => array(
@@ -33,6 +40,18 @@ return array(
 //                    'layoutTemplate' => 'layout',
 //                ),
 //            ),
+
+            'HiTraining\Controller\CheckupController' => array(
+                'parameters' => array(
+                    'checkup' => 'HiTraining\Model\DbTable\Checkup',
+                ),
+            ),
+
+            'HiTraining\Model\DbTable\Checkup' => array(
+                'parameters' => array(
+                	'config' => 'Zend\Db\Adapter\Mysqli',
+                )
+            ),
 
             /**
              * Routes
@@ -47,22 +66,22 @@ return array(
                             'options' => array(
                                 'route' => '/hi-training',
                                 'defaults' => array(
-                                    'controller' => 'skeleton',
+                                    'controller' => 'HiTraining\Controller\IndexController',
                                     'action'     => 'index',
                                 ),
                             ),
                             'may_terminate' => true,
-//                            'child_routes' => array(
-//                                'login' => array(
-//                                    'type' => 'Literal',
-//                                    'options' => array(
-//                                        'route' => '/login',
-//                                        'defaults' => array(
-//                                            'controller' => 'zfcuser',
-//                                            'action'     => 'login',
-//                                        ),
-//                                    ),
-//                                ),
+                            'child_routes' => array(
+                                'checkup' => array(
+                                    'type' => 'Literal',
+                                    'options' => array(
+                                        'route' => '/checkup',
+                                        'defaults' => array(
+                                            'controller' => 'HiTraining\Controller\CheckupController',
+                                            'action'     => 'index',
+                                        ),
+                                    ),
+                                ),
 //                                'authenticate' => array(
 //                                    'type' => 'Literal',
 //                                    'options' => array(
@@ -93,7 +112,7 @@ return array(
 //                                        ),
 //                                    ),
 //                                ),
-//                            ),
+                            ),
                         ),
                     ),
                 ),

@@ -4,6 +4,7 @@ return array(
         'Application',
         'ZfcBase',
         'ZfcUser',
+        'HiBase',
         'HiTraining',
     ),
     'module_listener_options' => array(

@@ -1,6 +1,6 @@
 <?php
 
-namespace Application;
+namespace HiBase;
 
 use Zend\Module\Manager,
     Zend\EventManager\StaticEventManager,
