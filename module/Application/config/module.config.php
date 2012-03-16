@@ -47,6 +47,17 @@ return array(
                                 ),
                             ),
                         ),
+                        'hi-training' => array(
+                            'type' => 'Literal',
+                            'priority' => 1000,
+                            'options' => array(
+                                'route' => '/hi-training',
+                                'defaults' => array(
+                                    'controller' => 'Application\Controller\IndexController',
+                                    'action'     => 'index',
+                                ),
+                            ),
+                        ),
                     ),
                 ),
             ),

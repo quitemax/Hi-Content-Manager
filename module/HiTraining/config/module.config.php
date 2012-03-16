@@ -49,7 +49,7 @@ return array(
 
             'HiTraining\Model\DbTable\Checkup' => array(
                 'parameters' => array(
-                	'config' => 'Zend\Db\Adapter\Mysqli',
+                    'adapter' => 'Zend\Db\Adapter\Adapter',
                 )
             ),
 

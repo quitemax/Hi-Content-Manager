@@ -52,7 +52,7 @@ Zend\Loader\AutoloaderFactory::factory(
     array(
         'Zend\Loader\StandardAutoloader' => array(
             'prefixes' => array(
-                'Hi' => VENDOR_PATH . '/Hi',
+//                'Hi' => VENDOR_PATH . '/Hi',
              ),
              'fallback_autoloader' => true,
         )

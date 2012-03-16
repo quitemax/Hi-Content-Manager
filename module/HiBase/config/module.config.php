@@ -2,16 +2,16 @@
 return array(
     'di' => array(
         'instance' => array(
-            'Zend\Db\Adapter\Mysqli' => array(
-                'parameters' => array(
-                    'config' => array(
-                        'host' => 'localhost',
-                        'username' => 'root',
-                        'password' => '',
-                        'dbname' => 'exercises',
-                    ),
-                ),
-            ),
+//            'Zend\Db\Adapter\Adapter' => array(
+//                'parameters' => array(
+//                    'config' => array(
+//                        'host' => 'localhost',
+//                        'username' => 'root',
+//                        'password' => '',
+//                        'dbname' => 'exercises',
+//                    ),
+//                ),
+//            ),
 
             // Setup for controllers.
 

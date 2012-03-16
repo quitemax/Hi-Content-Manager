@@ -1,33 +1,5 @@
 <?php
 // ./config/autoload/database.config.php
-//return array(
-//    'di' => array(
-//        'instance' => array(
-//            'alias' => array(
-//                'masterdb' => 'PDO',
-//            ),
-//            'masterdb' => array(
-//                'parameters' => array(
-////                    'config' => array(
-////                        'host' => 'localhost',
-////                        'username' => 'root',
-////                        'password' => 'secret',
-////                        'dbname' => 'exercises',
-////                    ),
-//                    'dsn'            => 'mysql:dbname=exercises;host=localhost',
-//                    'username'       => 'root',
-//                    'passwd'         => 'secret',
-//                    'driver_options' => array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''),
-//                ),
-//            ),
-//        ),
-//    ),
-//);
-
-/**
-* Copy this file to database.config.php (no '.dist') BEFORE editing!
-*/
-
 $mdb = array(
     'dbname' => 'exercises',
     'user' => 'root',

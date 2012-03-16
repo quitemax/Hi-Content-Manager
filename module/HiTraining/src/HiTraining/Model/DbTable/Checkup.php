@@ -2,8 +2,7 @@
 
 namespace HiTraining\Model\DbTable;
 
-//use Zend\Db\Table\AbstractTable;
-use HiBase\Db\TableGateway\TableGateway    ;
+use HiBase\Db\Table\AbstractTable;
 //    Zend\Di\Locator,
 //    Zend\EventManager\EventCollection,
 //    Zend\EventManager\ListenerAggregate,
@@ -15,7 +14,7 @@ use HiBase\Db\TableGateway\TableGateway    ;
 
 class Checkup extends AbstractTable
 {
-    protected $_name = 'checkup';
+    protected $tableName = 'checkup';
 
 
     public function getCheckup($id)

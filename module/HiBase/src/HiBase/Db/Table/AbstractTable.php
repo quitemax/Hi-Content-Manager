@@ -10,8 +10,8 @@ namespace HiBase\Db\Table;
  * @license
  */
 
-use Zend\Db\Table\AbstractTable as ZendAbstractTable,
-    Zend\Db\Select;
+use Zend\Db\TableGateway\AbstractTableGateway as ZendAbstractTableGateway,
+    Zend\Db\Sql\Select;
 
 /**
  * Refited Zend_Db_Table class for use with HiCms
@@ -22,12 +22,12 @@ use Zend\Db\Table\AbstractTable as ZendAbstractTable,
  * @copyright  Copyright (c) 2009 Piotr Maxymilian Socha
  * @license
  */
-class AbstractTable extends ZendAbstractTable
+class AbstractTable extends ZendAbstractTableGateway
 {
     /**
      *
      *
-     * @var Zend_Db_Select contains last sql statement
+     * @var Zend\Db\Sql\Select contains last sql statement
      */
     protected $_lastSql;
 
