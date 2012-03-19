@@ -13,7 +13,24 @@ class Module implements AutoloaderProvider
         $events = StaticEventManager::getInstance();
         $events->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 100);
 
-//        $events->attach('bootstrap', 'bootstrap', array($this, 'initializeDispatchListener'), 100);
+        $events->attach('bootstrap', 'bootstrap', array($this, 'initializeDispatchListener'), 100);
+    }
+
+    public function initializeDispatchListener($e)
+    {
+        // Register a dispatch event
+        $app = $e->getParam('application');
+        $app->events()->attach('dispatch', array($this, 'setLayoutVars'), -100);
+    }
+
+    public function setLayoutVars($e)
+    {
+        $matches    = $e->getRouteMatch();
+        $controller = $matches->getParam('controller');
+
+        // Set the layout template
+        $viewModel = $e->getViewModel();
+        $viewModel->setVariable('controller', $controller);
     }
 
     public function getAutoloaderConfig()
@@ -44,20 +61,4 @@ class Module implements AutoloaderProvider
         $renderer->plugin('basePath')->setBasePath($basePath);
     }
 
-//    public function initializeDispatchListener($e)
-//    {
-//        // Register a dispatch event
-//        $app = $e->getParam('application');
-//        $app->events()->attach('dispatch', array($this, 'setLayoutVars'), -100);
-//    }
-//
-//    public function setLayoutVars($e)
-//    {
-//        $matches    = $e->getRouteMatch();
-//        $controller = $matches->getParam('controller');
-//
-//        // Set the layout template
-//        $viewModel = $e->getViewModel();
-//        $viewModel->setVariable('controller', $controller);
-//    }
 }

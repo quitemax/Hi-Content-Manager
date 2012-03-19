@@ -4,7 +4,7 @@ namespace HiTraining\Controller;
 
 use Zend\Mvc\Controller\ActionController;
 
-class IndexController extends ActionController
+class HiTrainingController extends ActionController
 {
     public function indexAction()
     {

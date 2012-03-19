@@ -49,6 +49,7 @@ return array(
 
             'HiTraining\Model\DbTable\Checkup' => array(
                 'parameters' => array(
+                    'tableName' => 'checkup',
                     'adapter' => 'Zend\Db\Adapter\Adapter',
                 )
             ),
@@ -66,7 +67,7 @@ return array(
                             'options' => array(
                                 'route' => '/hi-training',
                                 'defaults' => array(
-                                    'controller' => 'HiTraining\Controller\IndexController',
+                                    'controller' => 'HiTraining\Controller\HiTrainingController',
                                     'action'     => 'index',
                                 ),
                             ),

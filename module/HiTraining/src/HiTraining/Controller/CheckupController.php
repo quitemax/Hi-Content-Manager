@@ -19,6 +19,13 @@ class CheckupController extends ActionController
     public function indexAction()
     {
         return array(
+        	'checkups' => $this->_checkup->getResultSet(),
+        );
+    }
+
+    public function listAction()
+    {
+        return array(
         	'checkups' => $this->_checkup->fetchAll(),
         );
     }
