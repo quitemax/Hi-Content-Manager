@@ -1,3 +1,68 @@
 <strong>Module:</strong>        Hi Training &raquo;
 <strong>Controller:</strong>    Checkup &raquo;
 <strong>Action:</strong>        index
+
+<br />
+<br />
+<br />
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(drawCharts);
+  function drawCharts() {
+
+	/**
+	*
+	*/
+    var dataWeight = new google.visualization.DataTable();
+    dataWeight.addColumn('string', 'Date');
+    dataWeight.addColumn('number', 'Weight');
+    dataWeight.addRows([
+      <?php foreach ($checkups as $checkup):?>
+      ['<?php echo $checkup->date;?>', <?php echo $checkup->weight;?>],
+      <?php endforeach;?>
+    ]);
+
+    var options = {
+      title: 'Weight'
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('weight_div'));
+    chart.draw(dataWeight, options);
+
+	/**
+	*
+	*/
+//    var dataHeight = new google.visualization.DataTable();
+//    dataHeight.addColumn('string', 'Date');
+//    dataHeight.addColumn('number', 'Weight');
+//    dataHeight.addRows([
+//      <?php foreach ($checkups as $checkup):?>
+//      ['<?php echo $checkup->date;?>', <?php echo $checkup->weight;?>],
+//      <?php endforeach;?>
+//    ]);
+
+//    var options = {
+//      title: 'Height'
+//    };
+
+//    var chart = new google.visualization.LineChart(document.getElementById('height_div'));
+//    chart.draw(dataWeight, options);
+
+  }
+</script>
+<div id="weight_div" style="width: 900px; height: 200px;"></div>
+<br />
+<div id="height_div" style="width: 900px; height: 200px;"></div>
+
+
+<?php
+//echo "<pre>" . '"" ';
+//print_r($checkups);
+//echo "</pre>";
+//foreach ($checkups as $checkup) {
+//    echo "<pre>" . '"" ';
+//    print_r($checkup);
+//    echo "</pre>";
+//}
+?>

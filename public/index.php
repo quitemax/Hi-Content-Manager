@@ -23,7 +23,7 @@ define('MODULES_PATH', BASE_PATH . DS . 'modules');
 //
 define('VENDOR_PATH', BASE_PATH . DS . 'vendor');
 //
-define('ZF2_PATH', BASE_PATH . DS . '..' . DS . 'zend' . DS . 'library');
+define('ZF2_PATH', BASE_PATH . DS . '..' . DS . 'zend-beta3' . DS . 'library');
 //
 define('PUBLIC_PATH', BASE_PATH . DS . 'public');
 //
@@ -47,7 +47,7 @@ set_include_path(implode(PS, array(
  * autoloader
  *
  */
-require_once (getenv('ZF2_PATH') ?: '/../zend/library') . '/Zend/Loader/AutoloaderFactory.php';
+require_once (getenv('ZF2_PATH') ?: '/../zend-beta3/library') . '/Zend/Loader/AutoloaderFactory.php';
 Zend\Loader\AutoloaderFactory::factory(
     array(
         'Zend\Loader\StandardAutoloader' => array(

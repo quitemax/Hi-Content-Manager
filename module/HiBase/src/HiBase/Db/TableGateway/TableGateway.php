@@ -133,20 +133,12 @@ class TableGateway extends ZendTableGateway
      */
     public function prepareResultSetSql($where = null, $order = null, $count = null, $offset  = null, $cols = null)
     {
-////        /*@var $sqlSelect Zend_Db_Select*/
+
+//        /*@var $sqlSelect Zend_Db_Select*/
 //        $sqlSelect = $this->_db->select();
-//
-//////        foreach ($this->_behaviourObjects as $behaviourObject) {
-//////            $sqlSelect = $behaviourObject->applyBehaviourToSql(
-//////                $sqlSelect,
-//////                $where,
-//////                $order,
-//////                $count,
-//////                $offset,
-//////                $cols
-//////            );
-//////        }
-////
+
+        $sqlSelect = clone $this->sqlSelect;
+
 //        $fromCols = array();
 //        if ($cols !== null && is_array($cols) && count($cols)) {
 //            $fromCols = $cols;
@@ -161,6 +153,28 @@ class TableGateway extends ZendTableGateway
 //            ),
 //            $fromCols
 //        );
+
+        $sqlSelect->from($this->tableName, $this->databaseSchema);
+
+
+
+
+
+
+
+//
+//////        foreach ($this->_behaviourObjects as $behaviourObject) {
+//////            $sqlSelect = $behaviourObject->applyBehaviourToSql(
+//////                $sqlSelect,
+//////                $where,
+//////                $order,
+//////                $count,
+//////                $offset,
+//////                $cols
+//////            );
+//////        }
+////
+//
 //
 //        //where
 //        if ($where!==null) {
@@ -172,6 +186,13 @@ class TableGateway extends ZendTableGateway
 //                $sqlSelect->where($where);
 //            }
 //        }
+
+        if ($where instanceof \Closure) {
+            $where($select);
+        } elseif ($where !== null) {
+            $sqlSelect->where($where);
+        }
+
 //
 //        //limit
 //        $sqlSelect->limit($count, $offset);
@@ -180,7 +201,7 @@ class TableGateway extends ZendTableGateway
 //        $sqlSelect->order($order);
 ////        echo $sqlSelect;
 //
-//        return $sqlSelect;
+        return $sqlSelect;
     }
 
 
@@ -194,10 +215,26 @@ class TableGateway extends ZendTableGateway
     {
         //prepare the sql
         $sqlSelect = $this->prepareResultSetSql($where, $order, $count, $offset, $cols);
-//        \HiZend\Debug\Debug::dump($sqlSelect->__toString());
 
         //save sql
         $this->_lastSql = $sqlSelect;
+
+        $statement = $this->adapter->createStatement();
+        $sqlSelect->prepareStatement($this->adapter, $statement);
+
+        $result = $statement->execute();
+
+        //
+        $resultSet = clone $this->selectResultPrototype;
+        $resultSet->setDataSource($result);
+        return $resultSet;
+
+//        \HiZend\Debug\Debug::dump($sqlSelect->__toString());
+
+//        \Zend\Debug::dump($sqlSelect);
+//        \Zend\Debug::dump($result);
+
+
 
 
 //        $stmt = $this->_db->query($sqlSelect);
