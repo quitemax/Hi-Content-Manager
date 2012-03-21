@@ -27,27 +27,27 @@
       title: 'Weight'
     };
 
-    var chart = new google.visualization.LineChart(document.getElementById('weight_div'));
-    chart.draw(dataWeight, options);
+    var chartWeight = new google.visualization.LineChart(document.getElementById('weight_div'));
+    chartWeight.draw(dataWeight, options);
 
 	/**
 	*
 	*/
-//    var dataHeight = new google.visualization.DataTable();
-//    dataHeight.addColumn('string', 'Date');
-//    dataHeight.addColumn('number', 'Weight');
-//    dataHeight.addRows([
-//      <?php foreach ($checkups as $checkup):?>
-//      ['<?php echo $checkup->date;?>', <?php echo $checkup->weight;?>],
-//      <?php endforeach;?>
-//    ]);
+    var dataHeight = new google.visualization.DataTable();
+    dataHeight.addColumn('string', 'Date');
+    dataHeight.addColumn('number', 'Weight');
+    dataHeight.addRows([
+      <?php foreach ($checkups as $checkup):?>
+      ['<?php echo $checkup->date;?>', <?php echo $checkup->weight;?>],
+      <?php endforeach;?>
+    ]);
 
-//    var options = {
-//      title: 'Height'
-//    };
+    var options = {
+      title: 'Height'
+    };
 
-//    var chart = new google.visualization.LineChart(document.getElementById('height_div'));
-//    chart.draw(dataWeight, options);
+    var chartHeight = new google.visualization.LineChart(document.getElementById('height_div'));
+    chartHeight.draw(dataHeight, options);
 
   }
 </script>
