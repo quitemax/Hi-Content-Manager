@@ -1,0 +1,88 @@
+<tr class="listInfo">
+    <th class=""
+        <?php if (isset($this->colspan)):?>
+        colspan="<?php echo $this->colspan ?>"
+        <?php endif;?>
+        align="center">
+        <table width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+                <td width="15%" class="elementsCount" align="left">
+                    <?php echo 'elements';?>:
+                        <?php if ($this->perPage && $this->elementsAllCount && $this->elementsCount):?>
+                            <?php echo $this->elementsFrom;?> - <?php echo $this->elementsTo;?>
+                            <?php echo 'from';?>
+                            <?php echo $this->elementsAllCount;?>
+                            (<?php echo $this->elementsCount;?>)
+                        <?php else:?>
+                            <?php echo $this->elementsCount;?>
+                        <?php endif;?>
+                </td>
+                <td align="center">
+                    <?php if (  isset($this->paginatorData['pages'])
+                                && is_array($this->paginatorData['pages'])
+                                && count ($this->paginatorData['pages']) > 1):?>
+
+                        <?php if ($this->paginatorData['currentPage']==$this->paginatorData['firstPage']):?>
+                          <span ><?php echo 'previousPage'?></span>
+                        <?php else:?>
+                          <a href="<?php echo $this->paginatorData['buttons']['before']['link']?>"><?php echo 'previousPage'?></a>
+                        <?php endif;?>
+
+                        <?php if ($this->paginatorData['buttons']['first']['dots']):?>
+                          <a href="<?php echo $this->paginatorData['buttons']['first']['link']?>">
+                            <?php echo $this->paginatorData['buttons']['first']['number']?>
+                          </a>
+                          <span>
+                            ...
+                          </span>
+                        <?php endif;?>
+
+
+                        <?php foreach ($this->paginatorData['pages'] as $page):?>
+                            <?php if ($page['current']=='current'):?>
+                                <span class="current"><?php echo $page['number']?></span>
+                            <?php else:?>
+                                <a href="<?php echo $page['link'];?>"
+                                    ><?php echo $page['number'];?></a>
+                            <?php endif;?>
+                        <?php endforeach;?>
+
+
+                        <?php if ($this->paginatorData['buttons']['last']['dots']):?>
+                          <span >
+                            ...
+                          </span>
+                          <a href="<?php echo $this->paginatorData['buttons']['last']['link']?>">
+                            <?php echo $this->paginatorData['buttons']['last']['number']?>
+                          </a>
+                        <?php endif;?>
+
+                        <?php if ($this->paginatorData['currentPage']==$this->paginatorData['lastPage']):?>
+                          <span ><?php echo 'nextPage'?></span>
+                        <?php else:?>
+                          <a href="<?php echo $this->paginatorData['buttons']['after']['link']?>"><?php echo 'nextPage'?></a>
+                        <?php endif;?>
+
+                    <?php endif;?>
+                </td>
+                <td width="15%" class="perPage" align="right">
+                    <?php if ($this->availablePerPage):?>
+                        <?php echo 'perPage';?>
+                        <?php echo $this->formSelect(
+                            $this->subFormId . '[perPage]',
+                            $this->perPage,
+                            array(
+                                'onchange'  =>  'perPage("' . $this->subFormId . '");'
+                            ),
+                            $this->availablePerPage
+                        );?>
+                    <?php else:?>
+                        <?php if ($this->perPage):?>
+                            <?php echo $this->perPage;?>
+                        <?php endif;?>
+                    <?php endif;?>
+                </td>
+            </tr>
+        </table>
+    </th>
+</tr>

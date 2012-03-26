@@ -89,13 +89,13 @@ return array(
 //            ),
             // Defining where to look for views. This works with multiple paths,
             // very similar to include_path
-//            'Zend\View\Resolver\TemplatePathStack' => array(
-//                'parameters' => array(
-//                    'paths'  => array(
-//                        'application' => __DIR__ . '/../view',
-//                    ),
-//                ),
-//            ),
+            'Zend\View\Resolver\TemplatePathStack' => array(
+                'parameters' => array(
+                    'paths'  => array(
+                        'hibase' => __DIR__ . '/../view',
+                    ),
+                ),
+            ),
 //            // View for the layout
 //            'Zend\Mvc\View\DefaultRenderingStrategy' => array(
 //                'parameters' => array(

@@ -1,0 +1,69 @@
+<tr class="listPagination" >
+    <td
+        <?php if (isset($this->colspan)):?>
+        colspan="<?php echo $this->colspan ?>"
+        <?php endif;?>
+        class="main"
+        align="center"
+        >
+        <table width="100%">
+            <tr>
+                <td width="15%" align="left">
+
+                </td>
+                <td align="center">
+                    <?php if (  isset($this->paginatorData['pages'])
+                                && is_array($this->paginatorData['pages'])
+                                && count ($this->paginatorData['pages']) > 1):?>
+
+                        <?php if ($this->paginatorData['currentPage']==$this->paginatorData['firstPage']):?>
+                          <span ><?php echo 'previousPage'?></span>
+                        <?php else:?>
+                          <a href="<?php echo $this->paginatorData['buttons']['before']['link']?>"><?php echo 'previousPage'?></a>
+                        <?php endif;?>
+
+                        <?php if ($this->paginatorData['buttons']['first']['dots']):?>
+                          <a href="<?php echo $this->paginatorData['buttons']['first']['link']?>">
+                            <?php echo $this->paginatorData['buttons']['first']['number']?>
+                          </a>
+                          <span>
+                            ...
+                          </span>
+                        <?php endif;?>
+
+
+                        <?php foreach ($this->paginatorData['pages'] as $page):?>
+                            <?php if ($page['current']=='current'):?>
+                                <span class="current"><?php echo $page['number']?></span>
+                            <?php else:?>
+                                <a href="<?php echo $page['link'];?>"
+                                    ><?php echo $page['number'];?></a>
+                            <?php endif;?>
+                        <?php endforeach;?>
+
+
+                        <?php if ($this->paginatorData['buttons']['last']['dots']):?>
+                          <span >
+                            ...
+                          </span>
+                          <a href="<?php echo $this->paginatorData['buttons']['last']['link']?>">
+                            <?php echo $this->paginatorData['buttons']['last']['number']?>
+                          </a>
+                        <?php endif;?>
+
+                        <?php if ($this->paginatorData['currentPage']==$this->paginatorData['lastPage']):?>
+                          <span ><?php echo 'nextPage'?></span>
+                        <?php else:?>
+                          <a href="<?php echo $this->paginatorData['buttons']['after']['link']?>"><?php echo 'nextPage'?></a>
+                        <?php endif;?>
+
+                    <?php endif;?>
+
+                </td>
+                <td width="15%" align="right">
+                    &nbsp;
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>

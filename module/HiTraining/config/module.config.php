@@ -43,7 +43,8 @@ return array(
 
             'HiTraining\Controller\CheckupController' => array(
                 'parameters' => array(
-                    'checkup' => 'HiTraining\Model\DbTable\Checkup',
+                    'checkup'  => 'HiTraining\Model\DbTable\Checkup',
+                    'view'     => 'Zend\View\Renderer\PhpRenderer',
                 ),
             ),
 
@@ -80,6 +81,19 @@ return array(
                                         'defaults' => array(
                                             'controller' => 'HiTraining\Controller\CheckupController',
                                             'action'     => 'index',
+                                        ),
+                                    ),
+                                    'may_terminate' => true,
+                                    'child_routes' => array(
+                                        'list' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/list',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\CheckupController',
+                                                    'action'     => 'list',
+                                                ),
+                                            ),
                                         ),
                                     ),
                                 ),

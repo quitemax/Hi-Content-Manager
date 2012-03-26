@@ -35,10 +35,10 @@
 	*/
     var dataHeight = new google.visualization.DataTable();
     dataHeight.addColumn('string', 'Date');
-    dataHeight.addColumn('number', 'Weight');
+    dataHeight.addColumn('number', 'Height');
     dataHeight.addRows([
       <?php foreach ($checkups as $checkup):?>
-      ['<?php echo $checkup->date;?>', <?php echo $checkup->weight;?>],
+      ['<?php echo $checkup->date;?>', <?php echo $checkup->height;?>],
       <?php endforeach;?>
     ]);
 

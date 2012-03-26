@@ -3,11 +3,18 @@
 namespace HiTraining\Controller;
 
 use Zend\Mvc\Controller\ActionController,
-    Exercises\Model\Checkup,
-    Exercises\Form\CheckupForm;
+    Zend\View\Model\ViewModel,
+    HiTraining\Model\Checkup,
+    HiTraining\Form\CheckupGrid,
+    HiTraining\Form\CheckupGrid\CheckupResultSet;
 
 class CheckupController extends ActionController
 {
+	/**
+     *  checkup model
+     *
+     * Enter description here ...
+     */
     protected $_checkup;
 
     public function setCheckup($checkup)
@@ -16,6 +23,24 @@ class CheckupController extends ActionController
         return $this;
     }
 
+    /**
+     *  view renderer
+     *
+     * Enter description here ...
+     */
+    protected $_view;
+
+    public function setView($view)
+    {
+        $this->_view = $view;
+        return $this;
+    }
+
+    /**
+     *  INDEX
+     *
+     * Enter description here ...
+     */
     public function indexAction()
     {
         return array(
@@ -23,10 +48,58 @@ class CheckupController extends ActionController
         );
     }
 
+
+	/**
+     *  LIST
+     *
+     * Enter description here ...
+     */
     public function listAction()
     {
+        /**
+         * Grid FORM
+         */
+        $form = new CheckupGrid(
+            array(
+                'view' => $this->_view,
+            )
+        );
+
+        /**
+         * BUILDING LIST
+         */
+        $list = new CheckupResultSet(
+            array(
+                'model' => $this->_checkup,
+                'view' => $this->_view,
+            )
+        );
+
+        //
+        $list->processRequest($this->getRequest());
+
+        //
+        $list->build();
+
+        //
+        $form->addSubForm($list, $list->getName());
+
+//        //
+//        $this->_view->headScript()->appendScript(
+//            $this->_view->render(
+//                'exercises-workout/index.js',
+//                array(
+//                    'delete' => $this->url()->fromRoute('exercises-workout-delete/wildcard', array('workout_id' => '')),
+//                    'edit' => $this->url()->fromRoute('exercises-workout-edit/wildcard', array('workout_id' => '')),
+//                    'add' => $this->url()->fromRoute('exercises-workout-add'),
+//                    'exercises' => $this->url()->fromRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => '')),
+//                    'addExercise' => $this->url()->fromRoute('exercises-workout-exercise-add/wildcard', array('workout_id' => '')),
+//                )
+//            )
+//        );
+//
         return array(
-        	'checkups' => $this->_checkup->fetchAll(),
+            'form' => $form,
         );
     }
 

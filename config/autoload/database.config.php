@@ -3,7 +3,7 @@
 $mdb = array(
     'dbname' => 'exercises',
     'user' => 'root',
-    'pass' => 'secret',
+    'pass' => '',
     'host' => 'localhost',
 );
 
