@@ -29,21 +29,91 @@ DROP TABLE IF EXISTS `checkup`;
 CREATE TABLE `checkup` (
   `checkup_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL,
-  `weight` double NOT NULL,
-  `height` double NOT NULL,
-  `biceps_circumference` double NOT NULL,
+  `weight` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `height` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `biceps_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
   `img_front` longtext NOT NULL,
   `img_side` longtext NOT NULL,
-  `waist_circumference` longtext NOT NULL,
+  `waist_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `neck_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `chest_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `fat_percentage` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `fat_weight` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `water_percentage` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `water_weight` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `muscle_percentage` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `muscle_weight` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `bones_percentage` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `bones_weight` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `calories_activeless` int(10) unsigned NOT NULL DEFAULT '0',
+  `calories_active` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`checkup_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `checkup`
 --
 
 /*!40000 ALTER TABLE `checkup` DISABLE KEYS */;
+INSERT INTO `checkup` (`checkup_id`,`date`,`weight`,`height`,`biceps_circumference`,`img_front`,`img_side`,`waist_circumference`,`neck_circumference`,`chest_circumference`,`fat_percentage`,`fat_weight`,`water_percentage`,`water_weight`,`muscle_percentage`,`muscle_weight`,`bones_percentage`,`bones_weight`,`calories_activeless`,`calories_active`) VALUES 
+ (1,'2012-03-11 12:00:00','102.50','185.00','0.00','','','0.00','0.00','0.00','24.90','25.52','54.80','56.17','38.60','39.56','14.43','14.80',2185,2179),
+ (2,'2012-03-19 12:00:00','102.00','185.00','39.00','','','104.00','0.00','114.50','24.70','25.19','55.00','56.10','38.70','39.47','14.50','14.80',2046,4035),
+ (3,'2012-03-26 12:00:00','101.50','185.00','39.00','','','106.00','0.00','116.00','24.60','24.96','55.00','55.82','38.80','39.40','14.48','14.70',2172,4022);
 /*!40000 ALTER TABLE `checkup` ENABLE KEYS */;
+
+
+--
+-- Definition of table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `display_name` varchar(50) DEFAULT NULL,
+  `password` varchar(128) NOT NULL,
+  `last_login` datetime DEFAULT NULL,
+  `last_ip` int(11) DEFAULT NULL,
+  `register_time` datetime NOT NULL,
+  `register_ip` int(11) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `enabled` tinyint(1) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user`
+--
+
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` (`user_id`,`username`,`email`,`display_name`,`password`,`last_login`,`last_ip`,`register_time`,`register_ip`,`active`,`enabled`) VALUES 
+ (1,NULL,'quitemax@gmail.com','quitemax@gmail.com','$2a$10$pRo.WxecIC4DIrocpNF.x.W.L0SKhoTxXwXHbga5btclcNiqNliHa','2012-03-16 18:39:14',1270,'2012-03-12 20:47:17',0,1,1);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+
+
+--
+-- Definition of table `user_meta`
+--
+
+DROP TABLE IF EXISTS `user_meta`;
+CREATE TABLE `user_meta` (
+  `meta_key` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `meta` longtext NOT NULL,
+  PRIMARY KEY (`meta_key`,`user_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `user_meta_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_meta`
+--
+
+/*!40000 ALTER TABLE `user_meta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_meta` ENABLE KEYS */;
 
 
 --

@@ -47,7 +47,7 @@ set_include_path(implode(PS, array(
  * autoloader
  *
  */
-require_once (getenv('ZF2_PATH') ?: '/../zend/library') . '/Zend/Loader/AutoloaderFactory.php';
+require_once (getenv('ZF2_PATH') ?: ZF2_PATH ) . '/Zend/Loader/AutoloaderFactory.php';
 Zend\Loader\AutoloaderFactory::factory(
     array(
         'Zend\Loader\StandardAutoloader' => array(

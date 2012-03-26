@@ -1,7 +1,16 @@
 <strong>Module:</strong>        Hi Training &raquo;
 <strong>Controller:</strong>    Checkup &raquo;
 <strong>Action:</strong>        index
-
+<?php
+//echo "<pre>" . '"" ';
+//print_r($checkups);
+//echo "</pre>";
+//foreach ($checkups as $checkup) {
+//    echo "<pre>" . '"" ';
+//    print_r($checkup);
+//    echo "</pre>";
+//}
+?>
 <br />
 <br />
 <br />
@@ -18,9 +27,10 @@
     dataWeight.addColumn('string', 'Date');
     dataWeight.addColumn('number', 'Weight');
     dataWeight.addRows([
-      <?php foreach ($checkups as $checkup):?>
-      ['<?php echo $checkup->date;?>', <?php echo $checkup->weight;?>],
-      <?php endforeach;?>
+      ['dada', 180]
+      <?php //foreach ($checkups as $checkup):?>
+//      ['<?php //echo $checkup->date;?>', '<?php //echo $checkup->weight;?>'],
+      <?php //endforeach;?>
     ]);
 
     var options = {
@@ -37,9 +47,9 @@
     dataHeight.addColumn('string', 'Date');
     dataHeight.addColumn('number', 'Height');
     dataHeight.addRows([
-      <?php foreach ($checkups as $checkup):?>
-      ['<?php echo $checkup->date;?>', <?php echo $checkup->height;?>],
-      <?php endforeach;?>
+      <?php //foreach ($checkups as $checkup):?>
+//      ['<?php //echo $checkup->date;?>', '<?php //echo $checkup->height;?>'],
+      <?php //endforeach;?>
     ]);
 
     var options = {
