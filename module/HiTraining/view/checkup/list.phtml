@@ -1,5 +1,17 @@
-<strong>Module:</strong>        Hi Training &raquo;
-<strong>Controller:</strong>    Checkup &raquo;
-<strong>Action:</strong>        list
+<div id="breadcrumb">
+    &raquo; <a href="<?php echo $this->url('home');?>">Home</a>
+    &raquo; <a href="<?php echo $this->url('hi-training');?>">Training</a>
+    &raquo; <a class="selected" href="<?php echo $this->url('hi-training/checkup/list');?>">Checkup list</a>
 
-<?php echo $form;?>
+</div>
+<div id="content">
+    <div class="page-title">
+        <?php
+            $title = 'Checkup list';
+            $this->headTitle($title);
+        ?>
+        <h1><?php echo $this->escape($title); ?></h1>
+    </div>
+
+    <?php echo $form;?>
+</div>

@@ -1,0 +1,18 @@
+<div id="breadcrumb">
+    &raquo; <a href="<?php echo $this->url('home');?>">Core</a>
+    &raquo; <a class="" href="<?php echo $this->url('exercises-home');?>">Exercises</a>
+    &raquo; <a class="" href="<?php echo $this->url('exercises-workout-home');?>">Workouts</a>
+    &raquo; <a class="selected" href="<?php echo $this->url('exercises-workout-add');?>">add</a>
+</div>
+
+<div id="content">
+	<div class="page-title">
+        <?php
+            $title = 'Add new workout exercise ';
+            $this->headTitle($title);
+        ?>
+        <h1><?php echo $this->escape($title); ?></h1>
+    </div>
+
+    <?php echo $form;?>
+</div>

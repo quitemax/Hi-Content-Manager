@@ -59,6 +59,10 @@ class Module implements AutoloaderProvider
         $locator      = $app->getLocator();
         $renderer     = $locator->get('Zend\View\Renderer\PhpRenderer');
         $renderer->plugin('basePath')->setBasePath($basePath);
+        $renderer->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js', 'text/javascript');
+        $renderer->headScript()->appendFile('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.js', 'text/javascript');
+        $renderer->headLink()->appendStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css', 'screen');
+
     }
 
 }

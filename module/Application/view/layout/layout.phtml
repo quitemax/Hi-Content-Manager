@@ -29,9 +29,12 @@ echo $this->doctype();
 
     <!-- Le styles -->
     <?php echo $this->headLink() ?>
+    <?php echo $this->headStyle() ?>
 
     <!-- Scripts -->
     <?php echo $this->headScript() ?>
+
+
 
   </head>
 
@@ -49,14 +52,57 @@ echo $this->doctype();
           <a class="brand" href="<?php echo $this->url('home') ?>">Hi Content Manager</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="<?php if (strpos($controller, 'Application') !== false) :?>active<?php endif;?>"><a href="<?php echo $this->url('home') ?>">Home</a></li>
-              <li class="<?php if (strpos($controller, 'HiTraining') !== false) :?>active<?php endif;?>"><a href="<?php echo $this->url('hi-training') ?>">Training</a></li>
+
+              <li class="<?php if (strpos($controller, 'Application') !== false) :?>active<?php endif;?>">
+                <a href="<?php echo $this->url('home') ?>">Home</a>
+              </li>
+
+              <li class="<?php if (strpos($controller, 'HiTraining') !== false) :?>active<?php endif;?>">
+                <a href="<?php echo $this->url('hi-training') ?>">Training</a>
+                <ul class="">
+
+                  <li class="">
+                    <a href="<?php echo $this->url('hi-training/checkup') ?>">Checkup stats</a>
+                  </li>
+
+                  <li class="">
+                    <a href="<?php echo $this->url('hi-training/checkup/list') ?>">Checkup list</a>
+                  </li>
+
+                  <li class="">
+                    <a href="<?php echo $this->url('hi-training/checkup/list') ?>">Workout stats</a>
+                  </li>
+
+                  <li class="">
+                    <a href="<?php echo $this->url('hi-training/checkup/list') ?>">Workout list</a>
+                  </li>
+
+                  <li class="">
+                    <a href="<?php echo $this->url('hi-training/checkup/list') ?>">Workout exercises list</a>
+                  </li>
+                </ul>
+              </li>
 
             </ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
+    <?php
+    $this->inlineScript()->appendScript(
+        '
+         $(document).ready(function() {
+           $("ul.nav li").mouseenter(function(){
+                $(this).find("ul").addClass("active");
+            });
+
+            $("ul.nav li").mouseleave(function(){
+                $(this).find("ul").removeClass("active");
+            });
+         });
+        '
+    );
+    ?>
 
     <div class="container">
 
@@ -70,5 +116,6 @@ echo $this->doctype();
 
     </div> <!-- /container -->
 
+	<?php echo $this->inlineScript() ?>
   </body>
 </html>
