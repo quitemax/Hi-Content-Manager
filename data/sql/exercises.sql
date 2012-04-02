@@ -1,7 +1,7 @@
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
--- Server version	5.1.41
+-- Server version	5.1.50-community
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -29,36 +29,45 @@ DROP TABLE IF EXISTS `checkup`;
 CREATE TABLE `checkup` (
   `checkup_id` int(11) NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL,
-  `weight` decimal(10,2) NOT NULL DEFAULT '0.00',
   `height` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `biceps_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `img_front` longtext NOT NULL,
-  `img_side` longtext NOT NULL,
-  `waist_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `neck_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `chest_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `fat_percentage` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `fat_weight` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `water_percentage` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `water_weight` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `muscle_percentage` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `muscle_weight` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `bones_percentage` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `bones_weight` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `weight` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `img_front` longtext CHARACTER SET latin1 NOT NULL,
+  `img_side` longtext CHARACTER SET latin1 NOT NULL,
+  `fat_percentage` decimal(10,1) NOT NULL DEFAULT '0.0',
+  `fat_weight` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `fat_weight_range_bottom` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `fat_weight_range_top` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `water_percentage` decimal(10,1) NOT NULL DEFAULT '0.0',
+  `water_weight` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `water_weight_range_bottom` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `water_weight_range_top` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `muscle_percentage` decimal(10,1) NOT NULL DEFAULT '0.0',
+  `muscle_weight` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `muscle_weight_range_bottom` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `muscle_weight_range_top` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `bones_weight` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `bones_percentage` decimal(10,1) NOT NULL DEFAULT '0.0',
+  `bones_percentage_range_bottom` decimal(10,1) NOT NULL DEFAULT '0.0',
+  `bones_percentage_range_top` decimal(10,1) NOT NULL DEFAULT '0.0',
   `calories_activeless` int(10) unsigned NOT NULL DEFAULT '0',
   `calories_active` int(10) unsigned NOT NULL DEFAULT '0',
+  `chest_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `neck_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `waist_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `biceps_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`checkup_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
 -- Dumping data for table `checkup`
 --
 
 /*!40000 ALTER TABLE `checkup` DISABLE KEYS */;
-INSERT INTO `checkup` (`checkup_id`,`date`,`weight`,`height`,`biceps_circumference`,`img_front`,`img_side`,`waist_circumference`,`neck_circumference`,`chest_circumference`,`fat_percentage`,`fat_weight`,`water_percentage`,`water_weight`,`muscle_percentage`,`muscle_weight`,`bones_percentage`,`bones_weight`,`calories_activeless`,`calories_active`) VALUES 
- (1,'2012-03-11 12:00:00','102.50','185.00','0.00','','','0.00','0.00','0.00','24.90','25.52','54.80','56.17','38.60','39.56','14.43','14.80',2185,2179),
- (2,'2012-03-19 12:00:00','102.00','185.00','39.00','','','104.00','0.00','114.50','24.70','25.19','55.00','56.10','38.70','39.47','14.50','14.80',2046,4035),
- (3,'2012-03-26 12:00:00','101.50','185.00','39.00','','','106.00','0.00','116.00','24.60','24.96','55.00','55.82','38.80','39.40','14.48','14.70',2172,4022);
+INSERT INTO `checkup` (`checkup_id`,`date`,`height`,`weight`,`img_front`,`img_side`,`fat_percentage`,`fat_weight`,`fat_weight_range_bottom`,`fat_weight_range_top`,`water_percentage`,`water_weight`,`water_weight_range_bottom`,`water_weight_range_top`,`muscle_percentage`,`muscle_weight`,`muscle_weight_range_bottom`,`muscle_weight_range_top`,`bones_weight`,`bones_percentage`,`bones_percentage_range_bottom`,`bones_percentage_range_top`,`calories_activeless`,`calories_active`,`chest_circumference`,`neck_circumference`,`waist_circumference`,`biceps_circumference`) VALUES 
+ (1,'2012-03-11 12:00:00','185.00','102.50','','','24.9','25.523','25.395','25.650','54.8','56.170','56.013','56.327','38.6','39.565','39.424','39.706','14.800','14.4','14.3','14.6',2185,2179,'0.00','0.00','0.00','0.00'),
+ (2,'2012-03-19 12:00:00','185.00','102.00','','','24.7','25.194','25.067','25.321','55.0','56.100','55.943','56.257','38.7','39.474','39.333','39.615','14.800','14.5','14.4','14.6',2046,4035,'114.50','0.00','104.00','39.00'),
+ (3,'2012-03-26 12:00:00','185.00','101.50','','','24.6','24.969','24.843','25.095','55.0','55.825','55.669','55.982','38.8','39.382','39.242','39.522','14.700','14.5','14.4','14.6',2172,4022,'116.00','0.00','106.00','39.00'),
+ (4,'2012-04-02 00:00:00','185.00','100.10',' ',' ','24.2','24.224','24.100','24.349','55.4','55.455','55.300','55.651','39.0','39.039','38.900','39.178','14.500','14.5','14.4','14.6',2152,3985,'0.00','0.00','0.00','0.00');
 /*!40000 ALTER TABLE `checkup` ENABLE KEYS */;
 
 
