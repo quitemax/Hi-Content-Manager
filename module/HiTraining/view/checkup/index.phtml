@@ -223,6 +223,46 @@
     chartBonesPercent.draw(data, options);
 
 
+    /**
+	*
+	*/
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date');
+    data.addColumn('number', 'Calories A4 [kcal]');
+//    data.addColumn({type:'number', role:'interval'});  // interval role col.
+//    data.addColumn({type:'number', role:'interval'});  // interval role col.
+    data.addRows([
+      <?php foreach ($checkupsArray as $checkup):?>
+      ['<?php echo $checkup['date'];?>', <?php echo $checkup['calories_active'];?>],
+      <?php endforeach;?>
+    ]);
+
+    var chartCaloriesA4 = new google.visualization.LineChart(document.getElementById('CaloriesA4_div'));
+    chartCaloriesA4.draw(data, options);
+//
+
+    /**
+	*
+	*/
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date');
+    data.addColumn('number', 'Calories [kcal]');
+//    data.addColumn({type:'number', role:'interval'});  // interval role col.
+//    data.addColumn({type:'number', role:'interval'});  // interval role col.
+    data.addRows([
+      <?php foreach ($checkupsArray as $checkup):?>
+      ['<?php echo $checkup['date'];?>', <?php echo $checkup['calories_activeless'];?>],
+      <?php endforeach;?>
+    ]);
+
+//    var options = {
+//      title: 'Percent'
+//    };
+
+    var chartCalories = new google.visualization.LineChart(document.getElementById('Calories_div'));
+    chartCalories.draw(data, options);
+
+
   }
 </script>
 	<?php
@@ -277,8 +317,8 @@
             <div id="BonesPercent_div" style="width: 700px; height: 200px;"></div>
         </div>
         <div id="tabs-6" style="width: 900px;">
-<!--            <div id="BonesW_div" style="width: 700px; height: 200px;"></div>-->
-<!--            <div id="BonesPercent_div" style="width: 700px; height: 200px;"></div>-->
+            <div id="CaloriesA4_div" style="width: 700px; height: 200px;"></div>
+            <div id="Calories_div" style="width: 700px; height: 200px;"></div>
         </div>
         <div id="tabs-7" style="width: 900px;">
 <!--            <div id="BonesW_div" style="width: 700px; height: 200px;"></div>-->
