@@ -44,7 +44,7 @@ class CheckupController extends ActionController
     public function indexAction()
     {
         return array(
-        	'checkups' => $this->_checkup->getResultSet(),
+        	'checkups' => $this->_checkup->getResultSet(null, array('date', 'asc')),
         );
     }
 
@@ -103,94 +103,208 @@ class CheckupController extends ActionController
         );
     }
 
+/**
+     *  ADD
+     *
+     * Enter description here ...
+     */
     public function addAction()
     {
-//        $form = new CheckupForm();
+
+        /**
+         * Grid FORM
+         */
+        $form = new CheckupGrid(
+            array(
+                'view' => $this->_view,
+            )
+        );
+
+        /**
+         * BUILDING Row
+         */
+        $row = new CheckupRow(
+            array(
+                'model' => $this->_checkup,
+                'view' => $this->_view,
+            )
+        );
 //
-//        $form->submit->setLabel('Add');
+//        $row->addAction(
+//            'saveAdd',
+//            'submit',
+//            array(
+//                'label'     => 'save and add exercise',
+//                'class'     => 'actionImage',
+////                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
+//            )
+//        );
+////
+//        //
+//        $row->build();
 //
-//        $request = $this->getRequest();
+//        //
+//        $form->addSubForm($row, $row->getName());
 //
-//        if ($request->isPost()) {
-//            $formData = $request->post()->toArray();
+//        //
+//        $this->_view->headScript()->appendScript(
+//            $this->_view->render(
+//                'exercises-workout/add.js',
+//                array(
+//                    'back' => $this->url()->fromRoute('exercises-workout-home'),
+//                )
+//            )
+//        );
 //
+//        /**
+//         * POST
+//         */
+//        if ($this->getRequest()->isPost()) {
+//
+//            $formData = $this->getRequest()->post()->toArray();
+////            \HiZend\Debug\Debug::precho($formData);
 //            if ($form->isValid($formData)) {
+//                if (    isset($formData['header']['formId'])
+//                        && $formData['header']['formId'] == 'WorkoutGridForm') {
 //
-//                $values = $form->getValues();
-//                unset($values['checkup_id']);
 //
-//                $this->_checkup->addCheckup($values);
+//                    if (isset($formData['WorkoutRow']['actions']['save']) || isset($formData['WorkoutRow']['actions']['saveAdd'])) {
 //
-////              // Redirect to list
-//                return $this->redirect()->toRoute('exercises-checkup-home');
+//                        if (is_array($formData['WorkoutRow']['row'])){
+//                            $newRow = $this->_workout->createRow($formData['WorkoutRow']['row']);
+//                            $newRow->save();
+//
+//                            if(isset($formData['WorkoutRow']['actions']['saveAdd'])) {
+//                                return $this->redirect()->toRoute('exercises-workout-exercise-add/wildcard', array('workout_id' => $newRow->workout_id));
+//                            }
+//                            return $this->redirect()->toRoute('exercises-workout-home');
+//                        }
+//
+//                    }
+//                }
 //            }
 //        }
+//
+//
+//
+//
 //        return array('form' => $form);
 
     }
 
+    /**
+     *  EDIT
+     *
+     * Enter description here ...
+     */
     public function editAction()
     {
-//        $form = new CheckupForm();
-//
-//        $form->submit->setLabel('Edit');
-//
 //        $request = $this->getRequest();
 //
-//        $checkup = 0;
+//        $routeMatch = $this->getEvent()->getRouteMatch();
+//        $id     = $routeMatch->getParam('workout_id', 0);
 //
-//        if ($request->isPost()) {
-//            $formData = $request->post()->toArray();
+//        if ($id <= 0) {
+//            return $this->redirect()->toRoute('exercises-workout-home');
+//        }
+//        /**
+//         * Grid FORM
+//         */
+//        $form = new WorkoutGrid(
+//            array(
+//                'view' => $this->_view,
+//            )
+//        );
 //
+//        /**
+//         * BUILDING Row
+//         */
+//        $row = new WorkoutRow(
+//            array(
+//                'model' => $this->_workout,
+//                'view' => $this->_view,
+//            )
+//        );
+//
+//        $row->setRowId($id);
+////
+//        //
+//        $row->build();
+//
+//        //
+//        $form->addSubForm($row, $row->getName());
+//
+//        //
+//        $this->_view->headScript()->appendScript(
+//            $this->_view->render(
+//                'exercises-workout/edit.js',
+//                array(
+//                    'delete' => $this->url()->fromRoute('exercises-workout-delete/wildcard', array('workout_id' => '')),
+//                    'back' => $this->url()->fromRoute('exercises-workout-home'),
+//                )
+//            )
+//        );
+//
+//        /**
+//         * POST
+//         */
+//        if ($this->getRequest()->isPost()) {
+//
+//            $formData = $this->getRequest()->post()->toArray();
+////            \HiZend\Debug\Debug::precho($formData);
 //            if ($form->isValid($formData)) {
+//                if (    isset($formData['header']['formId'])
+//                        && $formData['header']['formId'] == 'WorkoutGridForm') {
 //
-//                $id = $form->getValue('checkup_id');
 //
-//                $values = $form->getValues();
-//                unset($values['checkup_id']);
+//                    if (isset($formData['WorkoutRow']['actions']['save'])) {
+////
+//                        if (is_array($formData['WorkoutRow']['row'])){
 //
-//                if ($this->_checkup->getCheckup($id)) {
-//                    $this->_checkup->updateCheckup($id, $values);
+//                            if ($workoutRow = $this->_workout->getWorkout($id)) {
+//                                $workoutRow->setFromArray($formData['WorkoutRow']['row']);
+//                                $workoutRow->save();
+//                            }
+//
+//                            return $this->redirect()->toRoute('exercises-workout-home');
+//                        }
+//                    }
 //                }
-//
-////              // Redirect to list
-//                return $this->redirect()->toRoute('exercises-checkup-home');
-//            }
-//        } else {
-//            $id = $request->query()->get('checkup_id', 0);
-//            if ($id > 0) {
-//                $checkup = $this->_checkup->getCheckup($id);
-//                $form->populate($checkup->toArray());
-//
 //            }
 //        }
+//
+//
+//
+//
 //        return array(
 //            'form' => $form,
-//            'checkup' => $checkup,
+//            'id' => $id,
 //        );
 
     }
 
+    /**
+     *  DELETE
+     *
+     * Enter description here ...
+     */
     public function deleteAction()
     {
+////        $request = $this->getRequest();
+//
+////        if ($request->isPost()) {
+////            $del = $request->post()->get('del', 'No');
+////            if ($del == 'Yes') {
 //        $request = $this->getRequest();
 //
-//        if ($request->isPost()) {
-//            $del = $request->post()->get('del', 'No');
-//            if ($del == 'Yes') {
-//                $id = (int) $request->post()->get('checkup_id');
-//                echo "<pre>" . '"$id" ';
-//                 print_r($id);
-//                echo "</pre>";
+//        $routeMatch = $this->getEvent()->getRouteMatch();
+//        $id     = $routeMatch->getParam('workout_id', 0);
 //
-//                $this->_checkup->deleteCheckup($id);
-//            }
+//        $workoutRow = $this->_workout->getWorkout($id);
+//        $workoutRow->delete();
+//
 //            // Redirect to list of albums
-//            return $this->redirect()->toRoute('exercises-checkup-home');
-//        }
-//
-//        $id = $request->query()->get('checkup_id', 0);
-//        return array('checkup' => $this->_checkup->getCheckup($id));
+//        return $this->redirect()->toRoute('exercises-workout-home');
 
     }
 
