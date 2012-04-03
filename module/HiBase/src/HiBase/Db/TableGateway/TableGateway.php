@@ -137,7 +137,7 @@ class TableGateway extends ZendTableGateway
 //        /*@var $sqlSelect Zend_Db_Select*/
 //        $sqlSelect = $this->_db->select();
 
-        $sqlSelect = clone $this->sqlSelect;
+        $sqlSelect = new Select();
 
 //        $fromCols = array();
 //        if ($cols !== null && is_array($cols) && count($cols)) {
@@ -147,14 +147,27 @@ class TableGateway extends ZendTableGateway
 //        }
 //
 //        //from
-//        $sqlSelect->from(
+//        $sqlSelect->columns(
 //            array (
 //                $this->_prfx => $this->_name,
 //            ),
 //            $fromCols
 //        );
 
-        $sqlSelect->from($this->tableName, $this->databaseSchema);
+        $fromCols = array();
+        if ($cols !== null && is_array($cols) && count($cols)) {
+            $fromCols = $cols;
+        } else {
+            $fromCols[] =  '*';
+        }
+
+        //from
+        $sqlSelect->columns(
+            $fromCols,
+            true
+        );
+
+        $sqlSelect->from($this->tableName, $this->schema);
 
 
 
@@ -193,14 +206,14 @@ class TableGateway extends ZendTableGateway
             $sqlSelect->where($where);
         }
 
-//
-//        //limit
+
+        //limit
 //        $sqlSelect->limit($count, $offset);
-//
-//        //order
-//        $sqlSelect->order($order);
-////        echo $sqlSelect;
-//
+
+        //order
+        $sqlSelect->order($order);
+        echo $sqlSelect->getSqlString();
+
         return $sqlSelect;
     }
 
