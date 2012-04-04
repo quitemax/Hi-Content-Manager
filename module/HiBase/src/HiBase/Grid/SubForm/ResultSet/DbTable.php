@@ -26,7 +26,7 @@ class DbTable extends GridResultSet
     /**
      *
      *
-     * @var HiZend\Db\Table\AbstractTable
+     * @var HiBase\Db\Table\AbstractTable
      */
     protected $_model = null;
 
@@ -92,31 +92,32 @@ class DbTable extends GridResultSet
     protected function _setup()
     {
 
-//        $model = $this->_model;
+        $model = $this->_model;
 
-//        $metadata = new Metadata($model->adapter);
-////        $model = $this->_model;
+        $modelDefinition = $model->getTableDefinition();
+
+
+//        \Zend\Debug::dump($modelDefinition);
+
+        foreach ($modelDefinition as $name => $fieldMetadata) {
+            if (!empty($fieldMetadata['options']['primary']) && $fieldMetadata['options']['primary'] == true) {
+                $this->setPrimaryKey($name);
+                $this->addField(
+                    $name,
+                    'id',
+                    array(
+                        'label'     => $name,
+                        'sortable'  => true,
+                    )
+                );
+                continue;
+            }
 //
-//        $modelInfo = $this->_model->info();
-////        \HiZend\Debug\Debug::precho($modelInfo);
-//
-//        foreach ($modelInfo['metadata'] as $name => $fieldMetadata) {
-//            if ($fieldMetadata['PRIMARY']) {
-//                $this->setPrimaryKey($name);
-//                $this->addField(
-//                    $name,
-//                    'id',
-//                    array(
-//                        'label'     => $name,
-//                        'sortable'  => true,
-//                    )
-//                );
-//                continue;
-//            }
-//
-//            if (!isset($fieldMetadata['TRANSLATED']) || (isset($fieldMetadata['TRANSLATED']) && !$fieldMetadata['TRANSLATED'])) {
-//                switch($fieldMetadata['DATA_TYPE']) {
-//	                case 'tinyint':
+            if (empty($fieldMetadata['options']['TRANSLATED']) || (!empty($fieldMetadata['TRANSLATED']) && !$fieldMetadata['TRANSLATED'])) {
+
+                //non-translated fields
+                switch($fieldMetadata['type']) {
+                    case 'tinyint':
 //	                    if ($fieldMetadata['LENGTH'] === null) {
 //	                        $this->addField(
 //	                            $name,
@@ -127,8 +128,8 @@ class DbTable extends GridResultSet
 //	                            )
 //	                        );
 //	                    }
-//	                    break;
-//	                case 'smallint':
+                        break;
+                    case 'smallint':
 //	                    if ($fieldMetadata['LENGTH'] === null) {
 //	                        $this->addField(
 //	                            $name,
@@ -140,30 +141,30 @@ class DbTable extends GridResultSet
 //	                            )
 //	                        );
 //	                    }
-//	                    break;
-//	                case 'int':
-//	                    $this->addField(
-//	                        $name,
-//	                        'input',
-//	                        array(
-//	                            'label'     => $name,
-//	                            'sortable'  => true,
-//	                            'size'    => 7,
-//	                        )
-//	                    );
-//	                    break;
-//	                case 'decimal':
-//	                    $this->addField(
-//	                        $name,
-//	                        'input',
-//	                        array(
-//	                            'label'     => $name,
-//	                            'sortable'  => true,
-//	                            'size'    => 9,
-//	                        )
-//	                    );
-//	                    break;
-//	                case 'char':
+                        break;
+                    case 'integer':
+	                    $this->addField(
+	                        $name,
+	                        'input',
+	                        array(
+	                            'label'     => $name,
+	                            'sortable'  => true,
+	                            'size'    => 7,
+	                        )
+	                    );
+                        break;
+                    case 'decimal':
+	                    $this->addField(
+	                        $name,
+	                        'input',
+	                        array(
+	                            'label'     => $name,
+	                            'sortable'  => true,
+	                            'size'    => 9,
+	                        )
+	                    );
+                        break;
+                    case 'char':
 //	                    $size = 22;
 //	                    if ($fieldMetadata['LENGTH'] > 20 ) {
 //	                      $size = (int)($fieldMetadata['LENGTH']/4);
@@ -177,8 +178,8 @@ class DbTable extends GridResultSet
 //	                            'size'      => $size,
 //	                        )
 //	                    );
-//	                    break;
-//	                case 'text':
+                        break;
+                    case 'text':
 //	                    $this->addField(
 //	                        $name,
 //	                        'textarea',
@@ -189,8 +190,8 @@ class DbTable extends GridResultSet
 //	                            'cols'      => 40,
 //	                        )
 //	                    );
-//	                    break;
-//	                case 'date':
+                        break;
+                    case 'date':
 //	                    $this->addField(
 //	                        $name,
 //	                        'input',
@@ -199,18 +200,18 @@ class DbTable extends GridResultSet
 //	                            'sortable'  => true,
 //	                        )
 //	                    );
-//	                    break;
-//	                case 'datetime':
-//	                    $this->addField(
-//	                        $name,
-//	                        'input',
-//	                        array(
-//	                            'label'     => $name,
-//	                            'sortable'  => true,
-//	                        )
-//	                    );
-//	                    break;
-//	                case 'time':
+                        break;
+                    case 'datetime':
+	                    $this->addField(
+	                        $name,
+	                        'input',
+	                        array(
+	                            'label'     => $name,
+	                            'sortable'  => true,
+	                        )
+	                    );
+                        break;
+                    case 'time':
 //	                    $this->addField(
 //	                        $name,
 //	                        'input',
@@ -220,11 +221,13 @@ class DbTable extends GridResultSet
 //	                            'size'    => 10,
 //	                        )
 //	                    );
-//	                    break;
-//	                default:
-//	                    break;
-//	            }
-//            } else {
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+
+                //translated fields
 ////                switch($fieldMetadata['DATA_TYPE']) {
 ////                    case 'tinyint':
 //////                        Zend_Debug::dump($metadata);
@@ -288,47 +291,47 @@ class DbTable extends GridResultSet
 ////                    default:
 ////                        break;
 ////                }
-//            }
-//        }
-//
-//        //$this->setActiveRowCheckbox();
-//        $this->_rowCheckBoxEnable = true;
-//
+            }
+        }
+
+        //$this->setActiveRowCheckbox();
+        $this->_rowCheckBoxEnable = true;
+
     }
 
-//    /**
-//     *
-//     *
-//     *
-//     * @return int
-//     */
-//    public function setDbWhere($where = null)
-//    {
-//        if ($where !== null) {
-//            $this->_dbWhere = $where;
-//        }
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return int
-//     */
-//    public function getDbWhere()
-//    {
-//        return $this->_dbWhere;
-//    }
-//    /**
-//     *
-//     *
-//     *
-//     * @return int
-//     */
-//    public function setLoadAll($load = false)
-//    {
-//        $this->_loadAll = $load;
-//    }
+    /**
+     *
+     *
+     *
+     * @return int
+     */
+    public function setDbWhere($where = null)
+    {
+        if ($where !== null) {
+            $this->_dbWhere = $where;
+        }
+    }
+
+    /**
+     *
+     *
+     *
+     * @return int
+     */
+    public function getDbWhere()
+    {
+        return $this->_dbWhere;
+    }
+    /**
+     *
+     *
+     *
+     * @return int
+     */
+    public function setLoadAll($load = false)
+    {
+        $this->_loadAll = $load;
+    }
 //
 //    /**
 //     * Adds a field to record rowset
@@ -462,34 +465,30 @@ class DbTable extends GridResultSet
 //        }
 //
 //    }
-//
-//    /**
-//     * Builds
-//     *
-//     * @return Zend_Form_SubForm
-//     */
-//    public function build()
-//    {
-//
-//
-//
-////        \HiZend\Debug\Debug::precho($this->_fields);
-//
-//
+
+    /**
+     * Builds
+     *
+     * @return Zend_Form_SubForm
+     */
+    public function build()
+    {
 ////        if ($this->_model->hasBehaviour('i18n')) {
 ////
 ////            //
 ////            $this->_model->getBehaviour('i18n')->setLang($this->_rowsetSession->lang);
 ////        }
 ////\HiZend\Debug\Debug::dump($this->getDbOrder());
-//        //
-//        $rowset = $this-> _model -> getRowset(
+        //
+        $resultSet = $this-> _model -> getResultSet(
 //            $this->getDbWhere(),
 //            $this->getDbOrder(),
 //            $this->getDbLimit(),
 //            $this->getDbOffset(),
 //            $this->getFieldsNames()
-//        );
+        );
+
+
 ////    \HiZend\Debug\Debug::dump($rowset->toArray());
 ////    \HiZend\Debug\Debug::dump($this);
 ////    \HiZend\Debug\Debug::dump($this->getDbWhere());
@@ -497,20 +496,26 @@ class DbTable extends GridResultSet
 ////    \HiZend\Debug\Debug::dump($this->getDbLimit());
 ////    \HiZend\Debug\Debug::dump($this->getDbOffset());
 ////    \HiZend\Debug\Debug::dump($this->_model -> getCountLastSql());
-//        //
-//        $rowsetCount = $this->_model -> getCountLastSql();
-//
+
+
+//        \Zend\Debug::dump($resultSet->toArray());
+
+
+        //
+//        $resultSetCount = $this->_model -> getCountLastSql();
+        $resultSetCount = count($resultSet);
+
 ////        if ($this->_model->hasBehaviour('i18n')) {
 ////
 ////            //
 ////            $this->_model->getBehaviour('i18n')->clearLang();
 ////        }
-//
-//        //
-//        $this->setData($rowset->toArray());
-//        $this->setAllElementsCount($rowsetCount);
-//
-//        //
-//        return parent::build();
-//    }
+
+        //
+        $this->setData($resultSet->toArray());
+        $this->setAllElementsCount($resultSetCount);
+
+        //
+        return parent::build();
+    }
 }

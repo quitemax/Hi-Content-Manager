@@ -7,7 +7,7 @@
  * @copyright  Copyright (c) 2010 Piotr Maxymilian Socha
  * @license
  */
-namespace Hi\Grid\Element;
+namespace HiBase\Grid\Element;
 
 use Zend\Form\Element\Text as ZendInput;
 

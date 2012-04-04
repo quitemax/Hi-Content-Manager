@@ -1,9 +1,9 @@
 <?php
-namespace HiTraining\Form\CheckupGrid;
+namespace HiTraining\Form\Checkup;
 
 use HiBase\Grid\SubForm\ResultSet\DbTable as GridDbTableResultSet;
 
-class CheckupResultSet extends GridDbTableResultSet
+class ResultSet extends GridDbTableResultSet
 {
 
     protected $_title = 'CheckupResultSet';
@@ -25,16 +25,16 @@ class CheckupResultSet extends GridDbTableResultSet
 //            )
 //        );
 //
-//        $this->setAllFieldType(
-//            'text'
-//        );
+        $this->setAllFieldType(
+            'text'
+        );
 //
 //
 //
 //
-//        /**
-//         * RECORD ACTIONS
-//         */
+        /**
+         * RECORD ACTIONS
+         */
 //        $this->addRowAction(
 //            'edit',
 //            'submit',
@@ -75,33 +75,21 @@ class CheckupResultSet extends GridDbTableResultSet
 //                'onclick'   => 'addExercise(__ID__);return false;',
 //            )
 //        );
-//
-//
-//        /**
-//         * LIST ACTIONS
-//         */
-//        $this->addRowsetAction(
-//            'add',
-//            'submit',
-//            array(
-//                'label'     => 'add workout',
-//                'class'     => 'actionImage',
-//                'image'     => BASE_URL . '/img/grid/icons/new.png',
-//                'onclick'   => 'addRow();return false;',
-//            )
-//        );
 
-//        //
-//        $this->addRowsetAction(
-//            'save',
-//            'submit',
-//            array(
-//                'label'     => 'save selected',
-//                'class'     => 'actionImage',
-//                'image'     => BASE_URL . '/img/grid/icons/save.png',
-//            )
-//        );
 
+        /**
+         * LIST ACTIONS
+         */
+        $this->addResultSetAction(
+            'add',
+            'submit',
+            array(
+                'label'     => 'add checkup',
+                'class'     => 'actionImage',
+                'image'     => BASE_URL . '/img/grid/icons/new.png',
+                'onclick'   => 'addRow();return false;',
+            )
+        );
 
     }
 }

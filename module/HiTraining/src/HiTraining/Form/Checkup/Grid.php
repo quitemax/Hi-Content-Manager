@@ -1,10 +1,10 @@
 <?php
 
-namespace HiTraining\Form;
+namespace HiTraining\Form\Checkup;
 
 use HiBase\Grid\Form;
 
-class CheckupGrid extends Form
+class Grid extends Form
 {
     /**
      * Title

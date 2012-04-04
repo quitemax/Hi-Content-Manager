@@ -5,8 +5,8 @@ namespace HiTraining\Controller;
 use Zend\Mvc\Controller\ActionController,
     Zend\View\Model\ViewModel,
     HiTraining\Model\Checkup,
-    HiTraining\Form\CheckupGrid,
-    HiTraining\Form\CheckupGrid\CheckupResultSet;
+    HiTraining\Form\Checkup\Grid as CheckupGrid,
+    HiTraining\Form\Checkup\ResultSet as CheckupResultSet;
 
 class CheckupController extends ActionController
 {

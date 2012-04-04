@@ -1,11 +1,11 @@
 <?php
 
-namespace HiTraining\Form\CheckupGrid;
+namespace HiTraining\Form\Checkup;
 
 use HiBase\Grid\SubForm\Row\DbTable as GridDbTableRow;
 
 
-class CheckupRow extends GridDbTableRow
+class Row extends GridDbTableRow
 {
     protected $_title = 'CheckupRow';
     protected $_name = 'CheckupRowSubForm';

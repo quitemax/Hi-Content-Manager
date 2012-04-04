@@ -29,12 +29,12 @@ use Zend\Db\TableGateway\TableGateway as ZendTableGateway,
  */
 class TableGateway extends ZendTableGateway
 {
-//    /**
-//     *
-//     *
-//     * @var Zend\Db\Sql\Select contains last sql statement
-//     */
-//    protected $_lastSql;
+    /**
+     *
+     *
+     * @var Zend\Db\Sql\Select contains last sql statement
+     */
+    protected $_lastSql;
 
 	/**
      *
@@ -48,16 +48,23 @@ class TableGateway extends ZendTableGateway
      *
      * @var string
      */
-    protected $_prfx = null;
+    protected $_prefix = null;
+
+    /**
+     *
+     *
+     * @var string
+     */
+    protected $_columns = array();
 
 
-//
-////    /**
-////     *
-////     *
-////     * @var string
-////     */
-////    protected $_primaryKey = null;
+
+//    /**
+//     *
+//     *
+//     * @var string
+//     */
+//    protected $_primaryKey = null;
 ////
 ////    /**
 ////     *
@@ -101,9 +108,17 @@ class TableGateway extends ZendTableGateway
      *
      * Enter description here ...
      */
-    protected function setTableDefinition()
+    public function setTableDefinition()
     {
+    }
 
+    /**
+     *
+     * Enter description here ...
+     */
+    public function getTableDefinition()
+    {
+        return $this->_columns;
     }
 
 ////
@@ -162,6 +177,50 @@ class TableGateway extends ZendTableGateway
      */
     public function getName() {
         return $this->_name;
+    }
+
+	/**
+     * Get table name (Hi use)
+     *
+     * @return string
+     */
+    public function setName($name) {
+        $this->_name = $name;;
+    }
+
+    /**
+     * Get prefix name (Hi use)
+     *
+     * @return string
+     */
+    public function getPrefix() {
+        return $this->_prefix;
+    }
+
+    /**
+     * Get prefix name (Hi use)
+     *
+     * @return string
+     */
+    public function setPrefix($prefix) {
+        $this->_prefix = $prefix;
+    }
+
+
+    /**
+     *
+     *
+     * @return
+     */
+    public function hasColumn($columnName, $type, $length, $options)
+    {
+
+        $this->_columns[$columnName] = array(
+            'type'      => $type,
+            'length'    => $length,
+            'options'   => $options,
+        );
+
     }
 
     /**
@@ -250,7 +309,7 @@ class TableGateway extends ZendTableGateway
 
         //order
         $sqlSelect->order($order);
-        echo $sqlSelect->getSqlString();
+//        echo $sqlSelect->getSqlString();
 
         return $sqlSelect;
     }
