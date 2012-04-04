@@ -2365,52 +2365,52 @@ class ResultSet extends GridSubForm
 ////
 ////        return $tmpElement;
 ////    }
+
+    /**
+     *
+     *
+     * @return Zend_Form_Element_Submit
+     */
+    protected function _buildRowActionSubmit($name, $options = array())
+    {
+        $tmpElement = new Element\Submit(
+            $name
+        );
+
+        if ($options) {
+            foreach ($options as $optionName => $option) {
+                switch ($optionName) {
+                    case 'label':
+                        $tmpElement->setLabel($option);
+                        break;
+                    case 'class':
+                        $tmpElement->setAttrib('class', $option);
+                        break;
+                    case 'onclick':
+                        if (strpos($option, '__ID__') !== false) {
+                            $option = str_replace(
+                                '__ID__',
+                                $this->_currentRowIdValue,
+                                $option
+                            );
+                        }
+                        $tmpElement->setAttrib('onclick', $option);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
 //
-//    /**
-//     *
-//     *
-//     * @return Zend_Form_Element_Submit
-//     */
-//    protected function _buildRowActionSubmit($name, $options = array())
-//    {
-//        $tmpElement = new Element\Submit(
-//            $name
+//        $tmpElement->setDecorators(
+//            array(
+//                array('ViewHelper')
+//            )
 //        );
-//
-//        if ($options) {
-//            foreach ($options as $optionName => $option) {
-//                switch ($optionName) {
-//                    case 'label':
-//                        $tmpElement->setLabel($option);
-//                        break;
-//                    case 'class':
-//                        $tmpElement->setAttrib('class', $option);
-//                        break;
-//                    case 'onclick':
-//                        if (strpos($option, '__ID__') !== false) {
-//                            $option = str_replace(
-//                                '__ID__',
-//                                $this->_currentRowIdValue,
-//                                $option
-//                            );
-//                        }
-//                        $tmpElement->setAttrib('onclick', $option);
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        }
-////
-////        $tmpElement->setDecorators(
-////            array(
-////                array('ViewHelper')
-////            )
-////        );
-//
-//        return $tmpElement;
-//    }
-//
+
+        return $tmpElement;
+    }
+
 //    /**
 //     *
 //     *

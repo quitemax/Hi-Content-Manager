@@ -13,68 +13,34 @@ class ResultSet extends GridDbTableResultSet
     {
         //
         parent::init();
-//
-//
-//        $this->addField(
-//            'exercises_count',
-//            'text',
-//            array(
-//                'label'     => 'exercises_count',
-//                'sortable'  => true,
-//                'sql'    => '(' . $this->_model->getWorkoutExercisesCountSql() . ')',
-//            )
-//        );
-//
+
         $this->setAllFieldType(
             'text'
         );
-//
-//
-//
-//
+
         /**
          * RECORD ACTIONS
          */
-//        $this->addRowAction(
-//            'edit',
-//            'submit',
-//            array(
-//                'label'     => 'edit',
-//                'image'     => BASE_URL . '/img/grid/icons/edit.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => 'editRow(__ID__);return false;',
-//            )
-//        );
-//        $this->addRowAction(
-//            'delete',
-//            'submit',
-//            array(
-//                'label'     => 'delete',
-//                'image'     => BASE_URL . '/img/grid/icons/delete.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => 'deleteRow(__ID__);return false;',
-//            )
-//        );
-//        $this->addRowAction(
-//            'exercises',
-//            'submit',
-//            array(
-//                'label'     => 'exercises',
-//                'image'     => BASE_URL . '/img/grid/icons/delete.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => 'exercises(__ID__);return false;',
-//            )
-//        );
-//        $this->addRowAction(
-//            'add-exercise',
-//            'submit',
-//            array(
-//                'label'     => 'add exercise',
-//                'image'     => BASE_URL . '/img/grid/icons/delete.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => 'addExercise(__ID__);return false;',
-//            )
-//        );
+        $this->addRowAction(
+            'edit',
+            'submit',
+            array(
+                'label'     => 'edit',
+                'image'     => BASE_URL . '/img/grid/icons/edit.png',
+                'class'     => 'actionImage',
+                'onclick'   => 'editRow(__ID__);return false;',
+            )
+        );
+        $this->addRowAction(
+            'delete',
+            'submit',
+            array(
+                'label'     => 'delete',
+                'image'     => BASE_URL . '/img/grid/icons/delete.png',
+                'class'     => 'actionImage',
+                'onclick'   => 'deleteRow(__ID__);return false;',
+            )
+        );
 
 
         /**
@@ -88,6 +54,19 @@ class ResultSet extends GridDbTableResultSet
                 'class'     => 'actionImage',
                 'image'     => BASE_URL . '/img/grid/icons/new.png',
                 'onclick'   => 'addRow();return false;',
+            )
+        );
+        /**
+         * LIST ACTIONS
+         */
+        $this->addResultSetAction(
+            'mass-delete',
+            'submit',
+            array(
+                'label'     => 'mass delete',
+                'class'     => 'actionImage',
+                'image'     => BASE_URL . '/img/grid/icons/new.png',
+                'onclick'   => 'deleteSelected();return false;',
             )
         );
 
