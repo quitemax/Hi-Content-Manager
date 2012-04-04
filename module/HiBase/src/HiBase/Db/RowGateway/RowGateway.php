@@ -1,6 +1,6 @@
 <?php
 
-namespace HiBase\Db\Table;
+namespace HiBase\Db\RowGateway;
 /**
  * Hi CMS
  *
@@ -10,7 +10,7 @@ namespace HiBase\Db\Table;
  * @license
  */
 
-use Zend\Db\Table\AbstractRow as ZendAbstractRow;
+use Zend\Db\RowGateway\RowGateway as ZendRowGateway;
 
 /**
  * Refited Zend_Db_Table class for use with HiCms
@@ -21,7 +21,7 @@ use Zend\Db\Table\AbstractRow as ZendAbstractRow;
  * @copyright  Copyright (c) 2009 Piotr Maxymilian Socha
  * @license
  */
-class AbstractRow extends ZendAbstractRow
+class RowGateway extends ZendRowGateway
 {
 //    /**
 //     *

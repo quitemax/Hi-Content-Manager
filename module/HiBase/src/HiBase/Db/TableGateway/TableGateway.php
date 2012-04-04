@@ -11,6 +11,11 @@ namespace HiBase\Db\TableGateway;
  */
 
 use Zend\Db\TableGateway\TableGateway as ZendTableGateway,
+    Zend\Db\Adapter\Adapter,
+    Zend\Db\ResultSet\ResultSet,
+    Zend\Db\Sql\Insert,
+    Zend\Db\Sql\Update,
+    Zend\Db\Sql\Delete,
     Zend\Db\Sql\Select;
 
 /**
@@ -68,6 +73,39 @@ class TableGateway extends ZendTableGateway
 ////     */
 ////    protected $_behaviourObjects = array();
 ////
+	/**
+     * Constructor
+     *
+     * @param string $tableName
+     * @param Adapter $adapter
+     * @param string $schema
+     * @param ResultSet $selectResultPrototype
+     */
+    public function __construct($tableName, Adapter $adapter, $schema = null, ResultSet $selectResultPrototype = null)
+    {
+        parent::__construct($tableName, $adapter, $schema, $selectResultPrototype);
+
+        $this->init();
+    }
+
+    /**
+     *
+     * Enter description here ...
+     */
+    protected function init()
+    {
+        $this->setTableDefinition();
+    }
+
+    /**
+     *
+     * Enter description here ...
+     */
+    protected function setTableDefinition()
+    {
+
+    }
+
 ////
 ////    /**
 ////     *

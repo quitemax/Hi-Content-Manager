@@ -1,6 +1,6 @@
 <?php
 
-namespace HiBase\Db\Table;
+namespace HiBase\Db\ResultSet;
 /**
  * Hi CMS
  *
@@ -10,7 +10,7 @@ namespace HiBase\Db\Table;
  * @license
  */
 
-use Zend\Db\Table\AbstractRowset as ZendAbstractRowset;
+use Zend\Db\ResultSet\ResultSet as ZendResultSet;
 
 /**
  * Refited Zend\Db\Table class for use with Hi
@@ -21,7 +21,7 @@ use Zend\Db\Table\AbstractRowset as ZendAbstractRowset;
  * @copyright  Copyright (c) 2009 Piotr Maxymilian Socha
  * @license
  */
-class AbstractRowset extends ZendAbstractRowset
+class ResultSet extends ZendResultSet
 {
 //    /**
 //     *

@@ -1,19 +1,24 @@
 <?php
+/**
+ *
+ * Enter description here ...
+ * @author MaX
+ *
+ */
+namespace HiTraining\Model\Checkup;
 
-namespace Exercises\Model;
+/**
+ *
+ */
+use HiBase\Db\RowGateway\RowGateway as HiRowGateway;
 
-//use Zend\Db\Table\AbstractTable;
-use HiZend\Db\Table\AbstractRow;
-//    Zend\Di\Locator,
-//    Zend\EventManager\EventCollection,
-//    Zend\EventManager\ListenerAggregate,
-//    Zend\EventManager\StaticEventCollection,
-//    Zend\Http\Response,
-//    Zend\Mvc\Application,
-//    Zend\Mvc\MvcEvent,
-//    Zend\View\Renderer;
-
-class WorkoutRow extends AbstractRow
+/**
+ *
+ * Enter description here ...
+ * @author MaX
+ *
+ */
+class Row extends HiRowGateway
 {
 //    protected $_name = 'workout';
 //

@@ -43,17 +43,32 @@ return array(
 
             'HiTraining\Controller\CheckupController' => array(
                 'parameters' => array(
-                    'checkup'  => 'HiTraining\Model\DbTable\Checkup',
+                    'checkup'  => 'HiTraining\Model\Checkup',
                     'view'     => 'Zend\View\Renderer\PhpRenderer',
                 ),
             ),
 
-            'HiTraining\Model\DbTable\Checkup' => array(
+            'HiTraining\Model\Checkup' => array(
                 'parameters' => array(
                     'tableName' => 'checkup',
                     'adapter' => 'Zend\Db\Adapter\Adapter',
+//                    'schema' => null,
+//                    'selectResultPrototype' => 'HiTraining\Model\Checkup\ResultSet',
                 )
             ),
+
+//            'HiTraining\Model\Checkup\ResultSet' => array(
+//                'parameters' => array(
+//                    'rowObjectPrototype' => 'HiTraining\Model\Checkup\Row',
+//                )
+//            ),
+
+//            'HiTraining\Model\Checkup\Row' => array(
+//                'parameters' => array(
+//                    'tableGateway' => 'HiTraining\Model\Checkup',
+//                    'primaryKey'   => 'checkup_id',
+//                )
+//            ),
 
             /**
              * Routes

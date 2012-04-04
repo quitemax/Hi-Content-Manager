@@ -1,22 +1,37 @@
 <?php
+/**
+ *
+ * Enter description here ...
+ * @author MaX
+ *
+ */
+namespace HiTraining\Model\Checkup;
 
-namespace HiTraining\Model\DbTable;
-
+/**
+ *
+ */
 use HiBase\Db\TableGateway\TableGateway;
-//    Zend\Di\Locator,
-//    Zend\EventManager\EventCollection,
-//    Zend\EventManager\ListenerAggregate,
-//    Zend\EventManager\StaticEventCollection,
-//    Zend\Http\Response,
-//    Zend\Mvc\Application,
-//    Zend\Mvc\MvcEvent,
-//    Zend\View\Renderer;
 
-class Checkup extends TableGateway
+/**
+ *
+ * Enter description here ...
+ * @author MaX
+ *
+ */
+class DbTable extends TableGateway
 {
+    /**
+     *
+     * Enter description here ...
+     */
+    public function setTableDefinition()
+    {
+        $this->setName('checkup');
 
-    protected $_name = 'checkup';
-    protected $_prfx = 'c';
+        $this->setPrefix('c');
+    }
+
+
 
 //    public function getCheckup($id)
 //    {
