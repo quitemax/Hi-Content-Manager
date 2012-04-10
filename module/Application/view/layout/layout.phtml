@@ -5,7 +5,8 @@ $this->headTitle()->setSeparator(' - ')
 $basePath = $this->basePath();
 $this->headLink()->appendStylesheet($basePath . '/css/bootstrap.min.css')
                  ->appendStylesheet($basePath . '/css/style.css')
-                 ->appendStylesheet($basePath . '/css/bootstrap-responsive.min.css');
+                 ->appendStylesheet($basePath . '/css/bootstrap-responsive.min.css')
+                 ->appendStylesheet($basePath . '/css/site.css');
 
 $this->headLink(array(
             'rel'  => 'shortcut icon',
@@ -59,27 +60,61 @@ echo $this->doctype();
 
               <li class="<?php if (strpos($controller, 'HiTraining') !== false) :?>active<?php endif;?>">
                 <a href="<?php echo $this->url('hi-training') ?>">Training</a>
-                <ul class="">
+                <ul class="level-1">
 
                   <li class="">
-                    <a href="<?php echo $this->url('hi-training/checkup') ?>">Checkup stats</a>
+                    <a href="<?php echo $this->url('hi-training/checkup') ?>">Checkup</a>
+                    <ul class="level-2">
+
+                      <li class="">
+                        <a href="<?php echo $this->url('hi-training/checkup/stats') ?>">Stats</a>
+                      </li>
+
+                      <li class="">
+                        <a href="<?php echo $this->url('hi-training/checkup/list') ?>">List</a>
+                      </li>
+
+                      <li class="">
+                        <a href="<?php echo $this->url('hi-training/checkup/add') ?>">Add new</a>
+                      </li>
+                    </ul>
+
+                  </li>
+                  <li class="">
+                    <a href="<?php echo $this->url('hi-training/checkup-profile') ?>">Checkup profile</a>
+                    <ul class="level-2">
+
+                      <li class="">
+                        <a href="<?php echo $this->url('hi-training/checkup-profile/list') ?>">List</a>
+                      </li>
+
+                      <li class="">
+                        <a href="<?php echo $this->url('hi-training/checkup-profile/add') ?>">Add new</a>
+                      </li>
+                    </ul>
+
                   </li>
 
-                  <li class="">
-                    <a href="<?php echo $this->url('hi-training/checkup/list') ?>">Checkup list</a>
-                  </li>
+
 
                   <li class="">
-                    <a href="<?php echo $this->url('hi-training/checkup/list') ?>">Workout stats</a>
+                    <a href="<?php echo $this->url('hi-training') ?>">Workout Workout</a>
+                    <ul class="level-2">
+
+                      <li class="">
+                        <a href="<?php echo $this->url('hi-training') ?>">Stats</a>
+                      </li>
+
+                      <li class="">
+                        <a href="<?php echo $this->url('hi-training') ?>">List</a>
+                      </li>
+
+                      <li class="">
+                        <a href="<?php echo $this->url('hi-training') ?>">Add new</a>
+                      </li>
+                    </ul>
                   </li>
 
-                  <li class="">
-                    <a href="<?php echo $this->url('hi-training/checkup/list') ?>">Workout list</a>
-                  </li>
-
-                  <li class="">
-                    <a href="<?php echo $this->url('hi-training/checkup/list') ?>">Workout exercises list</a>
-                  </li>
                 </ul>
               </li>
 
@@ -92,12 +127,20 @@ echo $this->doctype();
     $this->inlineScript()->appendScript(
         '
          $(document).ready(function() {
-           $("ul.nav li").mouseenter(function(){
-                $(this).find("ul").addClass("active");
+            $("ul.nav li").mouseenter(function(){
+                $(this).find("ul.level-1").addClass("active");
             });
 
             $("ul.nav li").mouseleave(function(){
-                $(this).find("ul").removeClass("active");
+                $(this).find("ul.level-1").removeClass("active");
+            });
+
+            $("ul.level-1 li").mouseenter(function(){
+                $(this).find("ul.level-2").addClass("active");
+            });
+
+            $("ul.level-1 li").mouseleave(function(){
+                $(this).find("ul.level-2").removeClass("active");
             });
          });
         '

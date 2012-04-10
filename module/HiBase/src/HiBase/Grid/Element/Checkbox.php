@@ -9,7 +9,7 @@
  */
 namespace HiBase\Grid\Element;
 
-use Zend\Form\Element\Select as ZendSelect;
+use Zend\Form\Element\Checkbox as ZendCheckbox;
 
 /**
  * Hi_Record_Form
@@ -20,7 +20,7 @@ use Zend\Form\Element\Select as ZendSelect;
  * @license
  * @version    2.0
  */
-class Select extends ZendSelect
+class Checkbox extends ZendCheckbox
 {
     /**
      * Should we disable loading the default decorators?
@@ -28,7 +28,7 @@ class Select extends ZendSelect
      */
     protected $_disableLoadDefaultDecorators = true;
 
-/**
+    /**
      * Should we disable loading the default decorators?
      * @var bool
      */
@@ -44,6 +44,7 @@ class Select extends ZendSelect
      */
     public function setOptions(array $options)
     {
+        //
         if (isset($options['sort'])) {
             $this->_sort = $options['sort'];
             unset($options['sort']);
@@ -60,37 +61,13 @@ class Select extends ZendSelect
             throw new \Exception("You must provide a viewScript path here.");
         }
 
+        //
         if (isset($options['even'])) {
             $this->_even = $options['even'];
             unset($options['even']);
         } else {
-            throw new \Exception("You must provide a even path here.");
+            throw new \Exception("You must provide even here.");
         }
-
-        if (isset($options['values']) && is_array($options['values'])) {
-            $this->setMultiOptions($options['values']);
-            unset($options['values']);
-        } else {
-            //throw new \Exception("You must provide a even path here.");
-        }
-
-        if (isset($options['validators']) && is_array($options['validators'])) {
-            foreach ($options['validators'] as $name => $validatorOptions) {
-                switch($name) {
-                    case 'notEmpty':
-                        $this->addValidator('notEmpty', false, $validatorOptions);
-
-                        break;
-                    case '':
-                    default:
-                        break;
-                }
-            }
-
-            unset($options['validators']);
-        }
-
-
 
         return parent::setOptions($options);
     }
@@ -116,6 +93,5 @@ class Select extends ZendSelect
                 ),
             )
         );
-
     }
 }

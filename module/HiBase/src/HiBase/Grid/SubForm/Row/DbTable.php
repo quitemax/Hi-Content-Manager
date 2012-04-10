@@ -8,9 +8,9 @@
  * @license
  */
 
-namespace Hi\Grid\SubForm\Row;
+namespace HiBase\Grid\SubForm\Row;
 
-use Hi\Grid\SubForm\Row as GridRow;
+use HiBase\Grid\SubForm\Row as GridRow;
 
 /**
  * Db
@@ -23,56 +23,57 @@ use Hi\Grid\SubForm\Row as GridRow;
  */
 class DbTable extends GridRow
 {
+    /**
+     *
+     *
+     * @var HiZend_Db_Table
+     */
+    protected $_model = null;
+
 //    /**
 //     *
 //     *
-//     * @var HiZend_Db_Table
+//     * @var array
 //     */
-//    protected $_model = null;
-//
-////    /**
-////     *
-////     *
-////     * @var array
-////     */
-////    protected $_cols = null;
-//
-//
-//
-//    /**
-//     * Set form state from options array
-//     *
-//     * @param  array $options
-//     * @return Form
-//     */
-//    public function setOptions(array $options)
-//    {
-//        //
-//        if (isset($options['model'])) {
-//            $this->_model = $options['model'];
-//            unset($options['model']);
-//        } else {
-//            throw new Exception("You must give an instance of HiZend\Db\Table here.");
-//        }
-//
-//        return parent::setOptions($options);
-//    }
-//
-//    public function init()
-//    {
-//        parent::init();
-//
-//        $this->_setup();
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return void
-//     */
-//    protected function _setup()
-//    {
+//    protected $_cols = null;
+
+
+
+    /**
+     * Set form state from options array
+     *
+     * @param  array $options
+     * @return Form
+     */
+    public function setOptions(array $options)
+    {
+        //
+        if (isset($options['model'])) {
+            $this->_model = $options['model'];
+            unset($options['model']);
+        } else {
+            throw new Exception("You must give an instance of HiZend\Db\Table here.");
+        }
+
+        return parent::setOptions($options);
+    }
+
+    public function init()
+    {
+        parent::init();
+
+        $this->_setup();
+    }
+
+    /**
+     *
+     *
+     *
+     * @return void
+     */
+    protected function _setup()
+    {
+        $modelDefinition = $this->_model->getTableDefinition();
 //        $modelInfo = $this->_model->info();
 ////        \HiZend\Debug\Debug::precho($modelInfo);
 ////        Zend_Debug::dump($modelInfo);
@@ -80,32 +81,32 @@ class DbTable extends GridRow
 //////        if (!count($cols)) {
 //////
 //////        }
-//        foreach ($modelInfo['metadata'] as $name => $fieldMetadata) {
-//            if ($fieldMetadata['PRIMARY']) {
-//                $this->setPrimaryKey($name);
-//                $this->addField(
-//                    $name,
-//                    'id',
-//                    array(
-//                        'label'     => $name,
-//                    )
-//                );
-//                continue;
-//            }
-//            if (!isset($fieldMetadata['TRANSLATED']) || (isset($fieldMetadata['TRANSLATED']) && !$fieldMetadata['TRANSLATED'])) {
-//                switch($fieldMetadata['DATA_TYPE']) {
-//                    case 'tinyint':
-//                        if ($fieldMetadata['LENGTH'] === null) {
-//                            $this->addField(
-//                                $name,
-//                                'checkbox',
-//                                array(
-//                                    'label'     => $name,
-//                                )
-//                            );
-//                        }
-//                        break;
-//                    case 'smallint':
+        foreach ($modelDefinition as $name => $fieldMetadata) {
+            if (!empty($fieldMetadata['options']['primary']) && $fieldMetadata['options']['primary'] == true) {
+                $this->setPrimaryKey($name);
+                $this->addField(
+                    $name,
+                    'id',
+                    array(
+                        'label'     => $name,
+                    )
+                );
+                continue;
+            }
+            if (empty($fieldMetadata['options']['TRANSLATED']) || (!empty($fieldMetadata['options']['TRANSLATED']) && !$fieldMetadata['options']['TRANSLATED'])) {
+                switch($fieldMetadata['type']) {
+                    case 'tinyint':
+                        if ($fieldMetadata['length'] === 1) {
+                            $this->addField(
+                                $name,
+                                'checkbox',
+                                array(
+                                    'label'     => $name,
+                                )
+                            );
+                        }
+                        break;
+                    case 'smallint':
 //                        if ($fieldMetadata['LENGTH'] === null) {
 //                            $this->addField(
 //                                $name,
@@ -116,18 +117,18 @@ class DbTable extends GridRow
 //                                )
 //                            );
 //                        }
-//                        break;
-//                    case 'int':
-//                        $this->addField(
-//                            $name,
-//                            'input',
-//                            array(
-//                                'label'         => $name,
-//                                'defaultValue'  => '0',
-//                            )
-//                        );
-//                        break;
-//                    case 'date':
+                        break;
+                    case 'integer':
+                        $this->addField(
+                            $name,
+                            'input',
+                            array(
+                                'label'         => $name,
+                                'defaultValue'  => '0',
+                            )
+                        );
+                        break;
+                    case 'date':
 //                        $this->addField(
 //                            $name,
 //                            'input',
@@ -136,18 +137,18 @@ class DbTable extends GridRow
 //                                'defaultValue'  => '0000-00-00',
 //                            )
 //                        );
-//                        break;
-//                    case 'datetime':
-//                        $this->addField(
-//                            $name,
-//                            'input',
-//                            array(
-//                                'label'     => $name,
-//                                'defaultValue'  => '0000-00-00 00:00:00',
-//                            )
-//                        );
-//                        break;
-//                    case 'time':
+                        break;
+                    case 'datetime':
+                        $this->addField(
+                            $name,
+                            'input',
+                            array(
+                                'label'     => $name,
+                                'defaultValue'  => '0000-00-00 00:00:00',
+                            )
+                        );
+                        break;
+                    case 'time':
 //                        $this->addField(
 //                            $name,
 //                            'input',
@@ -156,8 +157,19 @@ class DbTable extends GridRow
 //                                'defaultValue'  => '00:00:00',
 //                            )
 //                        );
-//                        break;
-//                    case 'decimal':
+                        break;
+                    case 'decimal':
+                        $this->addField(
+                            $name,
+                            'input',
+                            array(
+                                'label'     => $name,
+                                'defaultValue'  => '0',
+                                'size'    => 9,
+                            )
+                        );
+                        break;
+                    case 'float':
 //                        $this->addField(
 //                            $name,
 //                            'input',
@@ -166,28 +178,18 @@ class DbTable extends GridRow
 //                                'defaultValue'  => '0',
 //                            )
 //                        );
-//                        break;
-//                    case 'float':
-//                        $this->addField(
-//                            $name,
-//                            'input',
-//                            array(
-//                                'label'     => $name,
-//                                'defaultValue'  => '0',
-//                            )
-//                        );
-//                        break;
-//                    case 'char':
-//                        $this->addField(
-//                            $name,
-//                            'input',
-//                            array(
-//                                'label'     => $this->_view->translate($name),
-//                                'size'      => (int)($fieldMetadata['LENGTH']/2.3),
-//                            )
-//                        );
-//                        break;
-//                    case 'varchar':
+                        break;
+                    case 'char':
+                        $this->addField(
+                            $name,
+                            'input',
+                            array(
+                                'label'     => $name,
+                                'size'      => (int)($fieldMetadata['length']/2.3),
+                            )
+                        );
+                        break;
+                    case 'varchar':
 //                        $this->addField(
 //                            $name,
 //                            'input',
@@ -195,20 +197,20 @@ class DbTable extends GridRow
 //                                'label'     => $name,
 //                            )
 //                        );
-//                        break;
-//                    case 'text':
-//                        $this->addField(
-//                            $name,
-//                            'text',
-//                            array(
-//                                'label'     => $name,
-//                            )
-//                        );
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            } else {
+                        break;
+                    case 'text':
+                        $this->addField(
+                            $name,
+                            'textarea',
+                            array(
+                                'label'     => $name,
+                            )
+                        );
+                        break;
+                    default:
+                        break;
+                }
+            } else {
 ////                switch($fieldMetadata['DATA_TYPE']) {
 ////                    case 'tinyint':
 //////                        Zend_Debug::dump($metadata);
@@ -259,21 +261,21 @@ class DbTable extends GridRow
 ////                        break;
 ////                    default:
 ////                        break;
-////                }
-//            }
-//        }
-////        \HiZend\Debug\Debug::precho($this->_fields);
-//    }
-//
-//
-//
-//    /**
-//     * Builds
-//     *
-//     * @return Zend_Form_SubForm
-//     */
-//    public function build()
-//    {
+//                }
+            }
+        }
+
+    }
+
+
+
+    /**
+     * Builds
+     *
+     * @return Zend_Form_SubForm
+     */
+    public function build()
+    {
 ////        //
 ////        if ($this->_model->hasBehaviour('i18n')) {
 //////            //
@@ -281,19 +283,20 @@ class DbTable extends GridRow
 ////        }
 ////
 //        //
-//        if (isset($this->_dataPrimaryKeyValue) && !isset($this->_data)) {
-//            $model = $this->_model;
-//
-//            $dataRow = $model -> getRow(
-//                $this->_primaryKey
-//                . ' = '
-//                . $this->_dataPrimaryKeyValue
-//            );
-//
-//            //
-//            $this->_data = $dataRow;
-//        }
-//
-//        return parent::build();
-//    }
+        if (isset($this->_dataPrimaryKeyValue) && !isset($this->_data)) {
+
+
+
+            $dataRow = $this->_model -> getRow(
+                $this->_primaryKey
+                . ' = '
+                . $this->_dataPrimaryKeyValue
+            );
+
+            //
+            $this->_data = $dataRow->toArray();
+        }
+
+        return parent::build();
+    }
 }

@@ -8,13 +8,13 @@
  * @license
  */
 
-namespace Hi\Grid\SubForm;
+namespace HiBase\Grid\SubForm;
 
-use Hi\Grid\Element\CheckboxRow,
-    Hi\Grid\SubForm as GridSubForm,
+use HiBase\Grid\Element\CheckboxRow,
+    HiBase\Grid\SubForm as GridSubForm,
     Zend\Session\Container as SessionContainer,
-    Hi\Paginator\Paginator,
-    Hi\Grid\Element;
+//    HiBase\Paginator\Paginator,
+    HiBase\Grid\Element;
 
 /**
  *Row
@@ -454,7 +454,7 @@ class Row extends GridSubForm
     public function build()
     {
 
-
+//        \Zend\Debug::dump($this->_fields);
 
         /*
          * Fields subform
@@ -525,13 +525,13 @@ class Row extends GridSubForm
 //                    );
                     break;
                 case 'text':
-//                    $rowSubform->addElement(
-//                        $this->_buildFieldText(
-//                            $field['name'],
-//                            $value,
-//                            $field['options']
-//                        )
-//                    );
+                    $rowSubform->addElement(
+                        $this->_buildFieldText(
+                            $field['name'],
+                            $value,
+                            $field['options']
+                        )
+                    );
                     break;
                 case 'hidden':
                     $rowSubform->addElement(
@@ -543,13 +543,13 @@ class Row extends GridSubForm
                     );
                     break;
                 case 'checkbox':
-//                    $rowSubform->addElement(
-//                        $this->_buildFieldCheckbox(
-//                            $field['name'],
-//                            $value,
-//                            $field['options']
-//                        )
-//                    );
+                    $rowSubform->addElement(
+                        $this->_buildFieldCheckbox(
+                            $field['name'],
+                            $value,
+                            $field['options']
+                        )
+                    );
                     break;
                 case 'input':
                     $rowSubform->addElement(
@@ -561,13 +561,13 @@ class Row extends GridSubForm
                     );
                     break;
                 case 'textarea':
-//                    $rowSubform->addElement(
-//                        $this->_buildFieldText(
-//                            $field['name'],
-//                            $value,
-//                            $field['options']
-//                        )
-//                    );
+                    $rowSubform->addElement(
+                        $this->_buildFieldTextArea(
+                            $field['name'],
+                            $value,
+                            $field['options']
+                        )
+                    );
                     break;
                 case 'select':
                     $rowSubform->addElement(
@@ -621,6 +621,15 @@ class Row extends GridSubForm
 
                 case 'tinyint':
                 	break;
+                case 'custom':
+                    $rowSubform->addElement(
+                        $this->_buildFieldCustom(
+                            $field['name'],
+                            $this->_data,
+                            $field['options']
+                        )
+                    );
+                    break;
                 default:
                 	break;
 
@@ -657,7 +666,7 @@ class Row extends GridSubForm
             //
 	            switch ($action['type']) {
 	                case 'submit':
-	                    $actionSubform->addElement($this->_buildActionSubmit($action['name'], $value, $action['options']));
+	                    $actionSubform->addElement($this->_buildActionSubmit($action['name'], $action['options']));
 	                    break;
 	                case 'image':
 //                        $actionSubform->addElement($this->_buildActionImage($action['name'], $value, $action['options']));
@@ -1013,15 +1022,27 @@ class Row extends GridSubForm
 
         return $tmpElement;
     }
-//
-//
-//
-//    /**
-//     *
-//     *
-//     */
-//    protected function _buildFieldText ($name, $value, $options)
-//    {
+
+
+
+    /**
+     *
+     *
+     */
+    protected function _buildFieldText ($name, $value, $options)
+    {
+        $options['viewScript'] = $this->_partialsDir . '/_field_text.phtml';
+        $options['value'] = $value;
+
+//        \HiZend\Debug\Debug::precho($options);
+
+        $tmpElement = new Element\Text(
+            $name,
+            $options
+        );
+
+
+
 //        $tmpElement = new Zend_Form_Element_Text(
 //            $name,
 //            array(
@@ -1064,10 +1085,50 @@ class Row extends GridSubForm
 //                ),
 //            )
 //        );
-//
-//        return $tmpElement;
-//    }
-//
+
+        return $tmpElement;
+    }
+
+    /**
+     *
+     *
+     */
+    protected function _buildFieldTextArea ($name, $value, $options)
+    {
+        $options['viewScript'] = $this->_partialsDir . '/_field_textarea.phtml';
+        $options['value'] = $value;
+
+        $tmpElement = new Element\Textarea(
+            $name,
+            $options
+        );
+
+        return $tmpElement;
+    }
+
+
+    /**
+     *
+     *
+     * @return Zend_Form_Element_Text
+     */
+    protected function _buildFieldCustom ($name, $values, $options)
+    {
+        if (!isset($options['viewScript'])) {
+            $options['viewScript'] = $this->_partialsDir . '/_field_custom.phtml';
+        }
+        $options['row'] = $values;
+
+//        \Zend\Debug::dump($options);
+
+        $tmpElement = new Element\Custom(
+            $name,
+            $options
+        );
+
+        return $tmpElement;
+    }
+
 //    /**
 //     *
 //     *
@@ -1323,12 +1384,22 @@ class Row extends GridSubForm
 //        return $subFormTmp;
 //    }
 //
-//    /**
-//     *
-//     *
-//     */
-//    protected function _buildFieldCheckbox ($name, $value, $options)
-//    {
+    /**
+     *
+     *
+     */
+    protected function _buildFieldCheckbox ($name, $value, $options)
+    {
+        $options['viewScript'] = $this->_partialsDir . '/_field_checkbox.phtml';
+        $options['value'] = $value;
+
+
+        $tmpElement = new Element\Checkbox(
+            $name,
+            $options
+        );
+
+
 //        $tmpElement = new Zend_Form_Element_Checkbox(
 //            $name,
 //            array(
@@ -1388,9 +1459,9 @@ class Row extends GridSubForm
 //                ),
 //            )
 //        );
-//
-//        return $tmpElement;
-//    }
+
+        return $tmpElement;
+    }
 
     /**
      *
@@ -1487,7 +1558,7 @@ class Row extends GridSubForm
      *
      *
      */
-    protected function _buildActionSubmit($name, $value, $options)
+    protected function _buildActionSubmit($name, $options)
     {
 //        $options['value'] = $value;
 

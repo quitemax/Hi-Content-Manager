@@ -1130,15 +1130,15 @@ class ResultSet extends GridSubForm
 ////                                );
                                 break;
                             case 'checkbox':
-////                                $gridRowItemSubForm->addElement(
-////                                    $this->_buildRowCheckboxField(
-////                                        $field['name'],
-////                                        isset($dataRow[$field['name']])
-////                                        ? $dataRow[$field['name']]
-////                                        : null,
-////                                        $field['options']
-////                                    )
-////                                );
+                                $gridRowItemSubForm->addElement(
+                                    $this->_buildRowCheckboxField(
+                                        $field['name'],
+                                        isset($dataRow[$field['name']])
+                                        ? $dataRow[$field['name']]
+                                        : null,
+                                        $field['options']
+                                    )
+                                );
                                 break;
                             case 'multilangCheckbox':
 ////                                $gridRowItemSubForm->addSubForm(
@@ -2308,63 +2308,26 @@ class ResultSet extends GridSubForm
 ////
 ////        return $tmpElement;
 ////    }
-////
-////
-////    /**
-////     *
-////     *
-////     * @return Zend_Form_Element_Checkbox
-////     */
-////    protected function _buildRowCheckboxField($name, $value, $options)
-////    {
-////        //
-////        $tmpElement = new Zend_Form_Element_Checkbox(
-////            $name,
-////            array(
-////                'disableLoadDefaultDecorators'  =>  true
-////            )
-////        );
-////
-////        $tmpElement->setValue($value);
-////
-////        //
-////        $sort = null;
-////        $even = null;
-////
-////        //
-////        if ($options) {
-////            foreach ($options as $optionName => $option) {
-////                switch ($optionName) {
-////                    case 'sort':
-////                        $sort = $option;
-////                        break;
-////                    case 'even':
-////                        $even = $option;
-////                        break;
-////                    default:
-////                        break;
-////                }
-////            }
-////        }
-////
-////
-////        $tmpElement->setDecorators(
-////            array(
-////                array('ViewHelper'),
-////                array(
-////                    'ViewScript',
-////                    array(
-////                        'viewScript'    =>  $this->_partialsDir.'_field_checkbox.phtml',
-////                        'placement'     =>  false,
-////                        'even'          =>  $even,
-////                        'sort'          =>  $sort,
-////                    ),
-////                ),
-////            )
-////        );
-////
-////        return $tmpElement;
-////    }
+//
+
+    /**
+     *
+     *
+     * @return Zend_Form_Element_Checkbox
+     */
+    protected function _buildRowCheckboxField($name, $value, $options)
+    {
+        $options['viewScript'] = $this->_partialsDir . '/_field_checkbox.phtml';
+        $options['value'] = $value;
+
+
+        $tmpElement = new Element\Checkbox(
+            $name,
+            $options
+        );
+
+        return $tmpElement;
+    }
 
     /**
      *

@@ -7,7 +7,7 @@
  * @copyright  Copyright (c) 2010 Piotr Maxymilian Socha
  * @license
  */
-namespace Hi\Grid\Element;
+namespace HiBase\Grid\Element;
 
 use Zend\Form\Element\Text as ZendText;
 
@@ -104,7 +104,7 @@ class Custom extends ZendText
                         'sort'          => $this->_sort,
                         'even'          => $this->_even,
                         'values'        => $this->_values,
-                        'row'        => $this->_row,
+                        'row'           => $this->_row,
                     ),
                 ),
             )

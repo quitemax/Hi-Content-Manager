@@ -20,105 +20,32 @@ use HiBase\Db\RowGateway\RowGateway as HiRowGateway;
  */
 class Row extends HiRowGateway
 {
-//    protected $_name = 'workout';
-//
-//    public function getWorkout($id)
-//    {
-//        $id = (int) $id;
-//        $row = $this->fetchRow('workout_id = ' . $id);
-//        if (!$row) {
-//            throw new \Exception("Could not find row $id");
-//        }
-//        return $row;
-//    }
-//
-//    public function getWorkouts()
-//    {
-//
-//        //
-//        $sqlSubSelect = $this->_db->select();
-//        $sqlSubSelect->from(
-//            array( 'workout_exercise'),
-//            'COUNT(*)'
-//        );
-//        $sqlSubSelect->where('workout_id = w.workout_id');
-//
-////        echo "<pre>" . '"$$sqlSubSelect" ';
-////         print_r((string)$sqlSubSelect);
-////        echo "</pre>";
-//        //
-//        $sqlSelect = $this->_db->select();
-//
-//        $sqlSelect->from(
-//            array( 'w' => $this->_name),
-//            array(
-//                'w.*',
-//                'exercises_count' => '(' . $sqlSubSelect . ')',
-//            )
-//        );
-//
-////        $sqlSelect->where('w.workout_id = ' . $id);
-//
-////        echo "<pre>" . '"$sqlSelect" ';
-////         print_r((string)$sqlSelect);
-////        echo "</pre>";
-//
-////        echo $sqlSelect;
-//
-//
-//
-//
-//        $stmt = $this->_db->query($sqlSelect);
-//        $rows = $stmt->fetchAll(\Zend\Db\Db::FETCH_ASSOC);
-//
-//        $data  = array(
-//            'table'    => $this,
-//            'data'     => $rows,
-//            'rowClass' => $this->getRowClass(),
-//            'stored'   => true
-//        );
-//
-//        $rowsetClass = $this->getRowsetClass();
-//        $rows =  new $rowsetClass($data);
-//
-//        if (!$rows) {
-//            throw new Exception("Could not find workout $id rows");
-//        }
-//        return $rows;
-//    }
-//
-//    public function addWorkout($values)
-//    {
-//        $this->insert($this->_normalizeValues($values));
-//    }
-//
-//    public function updateWorkout($id, $values)
-//    {
-//        $this->update($this->_normalizeValues($values), 'workout_id = ' . (int) $id);
-//    }
-//
-//    public function deleteWorkout($id)
-//    {
-//        $this->delete('workout_id =' . (int) $id);
-//    }
-//
-//    protected function _normalizeValues(array $values)
-//    {
-////        if (isset($values['height']) && trim($values['height']) == '') {
-////            $values['height'] = 0;
-////        }
-////        if (isset($values['biceps_circumference']) && trim($values['biceps_circumference']) == '') {
-////            $values['biceps_circumference'] = 0;
-////        }
-////        if (isset($values['weight']) && trim($values['weight']) == '') {
-////            $values['weight'] = 0;
-////        }
-////        if (isset($values['waist_circumference']) && trim($values['waist_circumference']) == '') {
-////            $values['waist_circumference'] = 0;
-////        }
-//
-//        return $values;
-//    }
+    /**
+     * before save
+     *
+     * @return
+     */
+    protected function _beforeSave()
+    {
+
+        $this['fat_weight'] = ($this['fat_percentage']/100) * $this['weight'];
+        $this['fat_weight_range_top'] = ( ($this['fat_percentage'] + 0.1)/100 ) * ($this['weight'] + 0.1);
+        $this['fat_weight_range_bottom'] = ( ($this['fat_percentage'] - 0.1)/100 ) * ($this['weight'] - 0.1);
+
+        $this['water_weight'] = ($this['water_percentage']/100) * $this['weight'];
+        $this['water_weight_range_top'] = ( ($this['water_percentage'] + 0.1)/100 ) * ($this['weight'] + 0.1);
+        $this['water_weight_range_bottom'] = ( ($this['water_percentage'] - 0.1)/100 ) * ($this['weight'] - 0.1);
+
+        $this['muscle_weight'] = ($this['muscle_percentage']/100) * $this['weight'];
+        $this['muscle_weight_range_top'] = ( ($this['muscle_percentage'] + 0.1)/100 ) * ($this['weight'] + 0.1);
+        $this['muscle_weight_range_bottom'] = ( ($this['muscle_percentage'] - 0.1)/100 ) * ($this['weight'] - 0.1);
+
+        $this['bones_percentage'] = ($this['bones_weight'] / $this['weight']) * 100.0;
+        $this['bones_percentage_range_top'] = ( ($this['bones_weight'] + 0.1) / ($this['weight'] - 0.1) ) * 100.0;
+        $this['bones_percentage_range_bottom'] = ( ($this['bones_weight'] - 0.1) / ($this['weight'] + 0.1) ) * 100.0;
 
 
+        $this['bmi'] = $this['weight'] / ($this['height'] * $this['height']);
+
+    }
 }

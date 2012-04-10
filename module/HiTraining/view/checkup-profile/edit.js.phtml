@@ -1,0 +1,12 @@
+function deleteRow(id) {
+    if (confirm("<?php echo 'areYouSureToDeleteThisElement';?>")) {
+        window.location = "<?php echo $delete;?>" + id;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function goBack() {
+    window.location = "<?php echo $back;?>";
+}

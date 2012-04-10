@@ -28,11 +28,12 @@ USE exercises;
 DROP TABLE IF EXISTS `checkup`;
 CREATE TABLE `checkup` (
   `checkup_id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` datetime NOT NULL,
-  `height` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `weight` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `img_front` longtext CHARACTER SET latin1 NOT NULL,
-  `img_side` longtext CHARACTER SET latin1 NOT NULL,
+  `profile_id` int(11) NOT NULL DEFAULT '0',
+  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `height` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `weight` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `img_front` longtext CHARACTER SET latin1,
+  `img_side` longtext CHARACTER SET latin1,
   `fat_percentage` decimal(10,1) NOT NULL DEFAULT '0.0',
   `fat_weight` decimal(10,3) NOT NULL DEFAULT '0.000',
   `fat_weight_range_bottom` decimal(10,3) NOT NULL DEFAULT '0.000',
@@ -46,29 +47,94 @@ CREATE TABLE `checkup` (
   `muscle_weight_range_bottom` decimal(10,3) NOT NULL DEFAULT '0.000',
   `muscle_weight_range_top` decimal(10,3) NOT NULL DEFAULT '0.000',
   `bones_weight` decimal(10,3) NOT NULL DEFAULT '0.000',
-  `bones_percentage` decimal(10,1) NOT NULL DEFAULT '0.0',
-  `bones_percentage_range_bottom` decimal(10,1) NOT NULL DEFAULT '0.0',
-  `bones_percentage_range_top` decimal(10,1) NOT NULL DEFAULT '0.0',
+  `bones_percentage` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `bones_percentage_range_bottom` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `bones_percentage_range_top` decimal(10,3) NOT NULL DEFAULT '0.000',
   `calories_activeless` int(10) unsigned NOT NULL DEFAULT '0',
   `calories_active` int(10) unsigned NOT NULL DEFAULT '0',
-  `chest_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `neck_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `waist_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `biceps_circumference` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `chest_circumference` decimal(10,1) NOT NULL DEFAULT '0.0',
+  `neck_circumference` decimal(10,1) NOT NULL DEFAULT '0.0',
+  `waist_circumference` decimal(10,1) NOT NULL DEFAULT '0.0',
+  `biceps_circumference` decimal(10,1) NOT NULL DEFAULT '0.0',
+  `bmi` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`checkup_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
 -- Dumping data for table `checkup`
 --
 
 /*!40000 ALTER TABLE `checkup` DISABLE KEYS */;
-INSERT INTO `checkup` (`checkup_id`,`date`,`height`,`weight`,`img_front`,`img_side`,`fat_percentage`,`fat_weight`,`fat_weight_range_bottom`,`fat_weight_range_top`,`water_percentage`,`water_weight`,`water_weight_range_bottom`,`water_weight_range_top`,`muscle_percentage`,`muscle_weight`,`muscle_weight_range_bottom`,`muscle_weight_range_top`,`bones_weight`,`bones_percentage`,`bones_percentage_range_bottom`,`bones_percentage_range_top`,`calories_activeless`,`calories_active`,`chest_circumference`,`neck_circumference`,`waist_circumference`,`biceps_circumference`) VALUES 
- (1,'2012-03-11 12:00:00','185.00','102.50','','','24.9','25.523','25.395','25.650','54.8','56.170','56.013','56.327','38.6','39.565','39.424','39.706','14.800','14.4','14.3','14.6',2185,2179,'0.00','0.00','0.00','0.00'),
- (2,'2012-03-19 12:00:00','185.00','102.00','','','24.7','25.194','25.067','25.321','55.0','56.100','55.943','56.257','38.7','39.474','39.333','39.615','14.800','14.5','14.4','14.6',2046,4035,'114.50','0.00','104.00','39.00'),
- (3,'2012-03-26 12:00:00','185.00','101.50','','','24.6','24.969','24.843','25.095','55.0','55.825','55.669','55.982','38.8','39.382','39.242','39.522','14.700','14.5','14.4','14.6',2172,4022,'116.00','0.00','106.00','39.00'),
- (4,'2012-04-02 00:00:00','185.00','100.10',' ',' ','24.2','24.224','24.100','24.349','55.4','55.455','55.300','55.651','39.0','39.039','38.900','39.178','14.500','14.5','14.4','14.6',2152,3985,'0.00','0.00','0.00','0.00');
+INSERT INTO `checkup` (`checkup_id`,`profile_id`,`date`,`height`,`weight`,`img_front`,`img_side`,`fat_percentage`,`fat_weight`,`fat_weight_range_bottom`,`fat_weight_range_top`,`water_percentage`,`water_weight`,`water_weight_range_bottom`,`water_weight_range_top`,`muscle_percentage`,`muscle_weight`,`muscle_weight_range_bottom`,`muscle_weight_range_top`,`bones_weight`,`bones_percentage`,`bones_percentage_range_bottom`,`bones_percentage_range_top`,`calories_activeless`,`calories_active`,`chest_circumference`,`neck_circumference`,`waist_circumference`,`biceps_circumference`,`bmi`) VALUES 
+ (1,0,'2012-03-11 12:00:00','1.850','102.500','','','24.9','25.523','25.395','25.650','54.8','56.170','56.013','56.327','38.6','39.565','39.424','39.706','14.800','14.439','14.327','14.551',2185,4179,'0.0','0.0','0.0','0.0','29.95'),
+ (2,0,'2012-03-19 12:00:00','1.850','102.000','','','24.7','25.194','25.067','25.321','55.0','56.100','55.943','56.257','38.7','39.474','39.333','39.615','14.800','14.510','14.398','14.622',2046,4035,'114.5','0.0','104.0','39.0','29.80'),
+ (3,0,'2012-03-26 12:00:00','1.850','101.500','','','24.6','24.969','24.843','25.095','55.0','55.825','55.669','55.982','38.8','39.382','39.242','39.522','14.700','14.483','14.370','14.596',2172,4022,'116.0','0.0','106.0','39.0','29.66'),
+ (4,0,'2012-04-02 12:00:00','1.850','100.100',' ',' ','24.2','24.224','24.100','24.349','55.4','55.455','55.300','55.611','39.0','39.039','38.900','39.178','14.500','14.486','14.371','14.600',2152,3985,'0.0','0.0','0.0','0.0','29.25'),
+ (7,0,'2012-04-06 12:00:00','1.850','100.200',NULL,NULL,'24.1','24.148','24.024','24.273','55.4','55.511','55.355','55.667','38.9','38.978','38.839','39.117','14.500','14.471','14.357','14.585',2154,3988,'0.0','0.0','0.0','0.0','29.28'),
+ (8,0,'2012-04-07 11:00:00','1.850','99.800',NULL,NULL,'23.9','23.852','23.729','23.976','55.5','55.389','55.234','55.544','39.0','38.922','38.783','39.061','14.600','14.629','14.515','14.744',2148,3977,'0.0','0.0','0.0','0.0','29.16'),
+ (9,0,'2012-04-08 12:00:00','1.850','99.500',NULL,NULL,'23.7','23.582','23.458','23.705','55.7','55.422','55.266','55.577','39.1','38.905','38.766','39.043','14.500','14.573','14.458','14.688',2144,3970,'0.0','0.0','0.0','0.0','29.07'),
+ (10,0,'2012-04-09 12:00:00','1.850','99.100',NULL,NULL,'23.6','23.388','23.265','23.510','55.8','55.298','55.143','55.453','39.2','38.847','38.709','38.986','14.500','14.632','14.516','14.747',2139,3960,'0.0','0.0','0.0','0.0','28.96'),
+ (11,0,'2012-04-10 11:00:00','1.850','99.500',NULL,NULL,'23.8','23.681','23.558','23.804','55.6','55.322','55.167','55.477','39.1','38.905','38.766','39.043','14.500','14.573','14.458','14.688',2144,3970,'0.0','0.0','0.0','0.0','29.07');
 /*!40000 ALTER TABLE `checkup` ENABLE KEYS */;
+
+
+--
+-- Definition of table `checkup_profile`
+--
+
+DROP TABLE IF EXISTS `checkup_profile`;
+CREATE TABLE `checkup_profile` (
+  `profile_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` char(255) DEFAULT NULL,
+  `description` text,
+  `default` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`profile_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `checkup_profile`
+--
+
+/*!40000 ALTER TABLE `checkup_profile` DISABLE KEYS */;
+INSERT INTO `checkup_profile` (`profile_id`,`name`,`description`,`default`) VALUES 
+ (1,'daily','bla bla bla',1),
+ (4,'weekly','weekly profile',0);
+/*!40000 ALTER TABLE `checkup_profile` ENABLE KEYS */;
+
+
+--
+-- Definition of table `checkup_to_profile`
+--
+
+DROP TABLE IF EXISTS `checkup_to_profile`;
+CREATE TABLE `checkup_to_profile` (
+  `ctp_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `checkup_id` int(10) unsigned NOT NULL,
+  `profile_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`ctp_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `checkup_to_profile`
+--
+
+/*!40000 ALTER TABLE `checkup_to_profile` DISABLE KEYS */;
+INSERT INTO `checkup_to_profile` (`ctp_id`,`checkup_id`,`profile_id`) VALUES 
+ (2,2,1),
+ (3,3,1),
+ (4,4,1),
+ (5,7,1),
+ (6,8,1),
+ (7,9,1),
+ (8,1,1),
+ (9,10,1),
+ (10,1,4),
+ (11,2,4),
+ (12,3,4),
+ (13,4,4),
+ (14,10,4),
+ (15,11,1);
+/*!40000 ALTER TABLE `checkup_to_profile` ENABLE KEYS */;
 
 
 --
@@ -83,7 +149,7 @@ CREATE TABLE `user` (
   `display_name` varchar(50) DEFAULT NULL,
   `password` varchar(128) NOT NULL,
   `last_login` datetime DEFAULT NULL,
-  `last_ip` int(11) DEFAULT NULL,
+  `last_ip` int(11) DEFAULT '0',
   `register_time` datetime NOT NULL,
   `register_ip` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
@@ -91,15 +157,13 @@ CREATE TABLE `user` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`user_id`,`username`,`email`,`display_name`,`password`,`last_login`,`last_ip`,`register_time`,`register_ip`,`active`,`enabled`) VALUES 
- (1,NULL,'quitemax@gmail.com','quitemax@gmail.com','$2a$10$pRo.WxecIC4DIrocpNF.x.W.L0SKhoTxXwXHbga5btclcNiqNliHa','2012-03-16 18:39:14',1270,'2012-03-12 20:47:17',0,1,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 

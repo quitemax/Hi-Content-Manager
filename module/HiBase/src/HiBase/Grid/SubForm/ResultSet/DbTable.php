@@ -113,21 +113,21 @@ class DbTable extends GridResultSet
                 continue;
             }
 //
-            if (empty($fieldMetadata['options']['TRANSLATED']) || (!empty($fieldMetadata['TRANSLATED']) && !$fieldMetadata['TRANSLATED'])) {
+            if (empty($fieldMetadata['options']['TRANSLATED']) || (!empty($fieldMetadata['options']['TRANSLATED']) && !$fieldMetadata['options']['TRANSLATED'])) {
 
                 //non-translated fields
                 switch($fieldMetadata['type']) {
                     case 'tinyint':
-//	                    if ($fieldMetadata['LENGTH'] === null) {
-//	                        $this->addField(
-//	                            $name,
-//	                            'checkbox',
-//	                            array(
-//	                                'label'     => $name,
-//	                                'sortable'  => true,
-//	                            )
-//	                        );
-//	                    }
+	                    if ($fieldMetadata['length'] === 1) {
+	                        $this->addField(
+	                            $name,
+	                            'checkbox',
+	                            array(
+	                                'label'     => $name,
+	                                'sortable'  => true,
+	                            )
+	                        );
+	                    }
                         break;
                     case 'smallint':
 //	                    if ($fieldMetadata['LENGTH'] === null) {
@@ -165,31 +165,31 @@ class DbTable extends GridResultSet
 	                    );
                         break;
                     case 'char':
-//	                    $size = 22;
-//	                    if ($fieldMetadata['LENGTH'] > 20 ) {
-//	                      $size = (int)($fieldMetadata['LENGTH']/4);
-//	                    }
-//	                    $this->addField(
-//	                        $name,
-//	                        'input',
-//	                        array(
-//	                            'label'     => $name,
-//	                            'sortable'  => true,
-//	                            'size'      => $size,
-//	                        )
-//	                    );
+	                    $size = 22;
+	                    if ($fieldMetadata['length'] > 20 ) {
+	                      $size = (int)($fieldMetadata['length']/4);
+	                    }
+	                    $this->addField(
+	                        $name,
+	                        'input',
+	                        array(
+	                            'label'     => $name,
+	                            'sortable'  => true,
+	                            'size'      => $size,
+	                        )
+	                    );
                         break;
                     case 'text':
-//	                    $this->addField(
-//	                        $name,
-//	                        'textarea',
-//	                        array(
-//	                            'label'     => $name,
-//	                            'sortable'  => true,
+	                    $this->addField(
+	                        $name,
+	                        'text',
+	                        array(
+	                            'label'     => $name,
+	                            'sortable'  => true,
 //	                            'rows'      => 3,
 //	                            'cols'      => 40,
-//	                        )
-//	                    );
+	                        )
+	                    );
                         break;
                     case 'date':
 //	                    $this->addField(
@@ -481,7 +481,7 @@ class DbTable extends GridResultSet
 ////\HiZend\Debug\Debug::dump($this->getDbOrder());
         //
         $resultSet = $this-> _model -> getResultSet(
-//            $this->getDbWhere(),
+            $this->getDbWhere()//,
 //            $this->getDbOrder(),
 //            $this->getDbLimit(),
 //            $this->getDbOffset(),

@@ -57,14 +57,20 @@ class TableGateway extends ZendTableGateway
      */
     protected $_columns = array();
 
+    /**
+     *
+     *
+     * @var string
+     */
+    protected $_rowClass = '';
 
 
-//    /**
-//     *
-//     *
-//     * @var string
-//     */
-//    protected $_primaryKey = null;
+    /**
+     *
+     *
+     * @var string
+     */
+    protected $_primaryKey = null;
 ////
 ////    /**
 ////     *
@@ -102,6 +108,15 @@ class TableGateway extends ZendTableGateway
     protected function init()
     {
         $this->setTableDefinition();
+        $this->setPrototypes();
+    }
+
+    /**
+     *
+     * Enter description here ...
+     */
+    protected function setPrototypes()
+    {
     }
 
     /**
@@ -119,6 +134,17 @@ class TableGateway extends ZendTableGateway
     public function getTableDefinition()
     {
         return $this->_columns;
+    }
+
+
+    /**
+     *
+     * Enter description here ...
+     */
+    public function createRow()
+    {
+
+        return clone $this->getSelectResultPrototype()->getRowObjectPrototype();
     }
 
 ////
@@ -204,6 +230,24 @@ class TableGateway extends ZendTableGateway
      */
     public function setPrefix($prefix) {
         $this->_prefix = $prefix;
+    }
+
+    /**
+     * Get prefix name (Hi use)
+     *
+     * @return string
+     */
+    public function getPrimaryKey() {
+        return $this->_primaryKey;
+    }
+
+    /**
+     * Get prefix name (Hi use)
+     *
+     * @return string
+     */
+    public function setPrimaryKey($primaryKey) {
+        $this->_primaryKey = $primaryKey;
     }
 
 
@@ -385,19 +429,32 @@ class TableGateway extends ZendTableGateway
 //        return $rowSet;
     }
 
-//    /**
-//     * Get row
-//     *
-//     * @return array
-//     */
-//    public function getRow($where = null, $order = null, $offset = null, $cols = null)
-//    {
-//        //prepare the sql
-//        $sqlSelect = $this->prepareRowsetSql($where, $order, 1, $offset, $cols);
+    /**
+     * Get row
+     *
+     * @return array
+     */
+    public function getRow($where = null, $order = null, $offset = null, $cols = null)
+    {
+        //prepare the sql
+        $sqlSelect = $this->prepareResultSetSql($where, $order, 1, $offset, $cols);
 ////        Zend_Debug::dump($sqlSelect->__toString());
 //
-//        //
-//        $this->_lastSql = $sqlSelect;
+        //
+        $this->_lastSql = $sqlSelect;
+
+        $statement = $this->adapter->createStatement();
+        $sqlSelect->prepareStatement($this->adapter, $statement);
+
+        $result = $statement->execute();
+
+        //
+        $resultSet = clone $this->selectResultPrototype;
+        $resultSet->setDataSource($result);
+        return $resultSet->current();
+
+
+
 //
 //        //
 //        $stmt = $this->_db->query($sqlSelect);
@@ -436,8 +493,8 @@ class TableGateway extends ZendTableGateway
 ////        }
 ////        return $item;
 ////
-//    }
-//
+    }
+
 //    /**
 //     * Get row
 //     *

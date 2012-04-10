@@ -1,18 +1,28 @@
 <?php
-namespace HiTraining\Form\Checkup;
+namespace HiTraining\Form\CheckupToProfile;
 
 use HiBase\Grid\SubForm\ResultSet\DbTable as GridDbTableResultSet;
 
 class ResultSet extends GridDbTableResultSet
 {
 
-    protected $_title = 'CheckupResultSet';
-    protected $_name = 'CheckupResultSetSubForm';
+    protected $_title = 'CheckupToProfileResultSet';
+    protected $_name = 'CheckupToProfileResultSetSubForm';
 
     public function init()
     {
         //
         parent::init();
+
+//        $this->setFieldType('name', 'text');
+//        $this->setFieldType('default', 'text');
+//        $this->setFieldOptions('default', array(
+//            'values' => array(
+//                '0' => 'No',
+//                '1' => 'Yes',
+//            ),
+//
+//        ));
 
         $this->setAllFieldType(
             'text'
@@ -20,12 +30,7 @@ class ResultSet extends GridDbTableResultSet
 
         $this->removeFields(
             array(
-                'calories_activeless',
-                'calories_active',
-                'biceps_circumference',
-                'waist_circumference',
-                'chest_circumference',
-                'neck_circumference',
+                'profile_id',
             )
 
         );
@@ -33,16 +38,7 @@ class ResultSet extends GridDbTableResultSet
         /**
          * RECORD ACTIONS
          */
-        $this->addRowAction(
-            'edit',
-            'submit',
-            array(
-                'label'     => 'edit',
-                'image'     => BASE_URL . '/img/grid/icons/edit.png',
-                'class'     => 'actionImage',
-                'onclick'   => 'editRow(__ID__);return false;',
-            )
-        );
+
         $this->addRowAction(
             'delete',
             'submit',
@@ -50,7 +46,6 @@ class ResultSet extends GridDbTableResultSet
                 'label'     => 'delete',
                 'image'     => BASE_URL . '/img/grid/icons/delete.png',
                 'class'     => 'actionImage',
-                'onclick'   => 'deleteRow(__ID__);return false;',
             )
         );
 
@@ -58,16 +53,7 @@ class ResultSet extends GridDbTableResultSet
         /**
          * LIST ACTIONS
          */
-        $this->addResultSetAction(
-            'add',
-            'submit',
-            array(
-                'label'     => 'add checkup',
-                'class'     => 'actionImage',
-                'image'     => BASE_URL . '/img/grid/icons/new.png',
-                'onclick'   => 'addRow();return false;',
-            )
-        );
+
         /**
          * LIST ACTIONS
          */

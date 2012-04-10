@@ -9,7 +9,7 @@
  */
 namespace HiBase\Grid\Element;
 
-use Zend\Form\Element\Select as ZendSelect;
+use Zend\Form\Element\Textarea as ZendTextarea;
 
 /**
  * Hi_Record_Form
@@ -20,7 +20,7 @@ use Zend\Form\Element\Select as ZendSelect;
  * @license
  * @version    2.0
  */
-class Select extends ZendSelect
+class Textarea extends ZendTextarea
 {
     /**
      * Should we disable loading the default decorators?
@@ -28,13 +28,14 @@ class Select extends ZendSelect
      */
     protected $_disableLoadDefaultDecorators = true;
 
-/**
+    /**
      * Should we disable loading the default decorators?
      * @var bool
      */
     protected $_viewScriptPath = '';
     protected $_sort = '';
     protected $_even = '';
+    protected $_values = '';
 
     /**
      * Set form state from options array
@@ -44,6 +45,7 @@ class Select extends ZendSelect
      */
     public function setOptions(array $options)
     {
+        //
         if (isset($options['sort'])) {
             $this->_sort = $options['sort'];
             unset($options['sort']);
@@ -51,6 +53,13 @@ class Select extends ZendSelect
             $this->_sort = null;;
         }
 
+        //
+        if (isset($options['values']) && is_array($options['values'])) {
+            $this->_values = $options['values'];
+            unset($options['values']);
+        } else {
+            $this->_values = null;;
+        }
 
         //
         if (isset($options['viewScript'])) {
@@ -66,31 +75,6 @@ class Select extends ZendSelect
         } else {
             throw new \Exception("You must provide a even path here.");
         }
-
-        if (isset($options['values']) && is_array($options['values'])) {
-            $this->setMultiOptions($options['values']);
-            unset($options['values']);
-        } else {
-            //throw new \Exception("You must provide a even path here.");
-        }
-
-        if (isset($options['validators']) && is_array($options['validators'])) {
-            foreach ($options['validators'] as $name => $validatorOptions) {
-                switch($name) {
-                    case 'notEmpty':
-                        $this->addValidator('notEmpty', false, $validatorOptions);
-
-                        break;
-                    case '':
-                    default:
-                        break;
-                }
-            }
-
-            unset($options['validators']);
-        }
-
-
 
         return parent::setOptions($options);
     }
@@ -112,10 +96,10 @@ class Select extends ZendSelect
                         'placement'     => false,
                         'sort'          => $this->_sort,
                         'even'          => $this->_even,
+                        'values'        => $this->_values,
                     ),
                 ),
             )
         );
-
     }
 }

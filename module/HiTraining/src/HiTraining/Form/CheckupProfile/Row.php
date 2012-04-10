@@ -1,14 +1,14 @@
 <?php
 
-namespace HiTraining\Form\Checkup;
+namespace HiTraining\Form\CheckupProfile;
 
 use HiBase\Grid\SubForm\Row\DbTable as GridDbTableRow;
 
 
 class Row extends GridDbTableRow
 {
-    protected $_title = 'CheckupRow';
-    protected $_name = 'CheckupRowSubForm';
+    protected $_title = 'CheckupProfileRow';
+    protected $_name = 'CheckupProfileRowSubForm';
 
     public function init()
     {
@@ -16,7 +16,9 @@ class Row extends GridDbTableRow
         parent::init();
 
 
-        $this->addFieldOptions('date', array('value' => date('Y-m-d H:i:s')));
+//        $this->addFieldOptions('date', array('value' => date('Y-m-d H:i:s')));
+
+
 
 
         //

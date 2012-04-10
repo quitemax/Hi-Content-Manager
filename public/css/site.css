@@ -4,13 +4,8 @@
 
 /****************************************************
  * css-reset
- */
+ *//*
 @CHARSET "UTF-8";
-
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -31,8 +26,8 @@ time, mark, audio, video {
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
+}*/
+/* HTML5 display-role reset for older browsers *//*
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
     display: block;
@@ -55,7 +50,7 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-
+*/
 /****************************************************
  * css variables?? let's store colors here
  */
@@ -65,7 +60,7 @@ table {
 /****************************************************
  * HTML ENTITIES
  */
-body {
+/*body {
     background-color:#e8e8e8;
     font-family:Verdana, Arial, Helvetica, sans-serif;
     font-size: 11px;
@@ -85,13 +80,13 @@ label {
 /****************************************************
  * LAYOUT
  */
-#body{
+/**#body{
     margin:0 auto;
     width: 1200px;
 }
 
 /****** BREADCRUMB ******/
-#breadcrumb {
+/*#breadcrumb {
     background-color: #484848;
     color: #fffffe;
     font-size: 11px;
@@ -111,8 +106,7 @@ label {
 }
 
 /****** NAV ******/
-#nav-container {
-/*    margin: 0 15px;*/
+/*#nav-container {
     padding: 0 14px;
     position: relative;
     z-index: 100;
@@ -151,7 +145,6 @@ label {
     
 }
 #nav li.level-top ul {
-/*	display:none;*/
 	left: -10000px;
     padding-bottom: 3px;
     position: absolute;
@@ -161,16 +154,14 @@ label {
 }
 
 #nav li.level-top ul.active {
-/*  display:none;*/
+
     left: 0px;
 
 }
 
 #nav li.level-top ul li{
     background-color: #585858;
-/*    margin: 0px 2px 0px 10px;*/
     padding: 4px 0px 4px 6px;
-/*    border-bottom: 1px dashed #fff;*/
 }
 #nav li.level-top ul li a{
    font-size: 11px;
@@ -186,11 +177,7 @@ label {
 
 
 #content {
-    /*background-color: #040127;
-    color: #EFEEFD;
-    height:100%;
-    padding:10px 0px 4px 8px;
-    height:600px;*/
+
 }
 
 #content div.page-title{
@@ -228,8 +215,8 @@ label {
  */
 
 .formHeader {
-    background-color: #404040;
-    color:#ffffff;
+    background-color: #6EB8DD   ;
+    color:#fff;
 }
 
 .formHeader tr.formHeader{
@@ -248,7 +235,7 @@ label {
  */
 
 .rowSubForm {
-    background-color: #e8e8e8;
+    background-color: #F9FBFC;
     margin:0px 0px 10px 0px;
 }
 
@@ -260,7 +247,7 @@ table.rowTitle {
 }
 
 table.rowTitle tr{
-    background-color: #d8d8d8;
+    background-color: #BBDCED;
     color:#000;
 }
 
@@ -277,29 +264,32 @@ table.rowTitle tr th{
  * row's row
  */
 table.rowContent tr{
-    background-color: #d0d0d0;
+    background-color: #F9FBFC;
 }
 table.rowContent tr th{
-    background-color: #d0d0d0;
+    background-color: #F9FBFC;
 
-    border-top: 1px solid #f0f0f0;
+/*    border-top: 1px solid #53ADDB;*/
+/*    border-right: 1px solid #53ADDB;*/
+/*    border-left: 1px solid #53ADDB;*/
     padding: 4px 0px 4px 0px;
 }
 
 table.rowContent tr td{
-    background-color: #e8e8e8;
-    border-top: 1px solid #f0f0f0;
+    background-color: #F9FBFC;
+/*    border-top: 1px solid #53ADDB;*/
+/*    border-right: 1px solid #53ADDB;*/
 }
 
 table.rowContent tr.even th{
-    background-color: #c8c8c8;
+    background-color: #EFF5F7;
 
-    border-top: 1px solid #f0f0f0;
+/*    border-top: 1px solid #53ADDB;*/
 }
 
 table.rowContent tr.even td{
-    background-color: #e0e0e0;
-    border-top: 1px solid #f0f0f0;
+    background-color: #EFF5F7;
+/*    border-top: 1px solid #53ADDB;*/
 }
 
 
@@ -328,32 +318,32 @@ table.rowContent tr td table.multilang tr td{
  * row's actions
  */
 table.rowContent tr.actions{
-    background-color: #e4e4e4;
+/*    background-color: #e4e4e4;*/
 }
 
 table.rowContent tr.actions th{
-    background-color: #e8e8e8;
-    border-top: 1px solid #f0f0f0;
+/*    background-color: #e8e8e8;*/
+/*    border-top: 1px solid #f0f0f0;*/
 }
 
 table.rowContent tr.actions td{
-    background-color: #e8e8e8;
-    border-top: 1px solid #f0f0f0;
+/*    background-color: #e8e8e8;*/
+/*    border-top: 1px solid #f0f0f0;*/
 }
 
 table.rowContent tr.actions td .actionImage{
-    background-color: #585858;
-    color:#f0f0f0;
+/*    background-color: #585858;*/
+/*    color:#f0f0f0;*/
     font-weight: bold;
-    border: 1px solid #f0f0f0;
+/*    border: 1px solid #f0f0f0;*/
 }
 
 table.rowContent tr.actions td .actionSubmit{
-    background: #585858 url(../img/icons/list/template.png) repeat-x left bottom;
-    color:#f0f0f0;
+/*    background: #585858 url(../img/icons/list/template.png) repeat-x left bottom;*/
+/*    color:#f0f0f0;*/
     font-weight: bold;
-    border: 1px solid #f0f0f0;
-    height:20px;
+/*    border: 1px solid #f0f0f0;*/
+/*    height:20px;*/
 }
 
 
@@ -362,7 +352,7 @@ table.rowContent tr.actions td .actionSubmit{
  * LIST
  */
 .listSubForm {
-    background-color: #e8e8e8;
+    background-color: #F9FBFC;
     margin:0px 0px 10px 0px;
 }
 
@@ -373,23 +363,24 @@ table.listTitle {
  * list title
  */
 .listTitle tr{
-/*    background-color: #d8d8d8;*/
+
     color:#000;
 }
 
 .listTitle tr th{
-/*    background-color: #a8a8a8;*/
+
     color:#000;
     font-size: 13px;
     cursor: pointer;
     text-align: left;;
     font-weight: bold;
     padding: 2px 0px 2px 40px;
+    background-color: #BBDCED;
 }
 
 /**
  * list filter
- */
+ *//*
 .listContent  tr.listFilter{
     font-size: 11px;
     font-weight: normal;
@@ -415,7 +406,7 @@ table.listTitle {
     font-weight: bold;
 }
 
-/*filterContent*/
+/*filterContent*//*
 .listContent tr.listFilter th table.filterContent{
     background-color: #c0c0c0;
 }
@@ -448,7 +439,7 @@ table.listTitle {
 
 /**
  * list info
- */
+ *//*
 .listContent  tr.listInfo th .elementsCount{
     font-size: 11px;
     font-weight: normal;
@@ -476,185 +467,180 @@ table.listTitle {
  * list's headers
  */
 .listContent tr.listHeader{
-    background-color: #d0d0d0;
+    background-color: #EFF5F7;
 }
 
 .listContent tr.listHeader th.all{
-    background-color: #d0d0d0;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+    background-color: #EFF5F7;
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
 }
 
 .listContent tr.listHeader th{
-    background-color: #d0d0d0;
+    background-color: #EFF5F7;
 
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
 }
 
 .listContent tr.listHeader th.sort{
     background-color: #a6a6a6;
-    color:#ffffff;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+/*    color:#ffffff;*/
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
 }
 
 .listContent tr.listHeader th a{
-    color:#000;
+/*    color:#000;*/
 
 }
 
 .listContent tr.listHeader th.sort a{
-    color:#ffffff;
+/*    color:#ffffff;*/
     font-weight: bold;
 }
 
 .listContent tr.listHeader th.actions{
-    background-color: #d0d0d0;
-    border-top: 1px solid #f0f0f0;
+    background-color: #EFF5F7;
+/*    border-top: 1px solid #f0f0f0;*/
 }
 
 /**
  * list's row
  */
 .listContent tr.listRow{
-    background-color: #e0e0e0;
+/*    background-color: #e0e0e0;*/
 
 }
 
 .listContent tr.listRow td{
-    background-color: #e0e0e0;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+/*    background-color: #e0e0e0;*/
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
     
 }
 
 .listContent tr.listRow td.idCheckbox{
-    background-color: #e0e0e0;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+/*    background-color: #e0e0e0;*/
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
 }
 
 .listContent tr.listRow.even td.idCheckbox{
-    background-color: #d8d8d8;
-/*    border-top: 1px solid #f0f0f0;*/
-/*    border-right: 1px solid #f0f0f0;*/
+    background-color: #EFF5F7;
+
 }
 
 .listContent tr.listRow td.rowId{
-    background-color: #e0e0e0;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
-}
-
-.listContent tr.listRow.even td.rowId{
-    background-color: #d8d8d8;
+/*    background-color: #e0e0e0;*/
 /*    border-top: 1px solid #f0f0f0;*/
 /*    border-right: 1px solid #f0f0f0;*/
 }
 
+.listContent tr.listRow.even td.rowId{
+    background-color: #EFF5F7;
+
+}
+
 .listContent tr.listRow td.rowId.sort{
-    background-color: #c8c8c8;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+/*    background-color: #c8c8c8;*/
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
     
 }
 
 .listContent tr.listRow.even td.rowId.sort{
-    background-color: #c0c0c0;
-/*    border-top: 1px solid #f0f0f0;*/
-/*    border-right: 1px solid #f0f0f0;*/
+    background-color: #EFF5F7;
+
 }
 
 .listContent tr.listRow td.text{
-    background-color: #e0e0e0;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+/*    background-color: #e0e0e0;*/
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
     padding-left:4px;
 }
 
 .listContent tr.listRow.even td.text{
-    background-color: #d8d8d8;
+    background-color: #EFF5F7;
     padding-left:4px;
-/*    border-top: 1px solid #f0f0f0;*/
-/*    border-right: 1px solid #f0f0f0;*/
+
 }
 
 .listContent tr.listRow td.text.sort{
 	padding-left:4px;
-    background-color: #c8c8c8;
-    border-top: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+/*    background-color: #c8c8c8;*/
+/*    border-top: 1px solid #f0f0f0;*/
+/*    border-right: 1px solid #f0f0f0;*/
 }
 
 .listContent tr.listRow.even td.text.sort{
 	padding-left:4px;
-    background-color: #c0c0c0;
-/*    border-top: 1px solid #f0f0f0;*/
-/*    border-right: 1px solid #f0f0f0;*/
+    background-color: #EFF5F7;
+
 }
 
 
 
 .listContent tr.listRow td.rowActions{
-    background-color: #e0e0e0;
-    border-top: 1px solid #f0f0f0;
-}
-
-.listContent tr.listRow.even td.rowActions{
-    background-color: #d8d8d8;
+/*    background-color: #e0e0e0;*/
 /*    border-top: 1px solid #f0f0f0;*/
 }
 
+.listContent tr.listRow.even td.rowActions{
+    background-color: #EFF5F7;
+
+}
+
 .listContent tr.listRow td .actionImage{
-    background-color: #585858;
-    color:#f0f0f0;
-    border: 1px solid #f0f0f0;
+/*    background-color: #585858;*/
+/*    color:#f0f0f0;*/
+/*    border: 1px solid #f0f0f0;*/
     font-weight: bold;
 }
 
 .listContent tr.listPagination{
-    background-color: #e8e8e8;
-    border-top: 1px solid #f0f0f0;
+/*    background-color: #e8e8e8;*/
+/*    border-top: 1px solid #f0f0f0;*/
 }
 
 .listContent tr.listPagination td.main{
-    background-color: #e8e8e8;
-    border-top: 1px solid #f0f0f0;
+/*    background-color: #e8e8e8;*/
+/*    border-top: 1px solid #f0f0f0;*/
 }
 
 .listContent tr.listPagination td a{
-    color:#000000;
-    margin:0px 1px 0px 1px;
+/*    color:#000000;*/
+/*    margin:0px 1px 0px 1px;*/
 }
 
 .listContent tr.listPagination td .current{
-    font-weight: bold;
-    font-size: 13px;
+/*    font-weight: bold;*/
+/*    font-size: 13px;*/
 }
 
 .listContent tr.listActions{
-    background-color: #e8e8e8;
+/*    background-color: #e8e8e8;*/
 
 }
 
 .listContent tr.listActions td{
-    background-color: #e8e8e8;
+/*    background-color: #e8e8e8;*/
 
 }
 
 .listContent tr.listActions td .actionImage{
-    background-color: #585858;
-    color:#f0f0f0;
+/*    background-color: #585858;*/
+/*    color:#f0f0f0;*/
     font-weight: bold;
-    border: 1px solid #f0f0f0;
+/*    border: 1px solid #f0f0f0;*/
 }
 
 .listContent tr.listActions td .actionSubmit{
-    background: #585858 url(../img/icons/list/template.png) repeat-x left bottom;
-    color:#f0f0f0;
+/*    background: #585858 url(../img/icons/list/template.png) repeat-x left bottom;*/
+/*    color:#f0f0f0;*/
     font-weight: bold;
-    border: 1px solid #f0f0f0;
+/*    border: 1px solid #f0f0f0;*/
     height:20px;
 }
 
@@ -688,8 +674,8 @@ table.treeTitle tr th{
  */
 /*.treeContent{
     background-color: #e8e8e8;
-}*/
-
+}*/ 
+/*
 table#clockType {
 	width: 100%;
 }

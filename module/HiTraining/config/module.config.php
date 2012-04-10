@@ -44,7 +44,18 @@ return array(
             'HiTraining\Controller\CheckupController' => array(
                 'parameters' => array(
                     'checkup'  => 'HiTraining\Model\Checkup',
+                	'profile'              => 'HiTraining\Model\CheckupProfile',
+                    'checkupToProfile'     => 'HiTraining\Model\CheckupToProfile',
                     'view'     => 'Zend\View\Renderer\PhpRenderer',
+                ),
+            ),
+
+            'HiTraining\Controller\CheckupProfileController' => array(
+                'parameters' => array(
+                    'profile'              => 'HiTraining\Model\CheckupProfile',
+                    'checkupToProfile'     => 'HiTraining\Model\CheckupToProfile',
+                    'checkup'              => 'HiTraining\Model\Checkup',
+                    'view'                 => 'Zend\View\Renderer\PhpRenderer',
                 ),
             ),
 
@@ -52,8 +63,20 @@ return array(
                 'parameters' => array(
                     'tableName' => 'checkup',
                     'adapter' => 'Zend\Db\Adapter\Adapter',
-//                    'schema' => null,
-//                    'selectResultPrototype' => 'HiTraining\Model\Checkup\ResultSet',
+                )
+            ),
+
+            'HiTraining\Model\CheckupProfile' => array(
+                'parameters' => array(
+                    'tableName' => 'checkup_profile',
+                    'adapter' => 'Zend\Db\Adapter\Adapter',
+                )
+            ),
+
+            'HiTraining\Model\CheckupToProfile' => array(
+                'parameters' => array(
+                    'tableName' => 'checkup_to_profile',
+                    'adapter' => 'Zend\Db\Adapter\Adapter',
                 )
             ),
 
@@ -100,6 +123,22 @@ return array(
                                     ),
                                     'may_terminate' => true,
                                     'child_routes' => array(
+                                        'stats' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/stats',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\CheckupController',
+                                                    'action'     => 'stats',
+                                                ),
+                                            ),
+                                            'may_terminate' => true,
+                                            'child_routes'  => array(
+                                                'wildcard' => array(
+                                                    'type'    => 'wildcard',
+                                                ),
+                                            ),
+                                        ),
                                         'list' => array(
                                             'type' => 'Literal',
                                             'options' => array(
@@ -107,6 +146,113 @@ return array(
                                                 'defaults' => array(
                                                     'controller' => 'HiTraining\Controller\CheckupController',
                                                     'action'     => 'list',
+                                                ),
+                                            ),
+                                        ),
+                                        'add' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/add',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\CheckupController',
+                                                    'action'     => 'add',
+                                                ),
+                                            ),
+                                        ),
+                                        'edit' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/edit',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\CheckupController',
+                                                    'action'     => 'edit',
+                                                ),
+                                            ),
+                                            'may_terminate' => true,
+                                            'child_routes'  => array(
+                                                'wildcard' => array(
+                                                    'type'    => 'wildcard',
+                                                ),
+                                            ),
+                                        ),
+                                        'delete' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/delete',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\CheckupController',
+                                                    'action'     => 'delete',
+                                                ),
+                                            ),
+                                            'may_terminate' => true,
+                                            'child_routes'  => array(
+                                                'wildcard' => array(
+                                                    'type'    => 'wildcard',
+                                                ),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                'checkup-profile' => array(
+                                    'type' => 'Literal',
+                                    'options' => array(
+                                        'route' => '/checkup-profile',
+                                        'defaults' => array(
+                                            'controller' => 'HiTraining\Controller\CheckupProfileController',
+                                            'action'     => 'index',
+                                        ),
+                                    ),
+                                    'may_terminate' => true,
+                                    'child_routes' => array(
+                                        'list' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/list',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\CheckupProfileController',
+                                                    'action'     => 'list',
+                                                ),
+                                            ),
+                                        ),
+                                        'add' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/add',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\CheckupProfileController',
+                                                    'action'     => 'add',
+                                                ),
+                                            ),
+                                        ),
+                                        'edit' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/edit',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\CheckupProfileController',
+                                                    'action'     => 'edit',
+                                                ),
+                                            ),
+                                            'may_terminate' => true,
+                                            'child_routes'  => array(
+                                                'wildcard' => array(
+                                                    'type'    => 'wildcard',
+                                                ),
+                                            ),
+                                        ),
+                                        'delete' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/delete',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\CheckupProfileController',
+                                                    'action'     => 'delete',
+                                                ),
+                                            ),
+                                            'may_terminate' => true,
+                                            'child_routes'  => array(
+                                                'wildcard' => array(
+                                                    'type'    => 'wildcard',
                                                 ),
                                             ),
                                         ),

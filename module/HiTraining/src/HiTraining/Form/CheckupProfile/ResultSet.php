@@ -1,35 +1,45 @@
 <?php
-namespace HiTraining\Form\Checkup;
+namespace HiTraining\Form\CheckupProfile;
 
 use HiBase\Grid\SubForm\ResultSet\DbTable as GridDbTableResultSet;
 
 class ResultSet extends GridDbTableResultSet
 {
 
-    protected $_title = 'CheckupResultSet';
-    protected $_name = 'CheckupResultSetSubForm';
+    protected $_title = 'CheckupProfileResultSet';
+    protected $_name = 'CheckupProfileResultSetSubForm';
 
     public function init()
     {
         //
         parent::init();
 
-        $this->setAllFieldType(
-            'text'
-        );
+        $this->setFieldType('name', 'text');
+        $this->setFieldType('default', 'text');
+        $this->setFieldOptions('default', array(
+            'values' => array(
+                '0' => 'No',
+                '1' => 'Yes',
+            ),
 
-        $this->removeFields(
-            array(
-                'calories_activeless',
-                'calories_active',
-                'biceps_circumference',
-                'waist_circumference',
-                'chest_circumference',
-                'neck_circumference',
-            )
+        ));
 
-        );
-
+//        $this->setAllFieldType(
+//            'text'
+//        );
+//
+//        $this->removeFields(
+//            array(
+//                'calories_activeless',
+//                'calories_active',
+//                'biceps_circumference',
+//                'waist_circumference',
+//                'chest_circumference',
+//                'neck_circumference',
+//            )
+//
+//        );
+//
         /**
          * RECORD ACTIONS
          */
@@ -62,7 +72,7 @@ class ResultSet extends GridDbTableResultSet
             'add',
             'submit',
             array(
-                'label'     => 'add checkup',
+                'label'     => 'add profile',
                 'class'     => 'actionImage',
                 'image'     => BASE_URL . '/img/grid/icons/new.png',
                 'onclick'   => 'addRow();return false;',
