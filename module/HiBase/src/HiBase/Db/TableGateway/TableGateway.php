@@ -447,11 +447,15 @@ class TableGateway extends ZendTableGateway
         $sqlSelect->prepareStatement($this->adapter, $statement);
 
         $result = $statement->execute();
+//        \Zend\Debug::dump($result, '', true);
 
+        $row = clone $this->selectResultPrototype->getRowObjectPrototype();
+        $row->exchangeArray($result->current());
         //
-        $resultSet = clone $this->selectResultPrototype;
-        $resultSet->setDataSource($result);
-        return $resultSet->current();
+//        $resultSet = clone $this->selectResultPrototype;
+//        $resultSet->setDataSource($result);
+//        return $result->current();
+        return $row;
 
 
 

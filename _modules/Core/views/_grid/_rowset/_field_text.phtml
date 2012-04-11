@@ -1,8 +1,0 @@
-<td class="text <?php if ($this->sort):?>sort<?php endif;?>" >
-  <?php if (is_array($values)):?>
-      <?php echo isset($values[$this->element->getDescription()])?$values[$this->element->getDescription()]:$this->element->getDescription();?>
-  <?php else:?>
-      <?php echo $this->element->getDescription();?>
-  <?php endif;?>
-  <?php //echo $this->element->getDescription();?>
-</td>

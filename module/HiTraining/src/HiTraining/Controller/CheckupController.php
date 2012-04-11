@@ -109,11 +109,6 @@ class CheckupController extends ActionController
             $where[] = $row['checkup_id'];
         }
 
-//        \Zend\Debug::dump('checkup_id in (' . implode(',', $where) . ')');
-//        if (!$this->zfcUserAuthentication()->hasIdentity()) {
-//            return $this->redirect()->toRoute('zfcuser/login');
-//        }
-
         return array(
             'checkups' => $this->_checkup->getResultSet('checkup_id in (' . implode(',', $where) . ')', array('date', 'asc')),
             'profiles' => $this->_profile->getResultSet(),
@@ -165,8 +160,6 @@ class CheckupController extends ActionController
                     'delete' => $this->url()->fromRoute('hi-training/checkup/delete/wildcard', array('checkup_id' => '')),
                     'edit' => $this->url()->fromRoute('hi-training/checkup/edit/wildcard', array('checkup_id' => '')),
                     'add' => $this->url()->fromRoute('hi-training/checkup/add'),
-//                    'exercises' => $this->url()->fromRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => '')),
-//                    'addExercise' => $this->url()->fromRoute('exercises-workout-exercise-add/wildcard', array('workout_id' => '')),
                 )
             )
         );
@@ -216,10 +209,18 @@ class CheckupController extends ActionController
                                     $deleteRow->delete();
                                 }
 
-//                                $checkupToProfiles = $this->_checkupToProfile->getResultSet(array('checkup_id' => $key));
-//                                foreach($checkupToProfiles as $checkupToProfile) {
-//                                    $checkupToProfile->delete();
-//                                }
+                                $checkupToProfiles = $this->_checkupToProfile->getResultSet(
+                                    array('checkup_id' => $key),
+                                    null,
+                                    null,
+                                    null,
+                                    array('ctp_id')
+                                );
+
+                                foreach($checkupToProfiles as $checkupToProfile) {
+                                    $checkupToProfileRow = $this->_checkupToProfile->getRow(array('ctp_id' => $checkupToProfile['ctp_id']));
+                                    $checkupToProfileRow->delete();
+                                }
 
                             }
                         }
@@ -452,17 +453,26 @@ class CheckupController extends ActionController
             $deleteRow->delete();
         }
 
-//        $checkupToProfiles = $this->_checkupToProfile->getResultSet(array('checkup_id' => $id));
-////        \Zend\Debug::dump($checkupToProfiles);
-////        \Zend\Debug::dump($checkupToProfiles->toArray());
-//        foreach($checkupToProfiles->toArray() as $checkupToProfile) {
-//            $checkupToProfile = $this->_checkupToProfile->getRow(array('ctp_id' => $checkupToProfile['ctp_id']));
-////            \Zend\Debug::dump($checkupToProfile);
-//            $checkupToProfile->delete();
-//        }
+        $checkupToProfiles = $this->_checkupToProfile->getResultSet(
+            array('checkup_id' => $id),
+            null,
+            null,
+            null,
+            array('ctp_id')
+        );
+
+        foreach($checkupToProfiles as $checkupToProfile) {
+            \Zend\Debug::dump(get_class($checkupToProfile), '', true);
+            \Zend\Debug::dump($checkupToProfile, '', true);
+            $checkupToProfileRow = $this->_checkupToProfile->getRow(array('ctp_id' => $checkupToProfile['ctp_id']));
+            \Zend\Debug::dump(get_class($checkupToProfileRow), '', true);
+            \Zend\Debug::dump($checkupToProfileRow, '', true);
+            $checkupToProfileRow->delete();
+        }
+
 
         // Redirect to list of albums
-        return $this->redirect()->toRoute('hi-training/checkup/list');
+//        return $this->redirect()->toRoute('hi-training/checkup/list');
 
     }
 
