@@ -45,7 +45,9 @@ class Row extends HiRowGateway
         $this['bones_percentage_range_bottom'] = ( ($this['bones_weight'] - 0.1) / ($this['weight'] + 0.1) ) * 100.0;
 
 
-        $this['bmi'] = $this['weight'] / ($this['height'] * $this['height']);
+        if ($this['height'] > 0) {
+            $this['bmi'] = $this['weight'] / ($this['height'] * $this['height']);
+        }
 
     }
 }

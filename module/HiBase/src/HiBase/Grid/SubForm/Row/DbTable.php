@@ -119,6 +119,19 @@ class DbTable extends GridRow
 //                        }
                         break;
                     case 'integer':
+                        if ($fieldMetadata['options']['type'] == 'select' && count($fieldMetadata['options']['values'])) {
+                            $this->addField(
+                                $name,
+                                'select',
+                                array(
+                                    'label'         => $name,
+                                    'defaultValue'  => '0',
+                                    'values'        => $fieldMetadata['options']['values'],
+                                )
+                            );
+                            break;
+                        }
+
                         $this->addField(
                             $name,
                             'input',
@@ -190,13 +203,13 @@ class DbTable extends GridRow
                         );
                         break;
                     case 'varchar':
-//                        $this->addField(
-//                            $name,
-//                            'input',
-//                            array(
-//                                'label'     => $name,
-//                            )
-//                        );
+                        $this->addField(
+                            $name,
+                            'input',
+                            array(
+                                'label'     => $name,
+                            )
+                        );
                         break;
                     case 'text':
                         $this->addField(
@@ -204,6 +217,8 @@ class DbTable extends GridRow
                             'textarea',
                             array(
                                 'label'     => $name,
+                                'cols'     => 40,
+                                'rows'     => 5,
                             )
                         );
                         break;

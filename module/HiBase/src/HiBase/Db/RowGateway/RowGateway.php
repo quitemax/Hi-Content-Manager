@@ -24,6 +24,31 @@ use Zend\Db\RowGateway\RowGateway as ZendRowGateway;
 class RowGateway extends ZendRowGateway
 {
 
+///**
+//     * Delete
+//     *
+//     * @return type
+//     */
+//    public function delete()
+//    {
+//        \Zend\Debug::dump('HiBase\Db\RowGateway\RowGateway::delete()', '', true);
+////        parent::delete();
+//        \Zend\Debug::dump('HiBase\Db\RowGateway\RowGateway::delete()/after', '', true);
+//        if (is_array($this->primaryKey)) {
+//            // @todo compound primary keys
+//        }
+//
+//        \Zend\Debug::dump($this->primaryKey, '$this->primaryKey', true);
+//        \Zend\Debug::dump($this->originalData[$this->primaryKey], '$this->originalData[$this->primaryKey]', true);
+//
+//        $where = array($this->primaryKey => $this->originalData[$this->primaryKey]);
+////        \Zend\Debug::dump($where, '$where', true);
+////        \Zend\Debug::dump($this->tableGateway, '$this->tableGateway', true);
+////        \Zend\Debug::dump(get_call_stack(), '', true);
+////        \Zend\Debug::dump(get_class_methods($this->tableGateway), '', true);
+//        return $this->tableGateway->delete($where);
+//    }
+
     public function getId()
     {
         if (isset($this->originalData[$this->primaryKey])) {

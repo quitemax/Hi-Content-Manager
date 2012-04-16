@@ -59,6 +59,17 @@ return array(
                 ),
             ),
 
+
+            'HiTraining\Controller\ExerciseTypeController' => array(
+                'parameters' => array(
+//                    'profile'              => 'HiTraining\Model\CheckupProfile',
+//                    'checkupToProfile'     => 'HiTraining\Model\CheckupToProfile',
+//                    'checkup'              => 'HiTraining\Model\Checkup',
+                    'type'                 => 'HiTraining\Model\ExerciseType',
+                    'view'                 => 'Zend\View\Renderer\PhpRenderer',
+                ),
+            ),
+
             'HiTraining\Model\Checkup' => array(
                 'parameters' => array(
                     'tableName' => 'checkup',
@@ -76,6 +87,13 @@ return array(
             'HiTraining\Model\CheckupToProfile' => array(
                 'parameters' => array(
                     'tableName' => 'checkup_to_profile',
+                    'adapter' => 'Zend\Db\Adapter\Adapter',
+                )
+            ),
+
+            'HiTraining\Model\ExerciseType' => array(
+                'parameters' => array(
+                    'tableName' => 'exercise_type',
                     'adapter' => 'Zend\Db\Adapter\Adapter',
                 )
             ),
@@ -253,6 +271,55 @@ return array(
                                             'child_routes'  => array(
                                                 'wildcard' => array(
                                                     'type'    => 'wildcard',
+                                                ),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                'exercise-type' => array(
+                                    'type' => 'Literal',
+                                    'options' => array(
+                                        'route' => '/exercise-type',
+                                        'defaults' => array(
+                                            'controller' => 'HiTraining\Controller\ExerciseTypeController',
+                                            'action'     => 'index',
+                                        ),
+                                    ),
+                                    'may_terminate' => true,
+                                    'child_routes' => array(
+                                        'tree' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/tree',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\ExerciseTypeController',
+                                                    'action'     => 'tree',
+                                                ),
+                                            ),
+                                            'may_terminate' => true,
+                                            'child_routes'  => array(
+                                                'wildcard' => array(
+                                                    'type'    => 'wildcard',
+                                                ),
+                                            ),
+                                        ),
+                                        'stats' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/stats',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\ExerciseTypeController',
+                                                    'action'     => 'stats',
+                                                ),
+                                            ),
+                                        ),
+                                        'rip' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/rip',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\ExerciseTypeController',
+                                                    'action'     => 'rip',
                                                 ),
                                             ),
                                         ),

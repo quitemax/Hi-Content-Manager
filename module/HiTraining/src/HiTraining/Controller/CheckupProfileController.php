@@ -495,7 +495,22 @@ class CheckupProfileController extends ActionController
         $id     = $routeMatch->getParam('profile_id', 0);
 
         $deleteRow = $this->_profile->getRow(array('profile_id' => $id));
-        $deleteRow->delete();
+        if ($deleteRow) {
+            $deleteRow->delete();
+        }
+
+
+        $checkupToProfiles = $this->_checkupToProfile->getResultSet(
+            array('profile_id' => $id),
+            null,
+            null,
+            null,
+            array('ctp_id')
+        );
+
+        foreach($checkupToProfiles as $checkupToProfile) {
+            $checkupToProfile->delete();
+        }
 
         // Redirect to list of albums
         return $this->redirect()->toRoute('hi-training/checkup-profile/list');

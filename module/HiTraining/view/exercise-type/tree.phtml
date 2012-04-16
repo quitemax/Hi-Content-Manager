@@ -1,0 +1,26 @@
+<div id="breadcrumb">
+    &raquo; <a href="<?php echo $this->url('home');?>">Home</a>
+    &raquo; <a href="<?php echo $this->url('hi-training');?>">Training</a>
+    &raquo; <a class="" href="<?php echo $this->url('hi-training/exercise-type');?>">Exercise type</a>
+    &raquo; <a class="selected" href="<?php echo $this->url('hi-training/exercise-type/tree');?>">Exercise type tree</a>
+</div>
+<div id="content">
+    <div class="page-title">
+        <?php
+            $title = 'Exercise type tree';
+            $this->headTitle($title);
+        ?>
+        <h1><?php echo $this->escape($title); ?></h1>
+    </div>
+    <div style="float:left; width: 340px;">
+        <?php echo $tree;?>
+    </div>
+    <div style="float: right; width: 740px;">
+        <?php echo $form;?>
+    </div>
+    <div style="clear: both;"></div>
+
+
+</div>
+
+

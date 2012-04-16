@@ -16,7 +16,8 @@ use Zend\Db\TableGateway\TableGateway as ZendTableGateway,
     Zend\Db\Sql\Insert,
     Zend\Db\Sql\Update,
     Zend\Db\Sql\Delete,
-    Zend\Db\Sql\Select;
+    Zend\Db\Sql\Select,
+    HiBase\Db\Behaviour\NestedSet;
 
 /**
  * Refited Zend_Db_Table class for use with HiCms
@@ -62,30 +63,22 @@ class TableGateway extends ZendTableGateway
      *
      * @var string
      */
-    protected $_rowClass = '';
-
+    protected $_primaryKey = null;
 
     /**
      *
      *
-     * @var string
+     * @var array
      */
-    protected $_primaryKey = null;
-////
-////    /**
-////     *
-////     *
-////     * @var array
-////     */
-////    protected $_behaviours = array();
-////
-////    /**
-////     *
-////     *
-////     * @var array
-////     */
-////    protected $_behaviourObjects = array();
-////
+    protected $_behaviours = array();
+
+//    /**
+//     *
+//     *
+//     * @var array
+//     */
+//    protected $_behaviourObjects = array();
+
 	/**
      * Constructor
      *
@@ -109,6 +102,15 @@ class TableGateway extends ZendTableGateway
     {
         $this->setTableDefinition();
         $this->setPrototypes();
+        $this->setBehaviours();
+    }
+
+    /**
+     *
+     * Enter description here ...
+     */
+    protected function setBehaviours()
+    {
     }
 
     /**
@@ -370,12 +372,17 @@ class TableGateway extends ZendTableGateway
         //prepare the sql
         $sqlSelect = $this->prepareResultSetSql($where, $order, $count, $offset, $cols);
 
+//        \Zend\Debug::dump($sqlSelect);
+//        \Zend\Debug::dump($sqlSelect->getSqlString());
+
         //save sql
         $this->_lastSql = $sqlSelect;
 
         $statement = $this->adapter->createStatement();
         $sqlSelect->prepareStatement($this->adapter, $statement);
 
+//        \Zend\Debug::dump($sqlSelect, '$sqlSelect');
+//        \Zend\Debug::dump($statement, '$statement');
         $result = $statement->execute();
 
         //
@@ -446,11 +453,15 @@ class TableGateway extends ZendTableGateway
         $statement = $this->adapter->createStatement();
         $sqlSelect->prepareStatement($this->adapter, $statement);
 
+//        \Zend\Debug::dump($sqlSelect, '', true);
+
         $result = $statement->execute();
-//        \Zend\Debug::dump($result, '', true);
+//        \Zend\Debug::dump($result, '$result', true);
+//        \Zend\Debug::dump($result->current(), '$result->current()', true);
 
         $row = clone $this->selectResultPrototype->getRowObjectPrototype();
         $row->exchangeArray($result->current());
+//        \Zend\Debug::dump($row, '', true);
         //
 //        $resultSet = clone $this->selectResultPrototype;
 //        $resultSet->setDataSource($result);
@@ -597,39 +608,63 @@ class TableGateway extends ZendTableGateway
 //        }
 //    }
 //
-////    /*
-////     * Get table name (Hi use)
-////     *
-////     * @return string
-////     */
-////    public function hasBehaviour($behaviour = null) {
-////        return isset($this->_behaviourObjects[$behaviour]);
-////    }
-////
-////    /**
-////     * Get table name (Hi use)
-////     *
-////     * @return string
-////     */
-////    public function getBehaviour($behaviour = null) {
-////
-////        if (isset($this->_behaviourObjects[$behaviour])) {
-////            return $this->_behaviourObjects[$behaviour];
-////        }
-////
-////        return false;
-////    }
-////
-////    /**
-////     * Get table name (Hi use)
-////     *
-////     * @return string
-////     */
-////    public function setBehaviour($behaviour = null, $options = null) {
-//////    if (isset($this->_behaviourObjects[$behaviour])) {
-//////            return $this->_behaviourObjects[$behaviour];
-//////        }
-////    }
+    /*
+     * Get table name (Hi use)
+     *
+     * @return string
+     */
+    public function hasBehaviour($behaviour = null) {
+        return isset($this->_behaviours[$behaviour]);
+    }
+
+    /**
+     * Get table name (Hi use)
+     *
+     * @return string
+     */
+    public function getBehaviour($behaviour = null) {
+
+        if (isset($this->_behaviours[$behaviour])) {
+            return $this->_behaviours[$behaviour];
+        }
+
+        return false;
+    }
+
+    /**
+     * Get table name (Hi use)
+     *
+     * @return string
+     */
+    public function setBehaviour($behaviour = null, $options = null) {
+
+//        foreach ($this->_behaviours as $behaviourName => $behaviourOptions) {
+            switch ($behaviour) {
+//                case 'i18n':
+//                    $behaviourObject = new I18n(
+//                        $this,
+//                        $options
+//                    );
+//                    $this->_behaviours[$behaviour] = $behaviourObject;
+//                    break;
+                case 'nestedSet':
+                    $behaviourObject = new NestedSet(
+                        $this,
+                        $options
+                    );
+                    $this->_behaviours[$behaviour] = $behaviourObject;
+                    break;
+                default:
+                    break;
+            }
+
+
+
+//            }
+//    if (isset($this->_behaviourObjects[$behaviour])) {
+//            return $this->_behaviourObjects[$behaviour];
+//        }
+    }
 ////
 ////
 ////    public function update($data = null, $where = null) {
@@ -673,5 +708,49 @@ class TableGateway extends ZendTableGateway
 ////        return $newId;
 ////    }
 //
+
+    /**
+     * Delete
+     *
+     * @param  Closure $where
+     * @return type
+     */
+    public function delete($where)
+    {
+        $delete = new Delete($this->tableName, $this->schema);;
+//        $delete->from($this->tableName, $this->schema);
+        if ($where instanceof \Closure) {
+            $where($delete);
+        } else {
+            $delete->where($where);
+        }
+
+        $statement = $this->adapter->createStatement();
+        $delete->prepareStatement($this->adapter, $statement);
+
+        $result = $statement->execute();
+        return $result->getAffectedRows();
+    }
+
+    /**
+     * Update
+     *
+     * @param  array $set
+     * @param  string|array|closure $where
+     * @return int
+     */
+    public function update($set, $where = null)
+    {
+        $update = new Update($this->tableName, $this->schema);
+//        $update->table($this->tableName, $this->schema);
+        $update->set($set);
+        $update->where($where);
+
+        $statement = $this->adapter->createStatement();
+        $update->prepareStatement($this->adapter, $statement);
+
+        $result = $statement->execute();
+        return $result->getAffectedRows();
+    }
 
 }

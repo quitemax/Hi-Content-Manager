@@ -5,7 +5,7 @@
  * @author MaX
  *
  */
-namespace HiTraining\Model\CheckupToProfile;
+namespace HiTraining\Model\ExerciseType;
 
 /**
  *

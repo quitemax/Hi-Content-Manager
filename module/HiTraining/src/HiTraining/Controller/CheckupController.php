@@ -89,12 +89,17 @@ class CheckupController extends ActionController
         $id     = $routeMatch->getParam('profile_id', 0);
 
         $currentProfile = $this->_profile->getRow(array('profile_id' => $id));
+//        \Zend\Debug::dump($currentProfile->getId(), '$currentProfile->getId()');
+//        \Zend\Debug::dump($currentProfile, '$currentProfile');
+//        \Zend\Debug::dump($id);
 
-        if (!$currentProfile) {
+        if (!$currentProfile->getId()) {
             $currentProfile = $this->_profile->getRow(array('default' => 1));
         }
 
 
+//        \Zend\Debug::dump($currentProfile->getId());
+//        \Zend\Debug::dump($currentProfile);
         $profileRows = $this->_checkupToProfile->getResultSet(
             array('profile_id' => $currentProfile->getId()),
             null,
@@ -109,8 +114,15 @@ class CheckupController extends ActionController
             $where[] = $row['checkup_id'];
         }
 
+        $checkups = array();
+        if (count($where)) {
+            $checkups = $this->_checkup->getResultSet('checkup_id in (' . implode(',', $where) . ')', array('date', 'asc'));
+        }
+
+//        \Zend\Debug::dump($where);
+
         return array(
-            'checkups' => $this->_checkup->getResultSet('checkup_id in (' . implode(',', $where) . ')', array('date', 'asc')),
+            'checkups' => $checkups,
             'profiles' => $this->_profile->getResultSet(),
             'currentProfile' => $currentProfile->getId(),
         );
@@ -206,7 +218,7 @@ class CheckupController extends ActionController
 
                                 $checkup = $this->_checkup->getRow(array('checkup_id' => $key));
                                 if ($checkup) {
-                                    $deleteRow->delete();
+                                    $checkup->delete();
                                 }
 
                                 $checkupToProfiles = $this->_checkupToProfile->getResultSet(
@@ -218,8 +230,7 @@ class CheckupController extends ActionController
                                 );
 
                                 foreach($checkupToProfiles as $checkupToProfile) {
-                                    $checkupToProfileRow = $this->_checkupToProfile->getRow(array('ctp_id' => $checkupToProfile['ctp_id']));
-                                    $checkupToProfileRow->delete();
+                                    $checkupToProfile->delete();
                                 }
 
                             }
@@ -462,17 +473,12 @@ class CheckupController extends ActionController
         );
 
         foreach($checkupToProfiles as $checkupToProfile) {
-            \Zend\Debug::dump(get_class($checkupToProfile), '', true);
-            \Zend\Debug::dump($checkupToProfile, '', true);
-            $checkupToProfileRow = $this->_checkupToProfile->getRow(array('ctp_id' => $checkupToProfile['ctp_id']));
-            \Zend\Debug::dump(get_class($checkupToProfileRow), '', true);
-            \Zend\Debug::dump($checkupToProfileRow, '', true);
-            $checkupToProfileRow->delete();
+            $checkupToProfile->delete();
         }
 
 
         // Redirect to list of albums
-//        return $this->redirect()->toRoute('hi-training/checkup/list');
+        return $this->redirect()->toRoute('hi-training/checkup/list');
 
     }
 

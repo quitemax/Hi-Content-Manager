@@ -43,7 +43,10 @@
     </div>
     <?php
     //@TODO change from array to object
-    $checkupsArray = $checkups->toArray();
+    $checkupsArray = array();
+    if ($checkups) {
+        $checkupsArray = $checkups->toArray();
+    }
     ?>
     <br />
 <?php $this->headScript()->appendFile('https://www.google.com/jsapi', 'text/javascript');?>
