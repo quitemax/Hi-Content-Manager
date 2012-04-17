@@ -1,3 +1,7 @@
+function addRow() {
+    window.location = "<?php echo $add; ?>";
+}
+
 function deleteRow(id) {
 	if (confirm("<?php echo 'areYouSureToDeleteThisElement';?>")) {
 		window.location = "<?php echo $delete; ?>" + id;
@@ -10,11 +14,9 @@ function deleteRow(id) {
 function editRow(id) {
     window.location = "<?php echo $edit; ?>" + id ;
 }
+/*
 
-function addRow() {
-    window.location = "<?php echo $add; ?>";
-}
 
-function goBack() {
-    window.location = "<?php echo $back; ?>";
-}
+function massDelete() {
+    window.location = "<?php echo $exercises; ?>" + id ;
+}*/

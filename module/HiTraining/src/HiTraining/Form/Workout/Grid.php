@@ -1,6 +1,6 @@
 <?php
 
-namespace Exercises\Form;
+namespace HiTraining\Form\Workout;
 
 //use Zend\Db\Table\AbstractTable;
 //    Zend\Di\Locator,
@@ -12,13 +12,13 @@ namespace Exercises\Form;
 //    Zend\Mvc\MvcEvent,
 //    Zend\View\Renderer;
 
-use Hi\Grid\Form;
+use HiBase\Grid\Form;
 //    Hi\Grid\Element;
 
 //use Zend\Form\Form,
 //    Zend\Form\Element;
 
-class WorkoutGrid extends Form
+class Grid extends Form
 {
     /**
      * Title

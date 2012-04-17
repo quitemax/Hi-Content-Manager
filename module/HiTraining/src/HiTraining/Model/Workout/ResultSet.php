@@ -5,7 +5,7 @@
  * @author MaX
  *
  */
-namespace HiTraining\Model\Checkup;
+namespace HiTraining\Model\Workout;
 
 /**
  *

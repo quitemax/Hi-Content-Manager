@@ -59,12 +59,16 @@ return array(
                 ),
             ),
 
+            'HiTraining\Controller\WorkoutController' => array(
+                'parameters' => array(
+                    'workout'                 => 'HiTraining\Model\Workout',
+                    'view'                 => 'Zend\View\Renderer\PhpRenderer',
+                ),
+            ),
+
 
             'HiTraining\Controller\ExerciseTypeController' => array(
                 'parameters' => array(
-//                    'profile'              => 'HiTraining\Model\CheckupProfile',
-//                    'checkupToProfile'     => 'HiTraining\Model\CheckupToProfile',
-//                    'checkup'              => 'HiTraining\Model\Checkup',
                     'type'                 => 'HiTraining\Model\ExerciseType',
                     'view'                 => 'Zend\View\Renderer\PhpRenderer',
                 ),
@@ -87,6 +91,13 @@ return array(
             'HiTraining\Model\CheckupToProfile' => array(
                 'parameters' => array(
                     'tableName' => 'checkup_to_profile',
+                    'adapter' => 'Zend\Db\Adapter\Adapter',
+                )
+            ),
+
+            'HiTraining\Model\Workout' => array(
+                'parameters' => array(
+                    'tableName' => 'workout',
                     'adapter' => 'Zend\Db\Adapter\Adapter',
                 )
             ),
@@ -264,6 +275,87 @@ return array(
                                                 'route' => '/delete',
                                                 'defaults' => array(
                                                     'controller' => 'HiTraining\Controller\CheckupProfileController',
+                                                    'action'     => 'delete',
+                                                ),
+                                            ),
+                                            'may_terminate' => true,
+                                            'child_routes'  => array(
+                                                'wildcard' => array(
+                                                    'type'    => 'wildcard',
+                                                ),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                'workout' => array(
+                                    'type' => 'Literal',
+                                    'options' => array(
+                                        'route' => '/workout',
+                                        'defaults' => array(
+                                            'controller' => 'HiTraining\Controller\WorkoutController',
+                                            'action'     => 'index',
+                                        ),
+                                    ),
+                                    'may_terminate' => true,
+                                    'child_routes' => array(
+                                        'stats' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/stats',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\WorkoutController',
+                                                    'action'     => 'stats',
+                                                ),
+                                            ),
+//                                            'may_terminate' => true,
+//                                            'child_routes'  => array(
+//                                                'wildcard' => array(
+//                                                    'type'    => 'wildcard',
+//                                                ),
+//                                            ),
+                                        ),
+                                        'list' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/list',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\WorkoutController',
+                                                    'action'     => 'list',
+                                                ),
+                                            ),
+                                        ),
+                                        'add' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/add',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\WorkoutController',
+                                                    'action'     => 'add',
+                                                ),
+                                            ),
+                                        ),
+                                        'edit' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/edit',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\WorkoutController',
+                                                    'action'     => 'edit',
+                                                ),
+                                            ),
+                                            'may_terminate' => true,
+                                            'child_routes'  => array(
+                                                'wildcard' => array(
+                                                    'type'    => 'wildcard',
+                                                ),
+                                            ),
+                                        ),
+                                        'delete' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/delete',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\WorkoutController',
                                                     'action'     => 'delete',
                                                 ),
                                             ),
