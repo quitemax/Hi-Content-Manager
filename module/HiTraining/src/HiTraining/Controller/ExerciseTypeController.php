@@ -33,6 +33,246 @@ class ExerciseTypeController extends ActionController
 
 
 
+    public function indexAction()
+    {
+
+    }
+    public function statsAction()
+    {
+
+    }
+
+    public function treeAction()
+    {
+
+        $request = $this->getRequest();
+
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('type_id', 0);
+
+
+        $typeTree = new TypeTree(
+                array(
+                    'title'     => 'exerciseTypeTree',
+                    'name'      => 'etT', //editNavigationItemElementRow
+//                    'langs'     => $hicmsLangsDbTable->getLangs(),
+                    'model'     => $this->_type,
+                    'view'      => $this->_view,
+                )
+        );
+
+
+        $typeTree->setSelectedId($id);
+//            $itemElementsTree->setPositionVisible(true);
+        $typeTree->setCookiePath(
+            $this->url()->fromRoute('hi-training/exercise-type/tree')
+            . '/' . 'type_id' . '/'     //. '/' . self::URL_EDIT . self::PARAM_ITEM_ID . '/' . $id . '/'
+        );
+        $typeTree->setGlobalLink(
+            $this->url()->fromRoute('hi-training/exercise-type/tree')
+            . '/' . 'type_id' . '/'    //. self::URL_EDIT . self::PARAM_ITEM_ID . '/' . $id . '/' . self::PARAM_ELEMENT_ID . '/'
+        );
+
+//            $itemElementsTree->setData($itemElementsTreeData);
+
+        /**
+         * Grid FORM
+         */
+        $form = new TypeGrid(
+            array(
+                'view' => $this->_view,
+            )
+        );
+
+        /**
+         * BUILDING Row
+         */
+        $row = new TypeRow(
+            array(
+                'model' => $this->_type,
+                'view' => $this->_view,
+            )
+        );
+
+        //
+        $checkups = $this->_type->getBehaviour('nestedSet')->getResultSetForSelect();
+//        $checkupsValues = array();
+//        foreach ($checkups as $checkup) {
+//            $checkupsValues[$checkup['checkup_id']] = $checkup['date'] . ' ' . date('l', strtotime($checkup['date']) );
+//        }
+
+
+
+        $row->setFieldType('tree_parent_id', 'select');
+        $row->setFieldOptions(
+            'tree_parent_id',
+            array(
+                'values' => $checkups,
+            )
+        );
+
+        if ($id > 0) {
+            $row->setRowId($id);
+
+            $row->addAction(
+                'add',
+                'submit',
+                array(
+                    'label'     => 'add',
+                    'class'     => 'actionImage',
+    //                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
+                )
+            );
+
+            $row->addAction(
+                'delete',
+                'submit',
+                array(
+                    'label'     => 'delete',
+                    'class'     => 'actionImage',
+    //                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
+                )
+            );
+//            tree_parent_id
+        }
+
+//        $profiles = $this->_profile->getResultSet();
+//        $values = array();
+//
+//        foreach ($profiles as $profile) {
+//            $values[$profile['profile_id']] = $profile['name'];
+//        }
+
+//        $row->addField(
+//            'profile_id',
+//            'custom',
+//            array(
+//                'label' => 'profile_id',
+//                'values' => $values,
+//                'viewScript' => 'checkup/_field_profile.phtml',
+//            ),
+//            '25'
+//        );
+
+        //
+        $row->build();
+
+        //
+        $form->addSubForm($row, $row->getName());
+
+//        //
+//        $this->_view->headScript()->appendScript(
+//            $this->_view->render(
+//                'checkup/add.js',
+//                array(
+//                    'back' => $this->url()->fromRoute('hi-training/checkup/list'),
+//                )
+//            )
+//        );
+
+        /**
+         * POST
+         */
+        if ($this->getRequest()->isPost()) {
+
+            $formData = $this->getRequest()->post()->toArray();
+
+//\Zend\Debug::dump($formData);
+
+            if ($form->isValid($formData)) {
+                if (    isset($formData['header']['formId'])
+                        && $formData['header']['formId'] == 'ExerciseTypeGridForm') {
+
+                    if (isset($formData['ExerciseTypeRow']['actions']['save'])) {
+
+                        if (is_array($formData['ExerciseTypeRow']['row'])){
+                            \Zend\Debug::dump($formData);
+
+                            if ($id > 0) {
+                                $editRow = $this->_type->getRow(array('type_id' => $id))->populateCurrentData($formData['ExerciseTypeRow']['row']);
+                                $editRow->save();
+                                $this->_type->getBehaviour('nestedSet')->rebuildNestedSetFromAdjacencyModel();
+
+                                return $this->redirect()->toRoute('hi-training/exercise-type/tree/wildcard', array('type_id' =>  $id));
+                            } else {
+                                $newRow = $this->_type->createRow()->populateOriginalData($formData['ExerciseTypeRow']['row']);
+                                $newRow->save();
+                                $this->_type->getBehaviour('nestedSet')->rebuildNestedSetFromAdjacencyModel();
+
+                                return $this->redirect()->toRoute('hi-training/exercise-type/tree/wildcard', array('type_id' =>  $newRow->getId()));
+                            }
+
+
+
+                        }
+                    }
+
+                    if (isset($formData['ExerciseTypeRow']['actions']['add'])) {
+
+                        return $this->redirect()->toRoute('hi-training/exercise-type/tree');
+                    }
+
+                    if (isset($formData['ExerciseTypeRow']['actions']['delete'])) {
+
+                        if ($id > 0) {
+                            $editRow = $this->_type->getRow(array('type_id' => $id));
+                            $editRow->delete();
+                            $this->_type->getBehaviour('nestedSet')->rebuildNestedSetFromAdjacencyModel();
+                        }
+                        return $this->redirect()->toRoute('hi-training/exercise-type/tree');
+                    }
+                }
+            }
+        }
+
+
+
+        return array(
+            'form' => $form,//
+            'tree'   => $typeTree->build(),
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function ripAction()
     {
             session_start();
@@ -43,77 +283,35 @@ class ExerciseTypeController extends ActionController
         /*
          * every record with a link field
          */
-        $_SESSION['link'] = null;
+//        $_SESSION['link'] = null;
 //        if (empty($_SESSION['link'])) {
 //            $_SESSION['position'] = 10;
 //            $_SESSION['link'] = array(
-//                'http://www.bodybuilding.com/exercises/detail/view/name/bench-dips',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/bench-press-powerlifting',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/bench-press-with-chains',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/board-press',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/cable-incline-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/cable-lying-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/cable-one-arm-tricep-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/cable-rope-overhead-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/chain-handle-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/close-grip-barbell-bench-press',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/decline-close-grip-bench-to-skull-crusher',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/decline-dumbbell-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/decline-ez-bar-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/dip-machine',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/dips-triceps-version',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/dumbbell-floor-press',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/dumbbell-one-arm-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/dumbbell-tricep-extension-pronated-grip',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/floor-press',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/floor-press-with-chains',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/incline-barbell-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/jm-press',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/kneeling-cable-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/low-cable-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/lying-close-grip-barbell-triceps-extension-behind-the-head',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/lying-close-grip-barbell-triceps-press-to-chin',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/lying-dumbbell-tricep-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/lying-triceps-press',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/machine-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/one-arm-floor-press',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/one-arm-pronated-dumbbell-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/one-arm-supinated-dumbbell-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/pin-presses',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/push-ups-close-triceps-position',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/reverse-band-bench-press',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/reverse-grip-triceps-pushdown',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/reverse-triceps-bench-press',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/seated-bent-over-one-arm-dumbbell-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/seated-bent-over-two-arm-dumbbell-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/seated-triceps-press',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/smith-machine-close-grip-bench-press',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/standing-bent-over-one-arm-dumbbell-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/standing-bent-over-two-arm-dumbbell-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/standing-dumbbell-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/standing-low-pulley-one-arm-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/standing-one-arm-dumbbell-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/standing-overhead-barbell-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/standing-towel-triceps-extension',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/tate-press',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/tricep-dumbbell-kickback',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/triceps-overhead-extension-with-rope',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/triceps-pushdown',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/triceps-pushdown-rope-attachment',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/triceps-pushdown-v-bar-attachment',
-//                'http://www.bodybuilding.com/exercises/detail/view/name/weighted-bench-dip',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/ankle-circles',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/anterior-tibialis-smr',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/calf-stretch-elbows-against-wall',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/calf-stretch-hands-against-wall',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/calves-smr',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/foot-smr',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/knee-circles',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/peroneals-stretch',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/peroneals-smr',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/posterior-tibialis-stretch',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/seated-calf-stretch',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/standing-gastrocnemius-calf-stretch',
+//                'http://www.bodybuilding.com/exercises/detail/view/name/standing-soleus-and-achilles-stretch',
+////                '',
+////                '',
+////                '',
 ////                '',
 //            );
-//
-////            $rips = $this->_type->getResultSet('link != \'\'')->toArray();
-////            $_SESSION['rips'] = $rips;
 //        }
 
         foreach ($_SESSION['link'] as $key => $link) {
             unset($_SESSION['link'][$key]);
 
             $rip = $this->_type->createRow();
-            $rip['tree_parent_id'] = 56  ;
+            $rip['tree_parent_id'] = 856;//856, 857
             $rip['link'] = $link;
             $rip['tree_order'] = $_SESSION['position'];
             $_SESSION['position'] += 10;
@@ -510,212 +708,5 @@ class ExerciseTypeController extends ActionController
 
 
 
-    }
-
-    public function indexAction()
-    {
-
-    }
-    public function statsAction()
-    {
-
-    }
-
-    public function treeAction()
-    {
-
-        $request = $this->getRequest();
-
-        $routeMatch = $this->getEvent()->getRouteMatch();
-        $id     = $routeMatch->getParam('type_id', 0);
-
-//        \Zend\Debug::dump(get_class_methods($this->_view));
-
-        $typeTree = new TypeTree(
-                array(
-                    'title'     => 'exerciseTypeTree',
-                    'name'      => 'etT', //editNavigationItemElementRow
-//                    'langs'     => $hicmsLangsDbTable->getLangs(),
-                    'model'     => $this->_type,
-                    'view'      => $this->_view,
-                )
-        );
-
-
-
-
-//        $this->_type->getBehaviour('nestedSet')->rebuildNestedSetFromAdjacencyModel();
-
-
-//
-//            $itemElementsTree->setSelectedId($elementId);
-//            $itemElementsTree->setPositionVisible(true);
-        $typeTree->setCookiePath(
-            $this->url()->fromRoute('hi-training/exercise-type/tree')
-            . '/' . 'type_id' . '/'     //. '/' . self::URL_EDIT . self::PARAM_ITEM_ID . '/' . $id . '/'
-        );
-        $typeTree->setGlobalLink(
-            $this->url()->fromRoute('hi-training/exercise-type/tree')
-            . '/' . 'type_id' . '/'    //. self::URL_EDIT . self::PARAM_ITEM_ID . '/' . $id . '/' . self::PARAM_ELEMENT_ID . '/'
-        );
-
-//            $itemElementsTree->setData($itemElementsTreeData);
-
-        /**
-         * Grid FORM
-         */
-        $form = new TypeGrid(
-            array(
-                'view' => $this->_view,
-            )
-        );
-
-        /**
-         * BUILDING Row
-         */
-        $row = new TypeRow(
-            array(
-                'model' => $this->_type,
-                'view' => $this->_view,
-            )
-        );
-
-        //
-        $checkups = $this->_type->getBehaviour('nestedSet')->getResultSetForSelect();
-//        $checkupsValues = array();
-//        foreach ($checkups as $checkup) {
-//            $checkupsValues[$checkup['checkup_id']] = $checkup['date'] . ' ' . date('l', strtotime($checkup['date']) );
-//        }
-
-
-
-        $row->setFieldType('tree_parent_id', 'select');
-        $row->setFieldOptions(
-            'tree_parent_id',
-            array(
-                'values' => $checkups,
-            )
-        );
-
-        if ($id > 0) {
-            $row->setRowId($id);
-
-            $row->addAction(
-                'add',
-                'submit',
-                array(
-                    'label'     => 'add',
-                    'class'     => 'actionImage',
-    //                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
-                )
-            );
-
-            $row->addAction(
-                'delete',
-                'submit',
-                array(
-                    'label'     => 'delete',
-                    'class'     => 'actionImage',
-    //                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
-                )
-            );
-//            tree_parent_id
-        }
-
-//        $profiles = $this->_profile->getResultSet();
-//        $values = array();
-//
-//        foreach ($profiles as $profile) {
-//            $values[$profile['profile_id']] = $profile['name'];
-//        }
-
-//        $row->addField(
-//            'profile_id',
-//            'custom',
-//            array(
-//                'label' => 'profile_id',
-//                'values' => $values,
-//                'viewScript' => 'checkup/_field_profile.phtml',
-//            ),
-//            '25'
-//        );
-
-        //
-        $row->build();
-
-        //
-        $form->addSubForm($row, $row->getName());
-
-//        //
-//        $this->_view->headScript()->appendScript(
-//            $this->_view->render(
-//                'checkup/add.js',
-//                array(
-//                    'back' => $this->url()->fromRoute('hi-training/checkup/list'),
-//                )
-//            )
-//        );
-
-        /**
-         * POST
-         */
-        if ($this->getRequest()->isPost()) {
-
-            $formData = $this->getRequest()->post()->toArray();
-
-//\Zend\Debug::dump($formData);
-
-            if ($form->isValid($formData)) {
-                if (    isset($formData['header']['formId'])
-                        && $formData['header']['formId'] == 'ExerciseTypeGridForm') {
-
-                    if (isset($formData['ExerciseTypeRow']['actions']['save'])) {
-
-                        if (is_array($formData['ExerciseTypeRow']['row'])){
-                            \Zend\Debug::dump($formData);
-
-                            if ($id > 0) {
-                                $editRow = $this->_type->getRow(array('type_id' => $id))->populateCurrentData($formData['ExerciseTypeRow']['row']);
-                                $editRow->save();
-                                $this->_type->getBehaviour('nestedSet')->rebuildNestedSetFromAdjacencyModel();
-
-                                return $this->redirect()->toRoute('hi-training/exercise-type/tree/wildcard', array('type_id' =>  $id));
-                            } else {
-                                $newRow = $this->_type->createRow()->populateOriginalData($formData['ExerciseTypeRow']['row']);
-                                $newRow->save();
-                                $this->_type->getBehaviour('nestedSet')->rebuildNestedSetFromAdjacencyModel();
-
-                                return $this->redirect()->toRoute('hi-training/exercise-type/tree/wildcard', array('type_id' =>  $newRow->getId()));
-                            }
-
-
-
-                        }
-                    }
-
-                    if (isset($formData['ExerciseTypeRow']['actions']['add'])) {
-
-                        return $this->redirect()->toRoute('hi-training/exercise-type/tree');
-                    }
-
-                    if (isset($formData['ExerciseTypeRow']['actions']['delete'])) {
-
-                        if ($id > 0) {
-                            $editRow = $this->_type->getRow(array('type_id' => $id));
-                            $editRow->delete();
-                            $this->_type->getBehaviour('nestedSet')->rebuildNestedSetFromAdjacencyModel();
-                        }
-                        return $this->redirect()->toRoute('hi-training/exercise-type/tree');
-                    }
-                }
-            }
-        }
-
-
-
-        return array(
-            'form' => $form,//
-            'tree'   => $typeTree->build(),
-        );
     }
 }

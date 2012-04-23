@@ -84,12 +84,12 @@ class Tree
      */
     protected $_treeElements = array();
 
-//    /**
-//     *
-//     *
-//     * @var array
-//     */
-//    protected $_treeGlobalLink = array();
+    /**
+     *
+     *
+     * @var array
+     */
+    protected $_treeGlobalLink = array();
 
     /**
      *
@@ -105,12 +105,12 @@ class Tree
      */
     protected $_visiblePosition = false;
 
-//    /**
-//     *
-//     *
-//     * @var Zend_View
-//     */
-//    protected $_view;
+    /**
+     *
+     *
+     * @var
+     */
+    protected $_view;
 
 
 
@@ -178,20 +178,7 @@ class Tree
 
         return $this->_view;
     }
-//
-//    /**
-//     *
-//     *
-//     * @param $filter array|string
-//     *
-//     * @return $this
-//     */
-//    public function setData($data = null) {
-//        if (is_array($data) && count($data)) {
-//            $this->_treeElements = $data;
-//        }
-//        return $this;
-//    }
+
 
     /**
      *
@@ -221,19 +208,19 @@ class Tree
         return $this;
     }
 
-//    /**
-//     *
-//     *
-//     * @param $filter array|string
-//     *
-//     * @return $this
-//     */
-//    public function setSelectedId($id = null) {
-//        if ((int)$id) {
-//            $this->_selectedElement = $id;
-//        }
-//        return $this;
-//    }
+    /**
+     *
+     *
+     * @param $filter array|string
+     *
+     * @return $this
+     */
+    public function setSelectedId($id = null) {
+        if ((int)$id) {
+            $this->_selectedElement = $id;
+        }
+        return $this;
+    }
 
     /**
      *
@@ -266,6 +253,20 @@ class Tree
 //    }
 //
 //    /**
+//     *
+//     *
+//     * @param $filter array|string
+//     *
+//     * @return $this
+//     */
+//    public function setData($data = null) {
+//        if (is_array($data) && count($data)) {
+//            $this->_treeElements = $data;
+//        }
+//        return $this;
+//    }
+//
+//    /**
 //     * Fetches rendered Record List (implementation of abstract parent method)
 //     *
 //     * @return string Fetched list.
@@ -283,24 +284,14 @@ class Tree
      */
     public function build()
     {
-//        //
-//        $this->_view->headScript()->appendFile(
-//            'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js'
-//        );
-//        $this->_view->headScript()->appendFile(
-//            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js'
-//        );
-//        $this->_view->headScript()->appendFile(
-//            $this->_view->publicUrl . '/js/jsTree/lib/jquery.cookie.js'
-//        );
-//        $this->_view->headScript()->appendFile(
-//            $this->_view->publicUrl . '/js/jsTree/jquery.tree.js'
-//        );
-//        $this->_view->headScript()->appendFile(
-//            $this->_view->publicUrl . '/js/jsTree/plugins/jquery.tree.cookie.js'
-//        );
-//
-//
+        $this->_view->headScript()->appendFile(
+            $this->_view->basePath() . '/js/jsTree/jquery.jstree.js'
+        );
+        $this->_view->headScript()->appendFile(
+            $this->_view->basePath() . '/js/jsTree/_lib/jquery.cookie.new.js'
+        );
+
+
 //        $this->_view->treeCookiePath = BASE_PATH .
 //
         $treeData = array();

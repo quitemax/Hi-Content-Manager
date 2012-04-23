@@ -33,29 +33,78 @@ class DbTable extends TableGateway
             )
         );
 
-//        $this->hasColumn(
-//            'date',
-//            'datetime',
-//            null,
-//            array(
-//                'type'             => 'datetime',
-//                'notnull'          => true,
-//                'default'          => '0000-00-00 00:00:00',
-//            )
-//        );
-//
-//        $this->hasColumn(
-//            'height',
-//            'decimal',
-//            10,
-//            array(
-//                'type'             => 'decimal',
-//                'scale'            => 1,
-//                'notnull'          => true,
-//                'default'          => '0.0',
-//            )
-//        );
-//
+        $this->hasColumn(
+            'date',
+            'datetime',
+            null,
+            array(
+                'type'             => 'datetime',
+                'notnull'          => true,
+                'default'          => '0000-00-00 00:00:00',
+            )
+        );
+
+        $this->hasColumn(
+            'calories_burned',
+            'integer',
+            11,
+            array(
+                'type'             => 'integer',
+                'length'            => 11,
+                'notnull'          => true,
+                'default'          => '0',
+            )
+        );
+
+        $this->hasColumn(
+            'elapsed_time',
+            'time',
+            null,
+            array(
+                'type'             => 'time',
+                'notnull'          => true,
+                'default'          => '00:00:00',
+            )
+        );
+
+        $this->hasColumn(
+            'hr_max',
+            'integer',
+            11,
+            array(
+                'type'             => 'integer',
+                'length'            => 11,
+                'notnull'          => true,
+                'default'          => '0',
+            )
+        );
+
+        $this->hasColumn(
+            'hr_avg',
+            'integer',
+            11,
+            array(
+                'type'             => 'integer',
+                'length'            => 11,
+                'notnull'          => true,
+                'default'          => '0',
+            )
+        );
+
+
+
+        $this->hasColumn(
+            'fat_loss',
+            'decimal',
+            10,
+            array(
+                'type'             => 'decimal',
+                'scale'            => 3,
+                'notnull'          => true,
+                'default'          => '0.0',
+            )
+        );
+
 //        $this->hasColumn(
 //            'weight',
 //            'decimal',

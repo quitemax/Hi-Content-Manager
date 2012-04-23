@@ -212,15 +212,15 @@ class DbTable extends GridResultSet
 	                    );
                         break;
                     case 'time':
-//	                    $this->addField(
-//	                        $name,
-//	                        'input',
-//	                        array(
-//	                            'label'     => $name,
-//	                            'sortable'  => true,
-//	                            'size'    => 10,
-//	                        )
-//	                    );
+	                    $this->addField(
+	                        $name,
+	                        'input',
+	                        array(
+	                            'label'     => $name,
+	                            'sortable'  => true,
+	                            'size'    => 10,
+	                        )
+	                    );
                         break;
                     default:
                         break;
@@ -332,21 +332,21 @@ class DbTable extends GridResultSet
     {
         $this->_loadAll = $load;
     }
-//
-//    /**
-//     * Adds a field to record rowset
-//     *
-//     * @param $name string
-//     * @param $type string
-//     * @param $options array
-//     * @param $position int
-//     *
-//     * @return void
-//     */
-//    public function getFieldsNames()
-//    {
-//        $fieldTmp = array();
-//
+
+    /**
+     * Adds a field to record rowset
+     *
+     * @param $name string
+     * @param $type string
+     * @param $options array
+     * @param $position int
+     *
+     * @return void
+     */
+    public function getFieldsNames()
+    {
+        $fieldTmp = array();
+
 //        if ($this->_loadAll) {
 //            $modelInfo = $this->_model->info();
 ////            \HiZend\Debug\Debug::dump($modelInfo);
@@ -366,35 +366,35 @@ class DbTable extends GridResultSet
 //                }
 //            }
 //        }
-////        $fieldTmp = array(
-////            'name'     => $name,
-////            'type'     => $type,
-////            'options'  => $options,
-////        );
-////        if ($position===null) {
-////            $position = 10*(count($this->_fields)+1);
-////        }
-////        $this->_fields[$position] = $fieldTmp;
-//
-////        \HiZend\Debug\Debug::precho($fieldTmp);
-//        return $fieldTmp;
-//    }
-//
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return string
-//     */
-//    public function getDbOrder()
-//    {
-////        if (!isset($this->_dbOrder)) {
+//        $fieldTmp = array(
+//            'name'     => $name,
+//            'type'     => $type,
+//            'options'  => $options,
+//        );
+//        if ($position===null) {
+//            $position = 10*(count($this->_fields)+1);
+//        }
+//        $this->_fields[$position] = $fieldTmp;
+
+//        \HiZend\Debug\Debug::precho($fieldTmp);
+        return $fieldTmp;
+    }
+
+
+    /**
+     *
+     *
+     *
+     * @return string
+     */
+    public function getDbOrder()
+    {
+//        if (!isset($this->_dbOrder)) {
 //            if ($this->_rowsetSession->sortField === null) {
 //                if ($this->_dbOrder !== null) {
 //                return $this->_dbOrder;
 //                } else {
-//                    return null;
+                    return null;
 //                }
 //            } else {
 //                return  $this->_rowsetSession->sortField
@@ -416,55 +416,55 @@ class DbTable extends GridResultSet
 ////                        . $this->_rowsetSession->sortFieldDirection;
 ////            }
 ////        }
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return int
-//     */
-//    public function addDbOrder($order = null, $direction = null)
-//    {
-//        if ($order !== null && $direction !== null) {
-//            if (!is_array($this->_dbOrder)) {
-//                $this->_dbOrder = array();
-//            }
+    }
+
+    /**
+     *
+     *
+     *
+     * @return int
+     */
+    public function addDbOrder($order = null, $direction = null)
+    {
+        if ($order !== null && $direction !== null) {
+            if (!is_array($this->_dbOrder)) {
+                $this->_dbOrder = array();
+            }
 ////            \HiZend\Debug\Debug::dump($order);
 ////            \HiZend\Debug\Debug::dump($direction);
 ////            \HiZend\Debug\Debug::dump($order . ' ' . $direction);
 ////            \HiZend\Debug\Debug::dump($this->_dbOrder);
-//            $this->_dbOrder = $order . ' ' . $direction;
+            $this->_dbOrder = $order . ' ' . $direction;
 //////            $this->_rowsetSession->sortFieldDirection = $direction;
-//        }
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return int
-//     */
-//    public function getDbLimit()
-//    {
+        }
+    }
+
+    /**
+     *
+     *
+     *
+     * @return int
+     */
+    public function getDbLimit()
+    {
 //        return $this->_rowsetSession->perPage;
-//    }
-//
-//    /**
-//     *
-//     *
-//     *
-//     * @return int
-//     */
-//    public function getDbOffset()
-//    {
+    }
+
+    /**
+     *
+     *
+     *
+     * @return int
+     */
+    public function getDbOffset()
+    {
 //        if ($this->_rowsetSession->page>1) {
 //            return ($this->_rowsetSession->page-1)*$this->_rowsetSession->perPage;
 //        } else {
-//            return 0;
+            return 0;
 //        }
-//
-//    }
+
+    }
 
     /**
      * Builds
@@ -481,11 +481,11 @@ class DbTable extends GridResultSet
 ////\HiZend\Debug\Debug::dump($this->getDbOrder());
         //
         $resultSet = $this-> _model -> getResultSet(
-            $this->getDbWhere()//,
-//            $this->getDbOrder(),
-//            $this->getDbLimit(),
-//            $this->getDbOffset(),
-//            $this->getFieldsNames()
+            $this->getDbWhere(),
+            $this->getDbOrder(),
+            $this->getDbLimit(),
+            $this->getDbOffset(),
+            $this->getFieldsNames()
         );
 
 

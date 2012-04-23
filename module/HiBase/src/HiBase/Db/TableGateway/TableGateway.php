@@ -149,55 +149,6 @@ class TableGateway extends ZendTableGateway
         return clone $this->getSelectResultPrototype()->getRowObjectPrototype();
     }
 
-////
-////    /**
-////     *
-////     *
-////     * @return void
-////     */
-////    public function __construct($config = array(), $definition = null)
-////    {
-////        parent::__construct($config, $definition);
-////
-////        //
-////        if ($this->_primaryKey == null) {
-////            if (is_array($this->_primary)) {
-////                $this->_primaryKey = $this->_primary[1];
-////            } else {
-////                $this->_primaryKey = $this->_primary;
-////            }
-////        }
-////
-////        //
-////        if (($this->_prfx===null)) {
-////            throw new Exception('You have not definied a prfx field for this class.');
-////        }
-////
-////        foreach ($this->_behaviours as $behaviourName => $behaviourOptions) {
-////            switch ($behaviourName) {
-////                case 'i18n':
-////                    $behaviourObject = new HiZend_Db_Behaviour_I18n(
-////                        $this,
-////                        $behaviourOptions
-////                    );
-////                    $this->_behaviourObjects[$behaviourName] = $behaviourObject;
-////                    break;
-////                case 'nestedSet':
-////                    $behaviourObject = new HiZend_Db_Behaviour_NestedSet(
-////                        $this,
-////                        $behaviourOptions
-////                    );
-////                    $this->_behaviourObjects[$behaviourName] = $behaviourObject;
-////                    break;
-////                default:
-////                    break;
-////            }
-////
-////
-////
-////        }
-////    }
-////
     /**
      * Get table name (Hi use)
      *
@@ -355,6 +306,7 @@ class TableGateway extends ZendTableGateway
 
         //order
         $sqlSelect->order($order);
+//        \Zend\Debug::dump($sqlSelect->getSqlString());
 //        echo $sqlSelect->getSqlString();
 
         return $sqlSelect;

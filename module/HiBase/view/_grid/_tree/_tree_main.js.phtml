@@ -1,29 +1,30 @@
-$(function () { 
-    $(".treeContent").tree({
-    	plugins : {
-	    	cookie : { 
-	    		prefix : "jstree_",
-	    		options : { 
-		    		path: "<?php echo $this->treeData['cookiePath'];?>"
-		    	}
+$(function () {
 
-	    	}
-	    },
-        types : {
-            "default" : {
-                draggable   : false
-            }
+    $(".treeContent").jstree({
+        "plugins" : [ "themes", "html_data", "ui", "cookies" ],
+        <?php if ($this->treeData['selectedElement'] > 0):?>
+        "ui" : {
+            "initially_select" : [ "phtml_<?php echo $this->treeData['selectedElement'];?>" ]
         },
-        callback : {
-        	ondblclk : function (node, tree) { 
-                var link = tree.get_node(node).children().get(0).href;
-                window.location = link;
-            }
-            
-            //oncreate : function(NODE,REF_NODE,TYPE,TREE_OBJ,RB) {
-            //    if(TYPE != "inside") REF_NODE = $(REF_NODE).parents("li:eq(0)");
-            //}
-            
-        }        
+        <?php endif;?>
+        "cookies" : {
+            cookie_options : {
+                path : "<?php echo $this->treeData['cookiePath'];?>"
+            },
+            save_loaded      : "jstreeee_load",
+            save_opened      : "jstreeee_open",
+            save_selected    : "jstreeee_select",
+            auto_save        : true
+        }
+    })
+    //.bind("select_node.jstree", function (event, data) {
+    //    // `data.rslt.obj` is the jquery extended node that was clicked
+    //    //window.location =
+    //    //alert(data.rslt.obj.attr("id"));
+    //});
+    .bind("dblclick.jstree", function (event, data) {
+        var node = $(event.target);
+        window.location = node.attr("href");
+
     });
 });

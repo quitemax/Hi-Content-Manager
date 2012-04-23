@@ -15,92 +15,92 @@ class ResultSet extends GridDbTableResultSet
         parent::init();
 
 
-//        $this->addField(
-//            'exercises_count',
-//            'text',
-//            array(
-//                'label'     => 'exercises_count',
-//                'sortable'  => true,
-//                'sql'    => '(' . $this->_model->getWorkoutExercisesCountSql() . ')',
-//            )
-//        );
-//
-//        $this->setAllFieldType(
-//            'text'
-//        );
+        $this->addField(
+            'exercises_count',
+            'text',
+            array(
+                'label'     => 'exercises_count',
+                'sortable'  => true,
+                'sql'    => '(' . $this->_model->getWorkoutExercisesCountSql() . ')',
+            )
+        );
+
+        $this->setAllFieldType(
+            'text'
+        );
 
 
 
 
-//        /**
-//         * RECORD ACTIONS
-//         */
-//        $this->addRowAction(
-//            'edit',
-//            'submit',
-//            array(
-//                'label'     => 'edit',
-//                'image'     => BASE_URL . '/img/grid/icons/edit.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => 'editRow(__ID__);return false;',
-//            )
-//        );
-//        $this->addRowAction(
-//            'delete',
-//            'submit',
-//            array(
-//                'label'     => 'delete',
-//                'image'     => BASE_URL . '/img/grid/icons/delete.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => 'deleteRow(__ID__);return false;',
-//            )
-//        );
-//        $this->addRowAction(
-//            'exercises',
-//            'submit',
-//            array(
-//                'label'     => 'exercises',
-//                'image'     => BASE_URL . '/img/grid/icons/delete.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => 'exercises(__ID__);return false;',
-//            )
-//        );
-//        $this->addRowAction(
-//            'add-exercise',
-//            'submit',
-//            array(
-//                'label'     => 'add exercise',
-//                'image'     => BASE_URL . '/img/grid/icons/delete.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => 'addExercise(__ID__);return false;',
-//            )
-//        );
-//
-//
-//        /**
-//         * LIST ACTIONS
-//         */
+        /**
+         * RECORD ACTIONS
+         */
+        $this->addRowAction(
+            'edit',
+            'submit',
+            array(
+                'label'     => 'edit',
+                'image'     => BASE_URL . '/img/grid/icons/edit.png',
+                'class'     => 'actionImage',
+                'onclick'   => 'editRow(__ID__);return false;',
+            )
+        );
+        $this->addRowAction(
+            'delete',
+            'submit',
+            array(
+                'label'     => 'delete',
+                'image'     => BASE_URL . '/img/grid/icons/delete.png',
+                'class'     => 'actionImage',
+                'onclick'   => 'deleteRow(__ID__);return false;',
+            )
+        );
+        $this->addRowAction(
+            'exercises',
+            'submit',
+            array(
+                'label'     => 'exercises',
+                'image'     => BASE_URL . '/img/grid/icons/delete.png',
+                'class'     => 'actionImage',
+                'onclick'   => 'exercises(__ID__);return false;',
+            )
+        );
+        $this->addRowAction(
+            'add-exercise',
+            'submit',
+            array(
+                'label'     => 'add exercise',
+                'image'     => BASE_URL . '/img/grid/icons/delete.png',
+                'class'     => 'actionImage',
+                'onclick'   => 'addExercise(__ID__);return false;',
+            )
+        );
+
+
+        /**
+         * LIST ACTIONS
+         */
+        $this->addResultSetAction(
+            'add',
+            'submit',
+            array(
+                'label'     => 'add workout',
+                'class'     => 'actionImage',
+                'image'     => BASE_URL . '/img/grid/icons/new.png',
+                'onclick'   => 'addRow();return false;',
+            )
+        );
+
+//        //
 //        $this->addRowsetAction(
-//            'add',
+//            'save',
 //            'submit',
 //            array(
-//                'label'     => 'add workout',
+//                'label'     => 'save selected',
 //                'class'     => 'actionImage',
-//                'image'     => BASE_URL . '/img/grid/icons/new.png',
-//                'onclick'   => 'addRow();return false;',
+//                'image'     => BASE_URL . '/img/grid/icons/save.png',
 //            )
 //        );
-//
-////        //
-////        $this->addRowsetAction(
-////            'save',
-////            'submit',
-////            array(
-////                'label'     => 'save selected',
-////                'class'     => 'actionImage',
-////                'image'     => BASE_URL . '/img/grid/icons/save.png',
-////            )
-////        );
 
 
     }

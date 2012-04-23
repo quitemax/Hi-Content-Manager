@@ -162,14 +162,14 @@ class DbTable extends GridRow
                         );
                         break;
                     case 'time':
-//                        $this->addField(
-//                            $name,
-//                            'input',
-//                            array(
-//                                'label'     => $name,
-//                                'defaultValue'  => '00:00:00',
-//                            )
-//                        );
+                        $this->addField(
+                            $name,
+                            'input',
+                            array(
+                                'label'     => $name,
+                                'defaultValue'  => '00:00:00',
+                            )
+                        );
                         break;
                     case 'decimal':
                         $this->addField(
