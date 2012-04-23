@@ -1,0 +1,19 @@
+<div id="breadcrumb">
+    &raquo; <a href="<?php echo $this->url('home');?>">Home</a>
+    &raquo; <a href="<?php echo $this->url('hi-training');?>">Training</a>
+    &raquo; <a href="<?php echo $this->url('hi-training/workout');?>">Workout</a>
+    &raquo; <a class="" href="<?php echo $this->url('hi-training/workout-exercise/list', array('workout_id' => $workout['workout_id'] ));?>">workout (ID:<?php echo $workout['workout_id']?>) exercise list</a>
+    &raquo; <a class="selected" href="">Add new exercise to workout (ID:<?php echo $workout['workout_id']?>)</a>
+
+</div>
+
+<div id="content">
+	<div class="page-title">
+        <?php
+            $title = 'Add new exercise to workout (ID:' . $workout['workout_id'] . ')';
+            $this->headTitle($title);
+        ?>
+        <h1><?php echo $this->escape($title); ?></h1>
+    </div>
+    <?php echo $form;?>
+</div>

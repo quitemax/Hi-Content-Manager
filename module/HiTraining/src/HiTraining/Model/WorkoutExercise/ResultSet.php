@@ -5,13 +5,12 @@
  * @author MaX
  *
  */
-namespace HiTraining\Model;
+namespace HiTraining\Model\WorkoutExercise;
 
 /**
  *
  */
-use HiTraining\Model\WorkoutExercise\DbTable,
-    Zend\Db\Sql\Select;
+use HiBase\Db\ResultSet\ResultSet as HiResultSet;
 
 /**
  *
@@ -19,7 +18,7 @@ use HiTraining\Model\WorkoutExercise\DbTable,
  * @author MaX
  *
  */
-class WorkoutExercise extends DbTable
+class ResultSet extends HiResultSet
 {
 
 }

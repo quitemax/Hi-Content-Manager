@@ -3,12 +3,11 @@
 namespace HiTraining\Controller;
 
 use Zend\Mvc\Controller\ActionController,
-    Exercises\Model\DbTable\Workout,
-    Exercises\Model\DbTable\WorkoutExercise,
-    Exercises\Model\DbTable\WorkoutExerciseType,
-    Exercises\Form\WorkoutExerciseGrid,
-    Exercises\Form\WorkoutExerciseGrid\ExerciseRowset,
-    Exercises\Form\WorkoutExerciseGrid\ExerciseRow;
+    Zend\View\Model\ViewModel,
+    HiTraining\Model\WorkoutExercise,
+    HiTraining\Form\WorkoutExercise\Grid as WorkoutExerciseGrid,
+    HiTraining\Form\WorkoutExercise\ResultSet as WorkoutExerciseResultSet,
+    HiTraining\Form\WorkoutExercise\Row as WorkoutExerciseRow;
 
 class WorkoutExerciseController extends ActionController
 {
@@ -48,36 +47,46 @@ class WorkoutExerciseController extends ActionController
      */
     public function indexAction()
     {
+
+    }
+
+    /**
+     *  INDEX
+     *
+     * Enter description here ...
+     */
+    public function listAction()
+    {
 //
-//        $request = $this->getRequest();
-//
-//        $routeMatch = $this->getEvent()->getRouteMatch();
-//        $id     = $routeMatch->getParam('workout_id', 0);
-//
-//        if ($id <= 0) {
-//            return $this->redirect()->toRoute('exercises-workout-home');
-//        }
-//
-//        /**
-//         * Grid FORM
-//         */
-//        $form = new WorkoutExerciseGrid(
-//            array(
-//                'view' => $this->_view,
-//            )
-//        );
-//
-//        /**
-//         * BUILDING LIST
-//         */
-//        $list = new ExerciseRowset(
-//            array(
-//                'model' => $this->_exercise,
-//                'view' => $this->_view,
-//            )
-//        );
-////
-////        \HiZend\Debug\Debug::precho($this->_exerciseType->getAllForSelect());
+        $request = $this->getRequest();
+
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('workout_id', 0);
+
+        if ($id <= 0) {
+            return $this->redirect()->toRoute('hi-training/workout/list');
+        }
+
+        /**
+         * Grid FORM
+         */
+        $form = new WorkoutExerciseGrid(
+            array(
+                'view' => $this->_view,
+            )
+        );
+
+        /**
+         * BUILDING LIST
+         */
+        $list = new WorkoutExerciseResultSet(
+            array(
+                'model' => $this->_exercise,
+                'view' => $this->_view,
+            )
+        );
+
+//        \HiZend\Debug\Debug::precho($this->_exerciseType->getAllForSelect());
 //        $list->setFieldOptions('type_id', array(
 //            'values' => $this->_exerciseType->getAllForSelect(),
 //        ));
@@ -99,16 +108,16 @@ class WorkoutExerciseController extends ActionController
 //        );
 //
 //        $list->setDbWhere('we.workout_id = ' . (int)$id);
-//
-//        //
-//        $list->processRequest($this->getRequest());
-//
-//        //
-//        $list->build();
-//
-//        //
-//        $form->addSubForm($list, $list->getName());
-//
+
+        //
+        $list->processRequest($this->getRequest());
+
+        //
+        $list->build();
+
+        //
+        $form->addSubForm($list, $list->getName());
+
 //        //
 //        $this->_view->headScript()->appendScript(
 //            $this->_view->render(
@@ -121,15 +130,15 @@ class WorkoutExerciseController extends ActionController
 //                )
 //            )
 //        );
-//
-//        /**
-//         * POST
-//         */
-//        if ($this->getRequest()->isPost()) {
-//
-//            $formData = $this->getRequest()->post()->toArray();
-//
-//
+
+        /**
+         * POST
+         */
+        if ($this->getRequest()->isPost()) {
+
+            $formData = $this->getRequest()->post()->toArray();
+
+
 //            if ($form->isValid($formData)) {
 ////                \HiZend\Debug\Debug::dump($formData);
 //                if (    isset($formData['header']['formId'])
@@ -174,12 +183,12 @@ class WorkoutExerciseController extends ActionController
 //                    }
 //                }
 //            }
-//        }
-//
-//        return array(
-//            'form' => $form,
-//            'workout'   => $this->_workout->getWorkout($id),
-//        );
+        }
+
+        return array(
+            'form' => $form,
+            'workout'   => $this->_workout->getRow(array('workout_id'=>$id)),
+        );
 
     }
 
@@ -190,39 +199,39 @@ class WorkoutExerciseController extends ActionController
      */
     public function addAction()
     {
-//        $request = $this->getRequest();
+        $request = $this->getRequest();
+
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('workout_id', 0);
+
+        if ($id <= 0) {
+            return $this->redirect()->toRoute('hi-training/workout/list');
+        }
+
+        $workout = $this->_workout->getRow(array('workout_id' => $id));
 //
-//        $routeMatch = $this->getEvent()->getRouteMatch();
-//        $id     = $routeMatch->getParam('workout_id', 0);
-//
-//        if ($id <= 0) {
-//            return $this->redirect()->toRoute('exercises-workout-home');
-//        }
-//
-//        $workout = $this->_workout->getWorkout($id);
-//
-//        if (!$workout) {
-//            return $this->redirect()->toRoute('exercises-workout-home');
-//        }
-//
-//        /**
-//         * Grid FORM
-//         */
-//        $form = new WorkoutExerciseGrid(
-//            array(
-//                'view' => $this->_view,
-//            )
-//        );
-//
-//        /**
-//         * BUILDING Row
-//         */
-//        $row = new ExerciseRow(
-//            array(
-//                'model' => $this->_exercise,
-//                'view' => $this->_view,
-//            )
-//        );
+        if (!$workout) {
+            return $this->redirect()->toRoute('hi-training/workout/list');
+        }
+
+        /**
+         * Grid FORM
+         */
+        $form = new WorkoutExerciseGrid(
+            array(
+                'view' => $this->_view,
+            )
+        );
+
+        /**
+         * BUILDING Row
+         */
+        $row = new WorkoutExerciseRow(
+            array(
+                'model' => $this->_exercise,
+                'view' => $this->_view,
+            )
+        );
 //
 //        $row->setFieldOptions('type_id', array(
 //            'values' => $this->_exerciseType->getAllForSelect(),
@@ -231,13 +240,13 @@ class WorkoutExerciseController extends ActionController
 //        $row->setFieldOptions('workout_id', array(
 //            'value' => $id,
 //        ));
-//        //
-//        $row->build();
-//
-//        //
-//        $form->addSubForm($row, $row->getName());
-//
-//        //
+        //
+        $row->build();
+
+        //
+        $form->addSubForm($row, $row->getName());
+
+        //
 //        $this->_view->headScript()->appendScript(
 //            $this->_view->render(
 //                'exercises-workout-exercise/add.js',
@@ -248,17 +257,17 @@ class WorkoutExerciseController extends ActionController
 //                )
 //            )
 //        );
-//
-//
-//        /**
-//         * POST
-//         */
-//        if ($this->getRequest()->isPost()) {
-//
-//            $formData = $this->getRequest()->post()->toArray();
-//
-//            if ($form->isValid($formData)) {
-//
+
+
+        /**
+         * POST
+         */
+        if ($this->getRequest()->isPost()) {
+
+            $formData = $this->getRequest()->post()->toArray();
+
+            if ($form->isValid($formData)) {
+
 //                if (    isset($formData['header']['formId'])
 //                        && $formData['header']['formId'] == 'WorkoutExerciseGridForm') {
 //
@@ -284,12 +293,14 @@ class WorkoutExerciseController extends ActionController
 //
 //                    }
 //                }
-//            }
-//        }
-//        return array(
-//            'form'        => $form,
-//            'workout'     => $workout,
-//        );
+            }
+        }
+
+        //
+        return array(
+            'form'        => $form,
+            'workout'     => $workout,
+        );
 
     }
 
