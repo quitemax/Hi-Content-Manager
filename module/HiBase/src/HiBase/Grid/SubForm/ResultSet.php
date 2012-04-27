@@ -598,21 +598,30 @@ class ResultSet extends GridSubForm
      * @return
      */
     public function setFieldOptions($name, $options) {
+
         if (!is_array($options)) {
             throw new Exception ('The options param in Hi_Record_Row->setFieldOptions() should be an array!');
         }
 
 //        \HiZend\Debug\Debug::dump($this->_fields);
         foreach ($this->_fields as $key => $field) {
+
             if ($field['name'] == $name) {
+//                \Zend\Debug::dump($name);
+//        \Zend\Debug::dump($options);
                 if (is_array($field['options'])) {
-                    $this->_fields[$key]['options'] += $options;
+//                        \Zend\Debug::dump($field['options']);
+//                        $temp = $this->_fields[$key]['options'];
+                        $this->_fields[$key]['options'] = array_merge($this->_fields[$key]['options'], $options);
+//                    $temp += $options;
+//                    $this->_fields[$key]['options'] = $temp;
+//                    \Zend\Debug::dump($field['options']);
                 } else {
                     $this->_fields[$key]['options'] = $options;
                 }
             }
         }
-//        \HiZend\Debug\Debug::dump($this->_fields);
+//        \Zend\Debug::dump($this->_fields);
     }
 
 	/**
@@ -1153,13 +1162,13 @@ class ResultSet extends GridSubForm
 ////                                );
                                 break;
                             case 'custom':
-//                                $gridRowItemSubForm->addElement(
-//                                    $this->_buildRowCustomField(
-//                                        $field['name'],
-//                                        $dataRow,
-//                                        $field['options']
-//                                    )
-//                                );
+                                $gridRowItemSubForm->addElement(
+                                    $this->_buildRowCustomField(
+                                        $field['name'],
+                                        $dataRow,
+                                        $field['options']
+                                    )
+                                );
                                 break;
                             default:
 //                                $gridRowItemSubForm->addElement(
@@ -1262,6 +1271,7 @@ class ResultSet extends GridSubForm
         $columnTitles = array();
         if ($this->_fields) {
             foreach ($this->_fields as $field) {
+//                \Zend\Debug::dump($field);
                 if (isset($field['options']['label'])) {
                     $columnTitles[$field['name']] = $field['options']['label'];
                 } else {
@@ -1593,6 +1603,8 @@ class ResultSet extends GridSubForm
      */
     protected function _buildSubFormHeader()
     {
+
+//        \Zend\Debug::dump($this->_getColumnTitles());
         $rowsetHeaderSubForm = new GridSubForm();
 
         $countRowActions = count($this->_rowActions);
@@ -1812,82 +1824,26 @@ class ResultSet extends GridSubForm
         return $tmpElement;
     }
 
-//    /**
-//     *
-//     *
-//     * @return Zend_Form_Element_Text
-//     */
-//    protected function _buildRowCustomField ($name, $values, $options)
-//    {
-//
-//
-//        if (!isset($options['viewScript'])) {
-//            $options['viewScript'] = $this->_partialsDir . '/_field_custom.phtml';
-//        }
-//        $options['row'] = $values;
-////        \HiZend\Debug\Debug::precho($options);
-//
-////        \HiZend\Debug\Debug::precho($options);
-//
-//        $tmpElement = new Element\Custom(
-//            $name,
-//            $options
-//        );
-////        $tmpElement->setRequired(true);
-////
-////        $tmpElement->addFilter(
-////            new Zend_Filter_StripTags()
-////        );
-////        $tmpElement->addFilter(
-////            new Zend_Filter_StringTrim()
-////        );
-////        $tmpElement->addFilter(
-////            new Zend_Filter_Alnum()
-////        );
-////        $tmpElement->addFilter(
-////            new Zend_Filter_StringToLower(
-////                array(
-////                    'encoding' => 'UTF-8',
-////                )
-////            )
-////        );
-////        $tmpElement->setDescription($value);
-//
-////        //
-////        $sort = null;
-//
-//        //
-////        if ($options) {
-////            foreach ($options as $optionName => $option) {
-////                switch ($optionName) {
-////                    case 'sort':
-////                        $sort = $option;
-////                        break;
-////                    case 'even':
-////                        $even = $option;
-////                        break;
-////                    default:
-////                        break;
-////                }
-////            }
-////        }
-//
-////        $tmpElement->setDecorators(
-////            array(
-////                array(
-////                    'ViewScript',
-////                    array(
-////                        'viewScript'    => $this->_partialsDir . '/_field_text.phtml',
-////                        'placement'     => false,
-////                        'sort'          => $sort,
-////                        'even'          =>  $even,
-////                    ),
-////                ),
-////            )
-////        );
-//
-//        return $tmpElement;
-//    }
+    /**
+     *
+     *
+     * @return Zend_Form_Element_Text
+     */
+    protected function _buildRowCustomField ($name, $values, $options)
+    {
+        if (!isset($options['viewScript'])) {
+            $options['viewScript'] = $this->_partialsDir . '/_field_custom.phtml';
+        }
+        $options['row'] = $values;
+//        \HiZend\Debug\Debug::precho($options);
+
+        $tmpElement = new Element\Custom(
+            $name,
+            $options
+        );
+
+        return $tmpElement;
+    }
 
 
 

@@ -392,9 +392,47 @@ class DbTable extends GridResultSet
 //        if (!isset($this->_dbOrder)) {
 //            if ($this->_rowsetSession->sortField === null) {
 //                if ($this->_dbOrder !== null) {
-//                return $this->_dbOrder;
+                return $this->_dbOrder;
 //                } else {
-                    return null;
+//                    return null;
+//                }
+//            } else {
+//                return  $this->_rowsetSession->sortField
+//                        . ' '
+//                        . $this->_rowsetSession->sortFieldDirection;
+//            }
+////        } else {
+////            if ($this->_rowsetSession->sortField === null) {
+////                return $this->_dbOrder;
+////            } else {
+////                $order = array(
+////                    $this->_rowsetSession->sortField
+////                    . ' '
+////                    . $this->_rowsetSession->sortFieldDirection
+////                );
+////                $order += $this->_dbOrder;
+////                return  $this->_rowsetSession->sortField
+////                        . ' '
+////                        . $this->_rowsetSession->sortFieldDirection;
+////            }
+////        }
+    }
+
+    /**
+     *
+     *
+     *
+     * @return string
+     */
+    public function setDbOrder($dbOrder)
+    {
+//        if (!isset($this->_dbOrder)) {
+//            if ($this->_rowsetSession->sortField === null) {
+//                if ($this->_dbOrder !== null) {
+        $this->_dbOrder = $dbOrder;
+        return $this;
+//                } else {
+//                    return null;
 //                }
 //            } else {
 //                return  $this->_rowsetSession->sortField

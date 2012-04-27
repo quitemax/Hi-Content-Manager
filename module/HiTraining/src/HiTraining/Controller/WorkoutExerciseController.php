@@ -47,7 +47,7 @@ class WorkoutExerciseController extends ActionController
      */
     public function indexAction()
     {
-
+        return array();
     }
 
     /**
@@ -86,28 +86,29 @@ class WorkoutExerciseController extends ActionController
             )
         );
 
-//        \HiZend\Debug\Debug::precho($this->_exerciseType->getAllForSelect());
-//        $list->setFieldOptions('type_id', array(
-//            'values' => $this->_exerciseType->getAllForSelect(),
-//        ));
-//
-////        $list->setFieldOptions('result', array(
-////            'values' => $this->_exerciseType->getRowset()->toArray(),
-////            'viewScript' => 'exercises-workout-exercise/_field_result.phtml',
-////        ));
-//
-//        $list->addField(
-//            'results',
-//            'custom',
-//            array(
-//                'label' => 'results',
-//                'sortable' => false,
-//                'values' => $this->_exerciseType->getRowset()->toArray(),
-//                'viewScript' => 'exercises-workout-exercise/_field_result.phtml',
-//            )
-//        );
-//
-//        $list->setDbWhere('we.workout_id = ' . (int)$id);
+        $list->setFieldOptions('type_id', array(
+            'values' => $types = $this->_exerciseType->getBehaviour('nestedSet')->getResultSetForText(),
+        ));
+
+        $typesTemp = $this->_exerciseType->getResultSet()->toArray();
+        $types = array();
+        foreach ( $typesTemp as $key => $type) {
+            $types[$type['type_id']] = $type;
+        }
+
+
+        $list->addField(
+            'results',
+            'custom',
+            array(
+                'label' => 'results',
+                'sortable' => false,
+                'values' => $types,
+                'viewScript' => 'workout-exercise/_field_result.phtml',
+            )
+        );
+
+        $list->setDbWhere('workout_id = ' . (int)$id);
 
         //
         $list->processRequest($this->getRequest());

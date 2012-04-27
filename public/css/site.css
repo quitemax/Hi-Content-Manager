@@ -675,13 +675,13 @@ table.treeTitle tr th{
 /*.treeContent{
     background-color: #e8e8e8;
 }*/ 
-/*
+
 table#clockType {
 	width: 100%;
 }
 table#clockType th{
 	padding:4px 4px 4px 4px;
-	background-color: #D8D8D8;
+	background-color: #BBDCED;
 	border-right: 1px solid #F0F0F0;
     border-top: 1px solid #F0F0F0;
 }
@@ -695,7 +695,7 @@ table#treadmillType {
 }
 table#treadmillType th{
 	padding:4px 4px 4px 4px;
-	background-color: #D8D8D8;
+	background-color: #BBDCED;
 	border-right: 1px solid #F0F0F0;
     border-top: 1px solid #F0F0F0;
 }
@@ -710,7 +710,7 @@ table#liftingType {
 
 table#liftingType th{
 	padding:4px 4px 4px 4px;
-	background-color: #D8D8D8;
+	background-color: #BBDCED;
 	border-right: 1px solid #F0F0F0;
     border-top: 1px solid #F0F0F0;
 }

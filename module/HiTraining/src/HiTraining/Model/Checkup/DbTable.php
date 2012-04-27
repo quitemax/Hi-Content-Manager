@@ -196,6 +196,28 @@ class DbTable extends TableGateway
                 'default'          => '0.0',
             )
         );
+        $this->hasColumn(
+            'hip_circumference',
+            'decimal',
+            10,
+            array(
+                'type'             => 'decimal',
+                'scale'            => 1,
+                'notnull'          => true,
+                'default'          => '0.0',
+            )
+        );
+        $this->hasColumn(
+            'leg_circumference',
+            'decimal',
+            10,
+            array(
+                'type'             => 'decimal',
+                'scale'            => 1,
+                'notnull'          => true,
+                'default'          => '0.0',
+            )
+        );
     }
 
     protected function setPrototypes()

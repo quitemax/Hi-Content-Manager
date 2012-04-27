@@ -95,7 +95,7 @@ class ExerciseTypeController extends ActionController
         );
 
         //
-        $checkups = $this->_type->getBehaviour('nestedSet')->getResultSetForSelect();
+        $types = $this->_type->getBehaviour('nestedSet')->getResultSetForSelect();
 //        $checkupsValues = array();
 //        foreach ($checkups as $checkup) {
 //            $checkupsValues[$checkup['checkup_id']] = $checkup['date'] . ' ' . date('l', strtotime($checkup['date']) );
@@ -107,7 +107,7 @@ class ExerciseTypeController extends ActionController
         $row->setFieldOptions(
             'tree_parent_id',
             array(
-                'values' => $checkups,
+                'values' => $types,
             )
         );
 
@@ -133,26 +133,8 @@ class ExerciseTypeController extends ActionController
     //                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
                 )
             );
-//            tree_parent_id
         }
 
-//        $profiles = $this->_profile->getResultSet();
-//        $values = array();
-//
-//        foreach ($profiles as $profile) {
-//            $values[$profile['profile_id']] = $profile['name'];
-//        }
-
-//        $row->addField(
-//            'profile_id',
-//            'custom',
-//            array(
-//                'label' => 'profile_id',
-//                'values' => $values,
-//                'viewScript' => 'checkup/_field_profile.phtml',
-//            ),
-//            '25'
-//        );
 
         //
         $row->build();
@@ -160,15 +142,6 @@ class ExerciseTypeController extends ActionController
         //
         $form->addSubForm($row, $row->getName());
 
-//        //
-//        $this->_view->headScript()->appendScript(
-//            $this->_view->render(
-//                'checkup/add.js',
-//                array(
-//                    'back' => $this->url()->fromRoute('hi-training/checkup/list'),
-//                )
-//            )
-//        );
 
         /**
          * POST

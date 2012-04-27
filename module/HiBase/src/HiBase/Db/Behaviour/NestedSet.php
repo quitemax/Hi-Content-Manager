@@ -249,6 +249,65 @@ class NestedSet extends Behaviour
         return $resultTree;
     }
 
+/**
+     *
+     *
+     * @return array | false
+     */
+    public function getResultSetForText($where = null, $order = null, $count= null, $offset = null, $cols = null) {
+        $treeElements = $this->_parentTable->getResultSet(
+            null,
+            array(
+//                'root_id',
+                '`left`',
+//                'position',
+//                'id'
+            ),
+            null,
+            null,
+            array(
+                'id'        => $this->_basePrimaryKey,
+                'left'      => $this->_left,
+                'level'     => $this->_level,
+                'title'     => $this->_titleColumn,
+                'parent'    => $this->_parentId,
+//                'root_id'   => $this->_rootId
+            )
+        )->toArray();
+
+        $resultTree = array('0'=>'--');
+
+        $treeElementsTemp = array();
+        foreach ($treeElements as $element) {
+            $treeElementsTemp[(int)$element['id']] = $element;
+        }
+
+        foreach ($treeElementsTemp as $element) {
+
+            $title = array();
+            array_unshift($title, $element['title']);
+            $parent = isset($element['parent']) ? (int) $element['parent']: 0 ;
+
+            if  ( $parent > 0 ) {
+
+                while ($parent > 0) {
+
+                    if (isset($treeElementsTemp[$parent])) {
+                        array_unshift($title, $treeElementsTemp[$parent]['title']);
+                        $parent = (int) $treeElementsTemp[$parent]['parent'];
+                    }
+
+                }
+
+            }
+
+
+            $resultTree[$element['id']] = implode(' / ', $title);
+        }
+
+        return $resultTree;
+    }
+
     /**
      *
      *

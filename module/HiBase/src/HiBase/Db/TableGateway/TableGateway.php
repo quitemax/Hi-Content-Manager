@@ -322,6 +322,7 @@ class TableGateway extends ZendTableGateway
     public function getResultSet($where = null, $order = null, $count = null, $offset  = null, $cols = null)
     {
         //prepare the sql
+//        \Zend\Debug::dump($order);
         $sqlSelect = $this->prepareResultSetSql($where, $order, $count, $offset, $cols);
 
 //        \Zend\Debug::dump($sqlSelect);

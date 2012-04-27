@@ -62,7 +62,7 @@ class Custom extends ZendText
         }
 
         //
-        if (isset($options['values']) && is_array($options['values'])) {
+        if (isset($options['values'])) {
             $this->_values = $options['values'];
             unset($options['values']);
         } else {

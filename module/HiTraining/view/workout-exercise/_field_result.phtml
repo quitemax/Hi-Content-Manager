@@ -1,0 +1,179 @@
+<td class="text <?php if ($this->sort):?>sort<?php endif;?>" >
+<?php
+  $type = isset($values[$row['type_id']]) ? $values[$row['type_id']] : array();
+
+  $formType = isset($type['form_type']) ? $type['form_type'] : 0;
+
+//      \Zend\Debug::dump($type);
+  ?>
+    <?php if ($formType == HiTraining\Model\ExerciseType\DbTable::FORM_TYPE_TREADMILL):?>
+    <table border="0" cellpadding="0" id="treadmillType">
+        <tr>
+            <th>elapsed_time</th>
+            <th>speed</th>
+            <th>angle</th>
+            <th>distance</th>
+        </tr>
+        <tr>
+            <td><?php echo $row['exercise_elapsed_time'];?></td>
+            <td><?php echo $row['speed'];?> km/h</td>
+            <td><?php echo $row['angle'];?> &#778;</td>
+            <td><?php echo $row['distance'];?> km</td>
+        </tr>
+    </table>
+    <?php elseif ($formType == HiTraining\Model\ExerciseType\DbTable::FORM_TYPE_LIFTING):?>
+    <table border="0" cellpadding="0" id="liftingType">
+        <tr>
+            <?php if ($row['lifting_series_1_count']!= 0) :?>
+            <th>series 1</th>
+            <?php endif;?>
+            <?php if ($row['lifting_series_2_count']!= 0) :?>
+            <th>series 2</th>
+            <?php endif;?>
+            <?php if ($row['lifting_series_3_count']!= 0) :?>
+            <th>series 3</th>
+            <?php endif;?>
+            <?php if ($row['lifting_series_4_count']!= 0) :?>
+            <th>series 4</th>
+            <?php endif;?>
+            <?php if ($row['lifting_series_5_count']!= 0) :?>
+            <th>series 5</th>
+            <?php endif;?>
+            <?php if ($row['lifting_series_6_count']!= 0) :?>
+            <th>series 6</th>
+            <?php endif;?>
+        </tr>
+        <tr>
+
+            <?php if ($row['lifting_series_1_count']!= 0) :?>
+            <td><?php echo $row['lifting_series_1_weight'];?> kg</td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_2_count']!= 0) :?>
+            <td><?php echo $row['lifting_series_2_weight'];?> kg</td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_3_count']!= 0) :?>
+            <td><?php echo $row['lifting_series_3_weight'];?> kg</td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_4_count']!= 0) :?>
+            <td><?php echo $row['lifting_series_4_weight'];?> kg</td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_5_count']!= 0) :?>
+            <td><?php echo $row['lifting_series_5_weight'];?> kg</td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_6_count']!= 0) :?>
+            <td><?php echo $row['lifting_series_6_weight'];?> kg</td>
+            <?php endif;?>
+        </tr>
+        <tr>
+
+            <?php if ($row['lifting_series_1_count']!= 0) :?>
+            <td>x <?php echo $row['lifting_series_1_count'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_2_count']!= 0) :?>
+            <td>x <?php echo $row['lifting_series_2_count'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_3_count']!= 0) :?>
+            <td>x <?php echo $row['lifting_series_3_count'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_4_count']!= 0) :?>
+            <td>x <?php echo $row['lifting_series_4_count'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_5_count']!= 0) :?>
+            <td>x <?php echo $row['lifting_series_5_count'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_6_count']!= 0) :?>
+            <td>x <?php echo $row['lifting_series_6_count'];?></td>
+            <?php endif;?>
+        </tr>
+        <tr>
+
+            <?php if ($row['lifting_series_1_count']!= 0) :?>
+            <td><?php echo $row['lifting_series_1_break'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_2_count']!= 0) :?>
+            <td><?php echo $row['lifting_series_2_break'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_3_count']!= 0) :?>
+            <td><?php echo $row['lifting_series_3_break'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_4_count']!= 0) :?>
+            <td><?php echo $row['lifting_series_4_break'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_5_count']!= 0) :?>
+            <td><?php echo $row['lifting_series_5_break'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_6_count']!= 0) :?>
+            <td><?php echo $row['lifting_series_6_break'];?></td>
+            <?php endif;?>
+
+        </tr>
+
+    </table>
+    <?php elseif ($formType == HiTraining\Model\ExerciseType\DbTable::FORM_TYPE_HIIT_TREADMILL):?>
+    <table border="0" cellpadding="0" id="liftingType">
+        <tr>
+            <th>elapsed_time</th>
+
+            <th>interval count</th>
+            <th>speed high</th>
+            <th>speed low</th>
+            <th>warmup time</th>
+
+            <th>time high</th>
+            <th>time low</th>
+            <th>angle</th>
+            <th>distance</th>
+        </tr>
+        <tr>
+            <td><?php echo $row['exercise_elapsed_time'];?> </td>
+            <td><?php echo $row['hiit_interval_count'];?></td>
+            <td><?php echo $row['hiit_speed_high'];?> km/h</td>
+            <td><?php echo $row['hiit_speed_low'];?> km/h</td>
+            <td><?php echo $row['hiit_warmup_time'];?></td>
+            <td><?php echo $row['hiit_time_high'];?> </td>
+            <td><?php echo $row['hiit_time_low'];?> </td>
+            <td><?php echo $row['angle'];?> &#778;</td>
+            <td><?php echo $row['distance'];?> km</td>
+        </tr>
+    </table>
+    <?php elseif ($formType == HiTraining\Model\ExerciseType\DbTable::FORM_TYPE_STRECHING):?>
+    <table border="0" cellpadding="0" id="liftingType">
+        <tr>
+            <th>elapsed_time</th>
+        </tr>
+        <tr>
+            <td><?php echo $row['exercise_elapsed_time'];?></td>
+        </tr>
+    </table>
+    <?php elseif ($formType == HiTraining\Model\ExerciseType\DbTable::FORM_TYPE_ORBITREK):?>
+    <table border="0" cellpadding="0" id="liftingType">
+        <tr>
+            <th>elapsed_time</th>
+            <th>speed</th>
+            <th>level</th>
+            <th>distance</th>
+        </tr>
+        <tr>
+            <td><?php echo $row['exercise_elapsed_time'];?> </td>
+            <td><?php echo $row['speed'];?> km/h</td>
+            <td><?php echo $row['level'];?> </td>
+            <td><?php echo $row['distance'];?> km</td>
+        </tr>
+    </table>
+    <?php elseif ($formType == HiTraining\Model\ExerciseType\DbTable::FORM_TYPE_BIKE):?>
+    <table border="0" cellpadding="0" id="liftingType">
+        <tr>
+            <th>elapsed_time</th>
+            <th>avg rpm</th>
+            <th>level</th>
+            <th>distance</th>
+        </tr>
+        <tr>
+            <td><?php echo $row['exercise_elapsed_time'];?> </td>
+            <td><?php echo $row['avg_rpm'];?> rpm</td>
+            <td><?php echo $row['level'];?> </td>
+            <td><?php echo $row['distance'];?> km</td>
+        </tr>
+    </table>
+    <?php  endif;  ?>
+</td>

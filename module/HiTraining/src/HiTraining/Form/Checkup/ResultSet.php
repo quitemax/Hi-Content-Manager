@@ -26,6 +26,8 @@ class ResultSet extends GridDbTableResultSet
                 'waist_circumference',
                 'chest_circumference',
                 'neck_circumference',
+                'hip_circumference',
+                'leg_circumference',
             )
 
         );

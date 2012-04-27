@@ -16,7 +16,7 @@ class Row extends GridDbTableRow
         parent::init();
 
 
-        $this->addFieldOptions('date', array('value' => date('Y-m-d H:i:s')));
+        $this->addFieldOptions('date', array('value' => date('Y-m-d H:00:00')));
 
 
         //
