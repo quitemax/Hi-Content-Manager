@@ -44,9 +44,10 @@ class Row extends HiRowGateway
      */
     protected function _afterLoad()
     {
-        if (isset($this['type_img'])){
-//            \Zend\Debug::dump($this['type_img']);
-            $this['type_img'] = explode(',', $this['type_img']);
+        if ($this->currentData && $this->count()) {
+            if (!empty($this['type_img'])){
+                $this['type_img'] = explode(',', $this['type_img']);
+            }
         }
 //
     }
