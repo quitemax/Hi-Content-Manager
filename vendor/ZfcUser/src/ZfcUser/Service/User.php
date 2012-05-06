@@ -78,7 +78,9 @@ class User extends EventProvider
         if (ZfcUser::getOption('enable_display_name')) {
             $user->setDisplayName($form->getValue('display_name'));
         }
+
         $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
+
         $this->userMapper->persist($user);
         return $user;
     }

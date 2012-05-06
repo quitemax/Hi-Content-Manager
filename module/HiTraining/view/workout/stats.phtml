@@ -1,72 +1,55 @@
 <div id="breadcrumb">
     &raquo; <a href="<?php echo $this->url('home');?>">Home</a>
-    &raquo; <a href="<?php echo $this->url('hi-training');?>">Training</a>
-    &raquo; <a class="" href="<?php echo $this->url('hi-training/checkup');?>">Checkup</a>
-    &raquo; <a class="selected" href="<?php echo $this->url('hi-training/checkup/stats');?>">Checkup statisctics</a>
+    &raquo; <a href="<?php echo $this->url('hi-training');?>">HiTraining</a>
+    &raquo; <a class="" href="<?php echo $this->url('hi-training/workout');?>">Workout</a>
+    &raquo; <a class="selected" href="<?php echo $this->url('hi-training/workout/stats');?>">Workout statisctics</a>
 </div>
+
 <div id="content">
     <div class="page-title">
         <?php
-            $title = 'Checkup statistics';
+            $title = 'Workout statistics';
             $this->headTitle($title);
         ?>
         <h1><?php echo $this->escape($title); ?></h1>
     </div>
     <div>
-    <?php
-    $this->inlineScript()->appendScript(
-        '
-         function changeProfile(profileId) {
-             window.location = \'' . $this->url('hi-training/checkup/stats/wildcard', array('profile_id' => ''))  . '\' + profileId;
-         }
-        '
-    );
-    ?>
-    <?php
-    foreach ($profiles as $profile) {
 
-        $class = '';
-        if ($currentProfile == $profile['profile_id']) {
-            $class = 'active';
-        }
 
-        echo $this->formSubmit(
-            $profile['name'],
-            $profile['name'],
-            array(
-                'onclick' => 'changeProfile('. $profile['profile_id'] .');',
-                'class'   => $class,
-            )
-        ) . '&nbsp;&nbsp;';
-    }
-    ?>
-    </div>
     <?php
     //@TODO change from array to object
-    $checkupsArray = array();
-    if ($checkups) {
-        $checkupsArray = $checkups->toArray();
+    $workoutsArray = array();
+    if ($workouts) {
+        $workoutsArray = $workouts->toArray();
     }
+
+//    \Zend\Debug::dump($workoutsArray);
     ?>
+
     <br />
 <?php $this->headScript()->appendFile('https://www.google.com/jsapi', 'text/javascript');?>
 <script type="text/javascript">
-  google.load("visualization", "1", {packages:["corechart"]});
-  google.setOnLoadCallback(drawCharts);
-  function drawCharts() {
-	  $( "#tabs" ).tabs();
-	/**
-	*
-	*/
-    var dataWeight = new google.visualization.DataTable();
-    dataWeight.addColumn('string', 'Date');
-    dataWeight.addColumn('number', 'Weight [kg]');
-    dataWeight.addColumn({type:'number', role:'interval'});  // interval role col.
-    dataWeight.addColumn({type:'number', role:'interval'});  // interval role col.
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawCharts);
+    function drawCharts() {
+        $( "#tabs" ).tabs();
 
-    dataWeight.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['weight'];?>, <?php echo $checkup['weight'] - 0.1 ;?>, <?php echo $checkup['weight'] + 0.1;?>],
+
+
+
+    //--------------------------------------
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date');
+    data.addColumn('number', 'Time');
+
+    data.addRows([
+      <?php foreach ($workoutsArray as $workout):?>
+      <?php
+          $timeArray = explode(':', $workout['elapsed_time']);
+          $time = ($timeArray[0] * 3600 + $timeArray[1] * 60 + $timeArray[2] * 1) / 60;
+      ?>
+      <?php if ($time <= 0) continue;?>
+      ['<?php echo $workout['date'];?>', <?php echo $time;?>],
       <?php endforeach;?>
     ]);
 
@@ -74,330 +57,232 @@
       //title: 'Weight'
     };
 
-    var chartWeight = new google.visualization.LineChart(document.getElementById('weight_div'));
-    chartWeight.draw(dataWeight, options);
+    var chart = new google.visualization.LineChart(document.getElementById('time_div'));
+    chart.draw(data, options);
 
 
-    /**
-	*
-	*/
-    var dataFatW = new google.visualization.DataTable();
-    dataFatW.addColumn('string', 'Date');
-    dataFatW.addColumn('number', 'Fat Weight [kg]');
-    dataFatW.addColumn({type:'number', role:'interval'});  // interval role col.
-    dataFatW.addColumn({type:'number', role:'interval'});  // interval role col.
-    dataFatW.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['fat_weight'];?>, <?php echo $checkup['fat_weight_range_bottom'];?>, <?php echo $checkup['fat_weight_range_top'];?>],
-      <?php endforeach;?>
-    ]);
-
-//    var options = {
-//      title: 'Fat Weight'
-//    };
-
-    var chartFatW = new google.visualization.LineChart(document.getElementById('FatW_div'));
-    chartFatW.draw(dataFatW, options);
-
-    /**
-	*
-	*/
+    //--------------------------------------
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Date');
-    data.addColumn('number', 'Fat Percent [%]');
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
+    data.addColumn('number', 'Calories');
     data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['fat_percentage'];?>, <?php echo $checkup['fat_percentage'] - 0.1 ;?>, <?php echo $checkup['fat_percentage'] + 0.1;?>],
+      <?php foreach ($workoutsArray as $workout):?>
+      <?php if ($workout['calories_burned'] <= 0) continue;?>
+      ['<?php echo $workout['date'];?>', <?php echo $workout['calories_burned'];?>],
       <?php endforeach;?>
     ]);
 
-//    var options = {
-//      title: 'Percent'
-//    };
+    var chart = new google.visualization.LineChart(document.getElementById('kcal_div'));
+    chart.draw(data, options);
 
-    var chartFatPercent = new google.visualization.LineChart(document.getElementById('FatPercent_div'));
-    chartFatPercent.draw(data, options);
 
-    /**
-	*
-	*/
+    //--------------------------------------
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Date');
-    data.addColumn('number', 'Muscle Weight [kg]');
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
-
+    data.addColumn('number', 'HRmax');
     data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['muscle_weight'];?>, <?php echo $checkup['muscle_weight_range_bottom'];?>, <?php echo $checkup['muscle_weight_range_top'];?>],
+      <?php foreach ($workoutsArray as $workout):?>
+      <?php if ($workout['hr_max'] <= 0) continue;?>
+      ['<?php echo $workout['date'];?>', <?php echo $workout['hr_max'];?>],
       <?php endforeach;?>
     ]);
 
-//    var options = {
-//      title: 'Weight'
-//    };
+    var chart = new google.visualization.LineChart(document.getElementById('HRmax_div'));
+    chart.draw(data, options);
 
-    var chartMuscleW = new google.visualization.LineChart(document.getElementById('MuscleW_div'));
-    chartMuscleW.draw(data, options);
-
-    /**
-	*
-	*/
+    //--------------------------------------
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Date');
-    data.addColumn('number', 'Muscle Percent [%]');
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
+    data.addColumn('number', 'HRavg');
     data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['muscle_percentage'];?>, <?php echo $checkup['muscle_percentage'] - 0.1 ;?>, <?php echo $checkup['muscle_percentage'] + 0.1;?>],
+      <?php foreach ($workoutsArray as $workout):?>
+      <?php if ($workout['hr_avg'] <= 0) continue;?>
+      ['<?php echo $workout['date'];?>', <?php echo $workout['hr_avg'];?>],
       <?php endforeach;?>
     ]);
 
-//    var options = {
-//      title: 'Percent'
-//    };
-
-    var chartMusclePercent = new google.visualization.LineChart(document.getElementById('MusclePercent_div'));
-    chartMusclePercent.draw(data, options);
+    var chart = new google.visualization.LineChart(document.getElementById('HRavg_div'));
+    chart.draw(data, options);
 
 
-
-
-
-
-
-    /**
-	*
-	*/
+    //--------------------------------------
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Date');
-    data.addColumn('number', 'Water Weight [kg]');
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
+    data.addColumn('number', 'Fat loss');
     data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['water_weight'];?>, <?php echo $checkup['water_weight_range_bottom'];?>, <?php echo $checkup['water_weight_range_top'];?>],
+      <?php foreach ($workoutsArray as $workout):?>
+      <?php if ($workout['fat_loss'] <= 0) continue;?>
+      ['<?php echo $workout['date'];?>', <?php echo $workout['fat_loss'];?>],
       <?php endforeach;?>
     ]);
 
-//    var options = {
-//      title: 'Weight'
-//    };
+    var chart = new google.visualization.LineChart(document.getElementById('fat_div'));
+    chart.draw(data, options);
 
-    var chartWaterW = new google.visualization.LineChart(document.getElementById('WaterW_div'));
-    chartWaterW.draw(data, options);
 
-    /**
-	*
-	*/
+
+    //--------------------------------------
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Date');
-    data.addColumn('number', 'Water Percent [%]');
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
+    data.addColumn('number', 'Calories/min');
     data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['water_percentage'];?>, <?php echo $checkup['water_percentage'] - 0.1 ;?>, <?php echo $checkup['water_percentage'] + 0.1;?>],
+      <?php foreach ($workoutsArray as $workout):?>
+          <?php if ($workout['calories_burned'] <= 0) continue;?>
+          <?php
+              $timeArray = explode(':', $workout['elapsed_time']);
+              $time = ($timeArray[0] * 3600 + $timeArray[1] * 60 + $timeArray[2] * 1) / 60;
+          ?>
+      ['<?php echo $workout['date'];?>', <?php echo $workout['calories_burned']/$time;?>],
       <?php endforeach;?>
     ]);
 
-//    var options = {
-//      title: 'Percent'
-//    };
+    var chart = new google.visualization.LineChart(document.getElementById('calsec_div'));
+    chart.draw(data, options);
 
-    var chartWaterPercent = new google.visualization.LineChart(document.getElementById('WaterPercent_div'));
-    chartWaterPercent.draw(data, options);
-
-
-
-    /**
-	*
-	*/
+    //--------------------------------------
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Date');
-    data.addColumn('number', 'Bones Weight [kg]');
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
+    data.addColumn('number', 'mg Fat/min');
     data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['bones_weight'];?>, <?php echo $checkup['bones_weight'] - 0.1 ;?>, <?php echo $checkup['bones_weight'] + 0.1;?>],
+      <?php foreach ($workoutsArray as $workout):?>
+          <?php if ($workout['fat_loss'] <= 0) continue;?>
+          <?php
+              $timeArray = explode(':', $workout['elapsed_time']);
+              $time = ($timeArray[0] * 3600 + $timeArray[1] * 60 + $timeArray[2] * 1) / 60;
+          ?>
+      ['<?php echo $workout['date'];?>', <?php echo ($workout['fat_loss']/$time) * 1000;?>],
       <?php endforeach;?>
     ]);
 
-//    var options = {
-//      title: 'Weight'
-//    };
+    var chart = new google.visualization.LineChart(document.getElementById('mgfatsec_div'));
+    chart.draw(data, options);
 
-    var chartBonesW = new google.visualization.LineChart(document.getElementById('BonesW_div'));
-    chartBonesW.draw(data, options);
 
-    /**
-	*
-	*/
+    //--------------------------------------
+    /*
+    <?php
+        $work = array();
+        foreach ($workoutsArray as $workout){
+            $year = date('Y', strtotime($workout['date']));
+            $week = date('W', strtotime($workout['date']));
+            if (!empty($work[$year][$week])) {
+                $work[$year][$week] += 1;
+            } else {
+                $work[$year][$week] = 1;
+            }
+        }
+
+        //\Zend\Debug::dump($work);
+
+    ?>
+    */
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Date');
-    data.addColumn('number', 'Bones Percent [%]');
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
-    data.addColumn({type:'number', role:'interval'});  // interval role col.
+    data.addColumn('number', 'Week stats');
     data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['bones_percentage'];?>, <?php echo $checkup['bones_percentage_range_bottom'];?>, <?php echo $checkup['bones_percentage_range_top'];?>],
+      <?php foreach ($work as $year => $weeks):?>
+          <?php foreach ($weeks as $week => $count):?>
+
+               ['<?php echo $year . '-' . $week;?>', <?php echo $count;?>],
+          <?php endforeach;?>
       <?php endforeach;?>
     ]);
 
-//    var options = {
-//      title: 'Percent'
-//    };
-
-    var chartBonesPercent = new google.visualization.LineChart(document.getElementById('BonesPercent_div'));
-    chartBonesPercent.draw(data, options);
+    var chart = new google.visualization.LineChart(document.getElementById('week_div'));
+    chart.draw(data, options);
 
 
-    /**
-	*
-	*/
+    //--------------------------------------
+    /*
+    <?php
+        $work = array();
+        foreach ($workoutsArray as $workout){
+            $year = date('Y', strtotime($workout['date']));
+            $month = date('m', strtotime($workout['date']));
+            if (!empty($work[$year][$month])) {
+                $work[$year][$month] += 1;
+            } else {
+                $work[$year][$month] = 1;
+            }
+        }
+
+        //\Zend\Debug::dump($work);
+
+    ?>
+    */
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Date');
-    data.addColumn('number', 'Calories A4 [kcal]');
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
+    data.addColumn('number', 'Month stats');
     data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['calories_active'];?>],
+      <?php foreach ($work as $year => $months):?>
+          <?php foreach ($months as $month => $count):?>
+
+               ['<?php echo $year . '-' . $month;?>', <?php echo $count;?>],
+          <?php endforeach;?>
       <?php endforeach;?>
     ]);
 
-    var chartCaloriesA4 = new google.visualization.LineChart(document.getElementById('CaloriesA4_div'));
-    chartCaloriesA4.draw(data, options);
-//
+    var chart = new google.visualization.LineChart(document.getElementById('month_div'));
+    chart.draw(data, options);
 
-    /**
-	*
-	*/
+
+    //--------------------------------------
+    /*
+    <?php
+        //
+        $work = array();
+
+        //
+        $first = array_shift($workoutsArray);array_unshift($workoutsArray, $first);
+        $last = array_pop($workoutsArray); array_push($workoutsArray, $last);
+
+        //
+        $firstTimestamp = strtotime($first['date']);
+        $lastTimestamp = strtotime($last['date']);
+
+        while(date('Y-m-d', $firstTimestamp) != date('Y-m-d', $lastTimestamp)) {
+
+            $work[date('Y-m-d', $firstTimestamp)] = 0;
+
+            $firstTimestamp = mktime(
+                0,
+                0,
+                0,
+                date("m", $firstTimestamp),
+                date("d", $firstTimestamp)+1,
+                date("Y", $firstTimestamp)
+            );
+
+        }
+//        \Zend\Debug::dump($work);
+
+        foreach ($workoutsArray as $workout){
+
+            $year = date('Y', strtotime($workout['date']));
+            $month = date('m', strtotime($workout['date']));
+            $day = date('d', strtotime($workout['date']));
+            if (!empty($work[$year . '-' . $month . '-' . $day])) {
+                $work[$year . '-' . $month . '-' . $day] += 1;
+            } else {
+                $work[$year . '-' . $month . '-' . $day] = 1;
+            }
+        }
+
+//        \Zend\Debug::dump($work);
+
+    ?>
+    */
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Date');
-    data.addColumn('number', 'Calories [kcal]');
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
+    data.addColumn('number', 'Calendar');
     data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['calories_activeless'];?>],
+      <?php foreach ($work as $date => $count):?>
+          ['<?php echo $date;?>', <?php echo $count;?>],
       <?php endforeach;?>
     ]);
 
-//    var options = {
-//      title: 'Percent'
-//    };
-
-    var chartCalories = new google.visualization.LineChart(document.getElementById('Calories_div'));
-    chartCalories.draw(data, options);
-
-    /**
-	*
-	*/
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Date');
-    data.addColumn('number', 'BMI');
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
-    data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['bmi'];?>],
-      <?php endforeach;?>
-    ]);
-
-//    var options = {
-//      title: 'Percent'
-//    };
-
-    var chartCalories = new google.visualization.LineChart(document.getElementById('BMI_div'));
-    chartCalories.draw(data, options);
-
-
-    /**
-	*
-	*/
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Date');
-    data.addColumn('number', 'Waist Circumference');
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
-    data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['waist_circumference'];?>],
-      <?php endforeach;?>
-    ]);
-
-//    var options = {
-//      title: 'Percent'
-//    };
-
-    var chartCalories = new google.visualization.LineChart(document.getElementById('WaistC_div'));
-    chartCalories.draw(data, options);
-    /**
-	*
-	*/
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Date');
-    data.addColumn('number', 'Neck Circumference');
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
-    data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['neck_circumference'];?>],
-      <?php endforeach;?>
-    ]);
-
-//    var options = {
-//      title: 'Percent'
-//    };
-
-    var chartCalories = new google.visualization.LineChart(document.getElementById('NeckC_div'));
-    chartCalories.draw(data, options);
-    /**
-	*
-	*/
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Date');
-    data.addColumn('number', 'Chest Circumference');
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
-    data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['chest_circumference'];?>],
-      <?php endforeach;?>
-    ]);
-
-//    var options = {
-//      title: 'Percent'
-//    };
-
-    var chartCalories = new google.visualization.LineChart(document.getElementById('ChestC_div'));
-    chartCalories.draw(data, options);
-    /**
-	*
-	*/
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Date');
-    data.addColumn('number', 'Biceps Circumference');
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
-//    data.addColumn({type:'number', role:'interval'});  // interval role col.
-    data.addRows([
-      <?php foreach ($checkupsArray as $checkup):?>
-      ['<?php echo $checkup['date'];?>', <?php echo $checkup['biceps_circumference'];?>],
-      <?php endforeach;?>
-    ]);
-
-//    var options = {
-//      title: 'Percent'
-//    };
-
-    var chartCalories = new google.visualization.LineChart(document.getElementById('BicepsC_div'));
-    chartCalories.draw(data, options);
-
+    var chart = new google.visualization.ColumnChart(document.getElementById('calendar_div'));
+    chart.draw(data, options);
 
   }
 </script>
@@ -405,58 +290,45 @@
 	<?php
     $this->headStyle()->appendStyle(
         '
-         .ui-tabs .ui-tabs-hide {
-    position: absolute;
-    left: -10000px;
-    display: block !important;
-}
+        .ui-tabs .ui-tabs-hide {
+            position: absolute;
+            left: -10000px;
+            display: block !important;
+        }
         '
     );
     ?>
 
     <div id="tabs">
-    	<ul>
-    		<li><a href="#tabs-1">Weight</a></li>
-    		<li><a href="#tabs-2">Fat</a></li>
-    		<li><a href="#tabs-3">Muscle</a></li>
-    		<li><a href="#tabs-4">Water</a></li>
-    		<li><a href="#tabs-5">Bones</a></li>
-    		<li><a href="#tabs-6">Calories</a></li>
-    		<li><a href="#tabs-7">BMI</a></li>
-    		<li><a href="#tabs-8">Circumferences</a></li>
-    	</ul>
+        <ul>
+            <li><a href="#tabs-5">Calendar</a></li>
+            <li><a href="#tabs-1">Time</a></li>
+            <li><a href="#tabs-2">HR</a></li>
+            <li><a href="#tabs-3">Calories</a></li>
+            <li><a href="#tabs-4">Fat loss</a></li>
+
+        </ul>
+        <div id="tabs-5" style="width: 900px;">
+            <div id="calendar_div" style="width: 800px; height: 200px;"></div>
+            <div id="week_div" style="width: 800px; height: 200px;"></div>
+            <div id="month_div" style="width: 800px; height: 200px;"></div>
+        </div>
         <div id="tabs-1" style="width: 900px;">
-            <div id="weight_div" style="width: 700px; height: 200px;"></div>
+            <div id="time_div" style="width: 800px; height: 200px;"></div>
         </div>
-        <div id="tabs-2" >
-            <div id="FatW_div" style="width: 700px; height: 200px;"></div>
-            <div id="FatPercent_div" style="width: 700px; height: 200px;"></div>
+        <div id="tabs-2" style="width: 900px;">
+            <div id="HRmax_div" style="width: 800px; height: 200px;"></div>
+            <div id="HRavg_div" style="width: 800px; height: 200px;"></div>
         </div>
-        <div id="tabs-3" style="width: 900px;">
-            <div id="MuscleW_div" style="width: 700px; height: 200px;"></div>
-            <div id="MusclePercent_div" style="width: 700px; height: 200px;"></div>
+        <div id="tabs-3" >
+            <div id="kcal_div" style="width: 800px; height: 200px;"></div>
+            <div id="calsec_div" style="width: 800px; height: 200px;"></div>
         </div>
         <div id="tabs-4" style="width: 900px;">
-            <div id="WaterW_div" style="width: 700px; height: 200px;"></div>
-            <div id="WaterPercent_div" style="width: 700px; height: 200px;"></div>
+            <div id="fat_div" style="width: 800px; height: 200px;"></div>
+            <div id="mgfatsec_div" style="width: 800px; height: 200px;"></div>
         </div>
-        <div id="tabs-5" style="width: 900px;">
-            <div id="BonesW_div" style="width: 700px; height: 200px;"></div>
-            <div id="BonesPercent_div" style="width: 700px; height: 200px;"></div>
-        </div>
-        <div id="tabs-6" style="width: 900px;">
-            <div id="CaloriesA4_div" style="width: 700px; height: 200px;"></div>
-            <div id="Calories_div" style="width: 700px; height: 200px;"></div>
-        </div>
-        <div id="tabs-7" style="width: 900px;">
-            <div id="BMI_div" style="width: 700px; height: 200px;"></div>
-        </div>
-        <div id="tabs-8" style="width: 900px;">
-            <div id="WaistC_div" style="width: 700px; height: 200px;"></div>
-            <div id="ChestC_div" style="width: 700px; height: 200px;"></div>
-            <div id="NeckC_div" style="width: 700px; height: 200px;"></div>
-            <div id="BicepsC_div" style="width: 700px; height: 200px;"></div>
-        </div>
+
     </div>
 </div>
 

@@ -1,6 +1,6 @@
 <div id="breadcrumb">
     &raquo; <a href="<?php echo $this->url('home');?>">Home</a>
-    &raquo; <a href="<?php echo $this->url('hi-training');?>">Training</a>
+    &raquo; <a href="<?php echo $this->url('hi-training');?>">HiTraining</a>
     &raquo; <a class="" href="<?php echo $this->url('hi-training/exercise-type');?>">Exercise type</a>
     &raquo; <a class="selected" href="<?php echo $this->url('hi-training/exercise-type/tree');?>">Exercise type tree</a>
 </div>
@@ -16,7 +16,52 @@
         <?php echo $tree;?>
     </div>
     <div style="float: right; width: 740px;">
-        <?php echo $form;?>
+        <?php //echo $type;?>
+        <table>
+            <tr>
+                <td>type_img</td>
+                <td>
+                <?php foreach ($type['type_img'] as $img) :?>
+                    <img alt="guide_img" src="<?php echo $img; ?>" />
+                <?php endforeach;?>
+
+
+                </td>
+            </tr>
+            <tr>
+                <td>guide_img</td>
+                <td>
+                    <img alt="guide_img" src="<?php echo $type['guide_img']?>" />
+                    <img alt="guide_img" src="" /><?php echo $this->ShowImage($type['guide_img'])?>
+                </td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><?php echo $type['name']?></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><?php echo $type['description']?></td>
+            </tr>
+            <tr>
+                <td>Link</td>
+                <td><a href="<?php echo $type['link']?>" ><?php echo $type['link']?></a></td>
+            </tr>
+            <tr>
+                <td>mechanics_type</td>
+                <td><?php echo $type['mechanics_type']?></td>
+            </tr>
+            <tr>
+                <td>rating</td>
+                <td><?php echo $type['rating']?></td>
+            </tr>
+            <tr>
+                <td>force_type</td>
+                <td><?php echo $type['force_type']?></td>
+            </tr>
+
+        </table>
+        <?php //\Zend\Debug::dump($type->toArray());;?>
     </div>
     <div style="clear: both;"></div>
 

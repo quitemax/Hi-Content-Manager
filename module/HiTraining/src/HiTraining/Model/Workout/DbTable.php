@@ -45,6 +45,17 @@ class DbTable extends TableGateway
         );
 
         $this->hasColumn(
+            'elapsed_time',
+            'time',
+            null,
+            array(
+                'type'             => 'time',
+                'notnull'          => true,
+                'default'          => '00:00:00',
+            )
+        );
+
+        $this->hasColumn(
             'calories_burned',
             'integer',
             11,
@@ -53,17 +64,6 @@ class DbTable extends TableGateway
                 'length'            => 11,
                 'notnull'          => true,
                 'default'          => '0',
-            )
-        );
-
-        $this->hasColumn(
-            'elapsed_time',
-            'time',
-            null,
-            array(
-                'type'             => 'time',
-                'notnull'          => true,
-                'default'          => '00:00:00',
             )
         );
 

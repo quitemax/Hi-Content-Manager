@@ -125,18 +125,15 @@ class Row extends GridSubForm
             $this->_title = $options['title'];
             unset($options['title']);
         }
-//
-//        //
-//        if (!isset($options['name'])) {
-//            $options['name'] = Hi_Record_SubForm_Row::DEFAULT_ID . md5(microtime());
-//        }
 
+        if (!isset($this->_name) || trim($this->_name) == '') {
+            $this->_name = self::DEFAULT_ID . md5(microtime());
+        }
 
-
-//        if (!isset($this->_name) || trim($this->_name) == '') {
-//            $this->_name = self::DEFAULT_ID . md5(microtime());
-//        }
-
+        //
+        if (!empty($options['name'])) {
+            $this->_name = $options['name'];
+        }
 
         return parent::setOptions($options);
     }
@@ -162,11 +159,9 @@ class Row extends GridSubForm
                 ),
             )
         );
-
-//        $this->_setup();
     }
 
-/**
+    /**
      *
      *
      * @param $name string
@@ -185,7 +180,7 @@ class Row extends GridSubForm
         }
     }
 
-/**
+    /**
      *
      *
      * @param $name string
@@ -211,7 +206,7 @@ class Row extends GridSubForm
         }
     }
 
-/**
+    /**
      *
      *
      * @param $name string
@@ -507,22 +502,22 @@ class Row extends GridSubForm
                     }
                     break;
                 case 'username':
-//                    $rowSubform->addElement(
-//                        $this->_buildFieldUsername(
-//                            $field['name'],
-//                            $value,
-//                            $field['options']
-//                        )
-//                    );
+                    $rowSubform->addElement(
+                        $this->_buildFieldUsername(
+                            $field['name'],
+                            $value,
+                            $field['options']
+                        )
+                    );
                     break;
                 case 'password':
-//                    $rowSubform->addElement(
-//                        $this->_buildFieldPassword(
-//                            $field['name'],
-//                            $value,
-//                            $field['options']
-//                        )
-//                    );
+                    $rowSubform->addElement(
+                        $this->_buildFieldPassword(
+                            $field['name'],
+                            $value,
+                            $field['options']
+                        )
+                    );
                     break;
                 case 'text':
                     $rowSubform->addElement(
@@ -620,7 +615,7 @@ class Row extends GridSubForm
 
 
                 case 'tinyint':
-                	break;
+                    break;
                 case 'custom':
                     $rowSubform->addElement(
                         $this->_buildFieldCustom(
@@ -631,7 +626,7 @@ class Row extends GridSubForm
                     );
                     break;
                 default:
-                	break;
+                    break;
 
             }
             $i++;
@@ -739,12 +734,20 @@ class Row extends GridSubForm
     }
 
 
-//    /**
-//     *
-//     *
-//     */
-//    protected function _buildFieldPassword ($name, $value, $options)
-//    {
+    /**
+     *
+     *
+     */
+    protected function _buildFieldPassword ($name, $value, $options)
+    {
+
+        $options['viewScript'] = $this->_partialsDir . '/_field_password.phtml';
+        $options['value'] = $value;
+
+        $tmpElement = new Element\Password(
+            $name,
+            $options
+        );
 //        $tmpElement = new Zend_Form_Element_Password(
 //            $name,
 //            array(
@@ -801,16 +804,26 @@ class Row extends GridSubForm
 //                ),
 //            )
 //        );
-//
-//        return $tmpElement;
-//    }
-//
-//    /**
-//     *
-//     *
-//     */
-//    protected function _buildFieldUsername ($name, $value, $options)
-//    {
+
+        return $tmpElement;
+    }
+
+    /**
+     *
+     *
+     */
+    protected function _buildFieldUsername ($name, $value, $options)
+    {
+        $options['viewScript'] = $this->_partialsDir . '/_field_username.phtml';
+        $options['value'] = $value;
+
+        $tmpElement = new Element\Input(
+            $name,
+            $options
+        );
+
+
+
 //        $tmpElement = new Zend_Form_Element_Text(
 //            $name,
 //            array(
@@ -836,7 +849,7 @@ class Row extends GridSubForm
 //                )
 //            )
 //        );
-//
+
 //        $even = 0;
 //
 //        if ($options) {
@@ -862,9 +875,9 @@ class Row extends GridSubForm
 //                }
 //            }
 //        }
-//
-//
-////        $options = array(/*'colspan' => count($this->_actions), 'title'=> 'titleElement', 'value' => 'grey_10', "row"=>"rowElement"*/);
+
+
+//        $options = array(/*'colspan' => count($this->_actions), 'title'=> 'titleElement', 'value' => 'grey_10', "row"=>"rowElement"*/);
 //        $tmpElement->setDecorators(
 //            array(
 //                array('ViewHelper'),
@@ -879,22 +892,22 @@ class Row extends GridSubForm
 //                ),
 //            )
 //        );
-////        $tmpElement = new Zend_Form_Element_Text($fieldName);
-////                    $tmpElement->setValue(isset($rowData[$fieldName])?$rowData[$fieldName]:'');
-////                    $tmpElement->setLabel(isset($this->_columnTitles[$fieldName])?$this->_columnTitles[$fieldName]:$fieldName);
-////                    if (isset($this->_columnAttribs[$fieldName]) && is_array($this->_columnAttribs[$fieldName])) {
-////                      $tmpElement->setAttribs($this->_columnAttribs[$fieldName]);
-////                    }
-////                    $tmpElement->setAttribs(array('size'=> (int)($fieldData['LENGTH']/2.3)));
-////                    $options = array('colspan' => count($this->_actions), 'title'=> 'titleElement', 'value' => 'grey_10', "row"=>"rowElement");
-////                    $tmpElement->setDecorators(array( array('ViewHelper'),
-////                                                        array('ViewScript', array('viewScript' => $this->_partialDir.'_field_text.phtml', 'placement' => false, 'options' => $options))));
-////
-////                    $tmpSubform -> addElement($tmpElement);
-////                    break;
-//        return $tmpElement;
-//    }
+//        $tmpElement = new Zend_Form_Element_Text($fieldName);
+//                    $tmpElement->setValue(isset($rowData[$fieldName])?$rowData[$fieldName]:'');
+//                    $tmpElement->setLabel(isset($this->_columnTitles[$fieldName])?$this->_columnTitles[$fieldName]:$fieldName);
+//                    if (isset($this->_columnAttribs[$fieldName]) && is_array($this->_columnAttribs[$fieldName])) {
+//                      $tmpElement->setAttribs($this->_columnAttribs[$fieldName]);
+//                    }
+//                    $tmpElement->setAttribs(array('size'=> (int)($fieldData['LENGTH']/2.3)));
+//                    $options = array('colspan' => count($this->_actions), 'title'=> 'titleElement', 'value' => 'grey_10', "row"=>"rowElement");
+//                    $tmpElement->setDecorators(array( array('ViewHelper'),
+//                                                        array('ViewScript', array('viewScript' => $this->_partialDir.'_field_text.phtml', 'placement' => false, 'options' => $options))));
 //
+//                    $tmpSubform -> addElement($tmpElement);
+//                    break;
+        return $tmpElement;
+    }
+
 
     /**
      *

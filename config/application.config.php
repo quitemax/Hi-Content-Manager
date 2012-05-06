@@ -2,9 +2,9 @@
 return array(
     'modules' => array(
         'Application',
-        'ZfcBase',
-        'ZfcUser',
         'HiBase',
+        'HiUser',
+        'HiCheckup',
         'HiTraining',
     ),
     'module_listener_options' => array(

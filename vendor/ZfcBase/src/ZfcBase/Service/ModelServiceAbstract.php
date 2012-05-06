@@ -2,15 +2,15 @@
 
 namespace ZfcBase\Service;
 
-use     Zend\Loader\LocatorAware,
-        Zend\Di\Locator,
-        Zend\EventManager\EventCollection,
-        Zend\EventManager\EventManager,
-        Zend\Paginator\Paginator,
-        ZfcBase\Model\ModelAbstract,
-        ZfcBase\Mapper\ModelMapper,
-        ZfcBase\Mapper\Transactional,
-        InvalidArgumentException as NoModelFoundException;
+use Zend\Loader\LocatorAware,
+    Zend\Di\Locator,
+    Zend\EventManager\EventCollection,
+    Zend\EventManager\EventManager,
+    Zend\Paginator\Paginator,
+    ZfcBase\Model\ModelAbstract,
+    ZfcBase\Mapper\ModelMapperInterface,
+    ZfcBase\Mapper\TransactionalInterface as Transactional,
+    ZfcBase\Service\Exception\ModelNotFoundException;
 
 class ModelServiceAbstract extends ServiceAbstract {
     protected $mapper;
@@ -62,7 +62,7 @@ class ModelServiceAbstract extends ServiceAbstract {
         });
         $model = $result->last();
         if(!$model instanceof $modelClass) {
-            throw new NoModelFoundException("No model found filter: " . print_r($filter, true));
+            throw new ModelNotFoundException("No model found filter: " . print_r($filter, true));
         }
         
         if($exts === true) {
@@ -95,7 +95,7 @@ class ModelServiceAbstract extends ServiceAbstract {
         $mapper = $this->getMapper();
         $model = $mapper->findByPriKey($id);
         if(!$model) {
-            throw new NoModelFoundException("Model does not exist #$id");
+            throw new ModelNotFoundException("Model does not exist #$id");
         }
 
         try {
@@ -103,7 +103,6 @@ class ModelServiceAbstract extends ServiceAbstract {
                 $mapper->beginTransaction();
             }
             $params = $this->triggerParamsMergeEvent('remove.pre', array(
-                //'id' => $id,
                 'model' => $model
             ));
 
@@ -156,11 +155,13 @@ class ModelServiceAbstract extends ServiceAbstract {
         $this->modelPrototype = $modelPrototype;
     }
 
-    public function setMapper(ModelMapper $mapper) {
+    public function setMapper(ModelMapperInterface $mapper) {
         $this->mapper = $mapper;
     }
     
     public function getMapper() {
+        //let mapper 'inherit' service's model prototype
+        $this->mapper->setModelPrototype($this->getModelPrototype());
         return $this->mapper;
     }
     

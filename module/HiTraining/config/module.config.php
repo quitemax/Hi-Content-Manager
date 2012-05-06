@@ -1,6 +1,6 @@
 <?php
 return array(
-//    'zfcuser' => array(
+    'hi-training' => array(
 //        'user_model_class'          => 'ZfcUser\Model\User',
 //        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
 //        'enable_registration'       => true,
@@ -13,12 +13,13 @@ return array(
 //        'blowfish_cost'             => 10,         // integer between 4 and 31
 //        'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
 //        'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
-//    ),
+    ),
     'di' => array(
         'instance' => array(
-//            'alias' => array(
-//                'skeleton' => 'HiTraining\Controller\SkeletonController',
-//            ),
+
+            /**
+             *
+             */
             'Zend\View\Resolver\TemplatePathStack' => array(
                 'parameters' => array(
                     'paths'  => array(
@@ -26,46 +27,14 @@ return array(
                     ),
                 ),
             ),
-//            'Zend\View\Resolver\TemplateMapResolver' => array(
-//                'parameters' => array(
-//                    'map'  => array(
-//                        'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
-//                    ),
-//                ),
-//            ),
-
-//            // View for the layout
-//            'Zend\Mvc\View\DefaultRenderingStrategy' => array(
-//                'parameters' => array(
-//                    'layoutTemplate' => 'layout',
-//                ),
-//            ),
 
             /**
              * Controllers
              */
-
-            'HiTraining\Controller\CheckupController' => array(
-                'parameters' => array(
-                    'checkup'  => 'HiTraining\Model\Checkup',
-                	'profile'              => 'HiTraining\Model\CheckupProfile',
-                    'checkupToProfile'     => 'HiTraining\Model\CheckupToProfile',
-                    'view'     => 'Zend\View\Renderer\PhpRenderer',
-                ),
-            ),
-
-            'HiTraining\Controller\CheckupProfileController' => array(
-                'parameters' => array(
-                    'profile'              => 'HiTraining\Model\CheckupProfile',
-                    'checkupToProfile'     => 'HiTraining\Model\CheckupToProfile',
-                    'checkup'              => 'HiTraining\Model\Checkup',
-                    'view'                 => 'Zend\View\Renderer\PhpRenderer',
-                ),
-            ),
-
             'HiTraining\Controller\WorkoutController' => array(
                 'parameters' => array(
-                    'workout'                 => 'HiTraining\Model\Workout',
+                    'workout'              => 'HiTraining\Model\Workout',
+                    'exercise'             => 'HiTraining\Model\WorkoutExercise',
                     'view'                 => 'Zend\View\Renderer\PhpRenderer',
                 ),
             ),
@@ -83,6 +52,7 @@ return array(
             'HiTraining\Controller\ExerciseTypeController' => array(
                 'parameters' => array(
                     'type'                 => 'HiTraining\Model\ExerciseType',
+                    'exercise'             => 'HiTraining\Model\WorkoutExercise',
                     'view'                 => 'Zend\View\Renderer\PhpRenderer',
                 ),
             ),
@@ -90,28 +60,6 @@ return array(
             /**
              * Models
              */
-
-            'HiTraining\Model\Checkup' => array(
-                'parameters' => array(
-                    'tableName' => 'checkup',
-                    'adapter' => 'Zend\Db\Adapter\Adapter',
-                )
-            ),
-
-            'HiTraining\Model\CheckupProfile' => array(
-                'parameters' => array(
-                    'tableName' => 'checkup_profile',
-                    'adapter' => 'Zend\Db\Adapter\Adapter',
-                )
-            ),
-
-            'HiTraining\Model\CheckupToProfile' => array(
-                'parameters' => array(
-                    'tableName' => 'checkup_to_profile',
-                    'adapter' => 'Zend\Db\Adapter\Adapter',
-                )
-            ),
-
             'HiTraining\Model\Workout' => array(
                 'parameters' => array(
                     'tableName' => 'workout',
@@ -152,152 +100,6 @@ return array(
                             ),
                             'may_terminate' => true,
                             'child_routes' => array(
-                                'checkup' => array(
-                                    'type' => 'Literal',
-                                    'options' => array(
-                                        'route' => '/checkup',
-                                        'defaults' => array(
-                                            'controller' => 'HiTraining\Controller\CheckupController',
-                                            'action'     => 'index',
-                                        ),
-                                    ),
-                                    'may_terminate' => true,
-                                    'child_routes' => array(
-                                        'stats' => array(
-                                            'type' => 'Literal',
-                                            'options' => array(
-                                                'route' => '/stats',
-                                                'defaults' => array(
-                                                    'controller' => 'HiTraining\Controller\CheckupController',
-                                                    'action'     => 'stats',
-                                                ),
-                                            ),
-                                            'may_terminate' => true,
-                                            'child_routes'  => array(
-                                                'wildcard' => array(
-                                                    'type'    => 'wildcard',
-                                                ),
-                                            ),
-                                        ),
-                                        'list' => array(
-                                            'type' => 'Literal',
-                                            'options' => array(
-                                                'route' => '/list',
-                                                'defaults' => array(
-                                                    'controller' => 'HiTraining\Controller\CheckupController',
-                                                    'action'     => 'list',
-                                                ),
-                                            ),
-                                        ),
-                                        'add' => array(
-                                            'type' => 'Literal',
-                                            'options' => array(
-                                                'route' => '/add',
-                                                'defaults' => array(
-                                                    'controller' => 'HiTraining\Controller\CheckupController',
-                                                    'action'     => 'add',
-                                                ),
-                                            ),
-                                        ),
-                                        'edit' => array(
-                                            'type' => 'Literal',
-                                            'options' => array(
-                                                'route' => '/edit',
-                                                'defaults' => array(
-                                                    'controller' => 'HiTraining\Controller\CheckupController',
-                                                    'action'     => 'edit',
-                                                ),
-                                            ),
-                                            'may_terminate' => true,
-                                            'child_routes'  => array(
-                                                'wildcard' => array(
-                                                    'type'    => 'wildcard',
-                                                ),
-                                            ),
-                                        ),
-                                        'delete' => array(
-                                            'type' => 'Literal',
-                                            'options' => array(
-                                                'route' => '/delete',
-                                                'defaults' => array(
-                                                    'controller' => 'HiTraining\Controller\CheckupController',
-                                                    'action'     => 'delete',
-                                                ),
-                                            ),
-                                            'may_terminate' => true,
-                                            'child_routes'  => array(
-                                                'wildcard' => array(
-                                                    'type'    => 'wildcard',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                'checkup-profile' => array(
-                                    'type' => 'Literal',
-                                    'options' => array(
-                                        'route' => '/checkup-profile',
-                                        'defaults' => array(
-                                            'controller' => 'HiTraining\Controller\CheckupProfileController',
-                                            'action'     => 'index',
-                                        ),
-                                    ),
-                                    'may_terminate' => true,
-                                    'child_routes' => array(
-                                        'list' => array(
-                                            'type' => 'Literal',
-                                            'options' => array(
-                                                'route' => '/list',
-                                                'defaults' => array(
-                                                    'controller' => 'HiTraining\Controller\CheckupProfileController',
-                                                    'action'     => 'list',
-                                                ),
-                                            ),
-                                        ),
-                                        'add' => array(
-                                            'type' => 'Literal',
-                                            'options' => array(
-                                                'route' => '/add',
-                                                'defaults' => array(
-                                                    'controller' => 'HiTraining\Controller\CheckupProfileController',
-                                                    'action'     => 'add',
-                                                ),
-                                            ),
-                                        ),
-                                        'edit' => array(
-                                            'type' => 'Literal',
-                                            'options' => array(
-                                                'route' => '/edit',
-                                                'defaults' => array(
-                                                    'controller' => 'HiTraining\Controller\CheckupProfileController',
-                                                    'action'     => 'edit',
-                                                ),
-                                            ),
-                                            'may_terminate' => true,
-                                            'child_routes'  => array(
-                                                'wildcard' => array(
-                                                    'type'    => 'wildcard',
-                                                ),
-                                            ),
-                                        ),
-                                        'delete' => array(
-                                            'type' => 'Literal',
-                                            'options' => array(
-                                                'route' => '/delete',
-                                                'defaults' => array(
-                                                    'controller' => 'HiTraining\Controller\CheckupProfileController',
-                                                    'action'     => 'delete',
-                                                ),
-                                            ),
-                                            'may_terminate' => true,
-                                            'child_routes'  => array(
-                                                'wildcard' => array(
-                                                    'type'    => 'wildcard',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
                                 'workout' => array(
                                     'type' => 'Literal',
                                     'options' => array(
@@ -455,6 +257,22 @@ return array(
                                                 ),
                                             ),
                                         ),
+                                        'ajax-last-of-type' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/ajax-last-of-type',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\WorkoutExerciseController',
+                                                    'action'     => 'ajaxLastOfType',
+                                                ),
+                                            ),
+                                            'may_terminate' => true,
+                                            'child_routes'  => array(
+                                                'wildcard' => array(
+                                                    'type'    => 'wildcard',
+                                                ),
+                                            ),
+                                        ),
                                     ),
                                 ),
                                 'exercise-type' => array(
@@ -484,6 +302,38 @@ return array(
                                                 ),
                                             ),
                                         ),
+                                        'edit-tree' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/edit-tree',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\ExerciseTypeController',
+                                                    'action'     => 'editTree',
+                                                ),
+                                            ),
+                                            'may_terminate' => true,
+                                            'child_routes'  => array(
+                                                'wildcard' => array(
+                                                    'type'    => 'wildcard',
+                                                ),
+                                            ),
+                                        ),
+                                        'ajax-form-type' => array(
+                                            'type' => 'Literal',
+                                            'options' => array(
+                                                'route' => '/ajax-form-type',
+                                                'defaults' => array(
+                                                    'controller' => 'HiTraining\Controller\ExerciseTypeController',
+                                                    'action'     => 'ajaxFormType',
+                                                ),
+                                            ),
+                                            'may_terminate' => true,
+                                            'child_routes'  => array(
+                                                'wildcard' => array(
+                                                    'type'    => 'wildcard',
+                                                ),
+                                            ),
+                                        ),
                                         'stats' => array(
                                             'type' => 'Literal',
                                             'options' => array(
@@ -491,6 +341,12 @@ return array(
                                                 'defaults' => array(
                                                     'controller' => 'HiTraining\Controller\ExerciseTypeController',
                                                     'action'     => 'stats',
+                                                ),
+                                            ),
+                                            'may_terminate' => true,
+                                            'child_routes'  => array(
+                                                'wildcard' => array(
+                                                    'type'    => 'wildcard',
                                                 ),
                                             ),
                                         ),
@@ -506,36 +362,6 @@ return array(
                                         ),
                                     ),
                                 ),
-//                                'authenticate' => array(
-//                                    'type' => 'Literal',
-//                                    'options' => array(
-//                                        'route' => '/authenticate',
-//                                        'defaults' => array(
-//                                            'controller' => 'zfcuser',
-//                                            'action'     => 'authenticate',
-//                                        ),
-//                                    ),
-//                                ),
-//                                'logout' => array(
-//                                    'type' => 'Literal',
-//                                    'options' => array(
-//                                        'route' => '/logout',
-//                                        'defaults' => array(
-//                                            'controller' => 'zfcuser',
-//                                            'action'     => 'logout',
-//                                        ),
-//                                    ),
-//                                ),
-//                                'register' => array(
-//                                    'type' => 'Literal',
-//                                    'options' => array(
-//                                        'route' => '/register',
-//                                        'defaults' => array(
-//                                            'controller' => 'zfcuser',
-//                                            'action'     => 'register',
-//                                        ),
-//                                    ),
-//                                ),
                             ),
                         ),
                     ),

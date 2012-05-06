@@ -80,6 +80,17 @@ class DbTable extends TableGateway
             )
         );
 
+        $this->hasColumn(
+            'after_break_time',
+            'time',
+            null,
+            array(
+                'type'             => 'time',
+                'notnull'          => true,
+                'default'          => '00:00:00',
+            )
+        );
+
 
         $this->hasColumn(
             'speed',
@@ -164,6 +175,56 @@ class DbTable extends TableGateway
                 'default'          => '0.0',
             )
         );
+
+        $this->hasColumn(
+            'hr_min',
+            'integer',
+            11,
+            array(
+                'type'             => 'integer',
+                'length'            => 11,
+                'notnull'          => true,
+                'default'          => '0',
+            )
+        );
+
+        $this->hasColumn(
+            'hr_max',
+            'integer',
+            11,
+            array(
+                'type'             => 'integer',
+                'length'            => 11,
+                'notnull'          => true,
+                'default'          => '0',
+            )
+        );
+
+        $this->hasColumn(
+            'hr_avg',
+            'integer',
+            11,
+            array(
+                'type'             => 'integer',
+                'length'            => 11,
+                'notnull'          => true,
+                'default'          => '0',
+            )
+        );
+
+        $this->hasColumn(
+            'fat_loss',
+            'decimal',
+            10,
+            array(
+                'type'             => 'decimal',
+                'scale'            => 4,
+                'notnull'          => true,
+                'default'          => '0.000',
+            )
+        );
+
+
 
         //lifting 1
         $this->hasColumn(
@@ -456,183 +517,64 @@ class DbTable extends TableGateway
             )
         );
 
+        $this->hasColumn(
+            'cooldown_speed_start',
+            'decimal',
+            10,
+            array(
+                'type'             => 'decimal',
+                'scale'            => 3,
+                'notnull'          => true,
+                'default'          => '0.0',
+            )
+        );
+        $this->hasColumn(
+            'cooldown_speed_end',
+            'decimal',
+            10,
+            array(
+                'type'             => 'decimal',
+                'scale'            => 3,
+                'notnull'          => true,
+                'default'          => '0.0',
+            )
+        );
+        $this->hasColumn(
+            'cooldown_speed_interval',
+            'decimal',
+            10,
+            array(
+                'type'             => 'decimal',
+                'scale'            => 3,
+                'notnull'          => true,
+                'default'          => '0.0',
+            )
+        );
 
 
-//        $this->hasColumn(
-//            'elapsed_time',
-//            'time',
-//            null,
-//            array(
-//                'type'             => 'time',
-//                'notnull'          => true,
-//                'default'          => '00:00:00',
-//            )
-//        );
-//
-//        $this->hasColumn(
-//            'hr_max',
-//            'integer',
-//            11,
-//            array(
-//                'type'             => 'integer',
-//                'length'            => 11,
-//                'notnull'          => true,
-//                'default'          => '0',
-//            )
-//        );
-//
-//        $this->hasColumn(
-//            'hr_avg',
-//            'integer',
-//            11,
-//            array(
-//                'type'             => 'integer',
-//                'length'            => 11,
-//                'notnull'          => true,
-//                'default'          => '0',
-//            )
-//        );
-//
-//
-//
-//        $this->hasColumn(
-//            'fat_loss',
-//            'decimal',
-//            10,
-//            array(
-//                'type'             => 'decimal',
-//                'scale'            => 3,
-//                'notnull'          => true,
-//                'default'          => '0.0',
-//            )
-//        );
+        $this->hasColumn(
+            'cooldown_interval_time',
+            'time',
+            null,
+            array(
+                'type'             => 'time',
+                'notnull'          => true,
+                'default'          => '00:00:00',
+            )
+        );
 
-//        $this->hasColumn(
-//            'weight',
-//            'decimal',
-//            10,
-//            array(
-//                'type'             => 'decimal',
-//                'scale'            => 3,
-//                'notnull'          => true,
-//                'default'          => '0.0',
-//            )
-//        );
-//
-//        $this->hasColumn(
-//            'fat_percentage',
-//            'decimal',
-//            10,
-//            array(
-//                'type'             => 'decimal',
-//                'scale'            => 1,
-//                'notnull'          => true,
-//                'default'          => '0.0',
-//            )
-//        );
-//
-//        $this->hasColumn(
-//            'water_percentage',
-//            'decimal',
-//            10,
-//            array(
-//                'type'             => 'decimal',
-//                'scale'            => 1,
-//                'notnull'          => true,
-//                'default'          => '0.0',
-//            )
-//        );
-//
-//        $this->hasColumn(
-//            'muscle_percentage',
-//            'decimal',
-//            10,
-//            array(
-//                'type'             => 'decimal',
-//                'scale'            => 1,
-//                'notnull'          => true,
-//                'default'          => '0.0',
-//            )
-//        );
-//
-//        $this->hasColumn(
-//            'bones_weight',
-//            'decimal',
-//            10,
-//            array(
-//                'type'             => 'decimal',
-//                'scale'            => 1,
-//                'notnull'          => true,
-//                'default'          => '0.0',
-//            )
-//        );
-//        $this->hasColumn(
-//            'calories_activeless',
-//            'integer',
-//            11,
-//            array(
-//                'type'             => 'integer',
-//                'length'            => 11,
-//                'notnull'          => true,
-//                'default'          => '0',
-//            )
-//        );
-//        $this->hasColumn(
-//            'calories_active',
-//            'integer',
-//            11,
-//            array(
-//                'type'             => 'integer',
-//                'length'            => 11,
-//                'notnull'          => true,
-//                'default'          => '0',
-//            )
-//        );
-//
-//        $this->hasColumn(
-//            'neck_circumference',
-//            'decimal',
-//            10,
-//            array(
-//                'type'             => 'decimal',
-//                'scale'            => 1,
-//                'notnull'          => true,
-//                'default'          => '0.0',
-//            )
-//        );
-//        $this->hasColumn(
-//            'chest_circumference',
-//            'decimal',
-//            10,
-//            array(
-//                'type'             => 'decimal',
-//                'scale'            => 1,
-//                'notnull'          => true,
-//                'default'          => '0.0',
-//            )
-//        );
-//        $this->hasColumn(
-//            'waist_circumference',
-//            'decimal',
-//            10,
-//            array(
-//                'type'             => 'decimal',
-//                'scale'            => 1,
-//                'notnull'          => true,
-//                'default'          => '0.0',
-//            )
-//        );
-//        $this->hasColumn(
-//            'biceps_circumference',
-//            'decimal',
-//            10,
-//            array(
-//                'type'             => 'decimal',
-//                'scale'            => 1,
-//                'notnull'          => true,
-//                'default'          => '0.0',
-//            )
-//        );
+        $this->hasColumn(
+            'cooldown_interval_count',
+            'integer',
+            11,
+            array(
+                'type'             => 'integer',
+                'length'            => 11,
+                'notnull'          => true,
+                'default'          => '0',
+            )
+        );
+
     }
 
     protected function setPrototypes()

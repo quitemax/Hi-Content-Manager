@@ -37,13 +37,33 @@ class Row extends HiRowGateway
 ////        $where = array($this->primaryKey => $this->originalData[$this->primaryKey]);
 ////        return $this->tableGateway->delete($where);
 //    }
-//    /**
-//     * before save
-//     *
-//     * @return
-//     */
-//    protected function _beforeSave()
-//    {
+    /**
+     * before save
+     *
+     * @return
+     */
+    protected function _afterLoad()
+    {
+        if (isset($this['type_img'])){
+//            \Zend\Debug::dump($this['type_img']);
+            $this['type_img'] = explode(',', $this['type_img']);
+        }
+//
+    }
+
+
+    /**
+     * before save
+     *
+     * @return
+     */
+    protected function _beforeSave()
+    {
+
+        if (isset($this['type_img']) && is_array($this['type_img'])){
+//            \Zend\Debug::dump($this['type_img']);
+            $this['type_img'] = implode(',', $this['type_img']);
+        }
 //
 //        $this['fat_weight'] = ($this['fat_percentage']/100) * $this['weight'];
 //        $this['fat_weight_range_top'] = ( ($this['fat_percentage'] + 0.1)/100 ) * ($this['weight'] + 0.1);
@@ -64,5 +84,5 @@ class Row extends HiRowGateway
 //
 //        $this['bmi'] = $this['weight'] / ($this['height'] * $this['height']);
 //
-//    }
+    }
 }

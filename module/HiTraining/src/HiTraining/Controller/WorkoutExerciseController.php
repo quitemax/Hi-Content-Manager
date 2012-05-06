@@ -7,7 +7,8 @@ use Zend\Mvc\Controller\ActionController,
     HiTraining\Model\WorkoutExercise,
     HiTraining\Form\WorkoutExercise\Grid as WorkoutExerciseGrid,
     HiTraining\Form\WorkoutExercise\ResultSet as WorkoutExerciseResultSet,
-    HiTraining\Form\WorkoutExercise\Row as WorkoutExerciseRow;
+    HiTraining\Form\WorkoutExercise\Row as WorkoutExerciseRow,
+    Zend\View\Model\JsonModel;
 
 class WorkoutExerciseController extends ActionController
 {
@@ -38,6 +39,22 @@ class WorkoutExerciseController extends ActionController
     {
         $this->_exerciseType = $type;
         return $this;
+    }
+
+    public function ajaxLastOfTypeAction()
+    {
+        $request = $this->getRequest();
+
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('type_id', 0);
+
+        $type = $this->_exerciseType->getRow(array('type_id' => $id))->toArray();
+
+        $exercise = $this->_exercise->getRow(array('type_id' => $id), array('`workout_id` desc'))->toArray();
+
+        return new JsonModel(array(
+            'exercise' => $exercise,
+        ));
     }
 
     /**
@@ -120,17 +137,17 @@ class WorkoutExerciseController extends ActionController
         $form->addSubForm($list, $list->getName());
 
 //        //
-//        $this->_view->headScript()->appendScript(
-//            $this->_view->render(
-//                'exercises-workout-exercise/index.js',
-//                array(
-//                    'back' => $this->url()->fromRoute('exercises-workout-home'),
-//                    'delete' => $this->url()->fromRoute('exercises-workout-exercise-delete/wildcard', array('exercise_id' => '')),
-//                    'edit' => $this->url()->fromRoute('exercises-workout-exercise-edit/wildcard', array('exercise_id' => '')),
-//                    'add' => $this->url()->fromRoute('exercises-workout-exercise-add/wildcard', array('workout_id' => $id)),
-//                )
-//            )
-//        );
+        $this->_view->headScript()->appendScript(
+            $this->_view->render(
+                'workout-exercise/list.js',
+                array(
+                    'back' => $this->url()->fromRoute('hi-training/workout/list'),
+                    'delete' => $this->url()->fromRoute('hi-training/workout-exercise/delete/wildcard', array('exercise_id' => '')),
+                    'edit' => $this->url()->fromRoute('hi-training/workout-exercise/edit/wildcard', array('exercise_id' => '')),
+                    'add' => $this->url()->fromRoute('hi-training/workout-exercise/add/wildcard', array('workout_id' => $id)),
+                )
+            )
+        );
 
         /**
          * POST
@@ -140,50 +157,46 @@ class WorkoutExerciseController extends ActionController
             $formData = $this->getRequest()->post()->toArray();
 
 
-//            if ($form->isValid($formData)) {
-////                \HiZend\Debug\Debug::dump($formData);
-//                if (    isset($formData['header']['formId'])
-//                        && $formData['header']['formId'] == 'WorkoutExerciseGridForm') {
+            if ($form->isValid($formData)) {
+                \Zend\Debug::dump($formData);
+                if (    isset($formData['header']['formId'])
+                        && $formData['header']['formId'] == 'WorkoutExerciseGridForm') {
+
+                    if (isset($formData['WorkoutExerciseResultSet']['actions']['saveSelected'])) {
+                        $allBox = $formData['WorkoutExerciseResultSet']['header']['all'];
+                        $rows = $formData['WorkoutExerciseResultSet']['rows'];
+
+                        foreach ($rows as $key => $row) {
+                            if ($row['id'] || $allBox) {
+                                $exercise = $this->_exercise->getRow(array('exercise_id' => $key));
+                                $exercise->populateCurrentData($row['row']);
+                                $exercise->save();
+
+                            }
+                        }
+
+                        return $this->redirect()->toRoute('hi-training/workout-exercise/list/wildcard', array('workout_id' => $id));
+                    }
+
+                    if (isset($formData['WorkoutExerciseResultSet']['actions']['deleteSelected'])) {
+
+                        $allBox = $formData['WorkoutExerciseResultSet']['header']['all'];
+                        $rows = $formData['WorkoutExerciseResultSet']['rows'];
+
+                        foreach ($rows as $key => $row) {
+                            if ($row['id'] || $allBox) {
+
+                                $exercise = $this->_exercise->getRow(array('exercise_id' => $key));
+                                $exercise->delete();
+
+                            }
+                        }
+
+                        return $this->redirect()->toRoute('hi-training/workout-exercise/list/wildcard', array('workout_id' => $id));
 //
-//                    if (isset($formData['WorkoutExerciseRowset']['actions']['saveSelected'])) {
-//                        $allBox = $formData['WorkoutExerciseRowset']['header']['all'];
-//                        $rows = $formData['WorkoutExerciseRowset']['rows'];
-//
-//                        foreach ($rows as $key => $row) {
-//                            if ($row['id'] || $allBox) {
-////                                \HiZend\Debug\Debug::dump($row['row']);
-////                                \HiZend\Debug\Debug::dump($key);
-//
-//                                $exercise = $this->_exercise->getWorkoutExercise($key);
-//                                $exercise->setFromArray($row['row']);
-//                                $exercise->save();
-//
-//                            }
-//                        }
-//
-//                        return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id));
-//                    }
-//
-//                    if (isset($formData['WorkoutExerciseRowset']['actions']['deleteSelected'])) {
-////\HiZend\Debug\Debug::dump($formData);
-//                        $allBox = $formData['WorkoutExerciseRowset']['header']['all'];
-//                        $rows = $formData['WorkoutExerciseRowset']['rows'];
-//
-//                        foreach ($rows as $key => $row) {
-//                            if ($row['id'] || $allBox) {
-////                                \HiZend\Debug\Debug::dump($row['row']);
-//
-//                                $exercise = $this->_exercise->getWorkoutExercise($key);
-//                                $exercise->delete();
-//
-//                            }
-//                        }
-//
-//                        return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id));
-//
-//                    }
-//                }
-//            }
+                    }
+                }
+            }
         }
 
         return array(
@@ -233,14 +246,19 @@ class WorkoutExerciseController extends ActionController
                 'view' => $this->_view,
             )
         );
-//
-//        $row->setFieldOptions('type_id', array(
-//            'values' => $this->_exerciseType->getAllForSelect(),
-//            'onchange' => 'exerciseType(this);',
-//        ));
-//        $row->setFieldOptions('workout_id', array(
-//            'value' => $id,
-//        ));
+
+        $row->setFieldOptions('type_id', array(
+            'values' => $this->_exerciseType->getBehaviour('nestedSet')->getResultSetForSelect(),
+            'onchange' => 'exerciseType(this);',
+        ));
+        $row->setFieldOptions('workout_id', array(
+            'value' => $id,
+        ));
+
+        //
+
+
+
         //
         $row->build();
 
@@ -248,16 +266,26 @@ class WorkoutExerciseController extends ActionController
         $form->addSubForm($row, $row->getName());
 
         //
-//        $this->_view->headScript()->appendScript(
-//            $this->_view->render(
-//                'exercises-workout-exercise/add.js',
-//                array(
-//                    'back' => $this->url()->fromRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id)),
-//                    'formTypesData' => $this->_exerciseType->getRowset()->toArray(),
-//                    'lastOfTypeData' => $this->_exerciseType->getLastOfTypes(),
-//                )
-//            )
-//        );
+        $this->_view->headScript()->appendScript(
+            $this->_view->render(
+                'workout-exercise/add.js',
+                array(
+                    'currentFormType'     => 0,
+                    'back'                => $this->url()->fromRoute(
+                        'hi-training/workout-exercise/list/wildcard',
+                        array('workout_id' => $id)
+                    ),
+                    'ajaxFormType' => $this->url()->fromRoute(
+                        'hi-training/exercise-type/ajax-form-type/wildcard',
+                        array('type_id' => '')
+                    ),
+                    'ajaxLastOfType' => $this->url()->fromRoute(
+                        'hi-training/workout-exercise/ajax-last-of-type/wildcard',
+                        array('type_id' => '')
+                    ),
+                )
+            )
+        );
 
 
         /**
@@ -269,31 +297,33 @@ class WorkoutExerciseController extends ActionController
 
             if ($form->isValid($formData)) {
 
-//                if (    isset($formData['header']['formId'])
-//                        && $formData['header']['formId'] == 'WorkoutExerciseGridForm') {
-//
-//                    if (isset($formData['WorkoutExerciseRow']['actions']['save'])) {
-//
-//                        if (is_array($formData['WorkoutExerciseRow']['row'])){
-//                            $newRow = $this->_exercise->createRow($formData['WorkoutExerciseRow']['row']);
-//                            $newRow->save();
-////
-//                            return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id));
-//                        }
-//
-//                    }
-//
-//                    if (isset($formData['WorkoutExerciseRow']['actions']['saveAdd'])) {
-//
-//                        if (is_array($formData['WorkoutExerciseRow']['row'])){
-//                            $newRow = $this->_exercise->createRow($formData['WorkoutExerciseRow']['row']);
-//                            $newRow->save();
-////
-//                            return $this->redirect()->toRoute('exercises-workout-exercise-add/wildcard', array('workout_id' => $id));
-//                        }
-//
-//                    }
-//                }
+//                \Zend\Debug::dump($formData);
+
+                if (    isset($formData['header']['formId'])
+                        && $formData['header']['formId'] == 'WorkoutExerciseGridForm') {
+
+                    if (isset($formData['WorkoutExerciseRow']['actions']['save'])) {
+
+                        if (is_array($formData['WorkoutExerciseRow']['row'])){
+                            $newRow = $this->_exercise->createRow()->populateCurrentData($formData['WorkoutExerciseRow']['row']);
+                            $newRow->save();
+
+                            return $this->redirect()->toRoute('hi-training/workout-exercise/list/wildcard', array('workout_id' => $id));
+                        }
+
+                    }
+
+                    if (isset($formData['WorkoutExerciseRow']['actions']['saveAdd'])) {
+
+                        if (is_array($formData['WorkoutExerciseRow']['row'])){
+                            $newRow = $this->_exercise->createRow()->populateCurrentData($formData['WorkoutExerciseRow']['row']);
+                            $newRow->save();
+
+                            return $this->redirect()->toRoute('hi-training/workout-exercise/add/wildcard', array('workout_id' => $id));
+                        }
+
+                    }
+                }
             }
         }
 
@@ -313,109 +343,170 @@ class WorkoutExerciseController extends ActionController
     public function editAction()
     {
 
-//        $request = $this->getRequest();
-//
-//        $routeMatch = $this->getEvent()->getRouteMatch();
-//        $id     = $routeMatch->getParam('exercise_id', 0);
-//
-//        if ($id <= 0) {
-//            return $this->redirect()->toRoute('exercises-workout-home');
+        $request = $this->getRequest();
+
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('exercise_id', 0);
+
+        if ($id <= 0) {
+            return $this->redirect()->toRoute('hi-training/workout/list');
+        }
+
+        $exercise = $this->_exercise->getRow(array('exercise_id' => $id));
+
+        if (!$exercise) {
+            return $this->redirect()->toRoute('hi-training/workout/list');
+        }
+
+        $workoutId = $exercise->workout_id;
+
+        $workout = $this->_workout->getRow(array('workout_id' => $workoutId));
+
+        if (!$workout) {
+            return $this->redirect()->toRoute('hi-training/workout/list');
+        }
+
+        $typeId = $exercise->type_id;
+
+        $type = $this->_exerciseType->getRow(array('type_id' => $typeId));
+
+//        if (!$type) {
+//            return $this->redirect()->toRoute('hi-training/workout/list');
 //        }
-//
-//        $exercise = $this->_exercise->getWorkoutExercise($id);
-//
-//        if (!$exercise) {
-//            return $this->redirect()->toRoute('exercises-workout-home');
-//        }
-//
-//        $workoutId = $exercise->workout_id;
-//
-//        $workout = $this->_workout->getWorkout($workoutId);
-//
-//        if (!$workout) {
-//            return $this->redirect()->toRoute('exercises-workout-home');
-//        }
-//
-//        /**
-//         * Grid FORM
-//         */
-//        $form = new WorkoutExerciseGrid(
-//            array(
-//                'view' => $this->_view,
-//            )
-//        );
-//
-//        /**
-//         * BUILDING Row
-//         */
-//        $row = new ExerciseRow(
-//            array(
-//                'model' => $this->_exercise,
-//                'view' => $this->_view,
-//            )
-//        );
-//
-//        //
-//        $row->setRowId($id);
-//
-//        $row->setFieldOptions('type_id', array(
-//            'values' => $this->_exerciseType->getAllForSelect(),
-//            'onchange' => 'exerciseType(this);',
-//        ));
-//        $row->setFieldOptions('workout_id', array(
-//            'value' => $id,
-//        ));
-//
-//        //
-//        $row->build();
-//
-//        //
-//        $form->addSubForm($row, $row->getName());
-//
-//        //
-//        $this->_view->headScript()->appendScript(
-//            $this->_view->render(
-//                'exercises-workout-exercise/edit.js',
-//                array(
-//                    'back' => $this->url()->fromRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $workoutId)),
-//                    'formTypesData' => $this->_exerciseType->getRowset()->toArray(),
-//                )
-//            )
-//        );
-//
-//
-//        /**
-//         * POST
-//         */
-//        if ($this->getRequest()->isPost()) {
-//
-//            $formData = $this->getRequest()->post()->toArray();
-//
-//            if ($form->isValid($formData)) {
-//
-//                if (    isset($formData['header']['formId'])
-//                        && $formData['header']['formId'] == 'WorkoutExerciseGridForm') {
-//
-//                    if (isset($formData['WorkoutExerciseRow']['actions']['save'])) {
-//
-//                        if (is_array($formData['WorkoutExerciseRow']['row'])){
-//                            \HiZend\Debug\Debug::precho($formData['WorkoutExerciseRow']['row']);
-//
-//                            $exercise->setFromArray($formData['WorkoutExerciseRow']['row']);
-//                            $exercise->save();
-//
-//                            return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $workoutId));
-//                        }
-//
-//                    }
-//                }
-//            }
-//        }
-//
-//        return array(
-//            'form'        => $form,
-//            'workout'     => $workout,
-//        );
+
+        /**
+         * Grid FORM
+         */
+        $form = new WorkoutExerciseGrid(
+            array(
+                'view' => $this->_view,
+            )
+        );
+
+        /**
+         * BUILDING Row
+         */
+        $row = new WorkoutExerciseRow(
+            array(
+                'model' => $this->_exercise,
+                'view' => $this->_view,
+            )
+        );
+
+        //
+        $row->setRowId($id);
+
+
+
+        $row->setFieldOptions('type_id', array(
+            'values' => $this->_exerciseType->getBehaviour('nestedSet')->getResultSetForSelect(),
+            'onchange' => 'exerciseType(this);',
+        ));
+        $row->setFieldOptions('workout_id', array(
+            'value' => $workoutId,
+        ));
+
+        $row->addAction(
+            'saveEdit',
+            'submit',
+            array(
+                'label'     => 'save and continue editing',
+                'class'     => 'actionImage',
+//                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
+            )
+        );
+
+        //
+        $row->build();
+
+        //
+        $form->addSubForm($row, $row->getName());
+
+        //
+        $this->_view->headScript()->appendScript(
+            $this->_view->render(
+                'workout-exercise/edit.js',
+                array(
+                    'currentFormType'     => $type['form_type'],
+                    'back' => $this->url()->fromRoute('hi-training/workout-exercise/list/wildcard', array('workout_id' => $workoutId)),
+                    'ajaxFormType' => $this->url()->fromRoute(
+                        'hi-training/exercise-type/ajax-form-type/wildcard',
+                        array('type_id' => '')
+                    ),
+                    'ajaxLastOfType' => $this->url()->fromRoute(
+                        'hi-training/workout-exercise/ajax-last-of-type/wildcard',
+                        array('type_id' => '')
+                    ),
+                )
+            )
+        );
+
+
+        /**
+         * POST
+         */
+        if ($this->getRequest()->isPost()) {
+
+            $formData = $this->getRequest()->post()->toArray();
+
+            if ($form->isValid($formData)) {
+
+                if (    isset($formData['header']['formId'])
+                        && $formData['header']['formId'] == 'WorkoutExerciseGridForm') {
+
+                    if (isset($formData['WorkoutExerciseRow']['actions']['save'])) {
+
+                        if (is_array($formData['WorkoutExerciseRow']['row'])){
+                            $row = $this->_exercise->getRow(array('exercise_id' => $id))
+                                ->populateCurrentData($formData['WorkoutExerciseRow']['row']);
+                            $row->save();
+
+                            return $this->redirect()->toRoute(
+                                'hi-training/workout-exercise/list/wildcard',
+                                array('workout_id' => $workoutId)
+                            );
+                        }
+
+                    }
+
+                    if (isset($formData['WorkoutExerciseRow']['actions']['saveAdd'])) {
+
+                        if (is_array($formData['WorkoutExerciseRow']['row'])){
+                            $row = $this->_exercise->getRow(array('exercise_id' => $id))
+                                ->populateCurrentData($formData['WorkoutExerciseRow']['row']);
+                            $row->save();
+
+                            return $this->redirect()->toRoute(
+                                'hi-training/workout-exercise/add/wildcard',
+                                array('workout_id' => $workoutId)
+                            );
+                        }
+
+                    }
+
+                    if (isset($formData['WorkoutExerciseRow']['actions']['saveEdit'])) {
+
+                        if (is_array($formData['WorkoutExerciseRow']['row'])){
+                            $row = $this->_exercise->getRow(array('exercise_id' => $id))
+                                ->populateCurrentData($formData['WorkoutExerciseRow']['row']);
+                            $row->save();
+
+                            return $this->redirect()->toRoute(
+                                'hi-training/workout-exercise/edit/wildcard',
+                                array('exercise_id' => $id)
+                            );
+                        }
+
+                    }
+                }
+            }
+        }
+
+        return array(
+            'form'        => $form,
+            'workout'     => $workout,
+            'exercise'    => $exercise,
+        );
     }
 
     /**
@@ -425,30 +516,26 @@ class WorkoutExerciseController extends ActionController
      */
     public function deleteAction()
     {
-//        $request = $this->getRequest();
-//
-//        $routeMatch = $this->getEvent()->getRouteMatch();
-//        $id     = $routeMatch->getParam('exercise_id', 0);
-//
-//        if ($id <= 0) {
-//            return $this->redirect()->toRoute('exercises-workout-home');
-//        }
-//
-//        $exercise = $this->_exercise->getWorkoutExercise($id);
-//
-//        if (!$exercise) {
-//            return $this->redirect()->toRoute('exercises-workout-home');
-//        }
-//
-//        $workoutId = $exercise->workout_id;
-//
-//        $exercise->delete();
-//
-//
-//        return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $workoutId));
+        $request = $this->getRequest();
+
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('exercise_id', 0);
+
+        if ($id <= 0) {
+            return $this->redirect()->toRoute('hi-training/workout/list');
+        }
+
+        $exercise = $this->_exercise->getRow(array('exercise_id' => $id));
+
+        if (!$exercise) {
+            return $this->redirect()->toRoute('hi-training/workout/list');
+        }
+
+        $workoutId = $exercise->workout_id;
+
+        $exercise->delete();
+
+        return $this->redirect()->toRoute('hi-training/workout-exercise/list/wildcard', array('workout_id' => $workoutId));
 
     }
-
-
-
 }

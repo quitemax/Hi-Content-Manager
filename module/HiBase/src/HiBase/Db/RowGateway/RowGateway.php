@@ -88,8 +88,43 @@ class RowGateway extends ZendRowGateway
      *
      * @return integer
      */
-    public function _afterSave()
+    protected function _afterSave()
     {
+    }
+
+    /**
+     * Save
+     *
+     * @return integer
+     */
+    protected function _afterLoad()
+    {
+    }
+
+    /**
+     * Save
+     *
+     * @return integer
+     */
+    protected function _beforeLoad()
+    {
+    }
+
+    /**
+     *
+     *
+     * @return
+     */
+    public function exchangeArray($data)
+    {
+        $this->_beforeLoad();
+
+        $return = parent::exchangeArray($data);
+
+        $this->_afterLoad();
+
+        return $return;
+
     }
 
 }

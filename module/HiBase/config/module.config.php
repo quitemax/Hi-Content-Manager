@@ -1,7 +1,29 @@
 <?php
 return array(
+    'hi-base' => array(
+//        'user_model_class'          => 'ZfcUser\Model\User',
+//        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
+//        'enable_registration'       => true,
+//        'enable_username'           => false,
+//        'enable_display_name'       => false,
+//        'require_activation'        => false,
+//        'login_after_registration'  => true,
+//        'registration_form_captcha' => true,
+//        'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
+//        'blowfish_cost'             => 10,         // integer between 4 and 31
+//        'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
+//        'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
+    ),
     'di' => array(
         'instance' => array(
+            'Zend\View\HelperLoader' => array(
+                'parameters' => array(
+                    'map' => array(
+                        'showimage' => 'HiBase\View\Helper\ShowImage',
+//                        'uppercase' => 'My\Helper\UpperCase',
+                    ),
+                )
+            ),
 //            'Zend\Db\Adapter\Adapter' => array(
 //                'parameters' => array(
 //                    'config' => array(

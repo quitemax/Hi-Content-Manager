@@ -1,53 +1,103 @@
-function deleteRow(id) {
-    if (confirm("<?php echo 'areYouSureToDeleteThisElement';?>")) {
-        window.location = "<?php echo $delete;?>" + id;
-        return true;
-    } else {
-        return false;
-    }
-}
-
 function goBack() {
     window.location = "<?php echo $back;?>";
 }
 
-$(document).ready(function(){
-//    $('#eNIR .rowContent').hide();
-//  
-//    $('#eNIR .rowTitle').click(function () {
-//        $('#eNIR .rowContent').toggle('slow'); 
-//    });
-//    
-//    $('#eNIER .rowContent').hide();
-//  
-//    $('#eNIER .rowTitle').click(function () {
-//        $('#eNIER .rowContent').toggle('slow'); 
-//    });
-//    
-//    $('#nIEL .listContent').hide();
-//  
-//    $('#nIEL .listTitle').click(function () {
-//        $('#nIEL .listContent').toggle('slow'); 
-//    });
-//    
-//    $('#aNIR .rowContent').hide();
-//  
-//    $('#aNIR .rowTitle').click(function () {
-//        $('#aNIR .rowContent').toggle('slow'); 
-//    });
-//    
-    /*$("p").click(function () { 
-    //  $(this).slideUp(); 
+/**
+ *
+ */
+function switchToFormType(formType) {
+
+    //
+    var elements = $('input[form_' + '0' + '="1"]');
+
+    //
+    $.each(elements, function(index, value) {
+        $(value).parent().parent().css('display', 'none');
     });
-    $("p").hover(function () {
-      $(this).addClass("hilite");
-    }, function () {
-      $(this).removeClass("hilite");
-    });*/
-    
+
+    if (formType > 0) {
+        var elements = $('input[form_' + formType + '="1"]');
+
+        var odd = 1;
+
+        //
+        $.each(elements, function(index, value) {
+            if (odd == 1) {
+                odd = 0;
+            } else {
+                odd = 1;
+            }
+
+            var tr = $(value).parent().parent();
+
+            if (odd) {
+                tr.addClass('even');
+            } else {
+                tr.removeClass('even');
+            }
+
+            tr.css('display', 'table-row');
+        });
+    }
+}
+
+/**
+ *
+ */
+function exerciseType(select) {
+
+    var selected = select.selectedIndex;
+    var typeId = select.options[selected].value;
+
+    $.ajax({
+        url: '<?php echo $ajaxFormType;?>' + typeId,
+        dataType: 'json',
+        success: function(data) {
+
+            //
+            switchToFormType(data.type);
+        }
+    });
+}
+
+/**
+ *
+ */
+function copy() {
+    //alert(document.getElementById('WorkoutExerciseRow-row-type_id').selectedIndex);
+
+    var select = document.getElementById('WorkoutExerciseRow-row-type_id');
+    var selected = select.selectedIndex;
+    var typeId = select.options[selected].value;
+
+    $.ajax({
+        url: '<?php echo $ajaxLastOfType;?>' + typeId,
+        success: function(data) {
+            //$('.result').html(data);
+            //alert('Load was performed.');
+            //alert(data.exercise.exercise_id);
+
+            $.each(data.exercise, function(index, value) {
+                if (index == 'exercise_id' || index == 'workout_id' || index == 'type_id') {
+                    return true; // equivalent to 'continue' with a normal for loop
+                }
+
+
+                $('#WorkoutExerciseRow-row-' + index).attr('value', value);
+
+            });
+        }
+    });
+
+    return false;
+}
+
+/**
+ *
+ */
+$(document).ready(function() {
+    //
+    var currFormType = '<?php echo $currentFormType;?>';
+    //
+    switchToFormType(currFormType);
 });
-
-
-
-
-

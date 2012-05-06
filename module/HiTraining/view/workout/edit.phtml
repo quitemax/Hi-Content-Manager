@@ -1,14 +1,14 @@
 <div id="breadcrumb">
     &raquo; <a href="<?php echo $this->url('home');?>">Home</a>
-    &raquo; <a href="<?php echo $this->url('hi-training');?>">Training</a>
-    &raquo; <a class="selected" href="<?php echo $this->url('hi-training/checkup/list');?>">Checkup list</a>
-    &raquo; <a class="selected" href="<?php //echo $this->url('hi-training/checkup/edit');?>">Edit Checkup</a>
+    &raquo; <a href="<?php echo $this->url('hi-training');?>">HiTraining</a>
+    &raquo; <a href="<?php echo $this->url('hi-training/workout/list');?>">Workout list</a>
+    &raquo; <a class="selected" href="<?php //echo $this->url('hi-training/checkup/edit');?>">Edit workout</a>
 
 </div>
 <div id="content">
 	<div class="page-title">
         <?php
-            $title = 'Edit Checkup (ID: ' . $id . ')';
+            $title = 'Edit workout (ID: ' . $id . ')';
             $this->headTitle($title);
         ?>
         <h1><?php echo $this->escape($title); ?></h1>

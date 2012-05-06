@@ -56,46 +56,52 @@ echo $this->doctype();
 
               <li class="<?php if (strpos($controller, 'Application') !== false) :?>active<?php endif;?>">
                 <a href="<?php echo $this->url('home') ?>">Home</a>
-              </li>
+              </li><!--/Home - collapse -->
 
-              <li class="<?php if (strpos($controller, 'HiTraining') !== false) :?>active<?php endif;?>">
-                <a href="<?php echo $this->url('hi-training') ?>">Training</a>
+              <li class="<?php if (strpos($controller, 'HiCheckup') !== false) :?>active<?php endif;?>">
+                <a href="<?php echo $this->url('hi-checkup') ?>">HiCheckup</a>
                 <ul class="level-1">
 
                   <li class="">
-                    <a href="<?php echo $this->url('hi-training/checkup') ?>">Checkup</a>
+                    <a href="<?php echo $this->url('hi-checkup/checkup') ?>">Checkup</a>
                     <ul class="level-2">
 
                       <li class="">
-                        <a href="<?php echo $this->url('hi-training/checkup/stats') ?>">Stats</a>
+                        <a href="<?php echo $this->url('hi-checkup/checkup/stats') ?>">Stats</a>
                       </li>
 
                       <li class="">
-                        <a href="<?php echo $this->url('hi-training/checkup/list') ?>">List</a>
+                        <a href="<?php echo $this->url('hi-checkup/checkup/list') ?>">List</a>
                       </li>
 
                       <li class="">
-                        <a href="<?php echo $this->url('hi-training/checkup/add') ?>">Add new</a>
+                        <a href="<?php echo $this->url('hi-checkup/checkup/add') ?>">Add new</a>
                       </li>
                     </ul>
 
                   </li>
                   <li class="">
-                    <a href="<?php echo $this->url('hi-training/checkup-profile') ?>">Checkup profile</a>
+                    <a href="<?php echo $this->url('hi-checkup/checkup-profile') ?>">Checkup profile</a>
                     <ul class="level-2">
 
                       <li class="">
-                        <a href="<?php echo $this->url('hi-training/checkup-profile/list') ?>">List</a>
+                        <a href="<?php echo $this->url('hi-checkup/checkup-profile/list') ?>">List</a>
                       </li>
 
                       <li class="">
-                        <a href="<?php echo $this->url('hi-training/checkup-profile/add') ?>">Add new</a>
+                        <a href="<?php echo $this->url('hi-checkup/checkup-profile/add') ?>">Add new</a>
                       </li>
                     </ul>
 
                   </li>
 
+                </ul>
 
+              </li><!--/Checkup - collapse -->
+
+              <li class="<?php if (strpos($controller, 'HiTraining') !== false) :?>active<?php endif;?>">
+                <a href="<?php echo $this->url('hi-training') ?>">HiTraining</a>
+                <ul class="level-1">
 
                   <li class="">
                     <a href="<?php echo $this->url('hi-training/workout') ?>">Workout</a>
@@ -129,12 +135,16 @@ echo $this->doctype();
                         <a href="<?php echo $this->url('hi-training/exercise-type/tree') ?>">Tree</a>
                       </li>
 
+                      <li class="">
+                        <a href="<?php echo $this->url('hi-training/exercise-type/edit-tree') ?>">Edit tree</a>
+                      </li>
+
 
                     </ul>
                   </li>
 
                 </ul>
-              </li>
+              </li><!--/Training - collapse -->
 
             </ul>
           </div><!--/.nav-collapse -->

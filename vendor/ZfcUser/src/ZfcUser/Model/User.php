@@ -28,7 +28,7 @@ class User extends ModelAbstract implements UserInterface
     protected $active;
 
     protected $enabled;
- 
+
     /**
      * Get user_id.
      *
@@ -38,7 +38,7 @@ class User extends ModelAbstract implements UserInterface
     {
         return $this->user_id;
     }
- 
+
     /**
      * Set user_id.
      *
@@ -50,7 +50,7 @@ class User extends ModelAbstract implements UserInterface
         $this->user_id = (int) $userId;
         return $this;
     }
- 
+
     /**
      * Get username.
      *
@@ -60,7 +60,7 @@ class User extends ModelAbstract implements UserInterface
     {
         return $this->username;
     }
- 
+
     /**
      * Set username.
      *
@@ -72,7 +72,7 @@ class User extends ModelAbstract implements UserInterface
         $this->username = $username;
         return $this;
     }
- 
+
     /**
      * Get email.
      *
@@ -82,7 +82,7 @@ class User extends ModelAbstract implements UserInterface
     {
         return $this->email;
     }
- 
+
     /**
      * Set email.
      *
@@ -94,7 +94,7 @@ class User extends ModelAbstract implements UserInterface
         $this->email = $email;
         return $this;
     }
- 
+
     /**
      * Get display_name.
      *
@@ -111,7 +111,7 @@ class User extends ModelAbstract implements UserInterface
         }
         return null;
     }
- 
+
     /**
      * Set display_name.
      *
@@ -123,7 +123,7 @@ class User extends ModelAbstract implements UserInterface
         $this->display_name = $displayName;
         return $this;
     }
- 
+
     /**
      * Get password.
      *
@@ -133,7 +133,7 @@ class User extends ModelAbstract implements UserInterface
     {
         return $this->password;
     }
- 
+
     /**
      * Set password.
      *
@@ -145,7 +145,7 @@ class User extends ModelAbstract implements UserInterface
         $this->password = $password;
         return $this;
     }
- 
+
     /**
      * Get last_login.
      *
@@ -155,7 +155,7 @@ class User extends ModelAbstract implements UserInterface
     {
         return $this->last_login;
     }
- 
+
     /**
      * Set last_login.
      *
@@ -171,7 +171,7 @@ class User extends ModelAbstract implements UserInterface
         }
         return $this;
     }
- 
+
     /**
      * Get last_ip.
      *
@@ -186,7 +186,7 @@ class User extends ModelAbstract implements UserInterface
         }
         return long2ip($this->last_ip);
     }
- 
+
     /**
      * Set last_ip.
      *
@@ -199,7 +199,7 @@ class User extends ModelAbstract implements UserInterface
         $this->last_ip = ip2long($lastIp);
         return $this;
     }
- 
+
     /**
      * Get register_time.
      *
@@ -209,7 +209,7 @@ class User extends ModelAbstract implements UserInterface
     {
         return $this->register_time;
     }
- 
+
     /**
      * Set register_time.
      *
@@ -225,7 +225,7 @@ class User extends ModelAbstract implements UserInterface
         }
         return $this;
     }
- 
+
     /**
      * Get register_ip.
      *
@@ -240,7 +240,7 @@ class User extends ModelAbstract implements UserInterface
         }
         return long2ip($this->register_ip);
     }
- 
+
     /**
      * Set register_ip.
      *
@@ -253,7 +253,7 @@ class User extends ModelAbstract implements UserInterface
         $this->register_ip = ip2long($registerIp);
         return $this;
     }
- 
+
     /**
      * Get active.
      *
@@ -263,7 +263,7 @@ class User extends ModelAbstract implements UserInterface
     {
         return $this->active;
     }
- 
+
     /**
      * Set active.
      *
@@ -274,7 +274,7 @@ class User extends ModelAbstract implements UserInterface
         $this->active = $active;
         return $this;
     }
- 
+
     /**
      * Get enabled.
      *
@@ -284,7 +284,7 @@ class User extends ModelAbstract implements UserInterface
     {
         return $this->enabled;
     }
- 
+
     /**
      * Set enabled.
      *
@@ -294,5 +294,26 @@ class User extends ModelAbstract implements UserInterface
     {
         $this->enabled = $enabled;
         return $this;
+    }
+
+    /**
+     * Convert the model to an array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $result = parent::toArray();
+        $result['register_ip'] = $this->register_ip;
+        $result['last_ip'] = $this->last_ip;
+        if (is_object($this->register_time)) {
+            $result['register_time'] = $this->register_time->format('Y-m-d H:i:s');
+        }
+        if (is_object($this->last_login)) {
+            $result['last_login'] = $this->last_login->format('Y-m-d H:i:s');
+        }
+
+
+        return $result;
     }
 }

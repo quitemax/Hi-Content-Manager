@@ -1,0 +1,16 @@
+<div id="breadcrumb">
+    &raquo; <a href="<?php echo $this->url('home');?>">Home</a>
+    &raquo; <a href="<?php echo $this->url('hi-user');?>">HiUser</a>
+    &raquo; <a href="<?php echo $this->url('hi-user/login');?>">Log in</a>
+
+</div>
+<div id="content">
+    <div class="page-title">
+        <?php
+            $title = 'HiUser log in';
+            $this->headTitle($title);
+        ?>
+        <h1><?php echo $this->escape($title); ?></h1>
+    </div>
+    <?php echo $loginForm;?>
+</div>

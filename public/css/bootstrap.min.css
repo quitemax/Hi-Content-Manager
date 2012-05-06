@@ -489,7 +489,7 @@ button.btn.small,input[type="submit"].btn.small{*padding-top:3px;*padding-bottom
 .navbar-fixed-top .navbar-inner{padding-left:0;padding-right:0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
 .navbar .nav{position:relative;left:0;display:block;float:left;margin:0 10px 0 0;}
 .navbar .nav.pull-right{float:right;}
-.navbar .nav>li{display:block;float:left;}
+.navbar .nav>li{display:block;float:left;position:relative;}
 .navbar .nav>li>a{float:none;padding:10px 10px 11px;line-height:19px;color:#999999;text-decoration:none;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);}
 .navbar .nav>li>a:hover{background-color:transparent;color:#ffffff;text-decoration:none;}
 .navbar .nav .active>a,.navbar .nav .active>a:hover{color:#ffffff;text-decoration:none;background-color:#222222;background-color:rgba(0, 0, 0, 0.5);}
@@ -505,7 +505,7 @@ button.btn.small,input[type="submit"].btn.small{*padding-top:3px;*padding-bottom
 
 .navbar .nav li ul.level-1.active {
 /*  display:none;*/
-    left: 29px;
+    left: -14px;
     list-style: none;
 
 }

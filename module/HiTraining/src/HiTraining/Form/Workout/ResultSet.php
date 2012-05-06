@@ -65,16 +65,17 @@ class ResultSet extends GridDbTableResultSet
                 'onclick'   => 'exercises(__ID__);return false;',
             )
         );
-        $this->addRowAction(
-            'add-exercise',
-            'submit',
-            array(
-                'label'     => 'add exercise',
-                'image'     => BASE_URL . '/img/grid/icons/delete.png',
-                'class'     => 'actionImage',
-                'onclick'   => 'addExercise(__ID__);return false;',
-            )
-        );
+//        $this->addRowAction(
+//            'add-exercise',
+//            'submit',
+//            array(
+//                'label'     => 'add exercise',
+//                'image'     => BASE_URL . '/img/grid/icons/delete.png',
+//                'class'     => 'actionImage',
+//                'onclick'   => 'addExercise(__ID__);return false;',
+//            )
+//        );
+
 
 
         /**
@@ -91,16 +92,27 @@ class ResultSet extends GridDbTableResultSet
             )
         );
 
-//        //
-//        $this->addRowsetAction(
-//            'save',
-//            'submit',
-//            array(
-//                'label'     => 'save selected',
-//                'class'     => 'actionImage',
-//                'image'     => BASE_URL . '/img/grid/icons/save.png',
-//            )
-//        );
+        $this->addResultSetAction(
+            'massRecount',
+            'submit',
+            array(
+                'label'     => 'mass recount',
+                'image'     => BASE_URL . '/img/grid/icons/delete.png',
+                'class'     => 'actionImage',
+                'onclick'   => 'recount(__ID__);return false;',
+            )
+        );
+
+        //
+        $this->addResultSetAction(
+            'massDelete',
+            'submit',
+            array(
+                'label'     => 'mass delete',
+                'class'     => 'actionImage',
+                'image'     => BASE_URL . '/img/grid/icons/save.png',
+            )
+        );
 
 
     }

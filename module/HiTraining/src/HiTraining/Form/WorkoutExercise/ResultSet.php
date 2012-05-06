@@ -20,6 +20,10 @@ class ResultSet extends GridDbTableResultSet
 //        );
 
         //
+        $this->setFieldType('hr_min', 'text');
+        $this->setFieldType('hr_max', 'text');
+        $this->setFieldType('hr_avg', 'text');
+        $this->setFieldType('fat_loss', 'text');
         $this->setFieldType('type_id', 'text');
         $this->setFieldType('exercise_calories_burned', 'text');
 
@@ -27,6 +31,7 @@ class ResultSet extends GridDbTableResultSet
         $this->removeFields(array(
             'workout_id',
             'exercise_elapsed_time',
+            'after_break_time',
             'speed',
             'angle',
             'level',
@@ -55,8 +60,17 @@ class ResultSet extends GridDbTableResultSet
             'hiit_time_high',
             'hiit_warmup_time',
             'hiit_interval_count',
+            'cooldown_speed_start',
+            'cooldown_speed_end',
+            'cooldown_speed_interval',
+            'cooldown_interval_time',
+            'cooldown_interval_count',
             'avg_rpm',
             'avg_speed',
+//            'hr_min',
+//            'hr_max',
+//            'hr_avg',
+//            'fat_loss',
         ));
 
         $this->setFieldOptions('exercise_calories_burned', array(

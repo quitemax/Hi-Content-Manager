@@ -220,6 +220,46 @@ class TableGateway extends ZendTableGateway
 
     }
 
+	/**
+     *
+     *
+     * @return
+     */
+    public function getColumn($columnName)
+    {
+        if (isset($this->_columns[$columnName])) {
+            return $this->_columns[$columnName];
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     *
+     * @param $name string
+     * @param $options array
+     *
+     * @return
+     */
+    public function setColumnOptions($columnName, $columnOptions) {
+        //
+        if (!is_array($columnOptions)) {
+            throw new \Exception ('The options param in should be an array!');
+        }
+
+        //
+        if (!empty($this->_columns[$columnName])) {
+            if (is_array($this->_columns[$columnName]['options'])) {
+                $this->_columns[$columnName]['options'] = array_merge($this->_columns[$columnName]['options'], $columnOptions);
+            } else {
+                $this->_columns[$columnName]['options'] = $columnOptions;
+            }
+        }
+
+        return $this;
+    }
+
     /**
      * Get all sql statement
      *
@@ -341,6 +381,17 @@ class TableGateway extends ZendTableGateway
         //
         $resultSet = clone $this->selectResultPrototype;
         $resultSet->setDataSource($result);
+
+//        \Zend\Debug::dump($resultSet);
+//        \Zend\Debug::dump($resultSet->toArray());
+//        foreach ($resultSet as $key => $row) {
+////            \Zend\Debug::dump($key);
+////            \Zend\Debug::dump($row);
+////            \Zend\Debug::dump($row->toArray());
+////            \Zend\Debug::dump($row->toArray());
+//
+//        }
+
         return $resultSet;
 
 //        \HiZend\Debug\Debug::dump($sqlSelect->__toString());

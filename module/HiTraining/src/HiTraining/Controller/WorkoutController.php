@@ -12,6 +12,7 @@ use Zend\Mvc\Controller\ActionController,
 class WorkoutController extends ActionController
 {
     protected $_workout;
+    protected $_exercise;
     protected $_view;
 
     public function setView($view)
@@ -19,9 +20,16 @@ class WorkoutController extends ActionController
         $this->_view = $view;
         return $this;
     }
+
     public function setWorkout($workout)
     {
         $this->_workout = $workout;
+        return $this;
+    }
+
+    public function setExercise($exercise)
+    {
+        $this->_exercise = $exercise;
         return $this;
     }
 
@@ -33,6 +41,19 @@ class WorkoutController extends ActionController
     public function indexAction()
     {
         return array();
+    }
+
+
+    /**
+     *  INDEX
+     *
+     * Enter description here ...
+     */
+    public function statsAction()
+    {
+        return array(
+            'workouts' => $this->_workout->getResultset(),
+        );
     }
 
 
@@ -84,6 +105,101 @@ class WorkoutController extends ActionController
                 )
             )
         );
+
+        /**
+         * POST
+         */
+        if ($this->getRequest()->isPost()) {
+
+            $formData = $this->getRequest()->post()->toArray();
+
+
+            if ($form->isValid($formData)) {
+//                \Zend\Debug::dump($formData);
+                if (    isset($formData['header']['formId'])
+                        && $formData['header']['formId'] == 'WorkoutGridForm') {
+
+                    if (isset($formData['WorkoutResultSet']['actions']['massRecount'])) {
+                        $allBox = $formData['WorkoutResultSet']['header']['all'];
+                        $rows = $formData['WorkoutResultSet']['rows'];
+
+                        foreach ($rows as $key => $row) {
+//                            \Zend\Debug::dump($row);
+//                            if (isset($row['actions']['recount'])) {
+                                if ($row['id'] || $allBox) {
+
+                                    $workout = $this->_workout->getRow(array('workout_id' => $key));
+
+                                    $exercises = $this->_exercise->getResultSet(array('workout_id' => $key));
+
+                                    $workout['fat_loss'] = 0;
+                                    $workout['hr_max'] = 0;
+                                    $workout['calories_burned'] = 0;
+                                    $workout['elapsed_time'] = 0;
+
+//                                    \Zend\Debug::dump($workout['elapsed_time']);
+
+                                    foreach ($exercises as $exercise) {
+                                        //
+                                        $workout['fat_loss'] += $exercise['fat_loss'];
+                                        //
+                                        if ($exercise['hr_max'] > $workout['hr_max']) {
+                                            $workout['hr_max'] = $exercise['hr_max'];
+                                        }
+
+                                        //
+                                        $workout['calories_burned'] += $exercise['exercise_calories_burned'];
+
+                                        //
+                                        $timeArray = explode(':', $exercise['exercise_elapsed_time']);
+                                        $workout['elapsed_time'] += ($timeArray[0] * 3600 + $timeArray[1] * 60 + $timeArray[2] * 1);
+
+//                                        \Zend\Debug::dump($workout['elapsed_time']);
+
+                                        $timeArray = explode(':', $exercise['after_break_time']);
+                                        $workout['elapsed_time'] += ($timeArray[0] * 3600 + $timeArray[1] * 60 + $timeArray[2] * 1);
+
+//                                        \Zend\Debug::dump($workout['elapsed_time']);
+                                    }
+
+//                                    \Zend\Debug::dump($workout['elapsed_time']);
+//                                    \Zend\Debug::dump(date('H:i:s', 0));
+
+                                    $h = (int)($workout['elapsed_time'] / 3600);
+                                    $m = (int)(($workout['elapsed_time'] % 3600)/60);
+                                    $s = $workout['elapsed_time'] - ($h * 3600 + $m * 60);
+                                    $workout['elapsed_time'] = $h . ':' . $m . ':' . $s;
+
+//                                    \Zend\Debug::dump($workout);
+
+
+                                    $workout->save();
+//                                }
+//
+                            }
+                        }
+
+                        return $this->redirect()->toRoute('hi-training/workout/list');
+                    }
+
+
+                    if (isset($formData['WorkoutResultSet']['actions']['massDelete'])) {
+                        $allBox = $formData['WorkoutResultSet']['header']['all'];
+                        $rows = $formData['WorkoutResultSet']['rows'];
+
+                        foreach ($rows as $key => $row) {
+//                            \Zend\Debug::dump($row);
+                            if ($row['id'] || $allBox) {
+                                $workout = $this->_workout->getRow(array('workout_id' => $key));
+                                $workout->delete();
+                            }
+                        }
+
+                        return $this->redirect()->toRoute('hi-training/workout/list');
+                    }
+                }
+            }
+        }
 
         return array(
             'form' => $form,
@@ -161,9 +277,9 @@ class WorkoutController extends ActionController
                             $newRow = $this->_workout->createRow()->populateOriginalData($formData['WorkoutRow']['row']);
                             $newRow->save();
 
-//                            if(isset($formData['WorkoutRow']['actions']['saveAdd'])) {
-//                                return $this->redirect()->toRoute('exercises-workout-exercise-add/wildcard', array('workout_id' => $newRow->workout_id));
-//                            }
+                            if(isset($formData['WorkoutRow']['actions']['saveAdd'])) {
+                                return $this->redirect()->toRoute('hi-training/workout-exercise/add/wildcard', array('workout_id' => $newRow->getId()));
+                            }
                             return $this->redirect()->toRoute('hi-training/workout/list');
                         }
 
@@ -194,6 +310,7 @@ class WorkoutController extends ActionController
         if ($id <= 0) {
             return $this->redirect()->toRoute('hi-training/workout/list');
         }
+
         /**
          * Grid FORM
          */
@@ -243,7 +360,6 @@ class WorkoutController extends ActionController
                 if (    isset($formData['header']['formId'])
                         && $formData['header']['formId'] == 'WorkoutGridForm') {
 
-
                     if (isset($formData['WorkoutRow']['actions']['save'])) {
 //
                         if (is_array($formData['WorkoutRow']['row'])){
@@ -259,9 +375,6 @@ class WorkoutController extends ActionController
                 }
             }
         }
-
-
-
 
         return array(
             'form' => $form,

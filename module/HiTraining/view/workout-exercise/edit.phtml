@@ -1,14 +1,15 @@
 <div id="breadcrumb">
     &raquo; <a href="<?php echo $this->url('home');?>">Home</a>
-    &raquo; <a href="<?php echo $this->url('hi-training');?>">Training</a>
-    &raquo; <a class="selected" href="<?php echo $this->url('hi-training/checkup/list');?>">Checkup list</a>
-    &raquo; <a class="selected" href="<?php //echo $this->url('hi-training/checkup/edit');?>">Edit Checkup</a>
+    &raquo; <a href="<?php echo $this->url('hi-training');?>">HiTraining</a>
+    &raquo; <a href="<?php echo $this->url('hi-training/workout/list');?>">Workout</a>
+    &raquo; <a href="<?php echo $this->url('hi-training/workout-exercise/list', array('workout_id' => $workout['workout_id']));?>">Workout (ID:<?php echo $workout['workout_id'];?>) exercise list</a>
+    &raquo; <a class="selected" href="">Edit workout exercise (ID:<?php echo '';?>)</a>
 
 </div>
 <div id="content">
 	<div class="page-title">
         <?php
-            $title = 'Edit Checkup (ID: ' . $id . ')';
+            $title = 'Edit workout (ID:' . $workout['workout_id'] . '('. $workout['date'] . ' ' . date('l', strtotime($workout['date'])) .') exercise (ID:' . $exercise['exercise_id'] . ')';
             $this->headTitle($title);
         ?>
         <h1><?php echo $this->escape($title); ?></h1>

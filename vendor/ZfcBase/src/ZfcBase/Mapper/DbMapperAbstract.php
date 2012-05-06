@@ -11,8 +11,8 @@ use Zend\Db\TableGateway\TableGatewayInterface,
 abstract class DbMapperAbstract extends EventProvider
 {
     /**
-     * tableGateway 
-     * 
+     * tableGateway
+     *
      * @var TableGatewayInterface
      */
     protected $tableGateway;
@@ -42,7 +42,7 @@ abstract class DbMapperAbstract extends EventProvider
     {
         return $this->tableGateway;
     }
- 
+
     /**
      * Set tableGateway.
      *
@@ -55,9 +55,9 @@ abstract class DbMapperAbstract extends EventProvider
     }
 
     /**
-     * toScalarValueArray 
-     * 
-     * @param array $values 
+     * toScalarValueArray
+     *
+     * @param array $values
      * @return array
      */
     protected function toScalarValueArray($values) {
@@ -66,16 +66,16 @@ abstract class DbMapperAbstract extends EventProvider
             if(is_callable(array($values, 'toScalarValueArray'))) {
                 return $values->toScalarValueArray();
             }
-            
+
             if(is_callable(array($values, 'toArray'))) {
                 $values = $values->toArray();
             }
         }
-        
+
         if(!is_array($values)) {
             throw new NotArrayException("Parameter is not an array");
         }
-        
+
         $ret = array();
         foreach($values as $key => $value) {
             if(is_scalar($value)) {
@@ -90,17 +90,17 @@ abstract class DbMapperAbstract extends EventProvider
                 $ret[$key] = null;
                 continue;
             }
-            
+
             throw new InvalidArgumentException("Can not convert '$key' key value to string");
         }
-        
+
         return $ret;
     }
 
     /**
-     * convertObjectToScalar 
-     * 
-     * @param mixed $obj 
+     * convertObjectToScalar
+     *
+     * @param mixed $obj
      * @access string
      * @return void
      */
@@ -112,7 +112,7 @@ abstract class DbMapperAbstract extends EventProvider
         if($obj instanceof \DateTime) {
             return $obj->format('Y-m-d\TH:i:sP');
         }
-        
+
         throw new InvalidArgumentException("Can not convert object '" . get_class($obj) . "' to string");
     }
 }

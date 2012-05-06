@@ -16,11 +16,13 @@ class UserMapper extends DbMapperAbstract implements UserMapperInterface
 
     public function persist(UserInterface $user)
     {
+        \Zend\Debug::dump($user->toArray(), 'persist');
         $data = new ArrayObject($this->toScalarValueArray($user)); // or perhaps pass it by reference?
         $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('data' => $data, 'user' => $user));
         if ($user->getUserId() > 0) {
             $this->getTableGateway()->update((array) $data, array($this->userIDField => $user->getUserId()));
         } else {
+
             $this->getTableGateway()->insert((array) $data);
             $userId = $this->getTableGateway()->getAdapter()->getDriver()->getConnection()->getLastGeneratedId();
             $user->setUserId($userId);
