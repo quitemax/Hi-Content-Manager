@@ -90,15 +90,20 @@ class ExerciseTypeController extends ActionController
 
 
         $typeTree->setSelectedId($id);
-//            $itemElementsTree->setPositionVisible(true);
+        $typeTree->setPositionVisible(true);
         $typeTree->setCookiePath(
             $this->url()->fromRoute('hi-training/exercise-type/stats')
-            . '/' . 'type_id' . '/'     //. '/' . self::URL_EDIT . self::PARAM_ITEM_ID . '/' . $id . '/'
+            . '/' . 'type_id' . '/'
         );
         $typeTree->setGlobalLink(
             $this->url()->fromRoute('hi-training/exercise-type/stats')
-            . '/' . 'type_id' . '/'    //. self::URL_EDIT . self::PARAM_ITEM_ID . '/' . $id . '/' . self::PARAM_ELEMENT_ID . '/'
+            . '/' . 'type_id' . '/'
         );
+
+//        if ($this->_type->hasBehaviour('nestedSet')) {
+//                $nestedSetBehaviour = $this->_type->getBehaviour('nestedSet');
+//                $typeTree->setData($nestedSetBehaviour->getTree());
+//        }
 
         $type = $this->_type->getRow(array('type_id' => $id));
 

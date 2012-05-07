@@ -365,8 +365,9 @@ class TableGateway extends ZendTableGateway
 //        \Zend\Debug::dump($order);
         $sqlSelect = $this->prepareResultSetSql($where, $order, $count, $offset, $cols);
 
-//        \Zend\Debug::dump($sqlSelect);
-//        \Zend\Debug::dump($sqlSelect->getSqlString());
+        \Zend\Debug::dump($sqlSelect);
+        \Zend\Debug::dump($sqlSelect->getSqlString());
+        echo $sqlSelect->getSqlString();
 
         //save sql
         $this->_lastSql = $sqlSelect;

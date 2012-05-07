@@ -137,7 +137,7 @@ class NestedSet extends Behaviour
      *
      * @return void
      */
-    public function getTree($where = null)
+    public function getTree($where = null, $order = null, $count= null, $offset = null, $cols = null)
     {
         //
         $returnTree = array();
@@ -157,8 +157,8 @@ class NestedSet extends Behaviour
             'parent'    =>  $this->_parentId,
             'level'     =>  $this->_level,
             'title'     =>  $this->_titleColumn,
-//            'position'  =>  $this->_order,
-            'left'      => $this->_left,
+            'position'  =>  $this->_order,
+            'left'      =>  $this->_left,
         );
 
 

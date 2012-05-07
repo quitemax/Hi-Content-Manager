@@ -11,7 +11,8 @@ namespace HiTraining\Model;
  *
  */
 use HiTraining\Model\Workout\DbTable,
-    Zend\Db\Sql\Select;
+    Zend\Db\Sql\Select,
+    Zend\Db\Sql\Expression;
 
 /**
  *
@@ -28,7 +29,7 @@ class Workout extends DbTable
         $sqlSubSelect = new Select();
         $sqlSubSelect->columns(
             array('COUNT(*)'),
-            true
+            false
         );
 
         $sqlSubSelect->from('workout_exercise', $this->schema);
@@ -38,8 +39,17 @@ class Workout extends DbTable
 //            'COUNT(*)'
 //        );
         $sqlSubSelect->where('workout_exercise.workout_id = ' . $this->_name . '.workout_id');
-//        \Zend\Debug::dump($sqlSubSelect->getSqlString());
-        return $sqlSubSelect->getSqlString();
+        \Zend\Debug::dump($sqlSubSelect, '$sqlSubSelect');
+        \Zend\Debug::dump($sqlSubSelect->getSqlString(), '$sqlSubSelect->getSqlString()');
+//        return '(' . $sqlSubSelect->getSqlString() . ')';
+
+
+        return new Expression(
+            '( ' . $sqlSubSelect->getSqlString() . ')',
+            array(),
+//            array(Expression::TYPE_IDENTIFIER, Expression::TYPE_VALUE)
+            array()
+        );
     }
 
 }

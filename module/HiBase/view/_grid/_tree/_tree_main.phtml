@@ -67,7 +67,7 @@
                     ? $element['id']
                     : $this->treeData['globalLink'])
 
-                ;?>"><ins>&nbsp;</ins><?php echo $element['title'];?><?php if ($this->treeData['visiblePosition']):?>(<?php echo $element['position'];?>)<?php endif;?></a>
+                ;?>"><?php echo $element['title'];?><?php if ($this->treeData['visiblePosition']):?> (<?php echo $element['position'];?>)<?php endif;?></a>
 
             <?php if ($elementCounter >= $elementCount):?>
                 <?php $levelDiffrence = $curentLevel - $startLevel;?>

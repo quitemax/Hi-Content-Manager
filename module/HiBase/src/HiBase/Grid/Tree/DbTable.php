@@ -62,22 +62,17 @@ class DbTable extends GridTree
      */
     public function build()
     {
-        //
-        if ($this->_model->hasBehaviour('nestedSet')) {
+        if (!$this->_treeElements) {
             //
-            $nestedSetBehaviour = $this->_model->getBehaviour('nestedSet');
-
-            if (!$this->_treeElements) {
+            if ($this->_model->hasBehaviour('nestedSet')) {
+                //
+                $nestedSetBehaviour = $this->_model->getBehaviour('nestedSet');
 
                 $this->_treeElements = $nestedSetBehaviour->getTree($where = null);
 
-//                \Zend\Debug::dump($this->_treeElements);
-//                \Zend\Debug::dump($nestedSetBehaviour);
+            } else {
+                throw new Exception('Model has no nested set behaviour.');
             }
-
-
-        } else {
-            throw new Exception('Model has no nested set behaviour.');
         }
 
         return parent::build();

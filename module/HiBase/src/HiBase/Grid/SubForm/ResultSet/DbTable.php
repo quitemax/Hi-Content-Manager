@@ -347,36 +347,28 @@ class DbTable extends GridResultSet
     {
         $fieldTmp = array();
 
-//        if ($this->_loadAll) {
+        if ($this->_loadAll) {
 //            $modelInfo = $this->_model->info();
 ////            \HiZend\Debug\Debug::dump($modelInfo);
 //            $fieldTmp = $modelInfo['cols'];
-//        } else {
-//            foreach ($this->_fields as $key => $field) {
+        } else {
+            foreach ($this->_fields as $key => $field) {
 //    //            \HiZend\Debug\Debug::dump($key);
 //    //            \HiZend\Debug\Debug::dump($field);
-//                if ($field['type'] == 'custom') {
-//                    continue;
-//                }
+                if ($field['type'] == 'custom') {
+                    continue;
+                }
 //
-//                if (isset($field['options']['sql'])) {
-//                    $fieldTmp[$field['name']] = $field['options']['sql'];
-//                } else {
-//                    $fieldTmp[] = $field['name'];
-//                }
-//            }
-//        }
-//        $fieldTmp = array(
-//            'name'     => $name,
-//            'type'     => $type,
-//            'options'  => $options,
-//        );
-//        if ($position===null) {
-//            $position = 10*(count($this->_fields)+1);
-//        }
-//        $this->_fields[$position] = $fieldTmp;
+                if (isset($field['options']['sql'])) {
+                    $fieldTmp[$field['name']] =  $field['options']['sql'];
+                } else {
+                    $fieldTmp[] = $field['name'];
+                }
+            }
+        }
 
-//        \HiZend\Debug\Debug::precho($fieldTmp);
+
+//        \Zend\Debug::precho($fieldTmp);
         return $fieldTmp;
     }
 

@@ -15,13 +15,15 @@ class ResultSet extends GridDbTableResultSet
         parent::init();
 
 
+//        \Zend\Debug::dump($this->_model->getWorkoutExercisesCountSql(), '', true);
+
         $this->addField(
             'exercises_count',
             'text',
             array(
                 'label'     => 'exercises_count',
                 'sortable'  => true,
-                'sql'    => '(' . $this->_model->getWorkoutExercisesCountSql() . ')',
+                'sql'    => $this->_model->getWorkoutExercisesCountSql(),
             )
         );
 

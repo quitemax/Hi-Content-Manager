@@ -251,21 +251,21 @@ class Tree
 //        }
 //        return $this;
 //    }
-//
-//    /**
-//     *
-//     *
-//     * @param $filter array|string
-//     *
-//     * @return $this
-//     */
-//    public function setData($data = null) {
-//        if (is_array($data) && count($data)) {
-//            $this->_treeElements = $data;
-//        }
-//        return $this;
-//    }
-//
+
+    /**
+     *
+     *
+     * @param $data array
+     *
+     * @return $this
+     */
+    public function setData($data = null) {
+        if (is_array($data) && count($data)) {
+            $this->_treeElements = $data;
+        }
+        return $this;
+    }
+
 //    /**
 //     * Fetches rendered Record List (implementation of abstract parent method)
 //     *
