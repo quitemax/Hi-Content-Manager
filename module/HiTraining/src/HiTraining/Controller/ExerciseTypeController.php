@@ -10,7 +10,8 @@ use Zend\Mvc\Controller\ActionController,
     HiTraining\Form\ExerciseType\Row as TypeRow,
     HiTraining\Form\ExerciseType\Tree as TypeTree,
     Zend\Dom\Query,
-    Zend\View\Model\JsonModel;
+    Zend\View\Model\JsonModel,
+    Zend\Db\Sql\Expression;
 
 
 class ExerciseTypeController extends ActionController
@@ -100,10 +101,22 @@ class ExerciseTypeController extends ActionController
             . '/' . 'type_id' . '/'
         );
 
-//        if ($this->_type->hasBehaviour('nestedSet')) {
-//                $nestedSetBehaviour = $this->_type->getBehaviour('nestedSet');
-//                $typeTree->setData($nestedSetBehaviour->getTree());
-//        }
+        if ($this->_type->hasBehaviour('nestedSet')) {
+
+//                $this->_type->getResultSet();
+//
+//                \Zend\Debug::dump($data);
+
+                $nestedSetBehaviour = $this->_type->getBehaviour('nestedSet');
+                $data = $nestedSetBehaviour->getTree(
+                    array(
+                        '( SELECT COUNT(*) FROM `workout_exercise` WHERE `workout_exercise`.`type_id` = `exercise_type`.`type_id` ) != 0 '
+                        . ' OR (`tree_right` > `tree_left` + 1)',
+                    )
+                );
+//                \Zend\Debug::dump($data);
+                $typeTree->setData($data->toArray());
+        }
 
         $type = $this->_type->getRow(array('type_id' => $id));
 
@@ -171,7 +184,7 @@ class ExerciseTypeController extends ActionController
 
 
         $typeTree->setSelectedId($id);
-//            $itemElementsTree->setPositionVisible(true);
+        $typeTree->setPositionVisible(true);
         $typeTree->setCookiePath(
             $this->url()->fromRoute('hi-training/exercise-type/edit-tree')
             . '/' . 'type_id' . '/'     //. '/' . self::URL_EDIT . self::PARAM_ITEM_ID . '/' . $id . '/'

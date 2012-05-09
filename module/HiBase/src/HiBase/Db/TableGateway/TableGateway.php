@@ -145,7 +145,6 @@ class TableGateway extends ZendTableGateway
      */
     public function createRow()
     {
-
         return clone $this->getSelectResultPrototype()->getRowObjectPrototype();
     }
 
@@ -269,24 +268,7 @@ class TableGateway extends ZendTableGateway
     {
 
 //        /*@var $sqlSelect Zend_Db_Select*/
-//        $sqlSelect = $this->_db->select();
-
         $sqlSelect = new Select();
-
-//        $fromCols = array();
-//        if ($cols !== null && is_array($cols) && count($cols)) {
-//            $fromCols = $cols;
-//        } else {
-//            $fromCols[] =  $this->_prfx . '.*';
-//        }
-//
-//        //from
-//        $sqlSelect->columns(
-//            array (
-//                $this->_prfx => $this->_name,
-//            ),
-//            $fromCols
-//        );
 
         $fromCols = array();
         if ($cols !== null && is_array($cols) && count($cols)) {
@@ -304,25 +286,18 @@ class TableGateway extends ZendTableGateway
         $sqlSelect->from($this->tableName, $this->schema);
 
 
+//        foreach ($this->_behaviourObjects as $behaviourObject) {
+//            $sqlSelect = $behaviourObject->applyBehaviourToSql(
+//                $sqlSelect,
+//                $where,
+//                $order,
+//                $count,
+//                $offset,
+//                $cols
+//            );
+//        }
 
 
-
-
-
-//
-//////        foreach ($this->_behaviourObjects as $behaviourObject) {
-//////            $sqlSelect = $behaviourObject->applyBehaviourToSql(
-//////                $sqlSelect,
-//////                $where,
-//////                $order,
-//////                $count,
-//////                $offset,
-//////                $cols
-//////            );
-//////        }
-////
-//
-//
 //        //where
 //        if ($where!==null) {
 //            if (is_array($where)) {
@@ -347,7 +322,7 @@ class TableGateway extends ZendTableGateway
         //order
         $sqlSelect->order($order);
 //        \Zend\Debug::dump($sqlSelect->getSqlString());
-//        echo $sqlSelect->getSqlString();
+//        echo $sqlSelect->getSqlString($this->adapter->getPlatform());
 
         return $sqlSelect;
     }
@@ -365,9 +340,9 @@ class TableGateway extends ZendTableGateway
 //        \Zend\Debug::dump($order);
         $sqlSelect = $this->prepareResultSetSql($where, $order, $count, $offset, $cols);
 
-        \Zend\Debug::dump($sqlSelect);
-        \Zend\Debug::dump($sqlSelect->getSqlString());
-        echo $sqlSelect->getSqlString();
+//        \Zend\Debug::dump($sqlSelect);
+//        \Zend\Debug::dump($sqlSelect->getSqlString($this->adapter->getPlatform()));
+//        echo $sqlSelect->getSqlString($this->adapter->getPlatform());
 
         //save sql
         $this->_lastSql = $sqlSelect;

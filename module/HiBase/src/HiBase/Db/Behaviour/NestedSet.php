@@ -145,14 +145,14 @@ class NestedSet extends Behaviour
         //
         $order = array('`left`');
 
-        //
-        $count = null;
+//        //
+//        $count = null;
+//
+//        //
+//        $offset = null;
 
         //
-        $offset = null;
-
-        //
-        $cols = array(
+        $treeCols = array(
             'id'        =>  $this->_basePrimaryKey,
             'parent'    =>  $this->_parentId,
             'level'     =>  $this->_level,
@@ -160,6 +160,12 @@ class NestedSet extends Behaviour
             'position'  =>  $this->_order,
             'left'      =>  $this->_left,
         );
+        if (is_array($cols) && count($cols)) {
+            $treeCols = array_merge($treeCols, $cols);
+        }
+
+//        \Zend\Debug::dump($cols);
+//        \Zend\Debug::dump($treeCols);
 
 
 //        //
@@ -179,7 +185,7 @@ class NestedSet extends Behaviour
             $order,
             $count,
             $offset,
-            $cols
+            $treeCols
         );
 //        \Zend\Debug::dump($returnTree->toArray());
 //

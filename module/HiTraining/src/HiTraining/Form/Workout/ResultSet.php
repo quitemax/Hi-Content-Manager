@@ -14,24 +14,21 @@ class ResultSet extends GridDbTableResultSet
         //
         parent::init();
 
-
-//        \Zend\Debug::dump($this->_model->getWorkoutExercisesCountSql(), '', true);
-
+        //
         $this->addField(
             'exercises_count',
             'text',
             array(
                 'label'     => 'exercises_count',
                 'sortable'  => true,
-                'sql'    => $this->_model->getWorkoutExercisesCountSql(),
+                'sql'    => $this->_model->getWorkoutExercisesCountSqlExpression(),
             )
         );
 
+        //
         $this->setAllFieldType(
             'text'
         );
-
-
 
 
         /**
@@ -67,18 +64,6 @@ class ResultSet extends GridDbTableResultSet
                 'onclick'   => 'exercises(__ID__);return false;',
             )
         );
-//        $this->addRowAction(
-//            'add-exercise',
-//            'submit',
-//            array(
-//                'label'     => 'add exercise',
-//                'image'     => BASE_URL . '/img/grid/icons/delete.png',
-//                'class'     => 'actionImage',
-//                'onclick'   => 'addExercise(__ID__);return false;',
-//            )
-//        );
-
-
 
         /**
          * LIST ACTIONS

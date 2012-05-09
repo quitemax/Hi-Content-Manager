@@ -21,7 +21,7 @@
             <tr>
                 <td>type_img</td>
                 <td>
-                <?php foreach ($type['type_img'] as $img) :?>
+                <?php if (is_array($type['type_img']) && count($type['type_img'])) foreach ($type['type_img'] as $img) :?>
                     <img alt="guide_img" src="<?php echo $img; ?>" />
                 <?php endforeach;?>
 

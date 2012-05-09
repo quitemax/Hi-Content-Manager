@@ -1,7 +1,7 @@
 <?php
 return array(
     'hi-base' => array(
-//        'user_model_class'          => 'ZfcUser\Model\User',
+        'showimage_cache_path'          => '/',
 //        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
 //        'enable_registration'       => true,
 //        'enable_username'           => false,
