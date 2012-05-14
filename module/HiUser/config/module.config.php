@@ -74,7 +74,7 @@ return array(
              * Routes
              */
 
-            'Zend\Mvc\Router\RouteStack' => array(
+            'Zend\Mvc\Router\RouteStackInterface' => array(
                 'parameters' => array(
                     'routes' => array(
                         'hi-user' => array(

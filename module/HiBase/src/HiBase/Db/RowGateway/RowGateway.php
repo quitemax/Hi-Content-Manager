@@ -10,7 +10,12 @@ namespace HiBase\Db\RowGateway;
  * @license
  */
 
-use Zend\Db\RowGateway\RowGateway as ZendRowGateway;
+use Zend\Db\RowGateway\RowGateway as ZendRowGateway,
+    Zend\Db\Adapter\Adapter,
+    Zend\Db\TableGateway\TableGateway,
+    Zend\Db\ResultSet\Row,
+    Zend\Db\ResultSet\RowObjectInterface,
+    Zend\Db\Sql;
 
 /**
  * Refited Zend_Db_Table class for use with HiCms
@@ -24,30 +29,46 @@ use Zend\Db\RowGateway\RowGateway as ZendRowGateway;
 class RowGateway extends ZendRowGateway
 {
 
-///**
-//     * Delete
-//     *
-//     * @return type
-//     */
-//    public function delete()
-//    {
-//        \Zend\Debug::dump('HiBase\Db\RowGateway\RowGateway::delete()', '', true);
-////        parent::delete();
-//        \Zend\Debug::dump('HiBase\Db\RowGateway\RowGateway::delete()/after', '', true);
-//        if (is_array($this->primaryKey)) {
-//            // @todo compound primary keys
-//        }
-//
-//        \Zend\Debug::dump($this->primaryKey, '$this->primaryKey', true);
-//        \Zend\Debug::dump($this->originalData[$this->primaryKey], '$this->originalData[$this->primaryKey]', true);
-//
-//        $where = array($this->primaryKey => $this->originalData[$this->primaryKey]);
-////        \Zend\Debug::dump($where, '$where', true);
-////        \Zend\Debug::dump($this->tableGateway, '$this->tableGateway', true);
-////        \Zend\Debug::dump(get_call_stack(), '', true);
-////        \Zend\Debug::dump(get_class_methods($this->tableGateway), '', true);
-//        return $this->tableGateway->delete($where);
-//    }
+    protected $_tableGateway = null;
+
+	/**
+     * Constructor
+     *
+     * @param string $tableGateway
+     * @param string|Sql\TableIdentifier $table
+     * @param Adapter $adapter
+     * @param Sql\Sql $sql
+     * @param TableGateway $tableGateway
+     */
+    public function __construct($primaryKey, $table, Adapter $adapter = null, Sql\Sql $sql = null, TableGateway $tableGateway = null)
+    {
+        parent::__construct($primaryKey, $table, $adapter, $sql);
+
+        $this->_tableGateway = $tableGateway;
+    }
+
+    /**
+     * Delete
+     *
+     * @return type
+     */
+    public function delete()
+    {
+
+        if (is_array($this->primaryKey)) {
+            // @todo compound primary keys
+        }
+
+        $where = array($this->primaryKey => $this->originalData[$this->primaryKey]);
+
+        $delete = $this->sql->delete();
+        $delete->where($where);
+
+        $statement = $this->sql->prepareStatementFromSqlObject($delete);
+
+        $result = $statement->execute();
+        return $result->getAffectedRows();
+    }
 
     public function getId()
     {
@@ -55,6 +76,17 @@ class RowGateway extends ZendRowGateway
             return $this->originalData[$this->primaryKey];
         } else {
             return false;
+        }
+    }
+
+    public function getOriginalData($index = null)
+    {
+        if ($index === null) {
+            return $this->originalData;
+        } else if (isset($this->originalData[$index])) {
+            return $this->originalData[$index];
+        } else {
+            return null;
         }
     }
 
@@ -81,6 +113,16 @@ class RowGateway extends ZendRowGateway
      */
     protected function _beforeSave()
     {
+
+        if ( $this->_tableGateway instanceof TableGateway) {
+//            \Zend\Debug::dump($this->_tableGateway->getBehaviours(), 'beforesave');
+            $behaviours = $this->_tableGateway->getBehaviours();
+            if (is_array($behaviours) && count($behaviours)) {
+                foreach ($behaviours as $behaviour) {
+                    $behaviour->beforeSave($this);
+                }
+            }
+        }
     }
 
     /**
@@ -90,6 +132,17 @@ class RowGateway extends ZendRowGateway
      */
     protected function _afterSave()
     {
+        if ( $this->_tableGateway instanceof TableGateway) {
+//            \Zend\Debug::dump($this->_tableGateway->getBehaviours(), 'beforesave');
+            $behaviours = $this->_tableGateway->getBehaviours();
+            if (is_array($behaviours) && count($behaviours)) {
+                foreach ($behaviours as $behaviour) {
+//                    \Zend\Debug::dump(get_class($this), '_afterSave');
+//                    \Zend\Debug::dump(get_class($behaviour), '_afterSave');
+                    $behaviour->afterSave($this);
+                }
+            }
+        }
     }
 
     /**
@@ -99,6 +152,7 @@ class RowGateway extends ZendRowGateway
      */
     protected function _afterLoad()
     {
+
     }
 
     /**
@@ -115,11 +169,11 @@ class RowGateway extends ZendRowGateway
      *
      * @return
      */
-    public function exchangeArray($data)
+    public function populate(array $rowData, $isOriginal = null)
     {
         $this->_beforeLoad();
 
-        $return = parent::exchangeArray($data);
+        $return = parent::populate($rowData, $isOriginal);
 
         $this->_afterLoad();
 

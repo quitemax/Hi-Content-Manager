@@ -69,6 +69,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '1',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '1',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '1',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
         $this->addFieldOptions('after_break_time', array(
             'form_0'                                            => '1',
@@ -78,6 +79,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '1',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '1',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '1',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
         $this->addFieldOptions('speed', array(
             'form_0'                                            => '1',
@@ -87,6 +89,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
         $this->addFieldOptions('angle', array(
             'form_0'                                            => '1',
@@ -96,6 +99,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
         $this->addFieldOptions('distance', array(
             'form_0'                                            => '1',
@@ -105,6 +109,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '1',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '1',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
         $this->addFieldOptions('exercise_calories_burned', array(
             'form_0'                                            => '1',
@@ -114,6 +119,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '1',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '1',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '1',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
         $this->addFieldOptions('level', array(
             'form_0'                                            => '1',
@@ -123,6 +129,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '1',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '1',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
         $this->addFieldOptions('avg_rpm', array(
             'form_0'                                            => '1',
@@ -132,6 +139,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '1',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
         $this->addFieldOptions('avg_speed', array(
             'form_0'                                            => '1',
@@ -141,6 +149,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
         $this->addFieldOptions('hr_min', array(
             'form_0'                                            => '1',
@@ -150,6 +159,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '1',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '1',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '1',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
         $this->addFieldOptions('hr_max', array(
             'form_0'                                            => '1',
@@ -159,6 +169,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '1',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '1',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '1',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
         $this->addFieldOptions('hr_avg', array(
             'form_0'                                            => '1',
@@ -168,6 +179,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '1',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '1',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '1',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
         $this->addFieldOptions('fat_loss', array(
             'form_0'                                            => '1',
@@ -177,6 +189,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '1',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '1',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '1',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
 
 
@@ -189,6 +202,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
         $this->addFieldOptions('lifting_series_1_break', array(
             'form_0'                                            => '1',
@@ -198,6 +212,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
         $this->addFieldOptions('lifting_series_1_weight', array(
             'form_0'                                            => '1',
@@ -207,6 +222,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
 
 
@@ -218,6 +234,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
         $this->addFieldOptions('lifting_series_2_break', array(
             'form_0'                                            => '1',
@@ -227,6 +244,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
         $this->addFieldOptions('lifting_series_2_weight', array(
             'form_0'                                            => '1',
@@ -236,6 +254,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
 
 
@@ -247,6 +266,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
         $this->addFieldOptions('lifting_series_3_break', array(
             'form_0'                                            => '1',
@@ -256,6 +276,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
         $this->addFieldOptions('lifting_series_3_weight', array(
             'form_0'                                            => '1',
@@ -265,6 +286,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
 
 
@@ -276,6 +298,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
         $this->addFieldOptions('lifting_series_4_break', array(
             'form_0'                                            => '1',
@@ -285,6 +308,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
         $this->addFieldOptions('lifting_series_4_weight', array(
             'form_0'                                            => '1',
@@ -294,6 +318,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
 
 
@@ -305,6 +330,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
         $this->addFieldOptions('lifting_series_5_break', array(
             'form_0'                                            => '1',
@@ -314,6 +340,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
         $this->addFieldOptions('lifting_series_5_weight', array(
             'form_0'                                            => '1',
@@ -323,6 +350,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
 
 
@@ -334,6 +362,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '1',
         ));
         $this->addFieldOptions('lifting_series_6_break', array(
             'form_0'                                            => '1',
@@ -343,6 +372,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
         $this->addFieldOptions('lifting_series_6_weight', array(
             'form_0'                                            => '1',
@@ -352,6 +382,7 @@ class Row extends GridDbTableRow
             'form_' .  ExerciseType::FORM_TYPE_ORBITREK         => '0',
             'form_' .  ExerciseType::FORM_TYPE_STRECHING        => '0',
             'form_' .  ExerciseType::FORM_TYPE_BIKE             => '0',
+            'form_' .  ExerciseType::FORM_TYPE_LAFAY_WARMUP     => '0',
         ));
 
 

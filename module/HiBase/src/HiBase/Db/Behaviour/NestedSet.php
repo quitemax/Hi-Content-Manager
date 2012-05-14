@@ -143,7 +143,7 @@ class NestedSet extends Behaviour
         $returnTree = array();
 
         //
-        $order = array('`left`');
+        $order = array('left asc');
 
 //        //
 //        $count = null;
@@ -229,7 +229,7 @@ class NestedSet extends Behaviour
             null,
             array(
 //                'root_id',
-                '`left`',
+                'left',
 //                'position',
 //                'id'
             ),
@@ -265,7 +265,7 @@ class NestedSet extends Behaviour
             null,
             array(
 //                'root_id',
-                '`left`',
+                'left',
 //                'position',
 //                'id'
             ),
@@ -348,8 +348,10 @@ class NestedSet extends Behaviour
 //                'id'
 //            ),
             array(
-//                'root_id',
-                '`parent_id` asc, `position` asc, `id` asc',
+                'parent_id asc',
+                'position asc',
+                'id asc',
+//                'parent_id asc, position asc, id asc',
 //                'position',
 //                'id'
             ),

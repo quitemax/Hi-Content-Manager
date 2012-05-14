@@ -76,7 +76,7 @@ class DbTable extends TableGateway
         $this->setSelectResultPrototype(
             new ResultSet(
                 new Row(
-                    $this, $this->getPrimaryKey()
+                    $this->getPrimaryKey(), $this->getName(), $this->adapter
                 )
             )
         );

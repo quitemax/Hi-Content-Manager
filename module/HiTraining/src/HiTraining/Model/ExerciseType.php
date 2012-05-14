@@ -26,6 +26,7 @@ class ExerciseType extends DbTable
     const FORM_TYPE_ORBITREK = 4;
     const FORM_TYPE_STRECHING = 5;
     const FORM_TYPE_BIKE = 6;
+    const FORM_TYPE_LAFAY_WARMUP = 7;
 
     const MECHANICS_TYPE_ISOLATION = 1;
     const MECHANICS_TYPE_COMPOUND = 2;
@@ -58,6 +59,7 @@ class ExerciseType extends DbTable
     protected function setBehaviours()
     {
         $this->setBehaviour(
+            'nestedSet',
             'nestedSet',
             array(
                 'left' => 'tree_left',
@@ -110,6 +112,7 @@ class ExerciseType extends DbTable
                     self::FORM_TYPE_ORBITREK        => 'orbitrek',
                     self::FORM_TYPE_STRECHING       => 'streching',
                     self::FORM_TYPE_BIKE            => 'bike',
+                    self::FORM_TYPE_LAFAY_WARMUP    => 'LAFAY warmup',
                 ),
             )
         );

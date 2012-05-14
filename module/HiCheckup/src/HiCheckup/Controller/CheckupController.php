@@ -115,7 +115,7 @@ class CheckupController extends ActionController
 
         $checkups = array();
         if (count($where)) {
-            $checkups = $this->_checkup->getResultSet('checkup_id in (' . implode(',', $where) . ')', array('`date` asc'));
+            $checkups = $this->_checkup->getResultSet('checkup_id in (' . implode(',', $where) . ')', array('date asc'));
         }
 
 //        \Zend\Debug::dump($where);
@@ -315,6 +315,9 @@ class CheckupController extends ActionController
 
             $formData = $this->getRequest()->post()->toArray();
 
+//            \Zend\Debug::dump($formData);
+
+
 
 
             if ($form->isValid($formData)) {
@@ -326,13 +329,14 @@ class CheckupController extends ActionController
                         if (is_array($formData['CheckupRowSubForm']['row'])){
 //                            \Zend\Debug::dump($formData);
 
-                            $newRow = $this->_checkup->createRow()->populateOriginalData($formData['CheckupRowSubForm']['row']);
+                            $newRow = $this->_checkup->createRow()->populate($formData['CheckupRowSubForm']['row']);
                             $newRow->save();
+//                            \Zend\Debug::dump($newRow);
 
                             if ($newRow->getId()) {
                                 if (is_array($formData['CheckupRowSubForm']['profile_ids'])) {
                                     foreach ($formData['CheckupRowSubForm']['profile_ids'] as $profileId) {
-                                        $newProfileRow = $this->_checkupToProfile->createRow()->populateOriginalData(
+                                        $newProfileRow = $this->_checkupToProfile->createRow()->populate(
                                             array(
                                                 'checkup_id' => $newRow->getId(),
                                                 'profile_id' => $profileId,
@@ -413,6 +417,7 @@ class CheckupController extends ActionController
         if ($this->getRequest()->isPost()) {
 
             $formData = $this->getRequest()->post()->toArray();
+//            \Zend\Debug::dump($formData);
 
             if ($form->isValid($formData)) {
                 if (    isset($formData['header']['formId'])
@@ -424,11 +429,25 @@ class CheckupController extends ActionController
                         if (is_array($formData['CheckupRowSubForm']['row'])){
 
                             if ($updateRow = $this->_checkup->getRow(array('checkup_id' => $id))) {
-                                $updateRow->populateCurrentData($formData['CheckupRowSubForm']['row']);
+                                $updateRow->populate($formData['CheckupRowSubForm']['row']);
                                 $updateRow->save();
                             }
 
                             return $this->redirect()->toRoute('hi-checkup/checkup/list');
+                        }
+                    }
+
+                    if (isset($formData['CheckupRowSubForm']['actions']['saveEdit'])) {
+
+                        if (is_array($formData['CheckupRowSubForm']['row'])){
+
+                            if ($updateRow = $this->_checkup->getRow(array('checkup_id' => $id))) {
+                                $updateRow->populate($formData['CheckupRowSubForm']['row']);
+                                $updateRow->save();
+                            }
+
+
+                            return $this->redirect()->toRoute('hi-checkup/checkup/edit/wildcard', array('checkup_id' => $updateRow->getId()));
                         }
                     }
                 }

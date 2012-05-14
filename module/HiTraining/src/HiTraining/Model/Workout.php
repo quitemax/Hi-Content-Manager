@@ -39,7 +39,7 @@ class Workout extends DbTable
         );
 
         //
-        $sqlSubSelect->from('workout_exercise', $this->schema);
+        $sqlSubSelect->from('workout_exercise');
 
         //
         $sqlSubSelect->where('`workout_exercise`.`workout_id` = `' . $this->_name . '`.`workout_id`');

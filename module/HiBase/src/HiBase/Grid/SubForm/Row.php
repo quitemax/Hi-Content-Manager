@@ -573,6 +573,15 @@ class Row extends GridSubForm
                         )
                     );
                     break;
+                case 'image':
+                    $rowSubform->addElement(
+                        $this->_buildFieldImage(
+                            $field['name'],
+                            $value,
+                            $field['options']
+                        )
+                    );
+                    break;
                 case 'multilangText':
 //                    $rowSubform->addElement(
 //                        $this->_buildFieldText(
@@ -981,6 +990,75 @@ class Row extends GridSubForm
 //        \HiZend\Debug\Debug::precho($options);
 
         $tmpElement = new Element\Select(
+            $name,
+            $options
+        );
+//\HiZend\Debug\Debug::precho($tmpElement);
+
+
+//        $even = 0;
+//
+//        if ($options) {
+//            foreach ($options as $optionName => $option) {
+//                switch ($optionName) {
+//                    case 'label':
+//                        $tmpElement->setLabel($option);
+//                        break;
+//                    case 'even':
+//                        $even = $option;
+//                        break;
+//                    case 'values':
+//                        $tmpElement->setMultiOptions($option);
+//                        break;
+//                    case 'value':
+//                        $value = $option;
+//                        break;
+////                    case 'alphanumericFilter':
+////                        $tmpElement->addFilter(
+////                            new Zend_Filter_Alnum()
+////                        );
+////                        break;
+////                    case 'size':
+////                        $tmpElement->setAttrib('size', $option);
+////                        break;
+////                    case 'length':
+////                        $tmpElement->addValidators(
+////                            array(
+////                                array(
+////                                    'stringLength',
+////                                    false,
+////                                    array(1, $option),
+////                                ),
+////                            )
+////                        );
+////                        $tmpElement->setAttrib('maxlength', $option);
+////                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        }
+
+        $tmpElement->setValue($value);
+
+
+        return $tmpElement;
+    }
+
+
+    /**
+     *
+     *
+     */
+    protected function _buildFieldImage ($name, $value, $options)
+    {
+
+        $options['viewScript'] = $this->_partialsDir . '/_field_image.phtml';
+        $options['value'] = $value;
+
+//        \HiBase\Debug::precho($options);
+
+        $tmpElement = new Element\Image(
             $name,
             $options
         );

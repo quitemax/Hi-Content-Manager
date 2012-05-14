@@ -124,24 +124,24 @@ class PhpThumbFactory
 		if ($pt->isValidImplementation(self::$defaultImplemenation))
 		{
 			$imp = $implementationMap[self::$defaultImplemenation];
-			\Zend\Debug::dump($imp);
-//			$toReturn = new $imp($filename, $options, $isDataStream);
+//			\Zend\Debug::dump($imp);
+			$toReturn = new \GdThumb($filename, $options, $isDataStream);
 		}
-//		// load the gd implementation if default failed
-//		else if ($pt->isValidImplementation('gd'))
-//		{
-//			$imp = $implementationMap['gd'];
-//			$implementation = 'gd';
-//			$toReturn = new $imp($filename, $options, $isDataStream);
-//		}
-//		// throw an exception if we can't load
-//		else
-//		{
-//			throw new Exception('You must have either the GD or iMagick extension loaded to use this library');
-//		}
-//
-//		$registry = $pt->getPluginRegistry($implementation);
-//		$toReturn->importPlugins($registry);
-//		return $toReturn;
+		// load the gd implementation if default failed
+		else if ($pt->isValidImplementation('gd'))
+		{
+			$imp = $implementationMap['gd'];
+			$implementation = 'gd';
+			$toReturn = new $imp($filename, $options, $isDataStream);
+		}
+		// throw an exception if we can't load
+		else
+		{
+			throw new Exception('You must have either the GD or iMagick extension loaded to use this library');
+		}
+
+		$registry = $pt->getPluginRegistry($implementation);
+		$toReturn->importPlugins($registry);
+		return $toReturn;
 	}
 }

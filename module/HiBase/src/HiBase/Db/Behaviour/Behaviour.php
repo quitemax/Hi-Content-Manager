@@ -73,6 +73,28 @@ class Behaviour
     /**
      *
      *
+     * @return array
+     */
+    public function beforeSave($row = null)
+    {
+
+        return $row;
+    }
+    /**
+     *
+     *
+     * @return array
+     */
+    public function afterSave($row = null)
+    {
+//        \Zend\Debug::dump(get_class($row) , 'asdf'. 'Behaviour');
+//        \Zend\Debug::dump(get_class($this) , 'asdf'. 'Behaviour');
+        return $row;
+    }
+
+    /**
+     *
+     *
      * @return void
      */
 //    public function applyBehaviourToSql(

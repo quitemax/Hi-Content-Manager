@@ -1,6 +1,6 @@
 <?php
 
-namespace HiZend\Debug;
+namespace HiBase;
 
 
 class Debug

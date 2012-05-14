@@ -439,15 +439,26 @@ table.listTitle {
 
 /**
  * list info
- *//*
+ */
 .listContent  tr.listInfo th .elementsCount{
-    font-size: 11px;
+    font-size: 13px;
     font-weight: normal;
 }
 
-.listContent tr.listInfo th .perPage{
-    font-size: 11px;
+.listContent tr.listInfo th td span{
+    font-size: 13px;
     font-weight: normal;
+}
+.listContent tr.listInfo th td a{
+    font-size: 13px;
+    font-weight: normal;
+}
+.listContent tr.listInfo th .perPage{
+    font-size: 13px;
+    font-weight: normal;
+}
+.listContent tr.listInfo th .perPage select{
+    width: 100px;
 }
 .listContent tr.listInfo td.main{
     background-color: #e8e8e8;
@@ -455,7 +466,7 @@ table.listTitle {
 }
 
 .listContent tr.listInfo td a{
-    color:#000000;
+    /*color:#000000;*/
     margin:0px 1px 0px 1px;
 }
 
@@ -484,7 +495,7 @@ table.listTitle {
 }
 
 .listContent tr.listHeader th.sort{
-    background-color: #a6a6a6;
+    background-color: #DCECF2;
 /*    color:#ffffff;*/
 /*    border-top: 1px solid #f0f0f0;*/
 /*    border-right: 1px solid #f0f0f0;*/
@@ -543,14 +554,14 @@ table.listTitle {
 }
 
 .listContent tr.listRow td.rowId.sort{
-/*    background-color: #c8c8c8;*/
+    background-color: #EAF1F4;
 /*    border-top: 1px solid #f0f0f0;*/
 /*    border-right: 1px solid #f0f0f0;*/
     
 }
 
 .listContent tr.listRow.even td.rowId.sort{
-    background-color: #EFF5F7;
+    background-color: #DCECF2;
 
 }
 
@@ -569,14 +580,14 @@ table.listTitle {
 
 .listContent tr.listRow td.text.sort{
 	padding-left:4px;
-/*    background-color: #c8c8c8;*/
+    background-color: #EAF1F4;
 /*    border-top: 1px solid #f0f0f0;*/
 /*    border-right: 1px solid #f0f0f0;*/
 }
 
 .listContent tr.listRow.even td.text.sort{
 	padding-left:4px;
-    background-color: #EFF5F7;
+    background-color: #DCECF2;
 
 }
 
@@ -611,12 +622,12 @@ table.listTitle {
 
 .listContent tr.listPagination td a{
 /*    color:#000000;*/
-/*    margin:0px 1px 0px 1px;*/
+    margin:0px 1px 0px 1px;
 }
 
 .listContent tr.listPagination td .current{
-/*    font-weight: bold;*/
-/*    font-size: 13px;*/
+    font-weight: bold;
+    font-size: 13px;
 }
 
 .listContent tr.listActions{

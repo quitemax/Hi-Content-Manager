@@ -6,7 +6,7 @@
         align="center">
         <table width="100%" cellspacing="0" cellpadding="0">
             <tr>
-                <td width="15%" class="elementsCount" align="left">
+                <td width="25%" class="elementsCount" align="left">
                     <?php echo 'elements';?>:
                         <?php if ($this->perPage && $this->elementsAllCount && $this->elementsCount):?>
                             <?php echo $this->elementsFrom;?> - <?php echo $this->elementsTo;?>
@@ -65,7 +65,7 @@
 
                     <?php endif;?>
                 </td>
-                <td width="15%" class="perPage" align="right">
+                <td width="25%" class="perPage" align="right">
                     <?php if ($this->availablePerPage):?>
                         <?php echo 'perPage';?>
                         <?php echo $this->formSelect(

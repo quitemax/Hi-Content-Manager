@@ -180,6 +180,26 @@ class DbTable extends GridResultSet
 	                    );
                         break;
                     case 'text':
+//                        \Zend\Debug::dump($fieldMetadata);
+//                        \Zend\Debug::dump($fieldMetadata['options']['type']);
+//                        \Zend\Debug::dump($fieldMetadata['options']['type'] == 'image');
+                        if ($fieldMetadata['options']['type'] == 'image') {
+
+//                            \Zend\Debug::dump($name);
+//                        \Zend\Debug::dump($fieldMetadata['options']['type']);
+//                        \Zend\Debug::dump($fieldMetadata['options']['type'] == 'image');
+                            $this->addField(
+                                $name,
+                                'image',
+                                array(
+                                    'label'         => $name,
+                                    'cache'        => $fieldMetadata['options']['cache'],
+                                )
+                            );
+//                            \Zend\Debug::dump($this->_fields);
+                            break;
+                        }
+
 	                    $this->addField(
 	                        $name,
 	                        'text',
@@ -381,33 +401,33 @@ class DbTable extends GridResultSet
      */
     public function getDbOrder()
     {
-//        if (!isset($this->_dbOrder)) {
-//            if ($this->_rowsetSession->sortField === null) {
-//                if ($this->_dbOrder !== null) {
+        if (!isset($this->_dbOrder)) {
+            if ($this->_session->sortField === null) {
+                if ($this->_dbOrder !== null) {
                 return $this->_dbOrder;
-//                } else {
-//                    return null;
-//                }
-//            } else {
-//                return  $this->_rowsetSession->sortField
-//                        . ' '
-//                        . $this->_rowsetSession->sortFieldDirection;
-//            }
-////        } else {
-////            if ($this->_rowsetSession->sortField === null) {
-////                return $this->_dbOrder;
-////            } else {
-////                $order = array(
-////                    $this->_rowsetSession->sortField
-////                    . ' '
-////                    . $this->_rowsetSession->sortFieldDirection
-////                );
-////                $order += $this->_dbOrder;
-////                return  $this->_rowsetSession->sortField
-////                        . ' '
-////                        . $this->_rowsetSession->sortFieldDirection;
-////            }
-////        }
+                } else {
+                    return null;
+                }
+            } else {
+                return  $this->_session->sortField
+                        . ' '
+                        . $this->_session->sortFieldDirection;
+            }
+        } else {
+            if ($this->_session->sortField === null) {
+                return $this->_dbOrder;
+            } else {
+                $order = array(
+                    $this->_session->sortField
+                    . ' '
+                    . $this->_session->sortFieldDirection
+                );
+                $order += $this->_dbOrder;
+                return  $this->_session->sortField
+                        . ' '
+                        . $this->_session->sortFieldDirection;
+            }
+        }
     }
 
     /**
@@ -418,34 +438,9 @@ class DbTable extends GridResultSet
      */
     public function setDbOrder($dbOrder)
     {
-//        if (!isset($this->_dbOrder)) {
-//            if ($this->_rowsetSession->sortField === null) {
-//                if ($this->_dbOrder !== null) {
         $this->_dbOrder = $dbOrder;
         return $this;
-//                } else {
-//                    return null;
-//                }
-//            } else {
-//                return  $this->_rowsetSession->sortField
-//                        . ' '
-//                        . $this->_rowsetSession->sortFieldDirection;
-//            }
-////        } else {
-////            if ($this->_rowsetSession->sortField === null) {
-////                return $this->_dbOrder;
-////            } else {
-////                $order = array(
-////                    $this->_rowsetSession->sortField
-////                    . ' '
-////                    . $this->_rowsetSession->sortFieldDirection
-////                );
-////                $order += $this->_dbOrder;
-////                return  $this->_rowsetSession->sortField
-////                        . ' '
-////                        . $this->_rowsetSession->sortFieldDirection;
-////            }
-////        }
+
     }
 
     /**
@@ -477,7 +472,7 @@ class DbTable extends GridResultSet
      */
     public function getDbLimit()
     {
-//        return $this->_rowsetSession->perPage;
+        return $this->_session->perPage;
     }
 
     /**
@@ -488,11 +483,11 @@ class DbTable extends GridResultSet
      */
     public function getDbOffset()
     {
-//        if ($this->_rowsetSession->page>1) {
-//            return ($this->_rowsetSession->page-1)*$this->_rowsetSession->perPage;
-//        } else {
+        if ($this->_session->page > 1) {
+            return ($this->_session->page - 1) * $this->_session->perPage;
+        } else {
             return 0;
-//        }
+        }
 
     }
 
@@ -508,7 +503,8 @@ class DbTable extends GridResultSet
 ////            //
 ////            $this->_model->getBehaviour('i18n')->setLang($this->_rowsetSession->lang);
 ////        }
-////\HiZend\Debug\Debug::dump($this->getDbOrder());
+//\HiBase\Debug::dump($this->getDbLimit());
+//\HiBase\Debug::dump($this->getDbOffset());
         //
         $resultSet = $this-> _model -> getResultSet(
             $this->getDbWhere(),
@@ -532,8 +528,10 @@ class DbTable extends GridResultSet
 
 
         //
-//        $resultSetCount = $this->_model -> getCountLastSql();
-        $resultSetCount = count($resultSet);
+        $resultSetCount = $this->_model -> getCountLastSql();
+//        $resultSetCount = count($resultSet);
+
+//        \HiBase\Debug::dump($resultSetCount);
 
 ////        if ($this->_model->hasBehaviour('i18n')) {
 ////

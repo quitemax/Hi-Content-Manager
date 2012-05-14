@@ -7,7 +7,7 @@
  * @copyright  Copyright (c) 2009 Piotr Maxymilian Socha
  * @license
  */
-namespace Hi\Paginator;
+namespace HiBase\Paginator;
 
 //use Zend\Db\Table\AbstractRow as ZendAbstractRow;
 /**

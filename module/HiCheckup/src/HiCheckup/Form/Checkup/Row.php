@@ -39,6 +39,15 @@ class Row extends GridDbTableRow
 //                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
             )
         );
+        $this->addAction(
+            'saveEdit',
+            'submit',
+            array(
+                'label'     => 'save and continue edit',
+                'class'     => 'actionImage',
+//                'image'     => $this->_skinUrl . '/img/icons/record/save.png',
+            )
+        );
 
 
 

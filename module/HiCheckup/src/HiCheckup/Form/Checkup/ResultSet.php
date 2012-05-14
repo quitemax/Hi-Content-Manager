@@ -17,6 +17,14 @@ class ResultSet extends GridDbTableResultSet
         $this->setAllFieldType(
             'text'
         );
+        $this->setFieldType(
+            'img_front',
+            'image'
+        );
+        $this->setFieldType(
+            'img_side',
+            'image'
+        );
 
         $this->removeFields(
             array(

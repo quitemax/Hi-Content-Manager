@@ -7,9 +7,9 @@
  * @copyright  Copyright (c) 2010 Piotr Maxymilian Socha
  * @license
  */
-namespace Hi\Grid\Element;
+namespace HiBase\Grid\Element;
 
-use Zend\Form\Element\Image as ZendImage;
+use Zend\Form\Element\File as ZendFile;
 
 /**
  * Hi_Record_Form
@@ -20,7 +20,7 @@ use Zend\Form\Element\Image as ZendImage;
  * @license
  * @version    2.0
  */
-class Image extends ZendImage
+class Image extends ZendFile
 {
     /**
      * Should we disable loading the default decorators?
@@ -33,6 +33,11 @@ class Image extends ZendImage
      * @var bool
      */
     protected $_viewScriptPath = '';
+    protected $_sort = '';
+    protected $_even = '';
+    protected $_values = '';
+    protected $_value = '';
+    protected $_cache = '';
 
     /**
      * Set form state from options array
@@ -43,12 +48,53 @@ class Image extends ZendImage
     public function setOptions(array $options)
     {
         //
-//        if (isset($options['viewScript'])) {
-//            $this->_viewScriptPath = $options['viewScript'];
-//            unset($options['viewScript']);
-//        } else {
-//            throw new \Exception("You must provide a viewScript path here.");
-//        }
+        if (isset($options['sort'])) {
+            $this->_sort = $options['sort'];
+            unset($options['sort']);
+        } else {
+            $this->_sort = null;;
+        }
+
+        //
+        if (isset($options['cache'])) {
+            $this->_cache = $options['cache'];
+            unset($options['cache']);
+        } else {
+            $this->_cache = null;;
+        }
+
+        //
+        if (isset($options['values']) && is_array($options['values'])) {
+            $this->_values = $options['values'];
+            unset($options['values']);
+        } else {
+            $this->_values = null;;
+        }
+
+        //
+        if (isset($options['value'])) {
+            $this->_value = $options['value'];
+            unset($options['value']);
+        } else {
+            $this->_value = null;;
+        }
+
+        //
+        if (isset($options['viewScript'])) {
+            $this->_viewScriptPath = $options['viewScript'];
+            unset($options['viewScript']);
+        } else {
+            throw new \Exception("You must provide a viewScript path here.");
+        }
+
+        if (isset($options['even'])) {
+            $this->_even = $options['even'];
+            unset($options['even']);
+        } else {
+            throw new \Exception("You must provide a even path here.");
+        }
+
+//        \Zend\Debug::dump($this);
 
         return parent::setOptions($options);
     }
@@ -62,7 +108,19 @@ class Image extends ZendImage
     {
         $this->setDecorators(
             array(
-                array('ViewHelper')
+                array('File'),
+                array(
+                    'ViewScript',
+                    array(
+                        'viewScript'    => $this->_viewScriptPath,
+                        'placement'     => false,
+                        'sort'          => $this->_sort,
+                        'even'          => $this->_even,
+                        'values'          => $this->_values,
+                        'value'          => $this->_value,
+                        'cache'          => $this->_cache,
+                    ),
+                ),
             )
         );
     }

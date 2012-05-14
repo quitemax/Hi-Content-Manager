@@ -233,7 +233,7 @@ class CheckupProfileController extends ActionController
 
                         if (is_array($formData['CheckupProfileRowSubForm']['row'])){
 
-                            $newRow = $this->_profile->createRow()->populateOriginalData($formData['CheckupProfileRowSubForm']['row']);
+                            $newRow = $this->_profile->createRow()->populate($formData['CheckupProfileRowSubForm']['row']);
                             $newRow->save();
 
                             if (isset($formData['CheckupProfileRowSubForm']['actions']['save'])) {
@@ -402,7 +402,7 @@ class CheckupProfileController extends ActionController
                         if (is_array($formData['CheckupProfileRowSubForm']['row'])){
 
                             if ($updateRow = $this->_profile->getRow(array('profile_id' => $id))) {
-                                $updateRow->populateCurrentData($formData['CheckupProfileRowSubForm']['row']);
+                                $updateRow->populate($formData['CheckupProfileRowSubForm']['row']);
                                 $updateRow->save();
                             }
 
@@ -418,7 +418,7 @@ class CheckupProfileController extends ActionController
 
                         if (is_array($formData['CheckupToProfileRowSubForm']['row'])){
 
-                            $newRow = $this->_checkupToProfile->createRow()->populateOriginalData($formData['CheckupToProfileRowSubForm']['row']);
+                            $newRow = $this->_checkupToProfile->createRow()->populate($formData['CheckupToProfileRowSubForm']['row']);
                             $newRow->save();
 
                             return $this->redirect()->toRoute('hi-checkup/checkup-profile/edit/wildcard', array('profile_id' => $id));

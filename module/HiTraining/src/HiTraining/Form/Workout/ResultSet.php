@@ -20,7 +20,7 @@ class ResultSet extends GridDbTableResultSet
             'text',
             array(
                 'label'     => 'exercises_count',
-                'sortable'  => true,
+//                'sortable'  => true,
                 'sql'    => $this->_model->getWorkoutExercisesCountSqlExpression(),
             )
         );
@@ -29,6 +29,8 @@ class ResultSet extends GridDbTableResultSet
         $this->setAllFieldType(
             'text'
         );
+
+        $this->setDbOrder(array('date desc'));
 
 
         /**

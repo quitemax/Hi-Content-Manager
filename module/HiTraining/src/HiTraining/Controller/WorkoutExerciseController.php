@@ -50,7 +50,7 @@ class WorkoutExerciseController extends ActionController
 
         $type = $this->_exerciseType->getRow(array('type_id' => $id))->toArray();
 
-        $exercise = $this->_exercise->getRow(array('type_id' => $id), array('`workout_id` desc'))->toArray();
+        $exercise = $this->_exercise->getRow(array('type_id' => $id), array('workout_id desc'))->toArray();
 
         return new JsonModel(array(
             'exercise' => $exercise,
@@ -169,7 +169,7 @@ class WorkoutExerciseController extends ActionController
                         foreach ($rows as $key => $row) {
                             if ($row['id'] || $allBox) {
                                 $exercise = $this->_exercise->getRow(array('exercise_id' => $key));
-                                $exercise->populateCurrentData($row['row']);
+                                $exercise->populate($row['row']);
                                 $exercise->save();
 
                             }
@@ -305,7 +305,7 @@ class WorkoutExerciseController extends ActionController
                     if (isset($formData['WorkoutExerciseRow']['actions']['save'])) {
 
                         if (is_array($formData['WorkoutExerciseRow']['row'])){
-                            $newRow = $this->_exercise->createRow()->populateCurrentData($formData['WorkoutExerciseRow']['row']);
+                            $newRow = $this->_exercise->createRow()->populate($formData['WorkoutExerciseRow']['row']);
                             $newRow->save();
 
                             return $this->redirect()->toRoute('hi-training/workout-exercise/list/wildcard', array('workout_id' => $id));
@@ -316,7 +316,7 @@ class WorkoutExerciseController extends ActionController
                     if (isset($formData['WorkoutExerciseRow']['actions']['saveAdd'])) {
 
                         if (is_array($formData['WorkoutExerciseRow']['row'])){
-                            $newRow = $this->_exercise->createRow()->populateCurrentData($formData['WorkoutExerciseRow']['row']);
+                            $newRow = $this->_exercise->createRow()->populate($formData['WorkoutExerciseRow']['row']);
                             $newRow->save();
 
                             return $this->redirect()->toRoute('hi-training/workout-exercise/add/wildcard', array('workout_id' => $id));
@@ -458,7 +458,7 @@ class WorkoutExerciseController extends ActionController
 
                         if (is_array($formData['WorkoutExerciseRow']['row'])){
                             $row = $this->_exercise->getRow(array('exercise_id' => $id))
-                                ->populateCurrentData($formData['WorkoutExerciseRow']['row']);
+                                ->populate($formData['WorkoutExerciseRow']['row']);
                             $row->save();
 
                             return $this->redirect()->toRoute(
@@ -473,7 +473,7 @@ class WorkoutExerciseController extends ActionController
 
                         if (is_array($formData['WorkoutExerciseRow']['row'])){
                             $row = $this->_exercise->getRow(array('exercise_id' => $id))
-                                ->populateCurrentData($formData['WorkoutExerciseRow']['row']);
+                                ->populate($formData['WorkoutExerciseRow']['row']);
                             $row->save();
 
                             return $this->redirect()->toRoute(
@@ -488,7 +488,7 @@ class WorkoutExerciseController extends ActionController
 
                         if (is_array($formData['WorkoutExerciseRow']['row'])){
                             $row = $this->_exercise->getRow(array('exercise_id' => $id))
-                                ->populateCurrentData($formData['WorkoutExerciseRow']['row']);
+                                ->populate($formData['WorkoutExerciseRow']['row']);
                             $row->save();
 
                             return $this->redirect()->toRoute(

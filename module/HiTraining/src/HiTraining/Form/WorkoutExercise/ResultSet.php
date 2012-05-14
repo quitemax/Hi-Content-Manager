@@ -82,7 +82,7 @@ class ResultSet extends GridDbTableResultSet
 
         $this->setLoadAll(true);
 
-        $this->setDbOrder(array('`order`'));
+        $this->setDbOrder(array('order asc'));
 
         /**
          * RECORD ACTIONS

@@ -44,7 +44,7 @@ class Row extends HiRowGateway
      */
     protected function _afterLoad()
     {
-        if ($this->currentData && $this->count()) {
+        if ($this->data && $this->count()) {
             if (!empty($this['type_img'])){
                 $this['type_img'] = explode(',', $this['type_img']);
             }

@@ -82,6 +82,8 @@ class DbTable extends GridRow
 //////
 //////        }
         foreach ($modelDefinition as $name => $fieldMetadata) {
+
+//            \HiBase\Debug::dump($fieldMetadata);
             if (!empty($fieldMetadata['options']['primary']) && $fieldMetadata['options']['primary'] == true) {
                 $this->setPrimaryKey($name);
                 $this->addField(
@@ -212,6 +214,18 @@ class DbTable extends GridRow
                         );
                         break;
                     case 'text':
+                        if ($fieldMetadata['options']['type'] == 'image') {
+                            $this->addField(
+                                $name,
+                                'image',
+                                array(
+                                    'label'        => $name,
+                                    'cache'        => $fieldMetadata['options']['cache'],
+                                )
+                            );
+                            break;
+                        }
+
                         $this->addField(
                             $name,
                             'textarea',
@@ -222,6 +236,7 @@ class DbTable extends GridRow
                             )
                         );
                         break;
+
                     default:
                         break;
                 }

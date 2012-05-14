@@ -274,7 +274,7 @@ class WorkoutController extends ActionController
                     if (isset($formData['WorkoutRow']['actions']['save']) || isset($formData['WorkoutRow']['actions']['saveAdd'])) {
 
                         if (is_array($formData['WorkoutRow']['row'])){
-                            $newRow = $this->_workout->createRow()->populateOriginalData($formData['WorkoutRow']['row']);
+                            $newRow = $this->_workout->createRow()->populate($formData['WorkoutRow']['row']);
                             $newRow->save();
 
                             if(isset($formData['WorkoutRow']['actions']['saveAdd'])) {
@@ -365,7 +365,7 @@ class WorkoutController extends ActionController
                         if (is_array($formData['WorkoutRow']['row'])){
 
                             if ($updateRow = $this->_workout->getRow(array('workout_id' => $id))) {
-                                $updateRow->populateCurrentData($formData['WorkoutRow']['row']);
+                                $updateRow->populate($formData['WorkoutRow']['row']);
                                 $updateRow->save();
                             }
 //

@@ -17,7 +17,9 @@ use Zend\Db\TableGateway\TableGateway as ZendTableGateway,
     Zend\Db\Sql\Update,
     Zend\Db\Sql\Delete,
     Zend\Db\Sql\Select,
-    HiBase\Db\Behaviour\NestedSet;
+    Zend\Db\Sql\Expression,
+    HiBase\Db\Behaviour\NestedSet,
+    HiBase\Db\Behaviour\Image;
 
 /**
  * Refited Zend_Db_Table class for use with HiCms
@@ -283,7 +285,7 @@ class TableGateway extends ZendTableGateway
             true
         );
 
-        $sqlSelect->from($this->tableName, $this->schema);
+        $sqlSelect->from($this->table);
 
 
 //        foreach ($this->_behaviourObjects as $behaviourObject) {
@@ -317,10 +319,13 @@ class TableGateway extends ZendTableGateway
 
 
         //limit
-//        $sqlSelect->limit($count, $offset);
+        $sqlSelect->limit($count);
+        $sqlSelect->offset($offset);
 
         //order
-        $sqlSelect->order($order);
+        if (is_array($order) || is_string($order)) {
+            $sqlSelect->order($order);
+        }
 //        \Zend\Debug::dump($sqlSelect->getSqlString());
 //        echo $sqlSelect->getSqlString($this->adapter->getPlatform());
 
@@ -440,7 +445,7 @@ class TableGateway extends ZendTableGateway
 //        \Zend\Debug::dump($result->current(), '$result->current()', true);
 
         $row = clone $this->selectResultPrototype->getRowObjectPrototype();
-        $row->exchangeArray($result->current());
+        $row->populate($result->current()?:array());
 //        \Zend\Debug::dump($row, '', true);
         //
 //        $resultSet = clone $this->selectResultPrototype;
@@ -566,27 +571,37 @@ class TableGateway extends ZendTableGateway
 ////        return $this->_db->fetchOne($sqlSelect);
 //    }
 //
-//    public function getCountLastSql()
-//    {
-//        if ($this->_lastSql instanceof Select) {
-////
-////            //
-//            $lastSql = $this->_lastSql;
-//
-//            $lastSql->reset(Select::COLUMNS);
-//            $lastSql->reset(Select::GROUP);
-//            $lastSql->reset(Select::ORDER);
-//            $lastSql->reset(Select::LIMIT_COUNT);
-//            $lastSql->reset(Select::LIMIT_OFFSET);
-//
-//            $lastSql->columns('COUNT(*) as count');
-//
-////            echo $lastSql;
-//            return $this->_db->fetchOne($lastSql);
-//        } else {
-//          return false;
-//        }
-//    }
+    public function getCountLastSql()
+    {
+        if ($this->_lastSql instanceof Select) {
+
+            //
+            $lastSql = $this->_lastSql;
+
+            $lastSql->columns(array(
+                'count' => new Expression(
+                    'COUNT(*)'
+                )
+            ));
+            $lastSql->group(array());
+//            $lastSql->order(null);
+            $lastSql->limit(null);
+            $lastSql->offset(null);
+
+            $statement = $this->adapter->createStatement();
+            $lastSql->prepareStatement($this->adapter, $statement);
+
+            $result = $statement->execute();
+
+            $row = $result->current();
+            $count = $row['count'];
+
+
+            return $count;
+        } else {
+          return false;
+        }
+    }
 //
     /*
      * Get table name (Hi use)
@@ -616,10 +631,24 @@ class TableGateway extends ZendTableGateway
      *
      * @return string
      */
-    public function setBehaviour($behaviour = null, $options = null) {
+    public function getBehaviours() {
+
+        if (isset($this->_behaviours)) {
+            return $this->_behaviours;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get table name (Hi use)
+     *
+     * @return string
+     */
+    public function setBehaviour($behaviourName = null, $behaviourType = null, $options = null) {
 
 //        foreach ($this->_behaviours as $behaviourName => $behaviourOptions) {
-            switch ($behaviour) {
+            switch ($behaviourType) {
 //                case 'i18n':
 //                    $behaviourObject = new I18n(
 //                        $this,
@@ -632,7 +661,14 @@ class TableGateway extends ZendTableGateway
                         $this,
                         $options
                     );
-                    $this->_behaviours[$behaviour] = $behaviourObject;
+                    $this->_behaviours[$behaviourName] = $behaviourObject;
+                    break;
+                case 'image':
+                    $behaviourObject = new Image(
+                        $this,
+                        $options
+                    );
+                    $this->_behaviours[$behaviourName] = $behaviourObject;
                     break;
                 default:
                     break;
@@ -695,42 +731,42 @@ class TableGateway extends ZendTableGateway
      * @param  Closure $where
      * @return type
      */
-    public function delete($where)
-    {
-        $delete = new Delete($this->tableName, $this->schema);;
-//        $delete->from($this->tableName, $this->schema);
-        if ($where instanceof \Closure) {
-            $where($delete);
-        } else {
-            $delete->where($where);
-        }
-
-        $statement = $this->adapter->createStatement();
-        $delete->prepareStatement($this->adapter, $statement);
-
-        $result = $statement->execute();
-        return $result->getAffectedRows();
-    }
-
-    /**
-     * Update
-     *
-     * @param  array $set
-     * @param  string|array|closure $where
-     * @return int
-     */
-    public function update($set, $where = null)
-    {
-        $update = new Update($this->tableName, $this->schema);
-//        $update->table($this->tableName, $this->schema);
-        $update->set($set);
-        $update->where($where);
-
-        $statement = $this->adapter->createStatement();
-        $update->prepareStatement($this->adapter, $statement);
-
-        $result = $statement->execute();
-        return $result->getAffectedRows();
-    }
+//    public function delete($where)
+//    {
+//        $delete = new Delete($this->tableName, $this->schema);;
+////        $delete->from($this->tableName, $this->schema);
+//        if ($where instanceof \Closure) {
+//            $where($delete);
+//        } else {
+//            $delete->where($where);
+//        }
+//
+//        $statement = $this->adapter->createStatement();
+//        $delete->prepareStatement($this->adapter, $statement);
+//
+//        $result = $statement->execute();
+//        return $result->getAffectedRows();
+//    }
+//
+//    /**
+//     * Update
+//     *
+//     * @param  array $set
+//     * @param  string|array|closure $where
+//     * @return int
+//     */
+//    public function update($set, $where = null)
+//    {
+//        $update = new Update($this->tableName, $this->schema);
+////        $update->table($this->tableName, $this->schema);
+//        $update->set($set);
+//        $update->where($where);
+//
+//        $statement = $this->adapter->createStatement();
+//        $update->prepareStatement($this->adapter, $statement);
+//
+//        $result = $statement->execute();
+//        return $result->getAffectedRows();
+//    }
 
 }

@@ -300,7 +300,7 @@ class ExerciseTypeController extends ActionController
                             unset($formData['ExerciseTypeRow']['row']['descend_form_type']);
 
                             //
-                            $row->populateCurrentData($formData['ExerciseTypeRow']['row']);
+                            $row->populate($formData['ExerciseTypeRow']['row']);
 
                             $row->save();
 
@@ -315,7 +315,7 @@ class ExerciseTypeController extends ActionController
 
                                 $editResultSet = $this->_type->getResultSet(array('tree_parent_id' => $id));
                                 foreach ($editResultSet as $editRow) {
-                                    $editRow->populateCurrentData(
+                                    $editRow->populate(
                                         array(
                                             'form_type' => $formData['ExerciseTypeRow']['row']['form_type'],
                                         )
