@@ -2,6 +2,16 @@
 return array(
     'hi-base' => array(
         'ver'          => '0.0.5.0',
+/**
+ * @todo ver @ 0.0.6.0
+ * -> 0. (przesiadka na nowy form)
+ * -> 0. (Block i reszta jako ViewModel)
+ * -> 1. showImage jako thumb + powiekszenie js
+ * -> 2
+
+
+6/7. workout stats profiles
+ */
         'showimage_cache_path'          => '/',
 //        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
 //        'enable_registration'       => true,
