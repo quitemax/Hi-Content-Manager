@@ -4,8 +4,16 @@ return array(
         'ver'          => '0.0.4.0',
 /**
  * @todo ver @ 0.0.5.0
- * -> 1.
- * -> 2.
+ * -> 0.
+ * -> 1. dodac cwiczenia lafaya
+ * -> 2. dokonczyc statystyki exercise-type (wzgledem formularza)
+ * -> 3. nowe typy formularzy lafay
+ * -> 4. dodac do exercise type row aby moc robic serialize/unserialize
+ *       A RACZEJ CALE BEHAVIOUR IMAGE I IMAGEARRAY ( i to do type'a)
+ * -> 5. dodac przegladanie fotek i wyglad et tree
+
+
+6/7. workout stats profiles
  */
 //        'user_model_class'          => 'ZfcUser\Model\User',
 //        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
