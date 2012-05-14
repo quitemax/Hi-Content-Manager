@@ -1,6 +1,13 @@
 <?php
 return array(
     'hi-checkup' => array(
+        'ver'          => '0.0.1.0',
+/**
+ * @todo ver @ 0.0.2.0
+ * -> 1. weekly, daily, monthly, yearly stats counting
+ * -> 2. how far back do we count stats
+ * -> 3. add event listeners to stats chart points to forward to checkup edit/stats url?
+ */
 //        'user_model_class'          => 'ZfcUser\Model\User',
 //        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
 //        'enable_registration'       => true,

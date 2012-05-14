@@ -4,7 +4,8 @@
     </th>
     <td class="" colspan="<?php //= isset($this->options['colspan'])?$this->options['colspan']:'' ?>">
         <?php
-
+//        \Zend\Debug::dump($profiles);
+//        \Zend\Debug::dump($values);
         /**
          *
          */
@@ -12,7 +13,7 @@
           'profile_id',
           '',
           '',
-          $this->values
+          $values
         );
         echo '&nbsp;&nbsp;';
         echo $this->formSubmit(
@@ -22,6 +23,8 @@
               'onclick' => 'add(); return false;',
           )
         );
+
+
 
         /**
          *
@@ -89,7 +92,19 @@
 
         ?>
         <div id="checkup-profiles">
-
+            <?php if (is_array($profiles)) foreach ($profiles as $profile):?>
+            <div class="checkup-profile">
+                <div class="profileName"><?php echo (isset($values[(int)$profile['profile_id']])?$values[(int)$profile['profile_id']]:'no-name');?></div>
+                <input type="hidden" name="<?php echo str_replace('row', 'profile_ids', $this->element->getBelongsTo() ) ?>[]" value="<?php echo $profile['profile_id'];?>" id="CheckupRowSubForm-profile_ids">
+                <?php echo $this->formSubmit(
+                  'removeProfile',
+                  'remove',
+                  array(
+                      'onclick' => 'remove(this); return false;',
+                  )
+                )?>
+            </div>
+            <?php endforeach;?>
         </div>
     </td>
 </tr>

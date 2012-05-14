@@ -1,6 +1,12 @@
 <?php
 return array(
     'hi-training' => array(
+        'ver'          => '0.0.4.0',
+/**
+ * @todo ver @ 0.0.5.0
+ * -> 1.
+ * -> 2.
+ */
 //        'user_model_class'          => 'ZfcUser\Model\User',
 //        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
 //        'enable_registration'       => true,

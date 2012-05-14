@@ -1,6 +1,7 @@
 <?php
 return array(
-//    'hiuser' => array(
+    'hi-user' => array(
+        'ver'          => '0.0.0.1',
 //        'user_model_class'          => 'ZfcUser\Model\User',
 //        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
 //        'enable_registration'       => true,
@@ -13,7 +14,7 @@ return array(
 //        'blowfish_cost'             => 10,         // integer between 4 and 31
 //        'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
 //        'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
-//    ),
+    ),
     'di' => array(
         'instance' => array(
 ////            'alias' => array(
