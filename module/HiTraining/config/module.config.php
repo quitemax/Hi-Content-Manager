@@ -9,7 +9,7 @@ return array(
  * -> 2. dokonczyc statystyki exercise-type (wzgledem formularza)
  * -> 3. nowe typy formularzy lafay
  * -> 4. dodac do exercise type row aby moc robic serialize/unserialize
- *       A RACZEJ CALE BEHAVIOUR IMAGE I IMAGEARRAY ( i to do type'a)
+ *       A RACZEJ CALE BEHAVIOUR  IMAGEARRAY ( i to do type'a)
  * -> 5. dodac przegladanie fotek i wyglad et tree
 
 

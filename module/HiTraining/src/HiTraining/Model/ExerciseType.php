@@ -27,6 +27,7 @@ class ExerciseType extends DbTable
     const FORM_TYPE_STRECHING = 5;
     const FORM_TYPE_BIKE = 6;
     const FORM_TYPE_LAFAY_WARMUP = 7;
+    const FORM_TYPE_LAFAY_LIFTING = 8;
 
     const MECHANICS_TYPE_ISOLATION = 1;
     const MECHANICS_TYPE_COMPOUND = 2;
@@ -113,6 +114,7 @@ class ExerciseType extends DbTable
                     self::FORM_TYPE_STRECHING       => 'streching',
                     self::FORM_TYPE_BIKE            => 'bike',
                     self::FORM_TYPE_LAFAY_WARMUP    => 'LAFAY warmup',
+                    self::FORM_TYPE_LAFAY_LIFTING   => 'LAFAY lifting',
                 ),
             )
         );

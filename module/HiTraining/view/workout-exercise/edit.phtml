@@ -2,7 +2,7 @@
     &raquo; <a href="<?php echo $this->url('home');?>">Home</a>
     &raquo; <a href="<?php echo $this->url('hi-training');?>">HiTraining</a>
     &raquo; <a href="<?php echo $this->url('hi-training/workout/list');?>">Workout</a>
-    &raquo; <a href="<?php echo $this->url('hi-training/workout-exercise/list', array('workout_id' => $workout['workout_id']));?>">Workout (ID:<?php echo $workout['workout_id'];?>) exercise list</a>
+    &raquo; <a href="<?php echo $this->url('hi-training/workout-exercise/list/wildcard', array('workout_id' => $workout['workout_id']));?>">Workout (ID:<?php echo $workout['workout_id'];?>) exercise list</a>
     &raquo; <a class="selected" href="">Edit workout exercise (ID:<?php echo '';?>)</a>
 
 </div>

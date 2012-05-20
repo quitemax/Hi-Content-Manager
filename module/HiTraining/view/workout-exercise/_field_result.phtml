@@ -10,24 +10,27 @@
     <table border="0" cellpadding="0" id="treadmillType">
         <tr>
             <th>elapsed_time</th>
-            <th>break_time</th>
+
             <th>speed</th>
             <th>avg speed</th>
             <th>angle</th>
             <th>distance</th>
+            <th>break</th>
         </tr>
         <tr>
             <td><?php echo $row['exercise_elapsed_time'];?></td>
-            <td><?php echo $row['after_break_time'];?></td>
+
             <td><?php echo $row['speed'];?> km/h</td>
             <td><?php echo $row['avg_speed'];?> km/h</td>
             <td><?php echo $row['angle'];?> &#778;</td>
             <td><?php echo $row['distance'];?> km</td>
+            <td><?php echo $row['after_break_time'];?></td>
         </tr>
     </table>
     <?php elseif ($formType == HiTraining\Model\ExerciseType::FORM_TYPE_LIFTING):?>
     <table border="0" cellpadding="0" id="liftingType">
         <tr>
+            <th><?php if ($row['level'] > 0) :?>level <?php echo $row['level']?><?php endif;?>&nbsp;</th>
             <?php if ($row['lifting_series_1_count']!= 0) :?>
             <th>series 1</th>
             <?php endif;?>
@@ -48,7 +51,7 @@
             <?php endif;?>
         </tr>
         <tr>
-
+            <td>weight</td>
             <?php if ($row['lifting_series_1_count']!= 0) :?>
             <td><?php echo $row['lifting_series_1_weight'];?> kg</td>
             <?php endif;?>
@@ -69,7 +72,7 @@
             <?php endif;?>
         </tr>
         <tr>
-
+            <td>count</td>
             <?php if ($row['lifting_series_1_count']!= 0) :?>
             <td>x <?php echo $row['lifting_series_1_count'];?></td>
             <?php endif;?>
@@ -90,24 +93,24 @@
             <?php endif;?>
         </tr>
         <tr>
-
+            <td>break</td>
             <?php if ($row['lifting_series_1_count']!= 0) :?>
-            <td><?php echo $row['lifting_series_1_break'];?></td>
+            <td><?php echo ($row['lifting_series_2_count'] != 0) ? $row['lifting_series_1_break'] : $row['after_break_time'];?></td>
             <?php endif;?>
             <?php if ($row['lifting_series_2_count']!= 0) :?>
-            <td><?php echo $row['lifting_series_2_break'];?></td>
+            <td><?php echo ($row['lifting_series_2_count'] != 0) ? $row['lifting_series_2_break'] : $row['after_break_time'];?></td>
             <?php endif;?>
             <?php if ($row['lifting_series_3_count']!= 0) :?>
-            <td><?php echo $row['lifting_series_3_break'];?></td>
+            <td><?php echo ($row['lifting_series_2_count'] != 0) ? $row['lifting_series_3_break'] : $row['after_break_time'];?></td>
             <?php endif;?>
             <?php if ($row['lifting_series_4_count']!= 0) :?>
-            <td><?php echo $row['lifting_series_4_break'];?></td>
+            <td><?php echo ($row['lifting_series_2_count'] != 0) ? $row['lifting_series_4_break'] : $row['after_break_time'];?></td>
             <?php endif;?>
             <?php if ($row['lifting_series_5_count']!= 0) :?>
-            <td><?php echo $row['lifting_series_5_break'];?></td>
+            <td><?php echo ($row['lifting_series_2_count'] != 0) ? $row['lifting_series_5_break'] : $row['after_break_time'];?></td>
             <?php endif;?>
             <?php if ($row['lifting_series_6_count']!= 0) :?>
-            <td><?php echo $row['lifting_series_6_break'];?></td>
+            <td><?php echo $row['after_break_time'];?></td>
             <?php endif;?>
 
         </tr>
@@ -126,6 +129,7 @@
             <th>avg speed</th>
             <th>angle</th>
             <th>distance</th>
+            <th>break</th>
         </tr>
         <tr>
             <td><?php echo $row['exercise_elapsed_time'];?> </td>
@@ -136,6 +140,7 @@
             <td><?php echo $row['avg_speed'];?>km/h</td>
             <td><?php echo $row['angle'];?> &#778;</td>
             <td><?php echo $row['distance'];?> km</td>
+            <td><?php echo $row['after_break_time'];?></td>
         </tr>
     </table>
     <?php elseif ($formType == HiTraining\Model\ExerciseType::FORM_TYPE_STRECHING):?>
@@ -151,17 +156,19 @@
     <table border="0" cellpadding="0" id="liftingType">
         <tr>
             <th>elapsed_time</th>
-            <th>break_time</th>
+
             <th>avg speed</th>
             <th>level</th>
             <th>distance</th>
+            <th>break</th>
         </tr>
         <tr>
             <td><?php echo $row['exercise_elapsed_time'];?> </td>
-            <td><?php echo $row['after_break_time'];?> </td>
+
             <td><?php echo $row['avg_speed'];?> km/h</td>
             <td><?php echo $row['level'];?> </td>
             <td><?php echo $row['distance'];?> km</td>
+            <td><?php echo $row['after_break_time'];?> </td>
         </tr>
     </table>
     <?php elseif ($formType == HiTraining\Model\ExerciseType::FORM_TYPE_BIKE):?>
@@ -172,6 +179,7 @@
             <th>avg speed</th>
             <th>level</th>
             <th>distance</th>
+            <th>break</th>
         </tr>
         <tr>
             <td><?php echo $row['exercise_elapsed_time'];?> </td>
@@ -179,7 +187,103 @@
             <td><?php echo $row['avg_speed'];?> km/h</td>
             <td><?php echo $row['level'];?> </td>
             <td><?php echo $row['distance'];?> km</td>
+            <td><?php echo $row['after_break_time'];?> </td>
         </tr>
+    </table>
+    <?php elseif ($formType == HiTraining\Model\ExerciseType::FORM_TYPE_LAFAY_WARMUP):?>
+    <table border="0" cellpadding="0" id="liftingType">
+        <tr>
+            <th>&nbsp;</th>
+            <th>series 1</th>
+            <th>series 2</th>
+            <th>series 3</th>
+        </tr>
+        <tr>
+            <td>time</td>
+            <td><?php echo $row['lafay_warmup_series_1_time'];?></td>
+            <td><?php echo $row['lafay_warmup_series_2_time'];?></td>
+            <td><?php echo $row['lafay_warmup_series_3_time'];?></td>
+        </tr>
+        <tr>
+            <td>count</td>
+            <td><?php echo $row['lafay_warmup_series_1_count'];?></td>
+            <td><?php echo $row['lafay_warmup_series_2_count'];?></td>
+            <td><?php echo $row['lafay_warmup_series_3_count'];?></td>
+        </tr>
+        <tr>
+            <td>break</td>
+            <td><?php echo $row['lafay_warmup_series_1_break'];?></td>
+            <td><?php echo $row['lafay_warmup_series_2_break'];?></td>
+            <td><?php echo $row['after_break_time'];?></td>
+        </tr>
+    </table>
+    <?php elseif ($formType == HiTraining\Model\ExerciseType::FORM_TYPE_LAFAY_LIFTING):?>
+    <table border="0" cellpadding="0" id="liftingType">
+        <tr>
+            <th><?php if ($row['level'] > 0) :?>level <?php echo $row['level']?><?php endif;?>&nbsp;</th>
+            <?php if ($row['lifting_series_1_count'] != 0) :?>
+            <th>series 1</th>
+            <?php endif;?>
+            <?php if ($row['lifting_series_2_count'] != 0) :?>
+            <th>series 2</th>
+            <?php endif;?>
+            <?php if ($row['lifting_series_3_count'] != 0) :?>
+            <th>series 3</th>
+            <?php endif;?>
+            <?php if ($row['lifting_series_4_count'] != 0) :?>
+            <th>series 4</th>
+            <?php endif;?>
+            <?php if ($row['lifting_series_5_count'] != 0) :?>
+            <th>series 5</th>
+            <?php endif;?>
+            <?php if ($row['lifting_series_6_count'] != 0) :?>
+            <th>series 6</th>
+            <?php endif;?>
+        </tr>
+        <tr>
+            <td>count</td>
+            <?php if ($row['lifting_series_1_count'] != 0) :?>
+            <td>x <?php echo $row['lifting_series_1_count'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_2_count'] != 0) :?>
+            <td>x <?php echo $row['lifting_series_2_count'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_3_count'] != 0) :?>
+            <td>x <?php echo $row['lifting_series_3_count'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_4_count'] != 0) :?>
+            <td>x <?php echo $row['lifting_series_4_count'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_5_count'] != 0) :?>
+            <td>x <?php echo $row['lifting_series_5_count'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_6_count'] != 0) :?>
+            <td>x <?php echo $row['lifting_series_6_count'];?></td>
+            <?php endif;?>
+        </tr>
+        <tr>
+            <td>break</td>
+            <?php if ($row['lifting_series_1_count'] != 0) :?>
+            <td><?php echo ($row['lifting_series_2_count'] != 0) ? $row['lifting_series_1_break'] : $row['after_break_time'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_2_count'] != 0) :?>
+            <td><?php echo ($row['lifting_series_3_count'] != 0) ? $row['lifting_series_2_break'] : $row['after_break_time'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_3_count'] != 0) :?>
+            <td><?php echo ($row['lifting_series_4_count'] != 0) ? $row['lifting_series_3_break'] : $row['after_break_time'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_4_count'] != 0) :?>
+            <td><?php echo ($row['lifting_series_5_count'] != 0) ? $row['lifting_series_4_break'] : $row['after_break_time'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_5_count'] != 0) :?>
+            <td><?php echo ($row['lifting_series_6_count'] != 0) ? $row['lifting_series_5_break'] : $row['after_break_time'];?></td>
+            <?php endif;?>
+            <?php if ($row['lifting_series_6_count'] != 0) :?>
+            <td><?php echo $row['after_break_time'];?></td>
+            <?php endif;?>
+
+        </tr>
+
     </table>
     <?php  endif;  ?>
 </td>

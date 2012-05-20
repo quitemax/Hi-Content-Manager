@@ -447,7 +447,9 @@ class DbTable extends TableGateway
         );
 
 
-        //HIIT
+        /**
+         * HIIT
+         */
         $this->hasColumn(
             'hiit_speed_low',
             'decimal',
@@ -517,6 +519,9 @@ class DbTable extends TableGateway
             )
         );
 
+        /**
+         * cooldown
+         */
         $this->hasColumn(
             'cooldown_speed_start',
             'decimal',
@@ -572,6 +577,109 @@ class DbTable extends TableGateway
                 'length'            => 11,
                 'notnull'          => true,
                 'default'          => '0',
+            )
+        );
+
+        /**
+         * lafay warmup
+         */
+        $this->hasColumn(
+            'lafay_warmup_series_1_time',
+            'time',
+            null,
+            array(
+                'type'             => 'time',
+                'notnull'          => true,
+                'default'          => '00:00:00',
+            )
+        );
+
+        $this->hasColumn(
+            'lafay_warmup_series_1_count',
+            'integer',
+            10,
+            array(
+                'type'             => 'integer',
+                'length'            => 10,
+                'notnull'          => true,
+                'default'          => '0',
+            )
+        );
+
+        $this->hasColumn(
+            'lafay_warmup_series_1_break',
+            'time',
+            null,
+            array(
+                'type'             => 'time',
+                'notnull'          => true,
+                'default'          => '00:00:00',
+            )
+        );
+        $this->hasColumn(
+            'lafay_warmup_series_2_time',
+            'time',
+            null,
+            array(
+                'type'             => 'time',
+                'notnull'          => true,
+                'default'          => '00:00:00',
+            )
+        );
+
+        $this->hasColumn(
+            'lafay_warmup_series_2_count',
+            'integer',
+            10,
+            array(
+                'type'             => 'integer',
+                'length'            => 10,
+                'notnull'          => true,
+                'default'          => '0',
+            )
+        );
+
+        $this->hasColumn(
+            'lafay_warmup_series_2_break',
+            'time',
+            null,
+            array(
+                'type'             => 'time',
+                'notnull'          => true,
+                'default'          => '00:00:00',
+            )
+        );
+        $this->hasColumn(
+            'lafay_warmup_series_3_time',
+            'time',
+            null,
+            array(
+                'type'             => 'time',
+                'notnull'          => true,
+                'default'          => '00:00:00',
+            )
+        );
+
+        $this->hasColumn(
+            'lafay_warmup_series_3_count',
+            'integer',
+            10,
+            array(
+                'type'             => 'integer',
+                'length'            => 10,
+                'notnull'          => true,
+                'default'          => '0',
+            )
+        );
+
+        $this->hasColumn(
+            'lafay_warmup_series_3_break',
+            'time',
+            null,
+            array(
+                'type'             => 'time',
+                'notnull'          => true,
+                'default'          => '00:00:00',
             )
         );
 
