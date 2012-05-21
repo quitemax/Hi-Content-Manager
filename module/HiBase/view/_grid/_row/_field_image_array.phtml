@@ -1,0 +1,24 @@
+<tr class="<?php if ($this->even):?>even<?php endif;?>">
+  <th class="" width="25%">
+      <?php echo $this->formLabel($this->element->id, $this->element->getLabel()) ?>
+  </th>
+  <td class="" colspan="">
+      <?php echo $this->showImage(
+          $this->value,
+          array(
+              'width'    => 150,
+              'height'   => 150,
+              'alt'      => 'image',
+              'cache'    => $this->cache,
+          )
+      );?>
+      <br />
+      <?php // \Zend\Debug::dump($this);?>
+      <?php echo $this->formCheckbox('delete[' . $this->element->getName() . ']', 1, array(), array()) ?> delete image
+      <br />
+      <?php echo $this->content;?>
+
+      <?php echo $this->element->getMessages()?$this->formErrors($this->element->getMessages()):'';?>
+
+  </td>
+</tr>

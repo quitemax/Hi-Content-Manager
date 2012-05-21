@@ -125,7 +125,7 @@ class ExerciseTypeController extends ActionController
                 'workout_exercise.type_id' => $id
             ),
             array(
-                '`workout`.`date` asc'
+                'date asc'
             )
         );
 

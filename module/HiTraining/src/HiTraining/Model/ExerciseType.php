@@ -73,30 +73,73 @@ class ExerciseType extends DbTable
             )
         );
 
+        $this->setBehaviour(
+            'type_img',
+            'imageArray',
+            array(
+                'image' => 'type_img',
+                'path' => '/exercise-type',
+                'cache' => array(
+                    'dir' => '/exercise-type'
+                ),
+            )
+        );
+        $this->setBehaviour(
+            'guide_img',
+            'imageArray',
+            array(
+                'image' => 'type_img',
+                'path' => '/exercise-type',
+                'cache' => array(
+                    'dir' => '/exercise-type'
+                ),
+            )
+        );
     }
 
+
+    /**
+     *
+     * Enter description here ...
+     */
     public function setTableDefinition()
     {
         parent::setTableDefinition();
 
-//        $this->setColumnOptions(
-//            'form_type',
-//            array(
-//                'type'             => 'select',
-//                'length'           => '11',
-//                'notnull'          => true,
-//                'values'          => array(
-//                    0 => '--',
-//                    self::FORM_TYPE_TREADMILL => 'treadmill',
-//                    self::FORM_TYPE_LIFTING => 'lifting',
-//                    self::FORM_TYPE_HIIT_TREADMILL => 'hiit_treadmill',
-//                    self::FORM_TYPE_ORBITREK => 'orbitrek',
-//                    self::FORM_TYPE_STRECHING => 'streching',
-//                    self::FORM_TYPE_BIKE => 'bike',
-//                ),
-//            )
-//        );
+        /**
+         *
+         */
+        $this->hasColumn(
+            'type_img',
+            'text',
+            null,
+            array(
+                'type'             => 'imageArray',
+                'length'           => null,
+                'notnull'          => true,
+                'cache' => array(
+                    'dir' => '/exercise-type'
+                ),
+            )
+        );
 
+        $this->hasColumn(
+            'guide_img',
+            'text',
+            null,
+            array(
+                'type'             => 'imageArray',
+                'length'           => null,
+                'notnull'          => true,
+                'cache' => array(
+                    'dir' => '/exercise-type'
+                ),
+            )
+        );
+
+        /**
+         *
+         */
         $this->hasColumn(
             'form_type',
             'integer',

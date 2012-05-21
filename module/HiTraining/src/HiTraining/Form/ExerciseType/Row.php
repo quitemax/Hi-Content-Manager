@@ -15,10 +15,10 @@ class Row extends GridDbTableRow
         parent::init();
 
         //
-        $this->removeField('guide_img');
+//        $this->removeField('guide_img');
 
         //
-        $this->removeField('type_img');
+//        $this->removeField('type_img');
 
 
 //        \HiZend\Debug\Debug::precho($this->_fields);

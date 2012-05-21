@@ -19,6 +19,7 @@ use Zend\Db\TableGateway\TableGateway as ZendTableGateway,
     Zend\Db\Sql\Select,
     Zend\Db\Sql\Expression,
     HiBase\Db\Behaviour\NestedSet,
+    HiBase\Db\Behaviour\ImageArray,
     HiBase\Db\Behaviour\Image;
 
 /**
@@ -665,6 +666,13 @@ class TableGateway extends ZendTableGateway
                     break;
                 case 'image':
                     $behaviourObject = new Image(
+                        $this,
+                        $options
+                    );
+                    $this->_behaviours[$behaviourName] = $behaviourObject;
+                    break;
+                case 'imageArray':
+                    $behaviourObject = new ImageArray(
                         $this,
                         $options
                     );

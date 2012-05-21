@@ -224,6 +224,16 @@ class DbTable extends GridRow
                                 )
                             );
                             break;
+                        } else if ($fieldMetadata['options']['type'] == 'imageArray') {
+                            $this->addField(
+                                $name,
+                                'imageArray',
+                                array(
+                                    'label'        => $name,
+                                    'cache'        => $fieldMetadata['options']['cache'],
+                                )
+                            );
+                            break;
                         }
 
                         $this->addField(

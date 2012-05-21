@@ -7,10 +7,13 @@ return array(
  * -> 0.
  * -> 1. dodac cwiczenia lafaya
  * -> 2. dokonczyc statystyki exercise-type (wzgledem formularza)
- * -> 3. nowe typy formularzy lafay
+ * -> DONE ? 3. nowe typy formularzy lafay
  * -> 4. dodac do exercise type row aby moc robic serialize/unserialize
  *       A RACZEJ CALE BEHAVIOUR  IMAGEARRAY ( i to do type'a)
  * -> 5. dodac przegladanie fotek i wyglad et tree
+ *
+ * @todo ver @ 0.0.6.0
+ * -> 1. workout_profile etc...
 
 
 6/7. workout stats profiles
