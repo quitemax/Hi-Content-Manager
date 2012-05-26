@@ -23,7 +23,7 @@ define('MODULES_PATH', BASE_PATH . DS . 'modules');
 //
 define('VENDOR_PATH', BASE_PATH . DS . 'vendor');
 //
-define('ZF2_PATH', BASE_PATH . DS . '..' . DS . 'zend' . DS . 'library');
+define('ZF2_PATH', BASE_PATH . DS . '..' . DS . 'zend-working-snapshot' . DS . 'library');
 //
 define('PUBLIC_PATH', BASE_PATH . DS . 'public');
 //
@@ -35,6 +35,8 @@ define('MEDIA_PATH', PUBLIC_PATH . DS . 'media');
 define('BASE_URL', '/sohi/Hi-Content-Manager/public');
 
 define('MEDIA_URL', '/media');
+
+define('SKIN_URL', '/skin');
 
 /*
  * Ensure libraries are on include_path
