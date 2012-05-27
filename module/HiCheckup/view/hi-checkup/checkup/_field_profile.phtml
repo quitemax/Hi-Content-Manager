@@ -1,0 +1,110 @@
+<tr class="<?php if ($this->even):?>even<?php endif;?>">
+    <th class="" width="25%">
+        <?php echo $this->formLabel($this->element->id, $this->element->getLabel()) ?>
+    </th>
+    <td class="" colspan="<?php //= isset($this->options['colspan'])?$this->options['colspan']:'' ?>">
+        <?php
+//        \Zend\Debug::dump($profiles);
+//        \Zend\Debug::dump($values);
+        /**
+         *
+         */
+        echo $this->formSelect(
+          'profile_id',
+          '',
+          '',
+          $values
+        );
+        echo '&nbsp;&nbsp;';
+        echo $this->formSubmit(
+          'addProfile',
+          'Add profile',
+          array(
+              'onclick' => 'add(); return false;',
+          )
+        );
+
+
+
+        /**
+         *
+         */
+        $this->inlineScript()->appendScript(
+            '
+            function add() {
+
+                var selectObject = document.getElementById(\'profile_id\');
+
+                var selectOptions = selectObject.options
+
+                var selectIndex = selectOptions[selectObject.selectedIndex].value;
+                var selectValue = selectOptions[selectObject.selectedIndex].text;
+
+                $("div#checkup-profiles").append(
+                    \'<div class="checkup-profile">' .
+                    '<div class="profileName">\' + selectValue + \'</div>' .
+                    '<input type="hidden" name="' . str_replace('row', 'profile_ids', $this->element->getBelongsTo() ) . '[]" value="\' + selectIndex + \'" id="CheckupRowSubForm-profile_ids">' .
+                    $this->formSubmit(
+                      'removeProfile',
+                      'remove',
+                      array(
+                          'onclick' => 'remove(this); return false;',
+                      )
+                    ) .
+                    '</div>\'
+                );
+
+                return false;
+            }
+
+            function remove(element) {
+                $(element).parent(\'div.checkup-profile\').remove();
+                //alert(element);
+                return false;
+            }
+            '
+        );
+
+
+        /**
+         *
+         */
+        $this->headStyle()->appendStyle(
+            '
+            div#checkup-profiles {
+                color: #555555;
+            }
+
+            div#checkup-profiles div.checkup-profile {
+                margin:2px 0px 2px 0px;
+            }
+
+            div#checkup-profiles div.checkup-profile div.profileName {
+                width: 200px;
+                margin:6px 8px 0px 0px;
+                font-weight: bold;
+                display: inline;
+                float:left;
+
+            }
+            '
+        );
+
+        ?>
+        <div id="checkup-profiles">
+            <?php if (isset($profiles) && is_array($profiles)) foreach ($profiles as $profile):?>
+            <div class="checkup-profile">
+                <div class="profileName"><?php echo (isset($values[(int)$profile['profile_id']])?$values[(int)$profile['profile_id']]:'no-name');?></div>
+                <input type="hidden" name="<?php echo str_replace('row', 'profile_ids', $this->element->getBelongsTo() ) ?>[]" value="<?php echo $profile['profile_id'];?>" id="CheckupRowSubForm-profile_ids">
+                <?php echo $this->formSubmit(
+                  'removeProfile',
+                  'remove',
+                  array(
+                      'onclick' => 'remove(this); return false;',
+                  )
+                )?>
+            </div>
+            <?php endforeach;?>
+        </div>
+    </td>
+</tr>

@@ -2,9 +2,9 @@
 
 namespace HiUser;
 
-use Zend\Module\Consumer\AutoloaderProvider;
+//use Zend\Module\Consumer\AutoloaderProvider;
 
-class Module implements AutoloaderProvider
+class Module //implements AutoloaderProvider
 {
     public function getAutoloaderConfig()
     {

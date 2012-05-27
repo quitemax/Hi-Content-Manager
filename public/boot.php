@@ -2,7 +2,7 @@
 /**
  * PHP 5.3.0
  */
-if (version_compare(phpversion(), '5.3.2', '<')===true) {
+if (version_compare(phpversion(), '5.3.3', '<')===true) {
     $wrongVersionMsg = <<< MSG
 <div style="margin: 0 auto; min-width: 960px; width: 960px;">
     <div style="font:12px/1.35em verdana, helvetica, sans-serif; border: 1px solid grey;">

@@ -135,116 +135,121 @@ class CheckupController extends ActionController
      */
     public function listAction()
     {
-        /**
-         * Grid FORM
-         */
-        $form = new CheckupGrid(
-            array(
-                'view' => $this->_view,
-            )
-        );
+//        $form = new ViewModel();
 
-        /**
-         * BUILDING LIST
-         */
-        $list = new CheckupResultSet(
-            array(
-                'model' => $this->_checkup,
-                'view' => $this->_view,
-            )
-        );
 
-        //
-        $list->processRequest($this->getRequest());
-
-        //
-        $list->build();
-
-        //
-        $form->addSubForm($list, $list->getName());
-
+//        /**
+//         * Grid FORM
+//         */
+//        $form = new CheckupGrid(
+//            array(
+//                'view' => $this->_view,
+//            )
+//        );
+////
+//        /**
+//         * BUILDING LIST
+//         */
+//        $list = new CheckupResultSet(
+//            array(
+//                'model' => $this->_checkup,
+//                'view' => $this->_view,
+//            )
+//        );
+//
 //        //
-        $this->_view->headScript()->appendScript(
-            $this->_view->render(
-                'checkup/list.js',
-                array(
-                    'delete' => $this->url()->fromRoute('hi-checkup/checkup/delete/wildcard', array('checkup_id' => '')),
-                    'edit' => $this->url()->fromRoute('hi-checkup/checkup/edit/wildcard', array('checkup_id' => '')),
-                    'add' => $this->url()->fromRoute('hi-checkup/checkup/add'),
-                )
-            )
-        );
-
-        /**
-         * POST
-         */
-        if ($this->getRequest()->isPost()) {
-
-            $formData = $this->getRequest()->post()->toArray();
-
-            if ($form->isValid($formData)) {
-//                \Zend\Debug::dump($formData);
-                if (    isset($formData['header']['formId'])
-                        && $formData['header']['formId'] == 'CheckupGridForm') {
-
-//                    if (isset($formData['WorkoutExerciseRowset']['actions']['saveSelected'])) {
-//                        $allBox = $formData['WorkoutExerciseRowset']['header']['all'];
-//                        $rows = $formData['WorkoutExerciseRowset']['rows'];
+//        $list->processRequest($this->getRequest());
+//
+//        //
+//        $list->build();
+//
+//        //
+//        $form->addSubForm($list, $list->getName());
+//
+////        //
+//        $this->_view->headScript()->appendScript(
+//            $this->_view->render(
+//                'checkup/list.js',
+//                array(
+//                    'delete' => $this->url()->fromRoute('hi-checkup/checkup/delete/wildcard', array('checkup_id' => '')),
+//                    'edit' => $this->url()->fromRoute('hi-checkup/checkup/edit/wildcard', array('checkup_id' => '')),
+//                    'add' => $this->url()->fromRoute('hi-checkup/checkup/add'),
+//                )
+//            )
+//        );
+//
+//        /**
+//         * POST
+//         */
+//        if ($this->getRequest()->isPost()) {
+//
+//            $formData = $this->getRequest()->post()->toArray();
+//
+//            if ($form->isValid($formData)) {
+////                \Zend\Debug::dump($formData);
+//                if (    isset($formData['header']['formId'])
+//                        && $formData['header']['formId'] == 'CheckupGridForm') {
+//
+////                    if (isset($formData['WorkoutExerciseRowset']['actions']['saveSelected'])) {
+////                        $allBox = $formData['WorkoutExerciseRowset']['header']['all'];
+////                        $rows = $formData['WorkoutExerciseRowset']['rows'];
+////
+////                        foreach ($rows as $key => $row) {
+////                            if ($row['id'] || $allBox) {
+//////                                \HiZend\Debug\Debug::dump($row['row']);
+//////                                \HiZend\Debug\Debug::dump($key);
+////
+////                                $exercise = $this->_exercise->getWorkoutExercise($key);
+////                                $exercise->setFromArray($row['row']);
+////                                $exercise->save();
+////
+////                            }
+////                        }
+////
+////                        return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id));
+////                    }
+//
+//                    if (isset($formData['CheckupResultSetSubForm']['actions']['massDelete'])) {
+//
+//                        $allBox = $formData['CheckupResultSetSubForm']['header']['all'];
+//                        $rows = $formData['CheckupResultSetSubForm']['rows'];
 //
 //                        foreach ($rows as $key => $row) {
 //                            if ($row['id'] || $allBox) {
-////                                \HiZend\Debug\Debug::dump($row['row']);
-////                                \HiZend\Debug\Debug::dump($key);
 //
-//                                $exercise = $this->_exercise->getWorkoutExercise($key);
-//                                $exercise->setFromArray($row['row']);
-//                                $exercise->save();
+//
+//                                $checkup = $this->_checkup->getRow(array('checkup_id' => $key));
+//                                if ($checkup) {
+//                                    $checkup->delete();
+//                                }
+//
+//                                $checkupToProfiles = $this->_checkupToProfile->getResultSet(
+//                                    array('checkup_id' => $key),
+//                                    null,
+//                                    null,
+//                                    null,
+//                                    array('ctp_id')
+//                                );
+//
+//                                foreach($checkupToProfiles as $checkupToProfile) {
+//                                    $checkupToProfile->delete();
+//                                }
 //
 //                            }
 //                        }
 //
-//                        return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id));
+//                        return $this->redirect()->toRoute('hi-checkup/checkup/list');
+//
 //                    }
+//                }
+//            }
+//        }
 
-                    if (isset($formData['CheckupResultSetSubForm']['actions']['massDelete'])) {
+        $view = new ViewModel();
 
-                        $allBox = $formData['CheckupResultSetSubForm']['header']['all'];
-                        $rows = $formData['CheckupResultSetSubForm']['rows'];
+//        $view->addChild($form, 'form');
 
-                        foreach ($rows as $key => $row) {
-                            if ($row['id'] || $allBox) {
-
-
-                                $checkup = $this->_checkup->getRow(array('checkup_id' => $key));
-                                if ($checkup) {
-                                    $checkup->delete();
-                                }
-
-                                $checkupToProfiles = $this->_checkupToProfile->getResultSet(
-                                    array('checkup_id' => $key),
-                                    null,
-                                    null,
-                                    null,
-                                    array('ctp_id')
-                                );
-
-                                foreach($checkupToProfiles as $checkupToProfile) {
-                                    $checkupToProfile->delete();
-                                }
-
-                            }
-                        }
-
-                        return $this->redirect()->toRoute('hi-checkup/checkup/list');
-
-                    }
-                }
-            }
-        }
-
-        return array(
-            'form' => $form,
-        );
+        return $view;
     }
 
 /**

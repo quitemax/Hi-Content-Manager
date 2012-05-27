@@ -2,37 +2,37 @@
 
 namespace Application;
 
-use Zend\Module\Manager,
-    Zend\EventManager\StaticEventManager,
-    Zend\Module\Consumer\AutoloaderProvider;
+//use Zend\Module\Manager,
+//    Zend\EventManager\StaticEventManager,
+//    Zend\Module\Consumer\AutoloaderProvider;
 
-class Module implements AutoloaderProvider
+class Module //implements AutoloaderProvider
 {
-    public function init(Manager $moduleManager)
-    {
-        $events       = $moduleManager->events();
-        $sharedEvents = $events->getSharedManager();
-        $sharedEvents->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 100);
-
-        $sharedEvents->attach('bootstrap', 'bootstrap', array($this, 'initializeDispatchListener'), 100);
-    }
-
-    public function initializeDispatchListener($e)
-    {
-        // Register a dispatch event
-        $app = $e->getParam('application');
-        $app->events()->attach('dispatch', array($this, 'setLayoutVars'), -100);
-    }
-
-    public function setLayoutVars($e)
-    {
-        $matches    = $e->getRouteMatch();
-        $controller = $matches->getParam('controller');
-
-        // Set the layout template
-        $viewModel = $e->getViewModel();
-        $viewModel->setVariable('controller', $controller);
-    }
+//    public function init(Manager $moduleManager)
+//    {
+//        $events       = $moduleManager->events();
+//        $sharedEvents = $events->getSharedManager();
+//        $sharedEvents->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 100);
+//
+//        $sharedEvents->attach('bootstrap', 'bootstrap', array($this, 'initializeDispatchListener'), 100);
+//    }
+//
+//    public function initializeDispatchListener($e)
+//    {
+//        // Register a dispatch event
+//        $app = $e->getParam('application');
+//        $app->events()->attach('dispatch', array($this, 'setLayoutVars'), -100);
+//    }
+//
+//    public function setLayoutVars($e)
+//    {
+//        $matches    = $e->getRouteMatch();
+//        $controller = $matches->getParam('controller');
+//
+//        // Set the layout template
+//        $viewModel = $e->getViewModel();
+//        $viewModel->setVariable('controller', $controller);
+//    }
 
     public function getAutoloaderConfig()
     {
@@ -53,17 +53,17 @@ class Module implements AutoloaderProvider
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function initializeView($e)
-    {
-        $app          = $e->getParam('application');
-        $basePath     = $app->getRequest()->getBasePath();
-        $locator      = $app->getLocator();
-        $renderer     = $locator->get('Zend\View\Renderer\PhpRenderer');
-        $renderer->plugin('basePath')->setBasePath($basePath);
-        $renderer->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js', 'text/javascript');
-        $renderer->headScript()->appendFile('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.js', 'text/javascript');
-        $renderer->headLink()->appendStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css', 'screen');
-
-    }
+//    public function initializeView($e)
+//    {
+//        $app          = $e->getParam('application');
+//        $basePath     = $app->getRequest()->getBasePath();
+//        $locator      = $app->getLocator();
+//        $renderer     = $locator->get('Zend\View\Renderer\PhpRenderer');
+//        $renderer->plugin('basePath')->setBasePath($basePath);
+//        $renderer->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js', 'text/javascript');
+//        $renderer->headScript()->appendFile('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.js', 'text/javascript');
+//        $renderer->headLink()->appendStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css', 'screen');
+//
+//    }
 
 }

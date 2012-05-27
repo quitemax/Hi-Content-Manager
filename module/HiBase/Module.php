@@ -2,11 +2,11 @@
 
 namespace HiBase;
 
-use Zend\Module\Manager,
-    Zend\EventManager\StaticEventManager,
-    Zend\Module\Consumer\AutoloaderProvider;
+//use Zend\Module\Manager,
+//    Zend\EventManager\StaticEventManager,
+//    Zend\Module\Consumer\AutoloaderProvider;
 
-class Module implements AutoloaderProvider
+class Module //implements AutoloaderProvider
 {
     public function getAutoloaderConfig()
     {

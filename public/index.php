@@ -1,9 +1,17 @@
 <?php
-
 /**
  * boot preconditions
  */
 require_once 'boot.php';
+
+/**
+ *
+ */
+use Zend\Loader\AutoloaderFactory,
+    Zend\ServiceManager\ServiceManager,
+    Zend\Mvc\Service\ServiceManagerConfiguration;
+
+
 
 //
 chdir(dirname(__DIR__));
@@ -52,16 +60,16 @@ set_include_path(implode(PS, array(
  *
  */
 require_once (getenv('ZF2_PATH') ?: '' ) . '/Zend/Loader/AutoloaderFactory.php';
-Zend\Loader\AutoloaderFactory::factory(
-    array(
-        'Zend\Loader\StandardAutoloader' => array(
-            'prefixes' => array(
-//                'Hi' => VENDOR_PATH . '/Hi',
-             ),
-             'fallback_autoloader' => true,
-        )
-    )
-);
+AutoloaderFactory::factory();
+
+//array(
+//        'Zend\Loader\StandardAutoloader' => array(
+//            'prefixes' => array(
+////                'Hi' => VENDOR_PATH . '/Hi',
+//             ),
+//             'fallback_autoloader' => true,
+//        )
+//    )
 
 /**
  * application enviroment
@@ -74,7 +82,7 @@ if (!($env = getenv('APPLICATION_ENV'))) {
 /*
  * Application config
  */
-$appConfig = include 'config/application.config.php';
+$configuration = include 'config/application.config.php';
 
 
 try {
@@ -83,31 +91,39 @@ try {
      *
      *
      */
-    $sharedEvents     = new Zend\EventManager\SharedEventManager();
-    $listenerOptions  = new Zend\Module\Listener\ListenerOptions($appConfig['module_listener_options']);
-    $defaultListeners = new Zend\Module\Listener\DefaultListenerAggregate($listenerOptions);
-    $defaultListeners->getConfigListener()->addConfigGlobPath("config/autoload/{module.*,global,$env,local,database}.config.php");
+    // Setup service manager
+    $serviceManager = new ServiceManager(new ServiceManagerConfiguration($configuration['service_manager']));
+    $serviceManager->setService('ApplicationConfiguration', $configuration);
+    $serviceManager->get('ModuleManager')->loadModules();
 
+    // Run application
+    $serviceManager->get('Application')->bootstrap()->run()->send();
 
-    /*
-     * Application module manager
-     */
-    $moduleManager = new Zend\Module\Manager($appConfig['modules']);
-    $events        = $moduleManager->events();
-    $events->setSharedManager($sharedEvents);
-    $events->attach($defaultListeners);
-    $moduleManager->loadModules();
-
-    // Create application, bootstrap, and run
-    $bootstrap   = new Zend\Mvc\Bootstrap($defaultListeners->getConfigListener()->getMergedConfig());
-//    echo "<pre>" . '"$defaultListeners->getConfigListener()->getMergedConfig()" ';
-//     print_r($defaultListeners->getConfigListener()->getMergedConfig()->toArray());
-//    echo "</pre>";
-
-    $bootstrap->events()->setSharedManager($sharedEvents);
-    $application = new Zend\Mvc\Application;
-    $bootstrap->bootstrap($application);
-    $application->run()->send();
+//    $sharedEvents     = new Zend\EventManager\SharedEventManager();
+//    $listenerOptions  = new Zend\Module\Listener\ListenerOptions($appConfig['module_listener_options']);
+//    $defaultListeners = new Zend\Module\Listener\DefaultListenerAggregate($listenerOptions);
+//    $defaultListeners->getConfigListener()->addConfigGlobPath("config/autoload/{module.*,global,$env,local,database}.config.php");
+//
+//
+//    /*
+//     * Application module manager
+//     */
+//    $moduleManager = new Zend\Module\Manager($appConfig['modules']);
+//    $events        = $moduleManager->events();
+//    $events->setSharedManager($sharedEvents);
+//    $events->attach($defaultListeners);
+//    $moduleManager->loadModules();
+//
+//    // Create application, bootstrap, and run
+//    $bootstrap   = new Zend\Mvc\Bootstrap($defaultListeners->getConfigListener()->getMergedConfig());
+////    echo "<pre>" . '"$defaultListeners->getConfigListener()->getMergedConfig()" ';
+////     print_r($defaultListeners->getConfigListener()->getMergedConfig()->toArray());
+////    echo "</pre>";
+//
+//    $bootstrap->events()->setSharedManager($sharedEvents);
+//    $application = new Zend\Mvc\Application;
+//    $bootstrap->bootstrap($application);
+//    $application->run()->send();
 
 
 

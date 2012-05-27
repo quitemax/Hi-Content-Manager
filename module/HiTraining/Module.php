@@ -2,12 +2,12 @@
 
 namespace HiTraining;
 
-use Zend\Module\Consumer\AutoloaderProvider,
-    Zend\Module\Manager,
-    Zend\EventManager\StaticEventManager,
-    Zend\EventManager\Event;
+//use Zend\Module\Consumer\AutoloaderProvider,
+//    Zend\Module\Manager,
+//    Zend\EventManager\StaticEventManager,
+//    Zend\EventManager\Event;
 
-class Module implements AutoloaderProvider
+class Module //implements AutoloaderProvider
 {
     public function getAutoloaderConfig()
     {
@@ -28,28 +28,28 @@ class Module implements AutoloaderProvider
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function init(Manager $moduleManager)
-    {
-        $events       = $moduleManager->events();
-        $sharedEvents = $events->getSharedManager();
-        $sharedEvents->attach('bootstrap', 'bootstrap', array($this, 'onBootstrap'));
-
-//        $sharedEvents->attach('bootstrap', 'bootstrap', array($this, 'initializeDispatchListener'), 100);
+//    public function init(Manager $moduleManager)
+//    {
+//        $events       = $moduleManager->events();
+//        $sharedEvents = $events->getSharedManager();
+//        $sharedEvents->attach('bootstrap', 'bootstrap', array($this, 'onBootstrap'));
 //
+////        $sharedEvents->attach('bootstrap', 'bootstrap', array($this, 'initializeDispatchListener'), 100);
+////
+////
+////        $events = StaticEventManager::getInstance();
+////        $events->attach('bootstrap', 'bootstrap',
+////            array($this, 'onBootstrap'));
+//    }
 //
-//        $events = StaticEventManager::getInstance();
-//        $events->attach('bootstrap', 'bootstrap',
-//            array($this, 'onBootstrap'));
-    }
-
-    public function onBootstrap(Event $e)
-    {
-        $application  = $e->getParam('application');
-        /* @var $application \Zend\Mvc\Application */
-        $locator      = $application->getLocator();
-        $view         = $locator->get('Zend\View\View');
-        $jsonStrategy = $locator->get('Zend\View\Strategy\JsonStrategy');
-        $view->events()->attach($jsonStrategy, 100);
-
-    }
+//    public function onBootstrap(Event $e)
+//    {
+//        $application  = $e->getParam('application');
+//        /* @var $application \Zend\Mvc\Application */
+//        $locator      = $application->getLocator();
+//        $view         = $locator->get('Zend\View\View');
+//        $jsonStrategy = $locator->get('Zend\View\Strategy\JsonStrategy');
+//        $view->events()->attach($jsonStrategy, 100);
+//
+//    }
 }
