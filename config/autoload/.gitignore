@@ -1,2 +1,6 @@
 local.config.php
+global.config.php
 database.config.php
+local.php
+global.php
+database.php
