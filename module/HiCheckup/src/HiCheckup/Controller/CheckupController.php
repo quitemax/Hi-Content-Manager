@@ -7,7 +7,9 @@ use Zend\Mvc\Controller\ActionController,
     HiCheckup\Model\Checkup,
     HiCheckup\Form\Checkup\Grid as CheckupGrid,
     HiCheckup\Form\Checkup\ResultSet as CheckupResultSet,
-    HiCheckup\Form\Checkup\Row as CheckupRow;
+    HiCheckup\Form\Checkup\Row as CheckupRow,
+    HiBase\View\Model\Block\Block
+    ;
 
 class CheckupController extends ActionController
 {
@@ -135,8 +137,13 @@ class CheckupController extends ActionController
      */
     public function listAction()
     {
-//        $form = new ViewModel();
+        $form = new Block();
+        $form->setTemplate('_grid/_form/_form');
 
+        $fieldSet = new Block();
+        $fieldSet->setTemplate('_grid/_resultSet/_subForm.phtml');
+
+        $form->addChild($fieldSet, 'content');
 
 //        /**
 //         * Grid FORM
@@ -247,7 +254,7 @@ class CheckupController extends ActionController
 
         $view = new ViewModel();
 
-//        $view->addChild($form, 'form');
+        $view->addChild($form, 'form');
 
         return $view;
     }
