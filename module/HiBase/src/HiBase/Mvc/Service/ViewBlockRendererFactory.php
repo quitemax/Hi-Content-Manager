@@ -13,24 +13,37 @@
 // * to license@zend.com so we can send you a copy immediately.
 // *
 // * @category   Zend
-// * @package    Zend_View
-// * @subpackage Model
+// * @package    Zend_Mvc
+// * @subpackage Service
 // * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
 // * @license    http://framework.zend.com/license/new-bsd     New BSD License
 // */
 
-namespace HiBase\View\Block;
+namespace HiBase\Mvc\Service;
 
-use HiBase\View\Block\AbstractBlock;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use HiBase\View\Renderer\BlockRenderer;
 
 ///**
 // * @category   Zend
-// * @package    Zend_View
-// * @subpackage Model
+// * @package    Zend_Mvc
+// * @subpackage Service
 // * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
 // * @license    http://framework.zend.com/license/new-bsd     New BSD License
 // */
-class Block extends AbstractBlock
+class ViewBlockRendererFactory implements FactoryInterface
 {
-
+//    /**
+//     * Create and return the JSON view renderer
+//     *
+//     * @param  ServiceLocatorInterface $serviceLocator
+//     * @return JsonStrategy
+//     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        $blockRenderer = new BlockRenderer();
+        return $blockRenderer;
+    }
 }
+

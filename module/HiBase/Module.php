@@ -2,12 +2,43 @@
 
 namespace HiBase;
 
-//use Zend\Module\Manager,
-//    Zend\EventManager\StaticEventManager,
-//    Zend\Module\Consumer\AutoloaderProvider;
+//use Zend\ModuleManager\ModuleManager;
 
-class Module //implements AutoloaderProvider
+
+class Module
 {
+//    public function init(ModuleManager $moduleManager)
+//    {
+//        $events       = $moduleManager->events();
+//        $sharedEvents = $events->getSharedManager();
+////        $sharedEvents->attach('bootstrap', 'bootstrap', array($this, 'initializeBlockRenderer'), 100);
+//    }
+//    public function getServiceConfiguration()
+//    {
+//    }
+
+    public function onBootstrap($e)
+    {
+        //initialize Block Renderer
+        $this->initializeBlockRenderer($e);
+
+    }
+
+    public function initializeBlockRenderer($e)
+    {
+        $app              = $e->getParam('application');
+        $service          = $app->getServiceManager();
+
+//        $config    = $service->get('Configuration');
+//        \Zend\Debug::dump($config);
+
+        $blockStrategy     = $service->get('ViewBlockStrategy');
+        $view              = $service->get('View');
+        $view->events()->attach($blockStrategy, 100);
+
+
+    }
+
     public function getAutoloaderConfig()
     {
         return array(
@@ -26,4 +57,6 @@ class Module //implements AutoloaderProvider
     {
         return include __DIR__ . '/config/module.config.php';
     }
+
+
 }

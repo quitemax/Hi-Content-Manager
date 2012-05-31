@@ -1,27 +1,27 @@
 <?php
 return array(
-//    'hi-training' => array(
-//        'ver'          => '0.0.4.0',
-///**
-// * @todo ver @ 0.0.5.0
-// * -> 0.
-// * -> 1. dodac cwiczenia lafaya
-// * -> 2. dokonczyc statystyki exercise-type (wzgledem formularza)
-// * -> DONE ? 3. nowe typy formularzy lafay
-// * -> 4. dodac do exercise type row aby moc robic serialize/unserialize
-// *       A RACZEJ CALE BEHAVIOUR  IMAGEARRAY ( i to do type'a)
-// * -> 5. dodac przegladanie fotek i wyglad et tree
-// *
-// * @todo ver @ 0.0.6.0
-// * -> 1. workout_profile etc...
-//
-//
-//6/7. workout stats profiles
-// */
-////        'user_model_class'          => 'ZfcUser\Model\User',
-////        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
-////        'enable_registration'       => true,
-//    ),
+    'hi-training' => array(
+        'ver'          => '0.0.4.0',
+/**
+ * @todo ver @ 0.0.5.0
+ * -> 0.
+ * -> 1. dodac cwiczenia lafaya
+ * -> 2. dokonczyc statystyki exercise-type (wzgledem formularza)
+ * -> DONE ? 3. nowe typy formularzy lafay
+ * -> 4. dodac do exercise type row aby moc robic serialize/unserialize
+ *       A RACZEJ CALE BEHAVIOUR  IMAGEARRAY ( i to do type'a)
+ * -> 5. dodac przegladanie fotek i wyglad et tree
+ *
+ * @todo ver @ 0.0.6.0
+ * -> 1. workout_profile etc...
+ *
+ * @todo ver @ 0.0.7.0
+ * -> 1. workout stats profiles etc...
+ */
+//        'user_model_class'          => 'ZfcUser\Model\User',
+//        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
+//        'enable_registration'       => true,
+    ),
 //    'di' => array(
 //        'instance' => array(
 //

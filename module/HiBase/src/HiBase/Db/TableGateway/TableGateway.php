@@ -82,29 +82,31 @@ class TableGateway extends ZendTableGateway
 //     */
 //    protected $_behaviourObjects = array();
 
-	/**
-     * Constructor
-     *
-     * @param string $tableName
-     * @param Adapter $adapter
-     * @param string $schema
-     * @param ResultSet $selectResultPrototype
-     */
-    public function __construct($tableName, Adapter $adapter, $schema = null, ResultSet $selectResultPrototype = null)
-    {
-        parent::__construct($tableName, $adapter, $schema, $selectResultPrototype);
-
-        $this->init();
-    }
+//	/**
+//     * Constructor
+//     *
+//     * @param string $tableName
+//     * @param Adapter $adapter
+//     * @param string $schema
+//     * @param ResultSet $selectResultPrototype
+//     */
+//    public function __construct($tableName, Adapter $adapter, $schema = null, ResultSet $selectResultPrototype = null)
+//    {
+//        parent::__construct($tableName, $adapter, $schema, $selectResultPrototype);
+//
+//        $this->init();
+//    }
 
     /**
      *
      * Enter description here ...
      */
-    protected function init()
+    public function initialize()
     {
+        parent::initialize();
+
         $this->setTableDefinition();
-        $this->setPrototypes();
+
         $this->setBehaviours();
     }
 

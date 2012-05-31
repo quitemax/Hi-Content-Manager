@@ -19,7 +19,7 @@
 // * @license    http://framework.zend.com/license/new-bsd     New BSD License
 // */
 
-namespace HiBase\View\Model\Block;
+namespace HiBase\View\Block;
 
 use Zend\View\Model\ViewModel;
 

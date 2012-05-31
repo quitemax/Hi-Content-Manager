@@ -8,63 +8,10 @@ use Zend\Mvc\Controller\ActionController,
     HiCheckup\Form\Checkup\Grid as CheckupGrid,
     HiCheckup\Form\Checkup\ResultSet as CheckupResultSet,
     HiCheckup\Form\Checkup\Row as CheckupRow,
-    HiBase\View\Model\Block\Block
-    ;
+    HiBase\View\Block\Block;
 
 class CheckupController extends ActionController
 {
-	/**
-     *  checkup model
-     *
-     * Enter description here ...
-     */
-    protected $_profile;
-
-    public function setProfile($profile)
-    {
-        $this->_profile = $profile;
-        return $this;
-    }
-
-	/**
-     *  checkup model
-     *
-     * Enter description here ...
-     */
-    protected $_checkup;
-
-    public function setCheckup($checkup)
-    {
-        $this->_checkup = $checkup;
-        return $this;
-    }
-
-  /**
-     *  checkup model
-     *
-     * Enter description here ...
-     */
-    protected $_checkupToProfile;
-
-    public function setCheckupToProfile($checkupToProfile)
-    {
-        $this->_checkupToProfile = $checkupToProfile;
-        return $this;
-    }
-
-    /**
-     *  view renderer
-     *
-     * Enter description here ...
-     */
-    protected $_view;
-
-    public function setView($view)
-    {
-        $this->_view = $view;
-        return $this;
-    }
-
     /**
      *  INDEX
      *
@@ -137,6 +84,8 @@ class CheckupController extends ActionController
      */
     public function listAction()
     {
+        $locator = $this->getServiceLocator();
+
         $form = new Block();
         $form->setTemplate('_grid/_form/_form');
 
@@ -144,6 +93,12 @@ class CheckupController extends ActionController
         $fieldSet->setTemplate('_grid/_resultSet/_subForm.phtml');
 
         $form->addChild($fieldSet, 'content');
+
+//        \Zend\Debug::dump($this->getServiceLocator()->get('CheckupModel'));
+
+        $locator->get('CheckupModel');
+        $locator->get('CheckupProfileModel');
+        $locator->get('CheckupToProfileModel');
 
 //        /**
 //         * Grid FORM
@@ -159,7 +114,7 @@ class CheckupController extends ActionController
 //         */
 //        $list = new CheckupResultSet(
 //            array(
-//                'model' => $this->_checkup,
+//                'model' => $locator->get('CheckupModel');,
 //                'view' => $this->_view,
 //            )
 //        );

@@ -244,15 +244,15 @@ class DbTable extends TableGateway
         );
     }
 
-    protected function setPrototypes()
-    {
-        $this->setSelectResultPrototype(
-            new ResultSet(
-                new Row(
-                    $this->getPrimaryKey(), $this->getName(), $this->adapter, null, $this
-                )
-            )
-        );
-    }
+//    protected function setPrototypes()
+//    {
+//        $this->setSelectResultPrototype(
+//            new ResultSet(
+//                new Row(
+//                    $this->getPrimaryKey(), $this->getName(), $this->adapter, null, $this
+//                )
+//            )
+//        );
+//    }
 
 }

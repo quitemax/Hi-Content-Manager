@@ -19,8 +19,8 @@ return array(
         ),
     ),
     'service_manager' => array(
-        'use_defaults' => true,
-        'factories'    => array(
-        ),
+////        'use_defaults' => true,
+////        'factories'    => array(
+////        ),
     ),
 );

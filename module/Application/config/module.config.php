@@ -11,7 +11,7 @@ return array(
                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'index',
+                        'controller' => 'application/index',
                         'action'     => 'index',
                     ),
                 ),
@@ -21,7 +21,7 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'index',
+                        'controller' => 'application/index',
                         'action'     => 'index',
                     ),
                 ),
@@ -30,7 +30,7 @@ return array(
     ),
     'controller' => array(
         'classes' => array(
-            'index' => 'Application\Controller\IndexController'
+            'application/index' => 'Application\Controller\IndexController'
         ),
     ),
     'view_manager' => array(
