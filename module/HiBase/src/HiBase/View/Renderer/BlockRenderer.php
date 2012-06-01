@@ -20,33 +20,24 @@
 // */
 
 namespace HiBase\View\Renderer;
-//use ArrayAccess,
-//    Zend\Filter\FilterChain,
-//    Zend\Loader\Pluggable,
-//    Zend\View\Exception,
-//    Zend\View\HelperBroker,
-//    Zend\View\Model\ModelInterface as Model,
-//    Zend\View\Resolver\TemplatePathStack,
-//    Zend\View\Renderer\RendererInterface as Renderer,
-//    Zend\View\Resolver\ResolverInterface as Resolver,
-//    Zend\View\Variables;
+
+use ArrayAccess;
+use Zend\View\Variables;
+use Zend\View\Exception;
 //use JsonSerializable,
 //    Traversable,
 //    Zend\Json\Json,
 //    Zend\Stdlib\ArrayUtils,
 //    Zend\View\Exception,
-//    Zend\View\Model\ModelInterface as Model,
-//    Zend\View\Model\JsonModel,
-//use ArrayAccess,
-//    Zend\Filter\FilterChain,
+use Zend\View\Model\ModelInterface as Model;
+//    Zend\View\Model\ViewModel;
+use Zend\Filter\FilterChain;
 //    Zend\Loader\Pluggable,
-//    Zend\View\Exception,
 use Zend\View\HelperBroker;
-//    Zend\View\Model\ModelInterface as Model,
-//    Zend\View\Resolver\TemplatePathStack,
+use HiBase\Block\Block;
+use Zend\View\Resolver\TemplatePathStack;
 //    Zend\View\Renderer\RendererInterface as Renderer,
 //    Zend\View\Resolver\ResolverInterface as Resolver,
-//    Zend\View\Variables;
 use Zend\Loader\Pluggable;
 use Zend\View\Renderer\RendererInterface;
 use Zend\View\Renderer\TreeRendererInterface;
@@ -63,27 +54,26 @@ use Zend\View\Resolver\ResolverInterface;
 // */
 class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterface
 {
+
     /**
      * @var bool Whether or not to render trees of view models
      */
     private $__renderTrees = false;
-//    /**
-//     * Whether or not to merge child models with no capture-to value set
-//     * @var bool
-//     */
-//    protected $mergeUnnamedChildren = false;
-//
+
     /**
+     * Template resolver
+     *
      * @var Resolver
      */
-    protected $resolver;
-//
-//    /**
-//     * JSONP callback (if set, wraps the return in a function call)
-//     *
-//     * @var string
-//     */
-//    protected $jsonpCallback = null;
+    private $__templateResolver;
+
+    /**
+     * Helper broker
+     *
+     * @var HelperBroker
+     */
+    private $__helperBroker;
+
 
     /**
      * Return the template engine object, if any
@@ -100,164 +90,49 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
     }
 
     /**
-     * Set the resolver used to map a template name to a resource the renderer may consume.
+     * Set script resolver
      *
-     * //@ todo   Determine use case for resolvers when rendering JSON
      * @param  Resolver $resolver
-     * @return Renderer
+     * @return PhpRenderer
+     * @throws Exception\InvalidArgumentException
      */
     public function setResolver(ResolverInterface $resolver)
     {
-        $this->resolver = $resolver;
+//        \HiBase\Debug::precho($resolver, '$resolver');
+        $this->__templateResolver = $resolver;
+        return $this;
     }
-
-//    /**
-//     * Set flag indicating whether or not to merge unnamed children
-//     *
-//     * @param  bool $mergeUnnamedChildren
-//     * @return JsonRenderer
-//     */
-//    public function setMergeUnnamedChildren($mergeUnnamedChildren)
-//    {
-//        $this->mergeUnnamedChildren = (bool) $mergeUnnamedChildren;
-//        return $this;
-//    }
-//
-//	/**
-//     * Set the JSONP callback function name
-//     *
-//     * @param  string $callback
-//     * @return JsonpModel
-//     */
-//    public function setJsonpCallback($callback)
-//    {
-//        $callback = (string) $callback;
-//        if (!empty($callback)) {
-//            $this->jsonpCallback = $callback;
-//        }
-//        return $this;
-//    }
-//
-//    /**
-//     * Returns whether or not the jsonpCallback has been set
-//     *
-//     * @return bool
-//     */
-//    public function hasJsonpCallback()
-//    {
-//        return !is_null($this->jsonpCallback);
-//    }
-//
-//    /**
-//     * Should we merge unnamed children?
-//     *
-//     * @return bool
-//     */
-//    public function mergeUnnamedChildren()
-//    {
-//        return $this->mergeUnnamedChildren;
-//    }
 
     /**
-     * Renders values as JSON
      *
-     * @todo   Determine what use case exists for accepting both $nameOrModel and $values
-     * @param  string|Model $name The script/resource process, or a view model
-     * @param  null|array|\ArrayAccess Values to use during rendering
-     * @return string The script output.
+     *
+     * @param unknown_type $block
+     * @param unknown_type $values
      */
-    public function render($nameOrModel, $values = null)
+    public function render($block, $values = null)
     {
-//        // use case 1: View Models
-//        // Serialize variables in view model
-//        if ($nameOrModel instanceof Model) {
-//            if ($nameOrModel instanceof JsonModel) {
-//                $values = $nameOrModel->serialize();
-//            } else {
-//                $values = $this->recurseModel($nameOrModel);
-//                $values = Json::encode($values);
-//            }
-//
-//            if ($this->hasJsonpCallback()) {
-//                $values = $this->jsonpCallback.'('.$values.');';
-//            }
-//            return $values;
-//        }
-//
-//        // use case 2: $nameOrModel is populated, $values is not
-//        // Serialize $nameOrModel
-//        if (null === $values) {
-//            if (!is_object($nameOrModel) || $nameOrModel instanceof JsonSerializable) {
-//                $return = Json::encode($nameOrModel);
-//            } elseif ($nameOrModel instanceof Traversable) {
-//                $nameOrModel = ArrayUtils::iteratorToArray($nameOrModel);
-//                $return = Json::encode($nameOrModel);
-//            } else {
-//                $return = Json::encode(get_object_vars($nameOrModel));
-//            }
-//
-//            if ($this->hasJsonpCallback()) {
-//                $return = $this->jsonpCallback.'('.$return.');';
-//            }
-//            return $return;
-//        }
-//
-//        // use case 3: Both $nameOrModel and $values are populated
-//        throw new Exception\DomainException(sprintf(
-//            '%s: Do not know how to handle operation when both $nameOrModel and $values are populated',
-//            __METHOD__
-//        ));
-        return 'block';
+//        \Zend\Debug::dump('dada');
+        //
+        if ($block instanceof Block) {
+
+            //
+            $block->setBroker($this->getBroker());
+
+            //
+            $block->setResolver($this->__templateResolver);
+
+//            \Zend\Debug::dump($block->toHtml());
+
+            $return = $block->toHtml();
+
+            //
+            return $return;
+        }
+
+        //
+        return '';
     }
 
-//    /**
-//     * Can this renderer render trees of view models?
-//     *
-//     * Yes.
-//     *
-//     * @return true
-//     */
-//    public function canRenderTrees()
-//    {
-//        return true;
-//    }
-//
-//    /**
-//     * Retrieve values from a model and recurse its children to build a data structure
-//     *
-//     * @param  Model $model
-//     * @return array
-//     */
-//    protected function recurseModel(Model $model)
-//    {
-//        $values = $model->getVariables();
-//        if ($values instanceof Traversable) {
-//            $values = ArrayUtils::iteratorToArray($values);
-//        }
-//
-//        if (!$model->hasChildren()) {
-//            return $values;
-//        }
-//
-//        $mergeChildren = $this->mergeUnnamedChildren();
-//        foreach ($model as $child) {
-//            $captureTo = $child->captureTo();
-//            if (!$captureTo && !$mergeChildren) {
-//                // We don't want to do anything with this child
-//                continue;
-//            }
-//
-//            $childValues = $this->recurseModel($child);
-//            if ($captureTo) {
-//                // Capturing to a specific key
-//                $values[$captureTo] = $childValues;
-//            } elseif ($mergeChildren) {
-//                // Merging values with parent
-//                $values = array_replace_recursive($values, $childValues);
-//            }
-//        }
-//        return $values;
-//    }
     /**
      * Set plugin broker instance
      *
@@ -311,7 +186,7 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
         return $this->getBroker()->load($name, $options);
     }
 
-/**
+    /**
      * Set flag indicating whether or not we should render trees of view models
      *
      * If set to true, the View instance will not attempt to render children
@@ -337,4 +212,6 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
     {
         return $this->__renderTrees;
     }
+
+
 }

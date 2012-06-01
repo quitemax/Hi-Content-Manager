@@ -29,7 +29,7 @@ class Module
         $app              = $e->getParam('application');
         $service          = $app->getServiceManager();
 
-//        $config    = $service->get('Configuration');
+        $config    = $service->get('Configuration');
 //        \Zend\Debug::dump($config);
 
         $blockStrategy     = $service->get('ViewBlockStrategy');

@@ -2,13 +2,15 @@
 
 namespace HiCheckup\Controller;
 
-use Zend\Mvc\Controller\ActionController,
-    Zend\View\Model\ViewModel,
-    HiCheckup\Model\Checkup,
-    HiCheckup\Form\Checkup\Grid as CheckupGrid,
-    HiCheckup\Form\Checkup\ResultSet as CheckupResultSet,
-    HiCheckup\Form\Checkup\Row as CheckupRow,
-    HiBase\View\Block\Block;
+use Zend\Mvc\Controller\ActionController;
+use Zend\View\Model\ViewModel;
+use HiCheckup\Model\Checkup;
+use HiCheckup\Block\Checkup\Grid\Container as GridContainer;
+//use HiCheckup\Form\Checkup\Grid as CheckupGrid;
+//use HiCheckup\Form\Checkup\ResultSet as CheckupResultSet;
+//use HiCheckup\Form\Checkup\Row as CheckupRow;
+//use HiBase\Block\Widget\Grid\Container as GridContaineer;
+//use HiBase\Block\Widget\Grid\Container as GridContaineer;
 
 class CheckupController extends ActionController
 {
@@ -86,28 +88,28 @@ class CheckupController extends ActionController
     {
         $locator = $this->getServiceLocator();
 
-        $form = new Block();
-        $form->setTemplate('_grid/_form/_form');
+//        $form = new Block();
+//        $form->setTemplate('_grid/_form/_form');
+//
+//        $fieldSet = new Block();
+//        $fieldSet->setTemplate('_grid/_resultSet/_subForm.phtml');
+//
+//        $form->addChild($fieldSet, 'content');
+//
+////        \Zend\Debug::dump($this->getServiceLocator()->get('CheckupModel'));
 
-        $fieldSet = new Block();
-        $fieldSet->setTemplate('_grid/_resultSet/_subForm.phtml');
+        $checkupModel = $locator->get('CheckupModel');
+//        $locator->get('CheckupProfileModel');
+//        $locator->get('CheckupToProfileModel');
 
-        $form->addChild($fieldSet, 'content');
-
-//        \Zend\Debug::dump($this->getServiceLocator()->get('CheckupModel'));
-
-        $locator->get('CheckupModel');
-        $locator->get('CheckupProfileModel');
-        $locator->get('CheckupToProfileModel');
-
-//        /**
-//         * Grid FORM
-//         */
-//        $form = new CheckupGrid(
+        /**
+         * Grid FORM Container
+         */
+        $gridContainer = new GridContainer(
 //            array(
 //                'view' => $this->_view,
 //            )
-//        );
+        );
 ////
 //        /**
 //         * BUILDING LIST
@@ -209,7 +211,7 @@ class CheckupController extends ActionController
 
         $view = new ViewModel();
 
-        $view->addChild($form, 'form');
+        $view->addChild($gridContainer, 'gridContainer');
 
         return $view;
     }

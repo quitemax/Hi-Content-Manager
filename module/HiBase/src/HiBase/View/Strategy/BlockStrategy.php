@@ -9,7 +9,7 @@ use Zend\Http\Response as HttpResponse;
 use Zend\View\Model;
 use HiBase\View\Renderer\BlockRenderer;
 use Zend\View\ViewEvent;
-use HiBase\View\Block\Block;
+use HiBase\Block\Block;
 
 /**
  * @category   Zend
@@ -80,31 +80,14 @@ class BlockStrategy implements ListenerAggregateInterface
     {
         $model = $e->getModel();
 
-//        \Zend\Debug::dump('selectRenderer(ViewEvent $e)');
-//        return;
-//
+//        \Zend\Debug::dump('dada');
+
         if ($model instanceof Block) {
-            // JsonModel found
+
+            // Block found
             return $this->renderer;
         }
-//
-//        $request = $e->getRequest();
-//        if (!$request instanceof HttpRequest) {
-//            // Not an HTTP request; cannot autodetermine
-//            return;
-//        }
-//
-//        $headers = $request->headers();
-//        if ($headers->has('accept')) {
-//            $accept  = $headers->get('Accept');
-//            foreach ($accept->getPrioritized() as $mediaType) {
-//                if (0 === strpos($mediaType, 'application/json')) {
-//                    // application/json Accept header found
-//                    return $this->renderer;
-//                }
-//            }
-//        }
-//
+
         // Not matched!
         return;
     }
