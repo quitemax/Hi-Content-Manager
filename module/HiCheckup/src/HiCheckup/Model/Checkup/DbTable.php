@@ -44,6 +44,9 @@ class DbTable extends TableGateway
                 'primary'          => true,
                 'autoincrement'    => true,
                 'notnull'          => true,
+                'grid'             => true,
+                'width'             => '100',
+                'sortable'             => true,
             )
         );
 
@@ -55,6 +58,9 @@ class DbTable extends TableGateway
                 'type'             => 'datetime',
                 'notnull'          => true,
                 'default'          => '0000-00-00 00:00:00',
+                'grid'          => true,
+                'width'             => 100,
+                'sortable'             => true,
             )
         );
 
@@ -79,6 +85,9 @@ class DbTable extends TableGateway
                 'scale'            => 3,
                 'notnull'          => true,
                 'default'          => '0.0',
+                'grid'          => true,
+                'width'             => 100,
+                'sortable'             => true,
             )
         );
 

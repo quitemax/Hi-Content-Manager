@@ -10,12 +10,13 @@ namespace HiBase\Db\RowGateway;
  * @license
  */
 
-use Zend\Db\RowGateway\RowGateway as ZendRowGateway,
-    Zend\Db\Adapter\Adapter,
-    Zend\Db\TableGateway\TableGateway,
-    Zend\Db\ResultSet\Row,
-    Zend\Db\ResultSet\RowObjectInterface,
-    Zend\Db\Sql;
+use Zend\Db\RowGateway\RowGateway as ZendRowGateway;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\ResultSet\Row;
+use Zend\Db\ResultSet\RowObjectInterface;
+use Zend\Db\Sql;
+use HiBase\Object\ObjectInterface as HiBaseObjectInterface;
 
 /**
  * Refited Zend_Db_Table class for use with HiCms
@@ -26,7 +27,7 @@ use Zend\Db\RowGateway\RowGateway as ZendRowGateway,
  * @copyright  Copyright (c) 2009 Piotr Maxymilian Socha
  * @license
  */
-class RowGateway extends ZendRowGateway
+class RowGateway extends ZendRowGateway implements HiBaseObjectInterface
 {
 
     protected $_tableGateway = null;
@@ -45,6 +46,11 @@ class RowGateway extends ZendRowGateway
         parent::__construct($primaryKey, $table, $adapter, $sql);
 
         $this->_tableGateway = $tableGateway;
+    }
+
+    public function getData()
+    {
+
     }
 
     /**
@@ -114,15 +120,15 @@ class RowGateway extends ZendRowGateway
     protected function _beforeSave()
     {
 
-        if ( $this->_tableGateway instanceof TableGateway) {
-//            \Zend\Debug::dump($this->_tableGateway->getBehaviours(), 'beforesave');
-            $behaviours = $this->_tableGateway->getBehaviours();
-            if (is_array($behaviours) && count($behaviours)) {
-                foreach ($behaviours as $behaviour) {
-                    $behaviour->beforeSave($this);
-                }
-            }
-        }
+//        if ( $this->_tableGateway instanceof TableGateway) {
+////            \Zend\Debug::dump($this->_tableGateway->getBehaviours(), 'beforesave');
+//            $behaviours = $this->_tableGateway->getBehaviours();
+//            if (is_array($behaviours) && count($behaviours)) {
+//                foreach ($behaviours as $behaviour) {
+//                    $behaviour->beforeSave($this);
+//                }
+//            }
+//        }
     }
 
     /**
@@ -132,17 +138,17 @@ class RowGateway extends ZendRowGateway
      */
     protected function _afterSave()
     {
-        if ( $this->_tableGateway instanceof TableGateway) {
-//            \Zend\Debug::dump($this->_tableGateway->getBehaviours(), 'beforesave');
-            $behaviours = $this->_tableGateway->getBehaviours();
-            if (is_array($behaviours) && count($behaviours)) {
-                foreach ($behaviours as $behaviour) {
-//                    \Zend\Debug::dump(get_class($this), '_afterSave');
-//                    \Zend\Debug::dump(get_class($behaviour), '_afterSave');
-                    $behaviour->afterSave($this);
-                }
-            }
-        }
+//        if ( $this->_tableGateway instanceof TableGateway) {
+////            \Zend\Debug::dump($this->_tableGateway->getBehaviours(), 'beforesave');
+//            $behaviours = $this->_tableGateway->getBehaviours();
+//            if (is_array($behaviours) && count($behaviours)) {
+//                foreach ($behaviours as $behaviour) {
+////                    \Zend\Debug::dump(get_class($this), '_afterSave');
+////                    \Zend\Debug::dump(get_class($behaviour), '_afterSave');
+//                    $behaviour->afterSave($this);
+//                }
+//            }
+//        }
     }
 
     /**

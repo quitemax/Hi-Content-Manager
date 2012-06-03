@@ -118,13 +118,13 @@ class TableGateway extends ZendTableGateway
     {
     }
 
-    /**
-     *
-     * Enter description here ...
-     */
-    protected function setPrototypes()
-    {
-    }
+//    /**
+//     *
+//     * Enter description here ...
+//     */
+//    protected function setPrototypes()
+//    {
+//    }
 
     /**
      *
@@ -141,6 +141,30 @@ class TableGateway extends ZendTableGateway
     public function getTableDefinition()
     {
         return $this->_columns;
+    }
+
+    /**
+     *
+     * Enter description here ...
+     */
+    public function getColumns()
+    {
+        $columns = array();
+
+        foreach ($this->_columns as $key => $column) {
+            if (isset($column['options']['grid']) && $column['options']['grid']) {
+
+                unset($column['options']['grid']);
+
+                $column = array_merge($column, $column['options']);
+
+                unset($column['options']);
+
+                $columns[$key] = $column;
+            }
+
+        }
+        return $columns;
     }
 
 
@@ -335,8 +359,6 @@ class TableGateway extends ZendTableGateway
         return $sqlSelect;
     }
 
-
-
     /**
      * Get all refited (Hi use)
      *
@@ -344,6 +366,24 @@ class TableGateway extends ZendTableGateway
      */
     public function getResultSet($where = null, $order = null, $count = null, $offset  = null, $cols = null)
     {
+        if (!$this->isInitialized) {
+            $this->initialize();
+        }
+
+//        $selectState = $select->getRawState();
+//        if ($selectState['table'] != $this->table) {
+//            throw new \RuntimeException('The table name of the provided select object must match that of the table');
+//        }
+//
+//        if ($selectState['columns'] == array(Select::SQL_STAR)
+//            && $this->columns !== array()) {
+//            $select->columns($this->columns);
+//        }
+
+
+
+
+
         //prepare the sql
 //        \Zend\Debug::dump($order);
         $sqlSelect = $this->prepareResultSetSql($where, $order, $count, $offset, $cols);
@@ -355,73 +395,29 @@ class TableGateway extends ZendTableGateway
         //save sql
         $this->_lastSql = $sqlSelect;
 
-        $statement = $this->adapter->createStatement();
-        $sqlSelect->prepareStatement($this->adapter, $statement);
+        // apply preSelect features
+        $this->featureSet->apply('preSelect', array($sqlSelect));
 
-//        \Zend\Debug::dump($sqlSelect, '$sqlSelect');
-//        \Zend\Debug::dump($statement, '$statement');
+        // prepare and execute
+        $statement = $this->sql->prepareStatementForSqlObject($sqlSelect);
         $result = $statement->execute();
 
+//        $statement = $this->adapter->createStatement();
+//        $sqlSelect->prepareStatement($this->adapter, $statement);
+//
+////        \Zend\Debug::dump($sqlSelect, '$sqlSelect');
+////        \Zend\Debug::dump($statement, '$statement');
+//        $result = $statement->execute();
+
         //
-        $resultSet = clone $this->selectResultPrototype;
+        // build result set
+        $resultSet = clone $this->resultSetPrototype;
         $resultSet->setDataSource($result);
 
-//        \Zend\Debug::dump($resultSet);
-//        \Zend\Debug::dump($resultSet->toArray());
-//        foreach ($resultSet as $key => $row) {
-////            \Zend\Debug::dump($key);
-////            \Zend\Debug::dump($row);
-////            \Zend\Debug::dump($row->toArray());
-////            \Zend\Debug::dump($row->toArray());
-//
-//        }
+        // apply postSelect features
+        $this->featureSet->apply('postSelect', array($statement, $result, $resultSet));
 
         return $resultSet;
-
-//        \HiZend\Debug\Debug::dump($sqlSelect->__toString());
-
-//        \Zend\Debug::dump($sqlSelect);
-//        \Zend\Debug::dump($result);
-
-
-
-
-//        $stmt = $this->_db->query($sqlSelect);
-//        $rows = $stmt->fetchAll(\Zend\Db\Db::FETCH_ASSOC);
-//
-//        $data  = array(
-//            'table'    => $this,
-//            'data'     => $rows,
-////            'readOnly' => $sqlSelect->isReadOnly(),
-//            'rowClass' => $this->getRowClass(),
-//            'stored'   => true
-//        );
-//
-//        $rowsetClass = $this->getRowsetClass();
-//        $rowSet =  new $rowsetClass($data);
-//
-//        if (!$rowSet) {
-//            return false;
-//        }
-//
-////        \HiZend\Debug\Debug::precho($rows, '$rows');
-//
-//
-////
-////
-////        foreach ($this->_behaviourObjects as $behaviourObject) {
-////            $allItems = $behaviourObject->modifyResults(
-////                $allItems,
-////                $where,
-////                $order,
-////                $count,
-////                $offset,
-////                $cols
-////            );
-////        }
-////
-////        //
-//        return $rowSet;
     }
 
     /**
@@ -447,7 +443,7 @@ class TableGateway extends ZendTableGateway
 //        \Zend\Debug::dump($result, '$result', true);
 //        \Zend\Debug::dump($result->current(), '$result->current()', true);
 
-        $row = clone $this->selectResultPrototype->getRowObjectPrototype();
+        $row = clone $this->resultSetPrototype->getRowObjectPrototype();
         $row->populate($result->current()?:array());
 //        \Zend\Debug::dump($row, '', true);
         //

@@ -42,12 +42,20 @@ class ViewBlockRendererFactory implements FactoryInterface
 //     */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        //
         $viewResolver = $serviceLocator->get('ViewResolver');
+//        $config = $serviceLocator->get('Configuration');
 
+        //
         $blockRenderer = new BlockRenderer();
 
+        //
         $blockRenderer->setResolver($viewResolver);
 
+        //
+        $blockRenderer->setServiceManager($serviceLocator);
+
+        //
         return $blockRenderer;
     }
 }

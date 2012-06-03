@@ -26,9 +26,12 @@ use Zend\View\Renderer\RendererInterface;
 use Zend\View\Renderer\TreeRendererInterface;
 use Zend\View\Resolver\ResolverInterface;
 use Zend\View\Variables;
+use Zend\View\Exception;
 use ArrayAccess;
 use Zend\Filter\FilterChain;
 use Zend\View\Resolver\TemplatePathStack;
+use Zend\Loader\Pluggable;
+use Zend\View\HelperBroker;
 
 ///**
 // * @category   Zend
@@ -37,7 +40,7 @@ use Zend\View\Resolver\TemplatePathStack;
 // * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
 // * @license    http://framework.zend.com/license/new-bsd     New BSD License
 // */
-class Block extends AbstractBlock implements RendererInterface
+class Block extends AbstractBlock implements RendererInterface, Pluggable
 {
     /**
      * Template resolver
@@ -75,20 +78,31 @@ class Block extends AbstractBlock implements RendererInterface
      * @var Zend\Filter\FilterChain
      */
     private $__filterChain;
-
     /**
-     * @var ArrayAccess|array ArrayAccess or associative array representing available variables
+     * @var
      */
-    private $__vars;
+    private $__helperBroker;
 
-    /**
-     * @var array Temporary variable stack; used when variables passed to render()
-     */
-    private $__varsCache = array();
+//    /**
+//     * @var ArrayAccess|array ArrayAccess or associative array representing available variables
+//     */
+//    private $__vars;
+
+//    /**
+//     * @var array Temporary variable stack; used when variables passed to render()
+//     */
+//    private $__varsCache = array();
 
 
     protected function _toHtml()
     {
+        $children = $this->getChildren();
+
+        foreach ($children as $child) {
+            $child->setResolver($this->__templateResolver);
+            $child->setServiceManager($this->getServiceManager());
+        }
+
         return $this->render();
     }
 
@@ -108,33 +122,37 @@ class Block extends AbstractBlock implements RendererInterface
 
             unset($template); // remove $name from local scope
         }
+//        $this->asdfasdfasdfasdf = 'asfdasdf';
 
-        $values = $this->getVariables();
-
-        // Give view model awareness via ViewModel helper
-        $helper = $this->plugin('view_model');
-//            \Zend\Debug::dump($helper);
-        $helper->setCurrent($this);
-
-
-
-        $this->__varsCache[] = $this->vars();
-
-        if (null !== $values) {
-            $this->setVars($values);
-        }
-        unset($values);
-
-        // extract all assigned vars (pre-escaped), but not 'this'.
-        // assigns to a double-underscored variable, to prevent naming collisions
-        $__vars = $this->vars()->getArrayCopy();
-        if (array_key_exists('this', $__vars)) {
-            unset($__vars['this']);
-        }
-
-//        \Zend\Debug::dump($__vars);
-        extract($__vars);
-        unset($__vars); // remove $__vars from local scope
+//        $values = $this->getVariables();
+//
+//        // Give view model awareness via ViewModel helper
+//        $helper = $this->plugin('view_model');
+////            \Zend\Debug::dump($helper);
+//        $helper->setCurrent($this);
+//
+//
+//
+//        $this->__varsCache[] = $this->vars();
+//
+//        if (null !== $values) {
+//            $this->setVars($values);
+//        }
+//        unset($values);
+//
+//        // extract all assigned vars (pre-escaped), but not 'this'.
+//        // assigns to a double-underscored variable, to prevent naming collisions
+//        $__vars = $this->vars()->getArrayCopy();
+//////        if (array_key_exists('this', $__vars)) {
+//////            unset($__vars['this']);
+//////        }
+////
+//        \Zend\Debug::dump((array)$this->getVariables());
+//        \Zend\Debug::dump($this->getVariables());
+//        \Zend\Debug::dump(array_keys((array)$this->getVariables()));
+//        \Zend\Debug::dump(extract((array)$this->getVariables()));
+//        extract((array)$this->getVariables());
+//        unset($__vars); // remove $__vars from local scope
 
 //        \Zend\Debug::dump($this->__templates);
 
@@ -153,7 +171,7 @@ class Block extends AbstractBlock implements RendererInterface
             $this->__content = ob_get_clean();
 //        }
 
-        $this->setVars(array_pop($this->__varsCache));
+//        $this->setVars(array_pop($this->__varsCache));
         return $this->getFilterChain()->filter($this->__content); // filter output
     }
 
@@ -185,8 +203,6 @@ class Block extends AbstractBlock implements RendererInterface
         return $this;
     }
 
-
-
     /**
      * Retrieve template name or template resolver
      *
@@ -206,6 +222,75 @@ class Block extends AbstractBlock implements RendererInterface
         return $this->__templateResolver;
     }
 
+/**
+     * Set plugin broker instance
+     *
+     * @param  string|HelperBroker $broker
+     * @return void
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setBroker($broker)
+    {
+        if (is_string($broker)) {
+            if (!class_exists($broker)) {
+                throw new Exception\InvalidArgumentException(sprintf(
+                    'Invalid helper broker class provided (%s)',
+                    $broker
+                ));
+            }
+            $broker = new $broker();
+        }
+        if (!$broker instanceof HelperBroker) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Helper broker must extend Zend\View\HelperBroker; got type "%s" instead',
+                (is_object($broker) ? get_class($broker) : gettype($broker))
+            ));
+        }
+        $broker->setView($this);
+        $this->__helperBroker = $broker;
+    }
+
+    /**
+     * Get plugin broker instance
+     *
+     * @return HelperBroker
+     */
+    public function getBroker()
+    {
+        if (null === $this->__helperBroker) {
+            $this->setBroker(new HelperBroker());
+        }
+        return $this->__helperBroker;
+    }
+
+    /**
+     * Get plugin instance
+     *
+     * @param  string     $plugin  Name of plugin to return
+     * @param  null|array $options Options to pass to plugin constructor (if not already instantiated)
+     * @return Helper
+     */
+    public function plugin($name, array $options = null)
+    {
+        return $this->getBroker()->load($name, $options);
+    }
+
+/**
+     * Set child block
+     *
+     * @param   string $alias
+     * @param   Mage_Core_Block_Abstract $block
+     * @return  Mage_Core_Block_Abstract
+     */
+    public function setChild(AbstractBlock $block, $alias = null)
+    {
+        $block->setBroker($this->getBroker());
+
+        parent::setChild($block, $alias);
+
+        return $this;
+    }
+
     /**
      * Add a template to the stack
      *
@@ -218,122 +303,186 @@ class Block extends AbstractBlock implements RendererInterface
         return $this;
     }
 
-/**
-     * Set variable storage
-     *
-     * Expects either an array, or an object implementing ArrayAccess.
-     *
-     * @param  array|ArrayAccess $variables
-     * @return PhpRenderer
-     * @throws Exception\InvalidArgumentException
-     */
-    public function setVars($variables)
-    {
-        if (!is_array($variables) && !$variables instanceof ArrayAccess) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Expected array or ArrayAccess object; received "%s"',
-                (is_object($variables) ? get_class($variables) : gettype($variables))
-            ));
-        }
+///**
+//     * Set variable storage
+//     *
+//     * Expects either an array, or an object implementing ArrayAccess.
+//     *
+//     * @param  array|ArrayAccess $variables
+//     * @return PhpRenderer
+//     * @throws Exception\InvalidArgumentException
+//     */
+//    public function setVars($variables)
+//    {
 
-        // Enforce a Variables container
-        if (!$variables instanceof Variables) {
-            $variablesAsArray = array();
-            foreach ($variables as $key => $value) {
-                $variablesAsArray[$key] = $value;
-            }
-            $variables = new Variables($variablesAsArray);
-        }
+//
+//        if (!is_array($variables) && !$variables instanceof ArrayAccess) {
+//            throw new Exception\InvalidArgumentException(sprintf(
+//                'Expected array or ArrayAccess object; received "%s"',
+//                (is_object($variables) ? get_class($variables) : gettype($variables))
+//            ));
+//        }
+//
+//        // Enforce a Variables container
+//        if (!$variables instanceof Variables) {
+//            $variablesAsArray = array();
+//            foreach ($variables as $key => $value) {
+//                $variablesAsArray[$key] = $value;
+//            }
+//            $variables = new Variables($variablesAsArray);
+//        }
+//
+//        $this->__vars = $variables;
+//        return $this;
+//    }
 
-        $this->__vars = $variables;
-        return $this;
-    }
+//    /**
+//     * Get a single variable, or all variables
+//     *
+//     * @param  mixed $key
+//     * @return mixed
+//     */
+//    public function vars($key = null)
+//    {
+//        if (null === $this->__vars) {
+//            $this->setVars(new Variables());
+//        }
+//
+//        if (null === $key) {
+//            return $this->__vars;
+//        }
+//        return $this->__vars[$key];
+//    }
+//
+//    /**
+//     * Get a single variable
+//     *
+//     * @param  mixed $key
+//     * @return mixed
+//     */
+//    public function get($key)
+//    {
+////        \Zend\Debug::dump('dada');
+//        if (null === $this->__vars) {
+//            $this->setVars(new Variables());
+//        }
+//
+//        return $this->__vars[$key];
+//    }
+//
+//    /**
+//     * Overloading: proxy to Variables container
+//     *
+//     * @param  string $name
+//     * @return mixed
+//     */
+//    public function __get($name)
+//    {
+////        \Zend\Debug::dump('dada');
+//        $vars = $this->vars();
+//        return $vars[$name];
+//    }
+//
+//    /**
+//     * Overloading: proxy to Variables container
+//     *
+//     * @param  string $name
+//     * @param  mixed $value
+//     * @return void
+//     */
+//    public function __set($name, $value)
+//    {
+////        \Zend\Debug::dump('dada');
+//        $vars = $this->vars();
+//        $vars[$name] = $value;
+//    }
+//
+//    /**
+//     * Overloading: proxy to Variables container
+//     *
+//     * @param  string $name
+//     * @return bool
+//     */
+//    public function __isset($name)
+//    {
+//        $vars = $this->vars();
+//        return isset($vars[$name]);
+//    }
+//
+//    /**
+//     * Overloading: proxy to Variables container
+//     *
+//     * @param  string $name
+//     * @return void
+//     */
+//    public function __unset($name)
+//    {
+//        $vars = $this->vars();
+//        if (!isset($vars[$name])) {
+//            return;
+//        }
+//        unset($vars[$name]);
+//    }
 
-    /**
-     * Get a single variable, or all variables
-     *
-     * @param  mixed $key
-     * @return mixed
-     */
-    public function vars($key = null)
-    {
-        if (null === $this->__vars) {
-            $this->setVars(new Variables());
-        }
 
-        if (null === $key) {
-            return $this->__vars;
-        }
-        return $this->__vars[$key];
-    }
-
-    /**
-     * Get a single variable
-     *
-     * @param  mixed $key
-     * @return mixed
-     */
-    public function get($key)
-    {
-        if (null === $this->__vars) {
-            $this->setVars(new Variables());
-        }
-
-        return $this->__vars[$key];
-    }
-
-    /**
-     * Overloading: proxy to Variables container
-     *
-     * @param  string $name
-     * @return mixed
-     */
+//    /**
+//     * Property overloading: get variable value
+//     *
+//     * @param  string $name
+//     * @return mixed
+//     */
     public function __get($name)
     {
-        $vars = $this->vars();
-        return $vars[$name];
-    }
-
-    /**
-     * Overloading: proxy to Variables container
-     *
-     * @param  string $name
-     * @param  mixed $value
-     * @return void
-     */
-    public function __set($name, $value)
-    {
-        $vars = $this->vars();
-        $vars[$name] = $value;
-    }
-
-    /**
-     * Overloading: proxy to Variables container
-     *
-     * @param  string $name
-     * @return bool
-     */
-    public function __isset($name)
-    {
-        $vars = $this->vars();
-        return isset($vars[$name]);
-    }
-
-    /**
-     * Overloading: proxy to Variables container
-     *
-     * @param  string $name
-     * @return void
-     */
-    public function __unset($name)
-    {
-        $vars = $this->vars();
-        if (!isset($vars[$name])) {
-            return;
+//        \Zend\Debug::dump($name);
+        if (!$this->__isset($name)) {
+            if ($child = $this->getChild($name)) {
+                return $child->toHtml();
+            }
+            return null;
         }
-        unset($vars[$name]);
+//
+        $variables = $this->getVariables();
+        return $variables[$name];
     }
 
+/**
+     * Overloading: proxy to helpers
+     *
+     * Proxies to the attached plugin broker to retrieve, return, and potentially
+     * execute helpers.
+     *
+     * * If the helper does not define __invoke, it will be returned
+     * * If the helper does define __invoke, it will be called as a functor
+     *
+     * @param  string $method
+     * @param  array $argv
+     * @return mixed
+     */
+    public function __call($method, $argv)
+    {
+//        \Zend\Debug::dump('asddefesdefs');
+//        \Zend\Debug::dump($method, '$method');
+        switch (substr($method, 0, 3)) {
+            case 'get' :
+            case 'set' :
+            case 'uns' :
+            case 'has' :
+                return parent::__call($method, $argv);
+
+            default:
+                $helper = null;
+                try {
+                    $helper = $this->plugin($method);
+                    if (is_callable($helper)) {
+                        return call_user_func_array($helper, $argv);
+                    }
+                }
+                catch (\Exception $e) {
+
+                }
+                return $helper;
+        }
+    }
 
     /**
      * Set filter chain

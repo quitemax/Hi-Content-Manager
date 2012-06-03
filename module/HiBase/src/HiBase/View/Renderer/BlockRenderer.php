@@ -42,6 +42,7 @@ use Zend\Loader\Pluggable;
 use Zend\View\Renderer\RendererInterface;
 use Zend\View\Renderer\TreeRendererInterface;
 use Zend\View\Resolver\ResolverInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 ///**
 // * JSON renderer
@@ -54,11 +55,15 @@ use Zend\View\Resolver\ResolverInterface;
 // */
 class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterface
 {
+    /**
+     * @var \Zend\ServiceManager\ServiceManager
+     */
+    protected $services;
 
     /**
      * @var bool Whether or not to render trees of view models
      */
-    private $__renderTrees = false;
+    private $__renderTrees = true;
 
     /**
      * Template resolver
@@ -74,6 +79,31 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
      */
     private $__helperBroker;
 
+///**
+//     * Set script resolver
+//     *
+//     * @param  Resolver $resolver
+//     * @return PhpRenderer
+//     * @throws Exception\InvalidArgumentException
+//     */
+    public function setServiceManager(ServiceLocatorInterface $sm)
+    {
+//        \HiBase\Debug::precho($resolver, '$resolver');
+        $this->services = $sm;
+        return $this;
+    }
+
+///**
+//     * Set script resolver
+//     *
+//     * @param  Resolver $resolver
+//     * @return PhpRenderer
+//     * @throws Exception\InvalidArgumentException
+//     */
+    public function getServiceManager()
+    {
+        return $this->services;
+    }
 
     /**
      * Return the template engine object, if any
@@ -98,7 +128,6 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
      */
     public function setResolver(ResolverInterface $resolver)
     {
-//        \HiBase\Debug::precho($resolver, '$resolver');
         $this->__templateResolver = $resolver;
         return $this;
     }
@@ -121,7 +150,7 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
             //
             $block->setResolver($this->__templateResolver);
 
-//            \Zend\Debug::dump($block->toHtml());
+            $block->setServiceManager($this->services);
 
             $return = $block->toHtml();
 

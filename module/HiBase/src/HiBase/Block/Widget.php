@@ -24,6 +24,7 @@ class Widget extends Block
     /**
      *
      */
+
     public function getId()
     {
         if ($this->_id === null) {
@@ -31,6 +32,17 @@ class Widget extends Block
 //            $this->setData('id', Mage::helper('core')->uniqHash('id_'));
         }
         return $this->_id;
+    }
+
+    /**
+     *
+     */
+    public function setId($id)
+    {
+        if ($id !== null) {
+            $this->_id = $id;
+        }
+        return $this;
     }
 
     public function getHtmlId()

@@ -3,13 +3,7 @@
 namespace HiBase\Block\Widget;
 
 use HiBase\Block\Widget;
-//use Zend\View\Renderer\RendererInterface;
-//use Zend\View\Renderer\TreeRendererInterface;
-//use Zend\View\Resolver\ResolverInterface;
-//use Zend\View\Variables;
-//use ArrayAccess;
-//use Zend\Filter\FilterChain;
-//use Zend\View\Resolver\TemplatePathStack;
+use HiBase\Block\Widget\Button;
 
 ///**
 // * @category   Zend
@@ -203,4 +197,47 @@ class Container extends Widget
 //        }
 //        return false;
 //    }
+
+    /**
+     * Prepare block id for button's id
+     *
+     * @param string $id
+     * @return string
+     */
+    protected function _prepareButtonBlockId($id)
+    {
+        return $id . '_button';
+    }
+
+    /**
+     * Produce buttons HTML
+     *
+     * @param string $area
+     * @return string
+     */
+    public function getButtonsHtml()
+    {
+        $out = '';
+        foreach ($this->_buttons as $level => $buttons) {
+            $_buttons = array();
+            foreach ($buttons as $id => $data) {
+                $_buttons[$data['sort_order']]['id'] = $id;
+                $_buttons[$data['sort_order']]['data'] = $data;
+            }
+            ksort($_buttons);
+
+            foreach ($_buttons as $_button) {
+                $id = $_button['id'];
+                $id = $this->_prepareButtonBlockId($id);
+
+                $data = $_button['data'];
+
+                $button = new Button($data);
+                $button->setId($id);
+
+                $out .= $button->toHtml();
+            }
+        }
+        return $out;
+    }
 }

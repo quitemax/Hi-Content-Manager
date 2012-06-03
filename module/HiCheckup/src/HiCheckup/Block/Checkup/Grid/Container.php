@@ -6,17 +6,15 @@ use HiBase\Block\Widget\Grid\Container as GridContainer;
 
 class Container extends GridContainer
 {
-    /**
-     * Title
-     *
-     * @var string
-     */
     protected $_headerText = 'CheckupContainer';
 
     protected $_id = 'CheckupGridContainer';
 
-    public function init()
-    {
-        parent::init();
-    }
+//    public function init()
+//    {
+//        $this->_addBackButton();
+//
+//        parent::init();
+//    }
+
 }

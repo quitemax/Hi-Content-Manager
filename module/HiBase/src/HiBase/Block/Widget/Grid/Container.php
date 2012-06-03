@@ -20,30 +20,30 @@ use HiBase\Block\Widget\Container as WidgetContainer;
 // */
 class Container extends WidgetContainer
 {
-    protected $_addButtonLabel;
-    protected $_backButtonLabel;
+    protected $_addButtonLabel  = 'Add New';
+    protected $_backButtonLabel = 'Back';
 //    protected $_blockGroup = 'adminhtml';
 
     public function init()
     {
         if (is_null($this->_addButtonLabel)) {
-            $this->_addButtonLabel = $this->__('Add New');
+            $this->_addButtonLabel = 'Add New';
         }
         if(is_null($this->_backButtonLabel)) {
-            $this->_backButtonLabel = $this->__('Back');
+            $this->_backButtonLabel = 'Back';
         }
 
         parent::init();
-        $this->setTemplate('widget/grid/container.phtml');
-    }
-//
-//    public function __construct()
-//    {
 
-//
-//        parent::__construct();
-//
-//        $this->setTemplate('widget/grid/container.phtml');
+        $this->setTemplate('widget/grid/container.phtml');
+
+        $this->_addButton('add', array(
+            'label'     => $this->getAddButtonLabel(),
+//            'onclick'   => 'setLocation(\'' . $this->getCreateUrl() .'\')',
+            'class'     => 'add',
+        ));
+    }
+
 //
 //        $this->_addButton('add', array(
 //            'label'     => $this->getAddButtonLabel(),
@@ -64,36 +64,32 @@ class Container extends WidgetContainer
 //    {
 //        return $this->getUrl('*/*/new');
 //    }
-//
-//    public function getGridHtml()
-//    {
-//        return $this->getChildHtml('grid');
-//    }
-//
-//    protected function getAddButtonLabel()
-//    {
-//        return $this->_addButtonLabel;
-//    }
-//
-//    protected function getBackButtonLabel()
-//    {
-//        return $this->_backButtonLabel;
-//    }
-//
-//    protected function _addBackButton()
-//    {
-//        $this->_addButton('back', array(
-//            'label'     => $this->getBackButtonLabel(),
+
+    protected function getAddButtonLabel()
+    {
+        return $this->_addButtonLabel;
+    }
+
+    protected function getBackButtonLabel()
+    {
+        return $this->_backButtonLabel;
+    }
+
+
+    protected function _addBackButton()
+    {
+        $this->_addButton('back', array(
+            'label'     => $this->getBackButtonLabel(),
 //            'onclick'   => 'setLocation(\'' . $this->getBackUrl() .'\')',
-//            'class'     => 'back',
-//        ));
-//    }
-//
-//    public function getHeaderCssClass()
-//    {
-//        return 'icon-head ' . parent::getHeaderCssClass();
-//    }
-//
+            'class'     => 'back',
+        ));
+    }
+
+    public function getHeaderCssClass()
+    {
+        return 'icon-head ' . parent::getHeaderCssClass();
+    }
+
     public function getHeaderWidth()
     {
         return 'width:50%;';

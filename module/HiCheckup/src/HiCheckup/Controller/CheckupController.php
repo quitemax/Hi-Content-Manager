@@ -6,7 +6,7 @@ use Zend\Mvc\Controller\ActionController;
 use Zend\View\Model\ViewModel;
 use HiCheckup\Model\Checkup;
 use HiCheckup\Block\Checkup\Grid\Container as GridContainer;
-//use HiCheckup\Form\Checkup\Grid as CheckupGrid;
+use HiCheckup\Block\Checkup\Grid as CheckupGrid;
 //use HiCheckup\Form\Checkup\ResultSet as CheckupResultSet;
 //use HiCheckup\Form\Checkup\Row as CheckupRow;
 //use HiBase\Block\Widget\Grid\Container as GridContaineer;
@@ -110,17 +110,21 @@ class CheckupController extends ActionController
 //                'view' => $this->_view,
 //            )
         );
-////
-//        /**
-//         * BUILDING LIST
-//         */
-//        $list = new CheckupResultSet(
+//        $gridContainer->asdf1234 = 'asdf1234';
+//        echo $gridContainer->asdf1234;
+//
+        /**
+         * BUILDING LIST
+         */
+        $grid = new CheckupGrid(
 //            array(
 //                'model' => $locator->get('CheckupModel');,
 //                'view' => $this->_view,
 //            )
-//        );
-//
+        );
+//        $grid->asdf1234 = 'asdf1234';
+//        echo $grid->asdf1234;
+
 //        //
 //        $list->processRequest($this->getRequest());
 //
@@ -129,6 +133,7 @@ class CheckupController extends ActionController
 //
 //        //
 //        $form->addSubForm($list, $list->getName());
+        $gridContainer->addChild($grid, 'grid');
 //
 ////        //
 //        $this->_view->headScript()->appendScript(
