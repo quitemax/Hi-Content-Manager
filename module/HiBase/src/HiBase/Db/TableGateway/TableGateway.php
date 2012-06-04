@@ -364,7 +364,7 @@ class TableGateway extends ZendTableGateway
      *
      * @return string
      */
-    public function getResultSet($where = null, $order = null, $count = null, $offset  = null, $cols = null)
+    public function getResultSet($where = null, $order = null, $count = null, $offset  = null, $cols = null, $joins = null)
     {
         if (!$this->isInitialized) {
             $this->initialize();

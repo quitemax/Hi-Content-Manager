@@ -4,7 +4,9 @@
 namespace HiBase\Block\Widget;
 
 use HiBase\Block\Widget;
+use HiBase\Block\Widget\Grid\MassAction;
 use HiBase\Block\Widget\Button;
+use HiBase\Block\Widget\Pager;
 use HiBase\Block\Widget\Grid\Column;
 //use Zend\View\Renderer\RendererInterface;
 //use Zend\View\Renderer\TreeRendererInterface;
@@ -117,6 +119,8 @@ class Grid extends Widget
 
     protected $_saveParametersInSession = false;
 
+    protected $_pager;
+
 //    /**
 //     * Count totals
 //     *
@@ -212,39 +216,37 @@ class Grid extends Widget
     {
         parent::init();
         $this->setTemplate('widget/grid.phtml');
-//        $this->setRowClickCallback('openGridRow');
-//        $this->_emptyText = 'No records found.';
 
-        //        $this->setChild('export_button',
-//            $this->getLayout()->createBlock('adminhtml/widget_button')
-//                ->setData(array(
-//                    'label'     => Mage::helper('adminhtml')->__('Export'),
-//                    'onclick'   => $this->getJsObjectName().'.doExport()',
-//                    'class'   => 'task'
-//                ))
-//        );
-//        $this->setChild('reset_filter_button',
-//            $this->getLayout()->createBlock('adminhtml/widget_button')
-//                ->setData(array(
-//                    'label'     => Mage::helper('adminhtml')->__('Reset Filter'),
-//                    'onclick'   => $this->getJsObjectName().'.resetFilter()',
-//                ))
-//        );
-//        $this->setChild('search_button',
-//            $this->getLayout()->createBlock('adminhtml/widget_button')
-//                ->setData(array(
-//                    'label'     => Mage::helper('adminhtml')->__('Search'),
-//                    'onclick'   => $this->getJsObjectName().'.doFilter()',
-//                    'class'   => 'task'
-//                ))
-//        );
+        $this->setChild(
+            new Button(
+                array(
+                    'label'     => $this->__('Export'),
+                    'onclick'   => $this->getJsObjectName() . '.doExport()',
+                    'class'   => 'task'
+                )
+            ),
+            'export_button'
+        );
+        $this->setChild(
+            new Button(
+                array(
+                    'label'     => $this->__('Reset Filter'),
+                    'onclick'   => $this->getJsObjectName() . '.resetFilter()',
+                )
+            ),
+            'reset_filter_button'
+        );
+        $this->setChild(
+            new Button(
+                array(
+                    'label'     => $this->__('Search'),
+                    'onclick'   => $this->getJsObjectName().'.doFilter()',
+                    'class'   => 'task'
+                )
+            ),
+            'search_button'
+        );
     }
-
-//    protected function _prepareLayout()
-//    {
-//
-////        return parent::_prepareLayout();
-//    }
 
     public function getExportButtonHtml()
     {
@@ -263,12 +265,12 @@ class Grid extends Widget
 
     public function getMainButtonsHtml()
     {
-//        $html = '';
-//        if($this->getFilterVisibility()){
-//            $html.= $this->getResetFilterButtonHtml();
-//            $html.= $this->getSearchButtonHtml();
-//        }
-//        return $html;
+        $html = '';
+        if($this->getFilterVisibility()){
+            $html.= $this->getResetFilterButtonHtml();
+            $html.= $this->getSearchButtonHtml();
+        }
+        return $html;
     }
 
     public function canDisplayContainer()
@@ -283,7 +285,6 @@ class Grid extends Widget
     {
         return $this->_header;
     }
-
 
     /**
      * Add column to grid
@@ -516,13 +517,12 @@ class Grid extends Widget
     {
 
         if (!$this->getCollection()) {
-            echo 'dadagetCollection';
+//            echo 'dadagetCollection';
 //            \Zend\Debug::dump($this->getCollection(), '$this->getCollection()');
         }
 
 //        if ($this->getCollection()) {
 //
-//            $this->_preparePage();
 //
 //            $columnId = $this->getParam($this->getVarNameSort(), $this->_defaultSort);
 //            $dir      = $this->getParam($this->getVarNameDir(), $this->_defaultDir);
@@ -568,11 +568,6 @@ class Grid extends Widget
 //        $value = $this->helper('adminhtml')->decodeFilter($value);
     }
 
-    protected function _preparePage()
-    {
-//        $this->getCollection()->setPageSize((int) $this->getParam($this->getVarNameLimit(), $this->_defaultLimit));
-//        $this->getCollection()->setCurPage((int) $this->getParam($this->getVarNamePage(), $this->_defaultPage));
-    }
 
     protected function _beforeToHtml()
     {
@@ -582,13 +577,51 @@ class Grid extends Widget
 
     protected function _prepareGrid()
     {
+        $this->_preparePagerBlock();
+//        $this->_prepareFilter();
         $this->_prepareColumns();
         $this->_prepareMassactionBlock();
         $this->_prepareCollection();
         return $this;
     }
+//    protected function _processRequest()
+//    {
+//
+//
+//
+//
+//        return $this;
+//    }
+    protected function _preparePagerBlock()
+    {
+        $pager = new Pager();
+
+        $this->addChild($pager, 'pager_top');
+
+        $pager->setGrid($this);
+
+        $pager->setLimit((int) $this->getParam($this->getVarNameLimit(), $this->_defaultLimit));
+        $pager->setPage((int) $this->getParam($this->getVarNamePage(), $this->_defaultPage));
+
+        $this->_pager = $pager;
+
+        return $this;
+    }
 
 
+
+    public function getPager()
+    {
+        if (null === $this->_pager) {
+            $this->_preparePagerBlock();
+        }
+        return $this->_pager;
+    }
+
+    public function getPagerHtml()
+    {
+        return $this->getPager()->toHtml();
+    }
 
     protected function _prepareColumns()
     {
@@ -603,11 +636,14 @@ class Grid extends Widget
      */
     protected function _prepareMassactionBlock()
     {
-//        $this->setChild('massaction', $this->getLayout()->createBlock($this->getMassactionBlockName()));
+        $this->setChild(
+            new MassAction(),
+            'massaction'
+        );
         $this->_prepareMassaction();
-//        if($this->getMassactionBlock()->isAvailable()) {
-//            $this->_prepareMassactionColumn();
-//        }
+        if($this->getMassactionBlock()->isAvailable()) {
+            $this->_prepareMassactionColumn();
+        }
         return $this;
     }
 
@@ -629,7 +665,7 @@ class Grid extends Widget
      */
     protected function _prepareMassactionColumn()
     {
-//        $columnId = 'massaction';
+        $columnId = 'massaction';
 //        $massactionColumn = $this->getLayout()->createBlock('adminhtml/widget_grid_column')
 //                ->setData(array(
 //                    'index'        => $this->getMassactionIdField(),
@@ -652,7 +688,7 @@ class Grid extends Widget
 //        $this->_columns = array();
 //        $this->_columns[$columnId] = $massactionColumn;
 //        $this->_columns = array_merge($this->_columns, $oldColumns);
-//        return $this;
+        return $this;
     }
 
     protected function _afterLoadCollection()
@@ -842,8 +878,8 @@ class Grid extends Widget
 //        {
 //            return $param;
 //        }
-//
-//        return $default;
+
+        return $default;
     }
 
     /**
@@ -865,6 +901,21 @@ class Grid extends Widget
     public function getJsObjectName()
     {
         return $this->getId().'JsObject';
+    }
+
+/**
+     * Retrive massaction block
+     *
+     * @return Mage_Adminhtml_Block_Widget_Grid_Massaction_Abstract
+     */
+    public function getMassactionBlock()
+    {
+        return $this->getChild('massaction');
+    }
+
+    public function getMassactionBlockHtml()
+    {
+        return $this->getChildHtml('massaction');
     }
 
 /**
@@ -979,13 +1030,13 @@ class Grid extends Widget
      */
     public function isColumnGrouped($column, $value = null)
     {
-        if (null === $value) {
-            if (is_object($column)) {
-                return in_array($column->getIndex(), $this->_groupedColumn);
-            }
-            return in_array($column, $this->_groupedColumn);
-        }
-        $this->_groupedColumn[] = $column;
+//        if (null === $value) {
+//            if (is_object($column)) {
+//                return in_array($column->getIndex(), $this->_groupedColumn);
+//            }
+//            return in_array($column, $this->_groupedColumn);
+//        }
+//        $this->_groupedColumn[] = $column;
         return $this;
     }
 }

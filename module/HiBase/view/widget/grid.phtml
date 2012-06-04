@@ -39,74 +39,44 @@ $numColumns = sizeof($this->getColumns());
 	<? */ ?>
 
 
-    <?php /*?>
+
     <?php if($this->getPagerVisibility() || $this->getExportTypes() || $this->getFilterVisibility()): ?>
         <table cellspacing="0" class="actions">
             <tr>
             <?php if($this->getPagerVisibility()): ?>
                 <td class="pager">
-                <?php echo $this->__('Page') ?>
+                    <?php echo $this->getPagerHtml();?>
+                </td>
+            <?php endif ?>
 
-                <?php $_curPage  = 1;//$this->getCollection()->getCurPage() ?>
-                <?php $_lastPage = 1;//$this->getCollection()->getLastPageNumber() ?>
-                <?php if($_curPage>1): ?>
-                    <a href="#" title="<?php echo $this->__('Previous page') ?>" onclick="<?php echo $this->getJsObjectName() ?>.setPage('<?php echo ($_curPage-1) ?>');return false;"><img src="<?php echo $this->getSkinUrl('images/pager_arrow_left.gif') ?>" alt="Go to Previous page" class="arrow"/></a>
-                <?php else: ?>
-                    <img src="<?php echo $this->getSkinUrl('images/pager_arrow_left_off.gif') ?>" alt="Go to Previous page" class="arrow"/>
-                <?php endif; ?>
-
-                <input type="text" name="<?php echo $this->getVarNamePage() ?>" value="<?php echo $_curPage ?>" class="input-text page" onkeypress="<?php echo $this->getJsObjectName() ?>.inputPage(event, '<?php echo $_lastPage ?>')"/>
-
-                <?php if($_curPage < $_lastPage): ?>
-                    <a href="#" title="<?php echo $this->__('Next page') ?>" onclick="<?php echo $this->getJsObjectName() ?>.setPage('<?php echo ($_curPage+1) ?>');return false;"><img src="<?php echo $this->getSkinUrl('images/pager_arrow_right.gif') ?>" alt="Go to Next page" class="arrow"/></a>
-                <?php else: ?>
-                    <img src="<?php echo $this->getSkinUrl('images/pager_arrow_right_off.gif') ?>" alt="Go to Previous page" class="arrow"/>
-                <?php endif; ?>
-
-                <?php echo $this->__('of %s pages', /*$this->getCollection()->getLastPageNumber()* /1) ?>
-                <span class="separator">|</span>
-                <?php echo $this->__('View') ?>
-                <select name="<?php echo $this->getVarNameLimit() ?>" onchange="<?php echo $this->getJsObjectName() ?>.loadByElement(this)">
-                    <option value="20"<?php if($this->getPagination()/*->getPageSize()* /==20): ?> selected="selected"<?php endif; ?>>20</option>
-                    <option value="30"<?php if($this->getPagination()/*->getPageSize()* /==30): ?> selected="selected"<?php endif; ?>>30</option>
-                    <option value="50"<?php if($this->getPagination()/*->getPageSize()* /==50): ?> selected="selected"<?php endif; ?>>50</option>
-                    <option value="100"<?php if($this->getPagination()/*->getPageSize()* /==100): ?> selected="selected"<?php endif; ?>>100</option>
-                    <option value="200"<?php if($this->getPagination()/*->getPageSize()* /==200): ?> selected="selected"<?php endif; ?>>200</option>
-                </select>
-                <?php echo $this->__('per page') ?><span class="separator">|</span>
-                <?php echo $this->__('Total %d records found', $this->getPagination()/*->getSize()* /) ?>
-                <span id="<?php echo $this->getHtmlId() ?>-total-count" class="no-display"><?php echo $this->getPagination()/*->getSize()* / ?></span>
-                <?php if($this->getRssLists()): ?>
-                    <?php foreach ($this->getRssLists() as $_rss): ?>
-                    <span class="separator">|</span><a href="<?php echo $_rss->getUrl() ?>" class="link-feed"><?php echo $_rss->getLabel() ?></a>
-                    <?php endforeach ?>
-                <?php endif; ?>
-            </td>
-        <?php endif ?>
-        <?php if($this->getExportTypes()): ?>
-            <td class="export a-right">
-                <img src="<?php echo $this->getSkinUrl('images/icon_export.gif') ?>" alt="" class="v-middle"/>&nbsp; <?php echo $this->__('Export to:') ?>
-                <select name="<?php echo $this->getId() ?>_export" id="<?php echo $this->getId() ?>_export" style="width:8em;">
-                <?php foreach ($this->getExportTypes() as $_type): ?>
-                    <option value="<?php echo $_type->getUrl() ?>"><?php echo $_type->getLabel() ?></option>
-                <?php endforeach; ?>
-                </select>
-                <?php echo $this->getExportButtonHtml() ?>
-            </td>
-        <?php endif; ?>
-            <td class="filter-actions a-right">
-                <?php echo $this->getMainButtonsHtml() ?>
-            </td>
+            <?php if($this->getExportTypes()): ?>
+                <?php /*?>
+                <td class="export a-right">
+                    <img src="<?php echo $this->getSkinUrl('images/icon_export.gif') ?>" alt="" class="v-middle"/>&nbsp; <?php echo $this->__('Export to:') ?>
+                    <select name="<?php echo $this->getId() ?>_export" id="<?php echo $this->getId() ?>_export" style="width:8em;">
+                    <?php foreach ($this->getExportTypes() as $_type): ?>
+                        <option value="<?php echo $_type->getUrl() ?>"><?php echo $_type->getLabel() ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                    <?php echo $this->getExportButtonHtml() ?>
+                </td>
+                <? */ ?>
+            <?php endif; ?>
+                <td class="filter-actions a-right">
+                    <?php echo $this->getMainButtonsHtml() ?>
+                </td>
             </tr>
         </table>
     <?php endif; ?>
-    <? */ ?>
+
 
     <?php /*?>
-    <?php if($this->getMessagesBlock() && $this->getMassactionBlock()->isAvailable()): ?>
-    <?php echo $this->getMassactionBlockHtml() ?>
-    <?php endif ?>
+
     <? */ ?>
+    <?php //if(/*$this->getMessagesBlock() && */$this->getMassactionBlock()->isAvailable()): ?>
+    <?php echo $this->getMassactionBlockHtml() ?>
+    <?php //endif ?>
+
 
 
     <div class="grid">
@@ -151,9 +121,10 @@ $numColumns = sizeof($this->getColumns());
 
 
 
-            <?php /*?>
+
             <tbody>
-            <?php if (($this->getCollection()/*->getSize()* />0) && (!$this->getIsCollapsed())): ?>
+            <?php if (($this->getPager()->getSize() > 0) && (!$this->getIsCollapsed())): ?>
+            <?php /*?>
             <?php foreach ($this->getCollection() as $_index=>$_item): ?>
                 <tr title="<?php echo $this->getRowUrl($_item) ?>"<?php if ($_class = $this->getRowClass($_item)):?> class="<?php echo $_class; ?>"<?php endif;?> >
                 <?php $i=0;foreach ($this->getColumns() as $_column): ?>
@@ -199,9 +170,9 @@ $numColumns = sizeof($this->getColumns());
                 <tr>
                     <td class="empty-text <?php echo $this->getEmptyTextClass() ?>" colspan="<?php echo $numColumns ?>"><?php echo $this->getEmptyText() ?></td>
                 </tr>
+            <? */ ?>
             <?php endif; ?>
             </tbody>
-			<? */ ?>
         </table>
         </div>
     </div>

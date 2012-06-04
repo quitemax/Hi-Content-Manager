@@ -44,6 +44,8 @@ class ViewBlockRendererFactory implements FactoryInterface
     {
         //
         $viewResolver = $serviceLocator->get('ViewResolver');
+        $broker = $serviceLocator->get('ViewHelperBroker');
+//        \Zend\Debug::dump($broker);
 //        $config = $serviceLocator->get('Configuration');
 
         //
@@ -51,6 +53,9 @@ class ViewBlockRendererFactory implements FactoryInterface
 
         //
         $blockRenderer->setResolver($viewResolver);
+
+        //
+        $blockRenderer->setBroker($broker);
 
         //
         $blockRenderer->setServiceManager($serviceLocator);

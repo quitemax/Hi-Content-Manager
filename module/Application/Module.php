@@ -36,6 +36,8 @@ class Module //implements AutoloaderProvider
 //    }
 
 
+
+
 //    public function initializeView($e)
 //    {
 //        $app          = $e->getParam('application');

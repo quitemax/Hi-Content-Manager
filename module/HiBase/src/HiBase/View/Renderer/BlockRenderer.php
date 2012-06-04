@@ -146,6 +146,9 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
 
             //
             $block->setBroker($this->getBroker());
+//            $plugin = $this->plugin('basePath');
+//            \Zend\Debug::dump($plugin(), '$pluginnnn');
+//            \Zend\Debug::dump(get_class($this->getBroker()));
 
             //
             $block->setResolver($this->__templateResolver);

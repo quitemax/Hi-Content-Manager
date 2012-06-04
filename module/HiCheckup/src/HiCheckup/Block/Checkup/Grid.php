@@ -11,15 +11,19 @@ class Grid extends WidgetGrid
 
     protected function _prepareColumns()
     {
+        //
         $model = $this->getServiceManager()->get('CheckupModel');
 
+        //
         $columns = $model->getColumns();
 //        \Zend\Debug::dump($columns);
 
+        //
         foreach ($columns as $id => $column) {
             $this->addColumn($id, $column);
         }
 
+        //always at the end
         parent::_prepareColumns();
     }
 
@@ -28,37 +32,28 @@ class Grid extends WidgetGrid
     {
         $model = $this->getServiceManager()->get('CheckupModel');
 
-//        \Zend\Debug::dump(get_class($model));
+        $pager = $this->getPager();
 
-        $resultSet = $model->getResultSet();
-//        \Zend\Debug::dump(get_class($resultSet), 'get_class($resultSet)');
-//        \Zend\Debug::dump($resultSet);
-//        $row = $model->getRow();
-//        \Zend\Debug::dump(get_class($row), 'get_class($$row)');
-//        \Zend\Debug::dump($row);
-//
+        $where = null;
+        $order = null;
+        $limit = $pager->getLimit();
+        $offset = $pager->getOffset();
+        $cols = null;
+        $joins = null;
+
+        $resultSet = $model->getResultSet(
+            $where,
+            $order,
+            $limit,
+            $offset,
+            $cols,
+            $joins
+        );
+
+        $pager->setSize($model->getCountLastSql());
+
         $this->setCollection($resultSet);
 
         parent::_prepareCollection();
     }
-
-
-//    /**
-//     * Title
-//     *
-//     * @var string
-//     */
-//    protected $_title = 'CheckupGrid';
-//
-//    /**
-//     * Title
-//     *
-//     * @var string
-//     */
-//    protected $_name = 'CheckupGridForm';
-//
-//    public function init()
-//    {
-//        parent::init();
-//    }
 }

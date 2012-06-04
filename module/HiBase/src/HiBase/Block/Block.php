@@ -101,6 +101,7 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
         foreach ($children as $child) {
             $child->setResolver($this->__templateResolver);
             $child->setServiceManager($this->getServiceManager());
+            $child->setBroker($this->getBroker());
         }
 
         return $this->render();
@@ -285,6 +286,7 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
     public function setChild(AbstractBlock $block, $alias = null)
     {
         $block->setBroker($this->getBroker());
+//        $block->setResolver($this->getResolver());
 
         parent::setChild($block, $alias);
 
@@ -462,6 +464,7 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
     {
 //        \Zend\Debug::dump('asddefesdefs');
 //        \Zend\Debug::dump($method, '$method');
+//        \Zend\Debug::dump($argv, '$argv');
         switch (substr($method, 0, 3)) {
             case 'get' :
             case 'set' :
@@ -473,12 +476,15 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
                 $helper = null;
                 try {
                     $helper = $this->plugin($method);
+//                    \Zend\Debug::dump(is_callable($helper), 'is_callable($helper)');
+//                    \Zend\Debug::dump(call_user_func_array($helper, $argv), 'call_user_func_array($helper, $argv)');
                     if (is_callable($helper)) {
+//                        \Zend\Debug::dump(call_user_func_array($helper, $argv), 'call_user_func_array($helper, $argv)');
                         return call_user_func_array($helper, $argv);
                     }
                 }
                 catch (\Exception $e) {
-
+                    \Zend\Debug::dump($e->getMessage());
                 }
                 return $helper;
         }

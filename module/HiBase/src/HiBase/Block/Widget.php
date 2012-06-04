@@ -50,4 +50,20 @@ class Widget extends Block
         return $this->getId();
     }
 
+/**
+     * Set child block
+     *
+     * @param   string $alias
+     * @param   Mage_Core_Block_Abstract $block
+     * @return  Mage_Core_Block_Abstract
+     */
+    public function setChild(AbstractBlock $block, $alias = null)
+    {
+        if ($alias !== null) {
+            $block->setId($alias);
+        }
+
+        return parent::setChild($block, $alias);;
+    }
+
 }

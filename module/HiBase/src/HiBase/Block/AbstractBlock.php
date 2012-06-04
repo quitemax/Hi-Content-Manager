@@ -48,7 +48,7 @@ abstract class AbstractBlock extends ViewModel
     /**
      * @var \Zend\ServiceManager\ServiceManager
      */
-    protected $services;
+    protected $_services;
 
     /**
      * Short alias of this block that was refered from parent
@@ -246,7 +246,7 @@ abstract class AbstractBlock extends ViewModel
     public function setServiceManager(ServiceLocatorInterface $sm)
     {
 //        \HiBase\Debug::precho($resolver, '$resolver');
-        $this->services = $sm;
+        $this->_services = $sm;
         return $this;
     }
 
@@ -259,7 +259,25 @@ abstract class AbstractBlock extends ViewModel
 //     */
     public function getServiceManager()
     {
-        return $this->services;
+        return $this->_services;
+    }
+
+/**
+     * Translate block sentence
+     *
+     * @return string
+     */
+    public function __()
+    {
+        $args = func_get_args();
+
+        $expr = array_shift($args);
+//        \Zend\Debug::dump($expr);
+//        \Zend\Debug::dump($args);
+//        $expr = new Mage_Core_Model_Translate_Expr(array_shift($args), $this->getModuleName());
+//        array_unshift($args, $expr);
+//        return Mage::app()->getTranslator()->translate($args);
+        return vsprintf($expr, $args);
     }
 
 

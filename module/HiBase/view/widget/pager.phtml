@@ -1,0 +1,33 @@
+<?php echo $this->__('Page') ?>
+
+<?php $_curPage  = $this->getCurPage() ?>
+<?php $_lastPage = $this->getLastPageNumber() ?>
+<?php //echo $this->basePath()?>
+<?php if($_curPage > 1): ?>
+    <a href="#" title="<?php echo $this->__('Previous page') ?>" onclick="<?php echo $this->getJsObjectName() ?>.setPage('<?php echo ($_curPage-1) ?>');return false;"><img src="<?php echo $this->basePath('images/hi-grid/pager_arrow_left.gif') ?>" alt="Go to Previous page" class="arrow"/></a>
+<?php else: ?>
+    <img src="<?php echo $this->basePath('images/hi-grid/pager_arrow_left_off.gif')//() ?>" alt="Go to Previous page" class="arrow"/>
+<?php endif; ?>
+
+<input type="text" name="<?php echo $this->getVarNamePage() ?>" value="<?php echo $_curPage ?>" class="input-text page" onkeypress="<?php echo $this->getJsObjectName() ?>.inputPage(event, '<?php echo $_lastPage ?>')"/>
+
+<?php if($_curPage < $_lastPage): ?>
+    <a href="#" title="<?php echo $this->__('Next page') ?>" onclick="<?php echo $this->getJsObjectName() ?>.setPage('<?php echo ($_curPage+1) ?>');return false;"><img src="<?php echo $this->basePath('images/hi-grid/pager_arrow_right.gif') ?>" alt="Go to Next page" class="arrow"/></a>
+<?php else: ?>
+    <img src="<?php echo $this->basePath('images/hi-grid/pager_arrow_right_off.gif') ?>" alt="Go to Previous page" class="arrow"/>
+<?php endif; ?>
+
+
+<?php echo $this->__('of %s pages', $this->getLastPageNumber()) ?>
+ <span class="separator">|</span>
+<?php echo $this->__('View') ?>
+<select name="<?php echo $this->getGrid()->getVarNameLimit() ?>" onchange="<?php echo $this->getJsObjectName() ?>.loadByElement(this)">
+    <option value="20"<?php if($this->getPageSize()==20): ?> selected="selected"<?php endif; ?>>20</option>
+    <option value="30"<?php if($this->getPageSize()==30): ?> selected="selected"<?php endif; ?>>30</option>
+    <option value="50"<?php if($this->getPageSize()==50): ?> selected="selected"<?php endif; ?>>50</option>
+    <option value="100"<?php if($this->getPageSize()==100): ?> selected="selected"<?php endif; ?>>100</option>
+    <option value="200"<?php if($this->getPageSize()==200): ?> selected="selected"<?php endif; ?>>200</option>
+</select>
+<?php echo $this->__('per page') ?> <span class="separator">|</span>
+<?php echo $this->__('Total %d records found', $this->getSize()) ?>
+<span id="<?php echo $this->getHtmlId() ?>-total-count" class="no-display"><?php //echo $this->getSize() ?></span>
