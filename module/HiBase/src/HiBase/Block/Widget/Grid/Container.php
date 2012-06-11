@@ -26,6 +26,15 @@ class Container extends WidgetContainer
 
     public function init()
     {
+        parent::init();
+
+        $this->setTemplate('widget/grid/container.phtml');
+
+    }
+
+
+    protected function _prepareLayout()
+    {
         if (is_null($this->_addButtonLabel)) {
             $this->_addButtonLabel = 'Add New';
         }
@@ -33,37 +42,21 @@ class Container extends WidgetContainer
             $this->_backButtonLabel = 'Back';
         }
 
-        parent::init();
-
-        $this->setTemplate('widget/grid/container.phtml');
-
         $this->_addButton('add', array(
             'label'     => $this->getAddButtonLabel(),
-//            'onclick'   => 'setLocation(\'' . $this->getCreateUrl() .'\')',
+            'onclick'   => 'setLocation(\'' . $this->getCreateUrl() .'\')',
             'class'     => 'add',
         ));
     }
 
-//
-//        $this->_addButton('add', array(
-//            'label'     => $this->getAddButtonLabel(),
-//            'onclick'   => 'setLocation(\'' . $this->getCreateUrl() .'\')',
-//            'class'     => 'add',
-//        ));
-//    }
-//
-//    protected function _prepareLayout()
-//    {
-//        $this->setChild( 'grid',
-//            $this->getLayout()->createBlock( $this->_blockGroup.'/' . $this->_controller . '_grid',
-//            $this->_controller . '.grid')->setSaveParametersInSession(true) );
-//        return parent::_prepareLayout();
-//    }
-//
-//    public function getCreateUrl()
-//    {
-//        return $this->getUrl('*/*/new');
-//    }
+    public function getCreateUrl()
+    {
+        return '';
+    }
+    public function getBackUrl()
+    {
+        return '';
+    }
 
     protected function getAddButtonLabel()
     {
@@ -80,15 +73,15 @@ class Container extends WidgetContainer
     {
         $this->_addButton('back', array(
             'label'     => $this->getBackButtonLabel(),
-//            'onclick'   => 'setLocation(\'' . $this->getBackUrl() .'\')',
+            'onclick'   => 'setLocation(\'' . $this->getBackUrl() .'\')',
             'class'     => 'back',
         ));
     }
 
-    public function getHeaderCssClass()
-    {
-        return 'icon-head ' . parent::getHeaderCssClass();
-    }
+//    public function getHeaderCssClass()
+//    {
+//        return 'icon-head ' . parent::getHeaderCssClass();
+//    }
 
     public function getHeaderWidth()
     {

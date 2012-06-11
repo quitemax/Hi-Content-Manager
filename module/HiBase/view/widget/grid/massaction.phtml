@@ -1,61 +1,77 @@
-<div id="<?php echo $this->getHtmlId() ?>">
-<table cellspacing="0" cellpadding="0" class="massaction">
-<tr>
-    <td><?php if ($this->getUseSelectAll()):?>
-        <a href="#" onclick="return <?php echo $this->getJsObjectName() ?>.selectAll()"><?php echo $this->__('Select All') ?></a>
-        <span class="separator">|</span>
-        <a href="#" onclick="return <?php echo $this->getJsObjectName() ?>.unselectAll()"><?php echo $this->__('Unselect All') ?></a>
-        <span class="separator">|</span>
-        <?php endif; ?>
-        <a href="#" onclick="return <?php echo $this->getJsObjectName() ?>.selectVisible()"><?php echo $this->__('Select Visible') ?></a>
-        <span class="separator">|</span>
-        <a href="#" onclick="return <?php echo $this->getJsObjectName() ?>.unselectVisible()"><?php echo $this->__('Unselect Visible') ?></a>
-        <span class="separator">|</span>
-        <strong id="<?php echo $this->getHtmlId() ?>-count">0</strong> <?php echo $this->__('items selected') ?>
-    </td>
-    <td>
-        <div class="right">
-            <div class="entry-edit">
-                <?php if ($this->getHideFormElement() !== true):?>
-                <form action="" id="<?php echo $this->getHtmlId() ?>-form" method="post">
-                <?php endif ?>
-                    <?php //echo $this->getBlockHtml('formkey')?>
-                    <fieldset>
-                        <span class="field-row">
-                            <label><?php echo $this->__('Actions') ?></label>
-                            <select id="<?php echo $this->getHtmlId() ?>-select" class="required-entry select absolute-advice local-validation">
-                                <option value=""></option>
-                                <?php \Zend\Debug::dump($this->getItems());?>
-                                <?php if ($this->getItems()) foreach($this->getItems() as $_item): ?>
-                                    <option value="<?php echo $_item->getId() ?>"<?php echo ($_item->getSelected() ? ' selected="selected"' : '')?>><?php echo $_item->getLabel() ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </span>
-                        <span class="outer-span" id="<?php echo $this->getHtmlId() ?>-form-hiddens"></span>
-                        <span class="outer-span" id="<?php echo $this->getHtmlId() ?>-form-additional"></span>
-                        <span class="field-row">
-                            <?php echo $this->getApplyButtonHtml() ?>
-                        </span>
-                    </fieldset>
-                <?php if ($this->getHideFormElement() !== true):?>
-                </form>
-                <?php endif ?>
-            </div>
-			<?php //\Zend\Debug::dump($this->getItems());?>
-            <div class="no-display">
-            <?php if ($this->getItems()) foreach($this->getItems() as $_item): ?>
-                <div id="<?php echo $this->getHtmlId() ?>-item-<?php echo $_item->getId() ?>-block">
-                    <?php //echo $_item->getAdditionalActionBlockHtml() ?>
+<div class="row" ><!--id="<?php //echo $this->getHtmlId() ?>"-->
+    <div class="span12 massaction">
+
+        <div class="row">
+            <div class="span6 grid-massaction-selection">
+
+                <div>
+                    <?php //if ($this->getUseSelectAll()):?>
+                        <a href="#" onclick="return <?php echo $this->getJsObjectName() ?>.selectAll()"><?php echo $this->__('Select All') ?></a>
+                        <span class="separator">|</span>
+                        <a href="#" onclick="return <?php echo $this->getJsObjectName() ?>.unselectAll()"><?php echo $this->__('Unselect All') ?></a>
+                        <span class="separator">|</span>
+                    <?php //endif; ?>
+
+                    <a href="#" onclick="return <?php echo $this->getJsObjectName() ?>.selectVisible()"><?php echo $this->__('Select Visible') ?></a>
+                    <span class="separator">|</span>
+                    <a href="#" onclick="return <?php echo $this->getJsObjectName() ?>.unselectVisible()"><?php echo $this->__('Unselect Visible') ?></a>
+                    <span class="separator">|</span>
+                    <strong id="<?php echo $this->getHtmlId() ?>-count">0</strong> <?php echo $this->__('items selected') ?>
                 </div>
-            <?php endforeach; ?>
             </div>
+
+            <?php if ($this->getHideFormElement() !== true):?>
+            <form action="" id="<?php echo $this->getHtmlId() ?>-form" method="post">
+            <?php //echo $this->getBlockHtml('formkey')?>
+            <?php endif ?>
+
+            <div class="span3 grid-massaction-action">
+                <label class="pull-right"><?php echo $this->__('Actions') ?></label>
+            </div>
+            <div class="span2 grid-massaction-actions">
+
+                <select id="<?php echo $this->getHtmlId() ?>-select" name="<?php echo $this->getHtmlId() ?>-select" class="pull-left span2"><!-- required-entry select absolute-advice local-validation-->
+                    <option value=""></option>
+                    <?php if ($this->getItems()) foreach($this->getItems() as $_item): ?>
+                        <option value="<?php echo $_item->getId() ?>"<?php echo ($_item->getSelected() ? ' selected="selected"' : '')?>><?php echo $_item->getLabel() ?></option>
+                    <?php endforeach; ?>
+                </select>
+
+            </div>
+            <!--
+            <div class="span2 grid-massaction-additional">
+                &nbsp;
+
+                <span class="outer-span" id="<?php echo $this->getHtmlId() ?>-form-hiddens"></span>
+                <span class="outer-span" id="<?php echo $this->getHtmlId() ?>-form-additional"></span>
+
+                <div class="no-display">
+                    <?php if ($this->getItems()) foreach($this->getItems() as $_item): ?>
+                        <div id="<?php echo $this->getHtmlId() ?>-item-<?php echo $_item->getId() ?>-block">
+                            <?php //echo $_item->getAdditionalActionBlockHtml() ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            -->
+
+            <div class="span1 grid-massaction-submit">
+                <?php echo $this->getApplyButtonHtml() ?>
+            </div>
+
+
+            <?php if ($this->getHideFormElement() !== true):?>
+            </form>
+            <?php endif ?>
+
         </div>
-    </td>
-</tr>
-</table>
+    </div>
+</div>
+
+
 <?php if(!$this->getParentBlock()->canDisplayContainer()): ?>
 <script type="text/javascript">
     <?php echo $this->getJsObjectName() ?>.setGridIds('<?php echo $this->getGridIdsJson() ?>');
 </script>
 <?php endif; ?>
-</div>
+

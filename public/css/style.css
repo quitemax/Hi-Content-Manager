@@ -1,12 +1,56 @@
 body {
-    padding-top: 60px;
+    padding-top: 50px;
     padding-bottom: 40px;
+}
+
+.label {
+    padding: 2px 4px;
+}
+input {
+    margin-bottom: 2px !important;
+    padding: 2px 0 1px 1px !important;
+}
+select {
+    -moz-transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+
+select:focus {
+  border-color: rgba(82, 168, 236, 0.8);
+  outline: 0;
+  outline: thin dotted \9;
+  /* IE6-9 */
+
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+
+button:focus {
+	border-color: rgba(82, 168, 236, 0.8);
+  outline: 0;
+  outline: thin dotted \9;
+  /* IE6-9 */
+
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+
+ .table td {
+	vertical-align: middle;
 }
 
 .zf-green {
     color: #68b604; 
 }
-
+.navbar .nav {
+/*    width: 100%;; */
+}
+/*
 .btn-success {
   background-color: #57a900;
   background-image: -moz-linear-gradient(top, #70d900, #57a900);
@@ -28,10 +72,98 @@ body {
 
 .btn-success:active, .btn-success.active {
   background-color: #57a900 \9;
-}
+}*/
 
 div.container a.brand {
     background: url("../images/zf2-logo.png") no-repeat scroll 0 10px transparent;
     margin-left: 0;
     padding: 8px 20px 12px 40px;
 }
+
+/**
+ * widget 
+ */
+/**
+ * grid 
+ */
+div.grid form {
+    margin:0px;
+}
+
+div.page-header.grid-container-widget {
+    margin-bottom: 8px;
+    margin-top: 4px;
+    color: #468847;
+}
+
+div.page-header div.btn-toolbar {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+div.grid-pager input.page {
+    width:20px;
+    margin-top: 0px;
+    margin-bottom: 3px;
+}
+
+div.grid-pager select.page-size {
+    width:50px;
+	margin-top: 0px;
+    margin-bottom: 3px;
+	margin-left:4px;
+}
+
+div.massaction {
+    background-color: #EEEEEE;
+}
+
+div.grid div.btn-toolbar {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+div.grid div.grid-massaction-action label  {
+    margin-top: 10px;
+    margin-left:12px;
+}
+div.grid div.grid-massaction-actions select  {
+    margin-top: 4px;
+    margin-bottom: 4px;
+/*    margin-left:12px;*/
+}
+div.grid div.grid-massaction-submit button  {
+    margin-top: 4px;
+    margin-bottom: 4px;
+/*    margin-left:12px;*/
+}
+div.grid div.grid-massaction-selection div  {
+    margin-top: 10px;
+    margin-left:12px;
+}
+/**/
+/*div#grid .data-table {*/
+/*	width:100%;*/
+/*}*/
+
+div.grid .table thead th {
+    text-align: center;
+}
+div.grid td.no-records {
+    text-align: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+div.grid td input.input-text-number {
+    width: 46px;
+}
+div.grid tr.filter div.range input {
+    width: 46px;
+}
+div.grid tr.filter div.range div.range-line {
+    float: right;
+}
+
+.a-left             { text-align:left !important; }
+.a-center           { text-align:center !important; }
+.a-right            { text-align:right !important; }

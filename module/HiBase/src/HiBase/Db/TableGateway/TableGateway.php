@@ -354,6 +354,7 @@ class TableGateway extends ZendTableGateway
             $sqlSelect->order($order);
         }
 //        \Zend\Debug::dump($sqlSelect->getSqlString());
+        \Zend\Debug::dump($sqlSelect->getSqlString($this->adapter->getPlatform()));
 //        echo $sqlSelect->getSqlString($this->adapter->getPlatform());
 
         return $sqlSelect;

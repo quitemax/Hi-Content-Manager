@@ -93,6 +93,12 @@ return array(
                                         'action'     => 'list',
                                     ),
                                 ),
+                                'may_terminate' => true,
+                                'child_routes'  => array(
+                                    'wildcard' => array(
+                                        'type'    => 'wildcard',
+                                    ),
+                                ),
                             ),
                             'add' => array(
                                 'type' => 'Literal',

@@ -86,53 +86,19 @@ class CheckupController extends ActionController
      */
     public function listAction()
     {
-        $locator = $this->getServiceLocator();
-
-//        $form = new Block();
-//        $form->setTemplate('_grid/_form/_form');
-//
-//        $fieldSet = new Block();
-//        $fieldSet->setTemplate('_grid/_resultSet/_subForm.phtml');
-//
-//        $form->addChild($fieldSet, 'content');
-//
-////        \Zend\Debug::dump($this->getServiceLocator()->get('CheckupModel'));
-
-        $checkupModel = $locator->get('CheckupModel');
-//        $locator->get('CheckupProfileModel');
-//        $locator->get('CheckupToProfileModel');
+//        $locator = $this->getServiceLocator();
 
         /**
          * Grid FORM Container
          */
-        $gridContainer = new GridContainer(
-//            array(
-//                'view' => $this->_view,
-//            )
-        );
-//        $gridContainer->asdf1234 = 'asdf1234';
-//        echo $gridContainer->asdf1234;
-//
-        /**
-         * BUILDING LIST
-         */
-        $grid = new CheckupGrid(
-//            array(
-//                'model' => $locator->get('CheckupModel');,
-//                'view' => $this->_view,
-//            )
-        );
-//        $grid->asdf1234 = 'asdf1234';
-//        echo $grid->asdf1234;
+        $gridContainer = new GridContainer();
 
-//        //
-//        $list->processRequest($this->getRequest());
-//
-//        //
-//        $list->build();
-//
-//        //
-//        $form->addSubForm($list, $list->getName());
+        /**
+         * BUILDING Grid
+         */
+        $grid = new CheckupGrid();
+
+        //
         $gridContainer->addChild($grid, 'grid');
 //
 ////        //
@@ -147,15 +113,16 @@ class CheckupController extends ActionController
 //            )
 //        );
 //
-//        /**
-//         * POST
-//         */
-//        if ($this->getRequest()->isPost()) {
-//
-//            $formData = $this->getRequest()->post()->toArray();
+        /**
+         * POST
+         */
+        if ($this->getRequest()->isPost()) {
+
+            $formData = $this->getRequest()->post()->toArray();
+            \Zend\Debug::dump($formData);
 //
 //            if ($form->isValid($formData)) {
-////                \Zend\Debug::dump($formData);
+
 //                if (    isset($formData['header']['formId'])
 //                        && $formData['header']['formId'] == 'CheckupGridForm') {
 //
@@ -212,7 +179,7 @@ class CheckupController extends ActionController
 //                    }
 //                }
 //            }
-//        }
+        }
 
         $view = new ViewModel();
 

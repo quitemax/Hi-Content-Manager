@@ -28,8 +28,7 @@ class Widget extends Block
     public function getId()
     {
         if ($this->_id === null) {
-            $this->_id = 'block-' . md5(microtime());
-//            $this->setData('id', Mage::helper('core')->uniqHash('id_'));
+                $this->_id = 'block-' . md5(microtime());
         }
         return $this->_id;
     }
@@ -57,9 +56,9 @@ class Widget extends Block
      * @param   Mage_Core_Block_Abstract $block
      * @return  Mage_Core_Block_Abstract
      */
-    public function setChild(AbstractBlock $block, $alias = null)
+    public function setChild(Widget $block, $alias = null)
     {
-        if ($alias !== null) {
+        if ($alias !== null && strpos($block->getId(), 'block-') !== false) {
             $block->setId($alias);
         }
 

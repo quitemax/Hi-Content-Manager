@@ -39,14 +39,19 @@ class DbTable extends TableGateway
             'integer',
             11,
             array(
-                'type'             => 'integer',
+                'type'             => 'id',
                 'length'           => '11',
                 'primary'          => true,
                 'autoincrement'    => true,
                 'notnull'          => true,
                 'grid'             => true,
-                'width'             => '100',
-                'sortable'             => true,
+                'width'            => '80',
+                'sortable'         => true,
+                'filterable'       => true,
+                'label'            => 'ID',
+//                'renderer'      => 'text',//override
+//                'filter'      => 'text',//override
+//                'header_css_class'      => 'number',//override
             )
         );
 
@@ -55,12 +60,14 @@ class DbTable extends TableGateway
             'datetime',
             null,
             array(
-                'type'             => 'datetime',
+//                'type'             => 'datetime',
                 'notnull'          => true,
                 'default'          => '0000-00-00 00:00:00',
-                'grid'          => true,
-                'width'             => 100,
-                'sortable'             => true,
+                'grid'             => true,
+                'width'            => 100,
+                'sortable'         => true,
+                'filterable'       => true,
+                'label'            => 'Date',
             )
         );
 
@@ -69,7 +76,7 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 1,
                 'notnull'          => true,
                 'default'          => '0.0',
@@ -81,13 +88,15 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 3,
                 'notnull'          => true,
                 'default'          => '0.0',
                 'grid'          => true,
-                'width'             => 100,
+                'width'             => 80,
                 'sortable'             => true,
+                'label'             => 'Weight',
+                'after_html'             => ' kg',
             )
         );
 
@@ -96,10 +105,15 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 1,
                 'notnull'          => true,
                 'default'          => '0.0',
+                'grid'          => true,
+                'width'             => 80,
+                'sortable'             => true,
+                'label'             => 'Fat',
+                'after_html'             => ' %',
             )
         );
 
@@ -108,10 +122,16 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 1,
                 'notnull'          => true,
                 'default'          => '0.0',
+                'grid'          => true,
+                'editable'          => true,
+                'width'             => 80,
+                'sortable'             => true,
+                'label'             => 'Water',
+                'after_html'             => ' %',
             )
         );
 
@@ -120,10 +140,15 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 1,
                 'notnull'          => true,
                 'default'          => '0.0',
+                'grid'          => true,
+                'width'             => 80,
+                'sortable'             => true,
+                'label'             => 'Muscle',
+                'after_html'             => ' %',
             )
         );
 
@@ -132,10 +157,15 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 1,
                 'notnull'          => true,
                 'default'          => '0.0',
+                'grid'          => true,
+                'width'             => 80,
+                'sortable'             => true,
+                'label'             => 'Bones',
+                'after_html'             => ' kg',
             )
         );
         $this->hasColumn(
@@ -143,7 +173,7 @@ class DbTable extends TableGateway
             'integer',
             11,
             array(
-                'type'             => 'integer',
+//                'type'             => 'integer',
                 'length'            => 11,
                 'notnull'          => true,
                 'default'          => '0',
@@ -154,7 +184,7 @@ class DbTable extends TableGateway
             'integer',
             11,
             array(
-                'type'             => 'integer',
+//                'type'             => 'integer',
                 'length'            => 11,
                 'notnull'          => true,
                 'default'          => '0',
@@ -166,10 +196,14 @@ class DbTable extends TableGateway
             'integer',
             11,
             array(
-                'type'             => 'integer',
+//                'type'             => 'integer',
                 'length'            => 11,
                 'notnull'          => true,
                 'default'          => '0',
+                'grid'          => true,
+                'width'             => 80,
+                'sortable'             => false,
+                'label'             => 'Level',
             )
         );
 
@@ -178,7 +212,7 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 1,
                 'notnull'          => true,
                 'default'          => '0.0',
@@ -190,7 +224,7 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 1,
                 'notnull'          => true,
                 'default'          => '0.0',
@@ -201,7 +235,7 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 1,
                 'notnull'          => true,
                 'default'          => '0.0',
@@ -212,7 +246,7 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 1,
                 'notnull'          => true,
                 'default'          => '0.0',
@@ -223,7 +257,7 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 1,
                 'notnull'          => true,
                 'default'          => '0.0',
@@ -234,7 +268,7 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 1,
                 'notnull'          => true,
                 'default'          => '0.0',
@@ -245,23 +279,12 @@ class DbTable extends TableGateway
             'decimal',
             10,
             array(
-                'type'             => 'decimal',
+//                'type'             => 'decimal',
                 'scale'            => 1,
                 'notnull'          => true,
                 'default'          => '0.0',
             )
         );
     }
-
-//    protected function setPrototypes()
-//    {
-//        $this->setSelectResultPrototype(
-//            new ResultSet(
-//                new Row(
-//                    $this->getPrimaryKey(), $this->getName(), $this->adapter, null, $this
-//                )
-//            )
-//        );
-//    }
 
 }

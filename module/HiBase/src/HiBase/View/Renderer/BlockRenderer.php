@@ -245,5 +245,27 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
         return $this->__renderTrees;
     }
 
+/**
+     * Overloading: proxy to helpers
+     *
+     * Proxies to the attached plugin broker to retrieve, return, and potentially
+     * execute helpers.
+     *
+     * * If the helper does not define __invoke, it will be returned
+     * * If the helper does define __invoke, it will be called as a functor
+     *
+     * @param  string $method
+     * @param  array $argv
+     * @return mixed
+     */
+    public function __call($method, $argv)
+    {
+        $helper = $this->plugin($method);
+        if (is_callable($helper)) {
+            return call_user_func_array($helper, $argv);
+        }
+        return $helper;
+    }
+
 
 }

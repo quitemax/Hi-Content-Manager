@@ -5,6 +5,7 @@ namespace HiBase\Block\Widget\Grid;
 
 use HiBase\Block\Widget;
 use HiBase\Block\Widget\Grid\Column\Renderer;
+use HiBase\Block\Widget\Grid\Column\Filter;
 //use Zend\View\Renderer\RendererInterface;
 //use Zend\View\Renderer\TreeRendererInterface;
 //use Zend\View\Resolver\ResolverInterface;
@@ -80,61 +81,72 @@ class Column extends Widget
 //
 //        return $this->_cssClass;
 //    }
-//
-//    public function getCssProperty()
-//    {
-//        return $this->getRenderer()->renderCss();
-//    }
-//
-//    public function getHeaderCssClass()
-//    {
-//        $class = $this->getData('header_css_class');
-//        if (($this->getSortable()===false) || ($this->getGrid()->getSortable()===false)) {
-//            $class .= ' no-link';
+
+    public function getCssProperty()
+    {
+        return $this->getRenderer()->renderCss();
+    }
+
+    public function getHeaderCssClass()
+    {
+
+//        \Zend\Debug::dump(get_class($this->getGrid()));
+        $class = $this->getVariable('header_css_class');
+        if (($this->getSortable()===false) || ($this->getGrid()->getSortable()===false)) {
+            $class .= ' no-link';
+        }
+        if ($this->isLast()) {
+            $class .= ' last';
+        }
+        return $class;
+    }
+
+    public function getHeaderHtmlProperty()
+    {
+        $str =  $this->getHtmlProperty();
+
+        $class = '';
+
+//        if ($cssProp = $this->getCssProperty()) {
+//            $class .= $cssProp;
 //        }
-//        if ($this->isLast()) {
-//            $class .= ' last';
-//        }
-//        return $class;
-//    }
-//
-//    public function getHeaderHtmlProperty()
-//    {
-//        $str = '';
-//        if ($class = $this->getHeaderCssClass()) {
-//            $str.= ' class="'.$class.'"';
-//        }
-//
-//        return $str;
-//    }
-//
-//    /**
-//     * Retrieve row column field value for display
-//     *
-//     * @param   Varien_Object $row
-//     * @return  string
-//     */
-//    public function getRowField(Varien_Object $row)
-//    {
-//        $renderedValue = $this->getRenderer()->render($row);
+
+        if ($cssProp = $this->getHeaderCssClass()) {
+            $class .= $cssProp;
+        }
+
+        $str.= ' class="'.$class.'"';
+
+        return $str;
+    }
+
+    /**
+     * Retrieve row column field value for display
+     *
+     * @param   Varien_Object $row
+     * @return  string
+     */
+    public function getRowField(/*Varien_Object*/ $row)
+    {
+        $renderedValue = $this->getRenderer()->render($row);
 //        if ($this->getHtmlDecorators()) {
 //            $renderedValue = $this->_applyDecorators($renderedValue, $this->getHtmlDecorators());
 //        }
-//
-//        /*
-//         * if column has determined callback for framing call
-//         * it before give away rendered value
-//         *
-//         * callback_function($renderedValue, $row, $column, $isExport)
-//         * should return new version of rendered value
-//         */
+
+        /*
+         * if column has determined callback for framing call
+         * it before give away rendered value
+         *
+         * callback_function($renderedValue, $row, $column, $isExport)
+         * should return new version of rendered value
+         */
 //        $frameCallback = $this->getFrameCallback();
 //        if (is_array($frameCallback)) {
 //            $renderedValue = call_user_func($frameCallback, $renderedValue, $row, $this, false);
 //        }
-//
-//        return $renderedValue;
-//    }
+
+        return $renderedValue;
+    }
 //
 //    /**
 //     * Retrieve row column field value for export
@@ -206,15 +218,24 @@ class Column extends Widget
 //        }
 //
         switch ($type) {
-//            case 'date':
-//                $rendererClass = 'adminhtml/widget_grid_column_renderer_date';
-//                break;
-//            case 'datetime':
-//                $rendererClass = 'adminhtml/widget_grid_column_renderer_datetime';
-//                break;
-//            case 'number':
+            case 'date':
+                $renderer = new Renderer\Date();
+                $rendererClass = 'adminhtml/widget_grid_column_renderer_date';
+                break;
+            case 'datetime':
+                $renderer = new Renderer\DateTime();
+                $rendererClass = 'adminhtml/widget_grid_column_renderer_datetime';
+                break;
+            case 'number':
+            case 'integer':
+            case 'decimal':
+                $renderer = new Renderer\Number();
 //                $rendererClass = 'adminhtml/widget_grid_column_renderer_number';
-//                break;
+                break;
+            case 'id':
+                $renderer = new Renderer\Id();
+//                $rendererClass = 'adminhtml/widget_grid_column_renderer_number';
+                break;
 //            case 'currency':
 //                $rendererClass = 'adminhtml/widget_grid_column_renderer_currency';
 //                break;
@@ -227,18 +248,19 @@ class Column extends Widget
 //            case 'concat':
 //                $rendererClass = 'adminhtml/widget_grid_column_renderer_concat';
 //                break;
-//            case 'action':
+            case 'action':
+                $renderer = new Renderer\Action();
 //                $rendererClass = 'adminhtml/widget_grid_column_renderer_action';
-//                break;
+                break;
 //            case 'options':
 //                $rendererClass = 'adminhtml/widget_grid_column_renderer_options';
 //                break;
 //            case 'checkbox':
 //                $rendererClass = 'adminhtml/widget_grid_column_renderer_checkbox';
 //                break;
-//            case 'massaction':
-//                $rendererClass = 'adminhtml/widget_grid_column_renderer_massaction';
-//                break;
+            case 'massaction':
+                $renderer = new Renderer\MassAction();
+                break;
 //            case 'radio':
 //                $rendererClass = 'adminhtml/widget_grid_column_renderer_radio';
 //                break;
@@ -293,27 +315,33 @@ class Column extends Widget
 //        $this->_filter = $this->getLayout()->createBlock($filterClass)
 //                ->setColumn($this);
 //    }
-//
-//    protected function _getFilterByType()
-//    {
+
+    protected function _createFilter($type)
+    {
 //        $type = strtolower($this->getType());
 //        $filters = $this->getGrid()->getColumnFilters();
 //        if (is_array($filters) && isset($filters[$type])) {
 //            return $filters[$type];
 //        }
 //
-//        switch ($type) {
-//            case 'datetime':
-//                $filterClass = 'adminhtml/widget_grid_column_filter_datetime';
-//                break;
-//            case 'date':
-//                $filterClass = 'adminhtml/widget_grid_column_filter_date';
-//                break;
-//            case 'range':
-//            case 'number':
+        switch ($type) {
+            case 'datetime':
+                $filter = new Filter\DateTime();
+                break;
+            case 'date':
+                $filter = new Filter\Date();
+                break;
+            case 'range':
+            case 'number':
+            case 'decimal':
+            case 'integer':
 //            case 'currency':
-//                $filterClass = 'adminhtml/widget_grid_column_filter_range';
-//                break;
+                $filter = new Filter\Range();
+                break;
+            case 'id':
+//            case 'currency':
+                $filter = new Filter\Id();
+                break;
 //            case 'price':
 //                $filterClass = 'adminhtml/widget_grid_column_filter_price';
 //                break;
@@ -341,43 +369,44 @@ class Column extends Widget
 //            case 'theme':
 //                $filterClass = 'adminhtml/widget_grid_column_filter_theme';
 //                break;
-//            default:
-//                $filterClass = 'adminhtml/widget_grid_column_filter_text';
-//                break;
-//        }
-//        return $filterClass;
-//    }
-//
+            default:
+                $filter = new Filter\AbstractFilter();
+
+                break;
+        }
+        return $filter;
+    }
+
     public function getFilter()
     {
-//        if (!$this->_filter) {
-//            $filterClass = $this->getData('filter');
-//            if ($filterClass === false) {
-//                return false;
-//            }
-//            if (!$filterClass) {
-//                $filterClass = $this->_getFilterByType();
-//                if ($filterClass === false) {
-//                    return false;
-//                }
-//            }
-//            $this->_filter = $this->getLayout()->createBlock($filterClass)
-//                ->setColumn($this);
-//        }
-//
+        if (!$this->_filter) {
+
+            $filter = $this->filter;
+            if (!$filter) {
+                $filter = strtolower($this->getType());
+            }
+//            \Zend\Debug::dump($filter);
+
+            $filter = $this->_createFilter($filter);
+            if ($filter) {
+                $filter->setColumn($this);
+                $this->_filter = $filter;
+            }
+        }
+
         return $this->_filter;
     }
 
-//    public function getFilterHtml()
-//    {
-//        if ($this->getFilter()) {
-//            return $this->getFilter()->getHtml();
-//        } else {
-//            return '&nbsp;';
-//        }
-//        return null;
-//    }
-//
+    public function getFilterHtml()
+    {
+        if ($this->getFilter()) {
+            return $this->getFilter()->getHtml();
+        } else {
+            return '&nbsp;';
+        }
+        return null;
+    }
+
 //    /**
 //     * Retrieve Header Name for Export
 //     *

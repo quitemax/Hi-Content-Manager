@@ -258,6 +258,7 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
      */
     public function getBroker()
     {
+//        \HiBase\Debug::precho('dada');;
         if (null === $this->__helperBroker) {
             $this->setBroker(new HelperBroker());
         }
@@ -283,7 +284,7 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
      * @param   Mage_Core_Block_Abstract $block
      * @return  Mage_Core_Block_Abstract
      */
-    public function setChild(AbstractBlock $block, $alias = null)
+    public function setChild(Block $block, $alias = null)
     {
         $block->setBroker($this->getBroker());
 //        $block->setResolver($this->getResolver());

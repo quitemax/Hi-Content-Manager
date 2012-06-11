@@ -30,15 +30,15 @@ class Text extends AbstractRenderer
 //     * @var string
 //     */
 //    protected $_variablePattern = '/\\$([a-z0-9_]+)/i';
-//
+
 //    /**
 //     * Renders grid column
 //     *
 //     * @param Varien_Object $row
 //     * @return mixed
 //     */
-//    public function _getValue(Varien_Object $row)
-//    {
+    public function _getValue(/*Varien_Object*/ $row)
+    {
 //        $format = ( $this->getColumn()->getFormat() ) ? $this->getColumn()->getFormat() : null;
 //        $defaultValue = $this->getColumn()->getDefault();
 //        if (is_null($format)) {
@@ -58,5 +58,6 @@ class Text extends AbstractRenderer
 //        } else {
 //            return $this->escapeHtml($format);
 //        }
-//    }
+        return parent::_getValue($row);
+    }
 }

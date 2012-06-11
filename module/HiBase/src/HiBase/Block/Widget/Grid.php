@@ -177,20 +177,6 @@ class Grid extends Widget
      */
     protected $_massactionIdFilter = null;
 
-//    /**
-//     * Massaction block name
-//     *
-//     * @var string
-//     */
-//    protected $_massactionBlockName = 'adminhtml/widget_grid_massaction';
-
-//    /**
-//    * RSS list
-//    *
-//    * @var array
-//    */
-//    protected $_rssLists = array();
-
     /**
      * Columns view order
      *
@@ -240,7 +226,7 @@ class Grid extends Widget
             new Button(
                 array(
                     'label'     => $this->__('Search'),
-                    'onclick'   => $this->getJsObjectName().'.doFilter()',
+                    'onclick'   => $this->getJsObjectName().'.filter()',
                     'class'   => 'task'
                 )
             ),
@@ -438,35 +424,7 @@ class Grid extends Widget
         return $this->_columns;
     }
 
-//    protected function _setFilterValues($data)
-//    {
-////        foreach ($this->getColumns() as $columnId => $column) {
-////            if (isset($data[$columnId])
-////                && (!empty($data[$columnId]) || strlen($data[$columnId]) > 0)
-////                && $column->getFilter()
-////            ) {
-////                $column->getFilter()->setValue($data[$columnId]);
-////                $this->_addColumnFilterToCollection($column);
-////            }
-////        }
-////        return $this;
-//    }
 
-//    protected function _addColumnFilterToCollection($column)
-//    {
-////        if ($this->getCollection()) {
-////            $field = ( $column->getFilterIndex() ) ? $column->getFilterIndex() : $column->getIndex();
-////            if ($column->getFilterConditionCallback()) {
-////                call_user_func($column->getFilterConditionCallback(), $this->getCollection(), $column);
-////            } else {
-////                $cond = $column->getFilter()->getCondition();
-////                if ($field && isset($cond)) {
-////                    $this->getCollection()->addFieldToFilter($field , $cond);
-////                }
-////            }
-////        }
-////        return $this;
-//    }
 
     /**
      * Sets sorting order by some column
@@ -523,26 +481,6 @@ class Grid extends Widget
 
 //        if ($this->getCollection()) {
 //
-//
-//            $columnId = $this->getParam($this->getVarNameSort(), $this->_defaultSort);
-//            $dir      = $this->getParam($this->getVarNameDir(), $this->_defaultDir);
-//            $filter   = $this->getParam($this->getVarNameFilter(), null);
-//
-//            if (is_null($filter)) {
-//                $filter = $this->_defaultFilter;
-//            }
-//
-//            if (is_string($filter)) {
-//                $data = $this->helper('adminhtml')->prepareFilterString($filter);
-//                $this->_setFilterValues($data);
-//            }
-//            else if ($filter && is_array($filter)) {
-//                $this->_setFilterValues($filter);
-//            }
-//            else if(0 !== sizeof($this->_defaultFilter)) {
-//                $this->_setFilterValues($this->_defaultFilter);
-//            }
-//
 //            if (isset($this->_columns[$columnId]) && $this->_columns[$columnId]->getIndex()) {
 //                $dir = (strtolower($dir)=='desc') ? 'desc' : 'asc';
 //                $this->_columns[$columnId]->setDir($dir);
@@ -578,20 +516,207 @@ class Grid extends Widget
     protected function _prepareGrid()
     {
         $this->_preparePagerBlock();
-//        $this->_prepareFilter();
-        $this->_prepareColumns();
         $this->_prepareMassactionBlock();
+
+        $this->_prepareColumns();
+        $this->_prepareSort();
+
+
+        $this->_prepareFilter();
         $this->_prepareCollection();
+        $this->_prepareJs();
         return $this;
     }
-//    protected function _processRequest()
+
+    protected function _prepareFilter()
+    {
+        $filter   = $this->getParam($this->getVarNameFilter(), null);
+
+        if (is_null($filter)) {
+            $filter = $this->_defaultFilter;
+        }
+
+            if (is_string($filter)) {
+//                \Zend\Debug::dump($filter);
+//                \Zend\Debug::dump(base64_decode($filter));
+//                \Zend\Debug::dump(json_decode(base64_decode($filter)), 'json_decode(base64_decode($filter))');
+                $data = $this->_prepareFilterString($filter);
+                $this->_setFilterValues($data);
+            }
+            else if ($filter && is_array($filter)) {
+                $this->_setFilterValues($filter);
+            }
+            else if(0 !== sizeof($this->_defaultFilter)) {
+                $this->_setFilterValues($this->_defaultFilter);
+            }
+
+        return $this;
+    }
+
+    protected function _prepareFilterString($filterString)
+    {
+        $filterArray = array();
+        $filters = (array)json_decode(base64_decode($filterString));
+        foreach ($filters as $filter) {
+            if (is_array($filter)) {
+                $filter = array_shift($filter);
+            }
+
+            //range
+            if (false !== strpos($filter->name, '[from]')) {
+                $name = substr($filter->name, 0, strpos($filter->name, '[from]'));
+//                $name = array_shift(explode('[', $filter->name));
+                $filterArray[$name]['from'] = $filter->value;
+                continue;
+            }
+            if (false !== strpos($filter->name, '[to]')) {
+                $name = substr($filter->name, 0, strpos($filter->name, '[to]'));
+//                $name = array_shift(explode('[', $filter->name));
+                $filterArray[$name]['to'] = $filter->value;
+                continue;
+            }
+
+
+//            \Zend\Debug::dump(get_class_methods($filter));
+//            \Zend\Debug::dump((array)$filter);
+//            \Zend\Debug::dump((array)$filter);
+            $filterArray[$filter->name] = $filter->value;
+        }
+
+        \Zend\Debug::dump($filterArray, '$filterArray');
+
+        return $filterArray;
+    }
+
+    protected function _setFilterValues($data)
+    {
+
+        foreach ($this->getColumns() as $columnId => $column) {
+//            \Zend\Debug::dump(isset($data[$columnId]));
+//            \Zend\Debug::dump(!empty($data[$columnId]));
+//            \Zend\Debug::dump(strlen($data[$columnId]) > 0);
+//            \Zend\Debug::dump(get_class($column->getFilter()));
+            if (isset($data[$columnId])
+                && (!empty($data[$columnId]) || strlen($data[$columnId]) > 0)
+                && $column->getFilter()
+            ) {
+                $column->getFilter()->setValue($data[$columnId]);
+//                $this->_addColumnFilterToCollection($column);
+            }
+        }
+        return $this;
+    }
+
+    protected function getFilterValues()
+    {
+        $values = array();
+
+        foreach ($this->getColumns() as $columnId => $column) {
+            if ($column->getFilter()->getValue()) {
+                $filter = array();
+                $filter['field'] = $columnId;
+                $filter['values'] = $column->getFilter()->getValue();
+                $filter['type'] = strtolower(array_pop(explode('\\', get_class($column->getFilter()))));
+    //            \Zend\Debug::dump(isset($data[$columnId]));
+    //            \Zend\Debug::dump(!empty($data[$columnId]));
+    //            \Zend\Debug::dump(strlen($data[$columnId]) > 0);
+    //            \Zend\Debug::dump(get_class($column->getFilter()));
+    //            if (isset($data[$columnId])
+    //                && (!empty($data[$columnId]) || strlen($data[$columnId]) > 0)
+    //                && $column->getFilter()
+    //            ) {
+    //                $column->getFilter()->setValue($data[$columnId]);
+    ////                $this->_addColumnFilterToCollection($column);
+    //            }
+                $values[] = $filter;
+            }
+
+        }
+        return $values;
+    }
+
+//    protected function _addColumnFilterToCollection($column)
 //    {
-//
-//
-//
-//
-//        return $this;
+////        if ($this->getCollection()) {
+////            $field = ( $column->getFilterIndex() ) ? $column->getFilterIndex() : $column->getIndex();
+////            if ($column->getFilterConditionCallback()) {
+////                call_user_func($column->getFilterConditionCallback(), $this->getCollection(), $column);
+////            } else {
+////                $cond = $column->getFilter()->getCondition();
+////                if ($field && isset($cond)) {
+////                    $this->getCollection()->addFieldToFilter($field , $cond);
+////                }
+////            }
+////        }
+////        return $this;
 //    }
+
+    protected function _prepareJs()
+    {
+        $basePath = $this->basePath();
+
+        $this->headScript()->appendFile(
+            $basePath . '/js/js.js',
+            'text/javascript'
+        );
+        $this->headScript()->appendFile(
+            $basePath . '/js/grid.js',
+            'text/javascript'
+        );
+
+        $sort = $this->getParam($this->getVarNameSort(), $this->_defaultSort);
+        $dir      = $this->getParam($this->getVarNameDir(), $this->_defaultDir);
+
+        $filter   = $this->getParam($this->getVarNameFilter(), null);
+
+        $pager = $this->getPager();
+        $jsObjectName = $this->getJsObjectName();
+
+
+        $script = <<<HTML
+var {$jsObjectName} = new HiGridWidget('{$this->getId()}', '{$this->getGridUrl()}', '{$this->getVarNamePage()}', '{$this->getVarNameSort()}', '{$this->getVarNameDir()}', '{$this->getVarNameLimit()}', '{$this->getVarNameFilter()}');
+{$jsObjectName}.pageValue = '{$pager->getCurPage()}';
+{$jsObjectName}.limitValue = '{$pager->getLimit()}';
+{$jsObjectName}.sortValue = '{$sort}';
+{$jsObjectName}.dirValue = '{$dir}';
+{$jsObjectName}.filterValue = '{$filter}';
+HTML;
+
+
+        $this->inlineScript()->appendScript(
+            $script,
+            'text/javascript'
+        );//,
+
+        return $this;
+
+    }
+
+
+    protected function _prepareSort()
+    {
+        $sort     = $this->getParam($this->getVarNameSort(), $this->_defaultSort);
+        $dir      = $this->getParam($this->getVarNameDir(), $this->_defaultDir);
+
+        if ($column = $this->getColumn($sort)) {
+            $column->setDir($dir);
+        }
+
+        return $this;
+    }
+
+    public function getSort()
+    {
+        $columnId = $this->getParam($this->getVarNameSort(), $this->_defaultSort);
+        $dir      = $this->getParam($this->getVarNameDir(), $this->_defaultDir);
+
+        if ($columnId && $dir) {
+            return $columnId . ' ' . $dir;
+        }
+
+        return null;
+    }
+
     protected function _preparePagerBlock()
     {
         $pager = new Pager();
@@ -636,11 +761,24 @@ class Grid extends Widget
      */
     protected function _prepareMassactionBlock()
     {
+        $massActionBlock = new MassAction();
+        $massActionBlock->setId($this->getId() . 'MassAction');
+
+//        $massActionBlock->setJsObjectName($this->getJsObjectName());
+
+        $massActionBlock->setGrid(
+            $this
+        );
+
         $this->setChild(
-            new MassAction(),
+            $massActionBlock,
             'massaction'
         );
+
         $this->_prepareMassaction();
+
+
+//        \Zend\Debug::dump($this->getMassactionBlock()->isAvailable(), '$this->getMassactionBlock()->isAvailable()');
         if($this->getMassactionBlock()->isAvailable()) {
             $this->_prepareMassactionColumn();
         }
@@ -666,7 +804,16 @@ class Grid extends Widget
     protected function _prepareMassactionColumn()
     {
         $columnId = 'massaction';
-//        $massactionColumn = $this->getLayout()->createBlock('adminhtml/widget_grid_column')
+        $massactionColumn = new Column(
+            array(
+                'index'        => $this->getMassactionIdField(),
+                'filter_index' => $this->getMassactionIdFilter(),
+                'type'         => 'massaction',
+//                'name'         => $this->getMassactionBlock()->getFormFieldName(),
+                'class'        => 'a-center',
+//                'is_system'    => true
+            )
+        );
 //                ->setData(array(
 //                    'index'        => $this->getMassactionIdField(),
 //                    'filter_index' => $this->getMassactionIdFilter(),
@@ -680,14 +827,14 @@ class Grid extends Widget
 //            $massactionColumn->setData('filter', false);
 //        }
 //
-//        $massactionColumn->setSelected($this->getMassactionBlock()->getSelected())
-//            ->setGrid($this)
-//            ->setId($columnId);
-//
-//        $oldColumns = $this->_columns;
-//        $this->_columns = array();
-//        $this->_columns[$columnId] = $massactionColumn;
-//        $this->_columns = array_merge($this->_columns, $oldColumns);
+        $massactionColumn//->setSelected($this->getMassactionBlock()->getSelected())
+            ->setGrid($this)
+            ->setId($columnId);
+
+        $oldColumns = $this->_columns;
+        $this->_columns = array();
+        $this->_columns[$columnId] = $massactionColumn;
+        $this->_columns = array_merge($this->_columns, $oldColumns);
         return $this;
     }
 
@@ -865,21 +1012,37 @@ class Grid extends Widget
      */
     public function getParam($paramName, $default=null)
     {
+//        \Zend\Debug::dump($paramName, '$paramName');
+//        \Zend\Debug::dump($this->getRequest());
+//        \Zend\Debug::dump($this->getRequest()->query()->toArray());
+//        \Zend\Debug::dump($this->getRequest()->post()->toArray());
+//        \Zend\Debug::dump($this->getRequest()->query()->get($paramName, $default), '$this->getRequest()->query()->get($paramName, $default)');
+//        \Zend\Debug::dump($this->getRequest()->getParam());
 //        $session = Mage::getSingleton('adminhtml/session');
 //        $sessionParamName = $this->getId().$paramName;
-//        if ($this->getRequest()->has($paramName)) {
+        if ($param = $this->getRequest()->query()->get($paramName, $default)) {
 //            $param = $this->getRequest()->getParam($paramName);
 //            if ($this->_saveParametersInSession) {
 //                $session->setData($sessionParamName, $param);
 //            }
+            return $param;
+        }
+        elseif ($this->_saveParametersInSession /*&& ($param = $session->getData($sessionParamName))*/)
+        {
 //            return $param;
-//        }
-//        elseif ($this->_saveParametersInSession && ($param = $session->getData($sessionParamName)))
-//        {
-//            return $param;
-//        }
+        }
 
         return $default;
+    }
+
+	/**
+     * Retrieve grid HTML
+     *
+     * @return string
+     */
+    public function getRequest()
+    {
+        return $this->getServiceManager()->get('Request');
     }
 
     /**
@@ -900,6 +1063,7 @@ class Grid extends Widget
 
     public function getJsObjectName()
     {
+//        \Zend\Debug::dump($this->getId());
         return $this->getId().'JsObject';
     }
 
@@ -1039,4 +1203,5 @@ class Grid extends Widget
 //        $this->_groupedColumn[] = $column;
         return $this;
     }
+
 }

@@ -1,27 +1,41 @@
 <?php echo $this->__('Page') ?>
+<?php
+$_curPage  = $this->getCurPage();
+$_lastPage = $this->getLastPageNumber();
+?>
 
-<?php $_curPage  = $this->getCurPage() ?>
-<?php $_lastPage = $this->getLastPageNumber() ?>
-<?php //echo $this->basePath()?>
 <?php if($_curPage > 1): ?>
-    <a href="#" title="<?php echo $this->__('Previous page') ?>" onclick="<?php echo $this->getJsObjectName() ?>.setPage('<?php echo ($_curPage-1) ?>');return false;"><img src="<?php echo $this->basePath('images/hi-grid/pager_arrow_left.gif') ?>" alt="Go to Previous page" class="arrow"/></a>
+<a href="#" title="<?php echo $this->__('First page') ?>" onclick="<?php echo $this->getGrid()->getJsObjectName() ?>.setPage('1');return false;"><i class="icon-fast-backward" title="Go to First page"></i></a>
 <?php else: ?>
-    <img src="<?php echo $this->basePath('images/hi-grid/pager_arrow_left_off.gif')//() ?>" alt="Go to Previous page" class="arrow"/>
+<i class="icon-fast-backward" title="Go to First page"></i>
 <?php endif; ?>
 
-<input type="text" name="<?php echo $this->getVarNamePage() ?>" value="<?php echo $_curPage ?>" class="input-text page" onkeypress="<?php echo $this->getJsObjectName() ?>.inputPage(event, '<?php echo $_lastPage ?>')"/>
+<?php if($_curPage > 1): ?>
+<a href="#" title="<?php echo $this->__('Previous page') ?>" onclick="<?php echo $this->getGrid()->getJsObjectName() ?>.setPage('<?php echo ($_curPage - 1) ?>');return false;"><i class="icon-step-backward" title="Go to Previous page"></i></a>
+<?php else: ?>
+<i class="icon-step-backward" title="Go to Previous page"></i>
+<?php endif; ?>
+
+<input type="text" id="<?php echo $this->getGrid()->getVarNamePage() ?>" name="<?php echo $this->getGrid()->getVarNamePage() ?>" value="<?php echo $_curPage ?>" class="page" onkeypress="<?php echo $this->getGrid()->getJsObjectName() ?>.inputPage(this, event, '<?php echo $_lastPage ?>');"/>
 
 <?php if($_curPage < $_lastPage): ?>
-    <a href="#" title="<?php echo $this->__('Next page') ?>" onclick="<?php echo $this->getJsObjectName() ?>.setPage('<?php echo ($_curPage+1) ?>');return false;"><img src="<?php echo $this->basePath('images/hi-grid/pager_arrow_right.gif') ?>" alt="Go to Next page" class="arrow"/></a>
+    <a href="#" title="<?php echo $this->__('Next page') ?>" onclick="<?php echo $this->getGrid()->getJsObjectName() ?>.setPage('<?php echo ($_curPage+1) ?>');return false;"><i class="icon-step-forward" title="Go to Next page"></i></a>
 <?php else: ?>
-    <img src="<?php echo $this->basePath('images/hi-grid/pager_arrow_right_off.gif') ?>" alt="Go to Previous page" class="arrow"/>
+    <i class="icon-step-forward" title="Go to Next page"></i>
 <?php endif; ?>
+
+<?php if($_curPage < $_lastPage): ?>
+<a href="#" title="<?php echo $this->__('Last page') ?>" onclick="<?php echo $this->getGrid()->getJsObjectName() ?>.setPage('<?php echo $_lastPage ?>');return false;"><i class="icon-fast-forward" title="Go to Last page"></i></a>
+<?php else: ?>
+<i class="icon-fast-forward" title="Go to Last page"></i>
+<?php endif; ?>
+
 
 
 <?php echo $this->__('of %s pages', $this->getLastPageNumber()) ?>
  <span class="separator">|</span>
 <?php echo $this->__('View') ?>
-<select name="<?php echo $this->getGrid()->getVarNameLimit() ?>" onchange="<?php echo $this->getJsObjectName() ?>.loadByElement(this)">
+<select class="page-size" name="<?php echo $this->getGrid()->getVarNameLimit() ?>" onchange="<?php echo $this->getGrid()->getJsObjectName() ?>.setLimit(this)">
     <option value="20"<?php if($this->getPageSize()==20): ?> selected="selected"<?php endif; ?>>20</option>
     <option value="30"<?php if($this->getPageSize()==30): ?> selected="selected"<?php endif; ?>>30</option>
     <option value="50"<?php if($this->getPageSize()==50): ?> selected="selected"<?php endif; ?>>50</option>

@@ -161,25 +161,25 @@ class Container extends Widget
         return $this->_headerText;
     }
 
-    /**
-     * Get header CSS class
-     *
-     * @return string
-     */
-    public function getHeaderCssClass()
-    {
-        return 'head-' . strtr($this->_controller, '_', '-');
-    }
+//    /**
+//     * Get header CSS class
+//     *
+//     * @return string
+//     */
+//    public function getHeaderCssClass()
+//    {
+//        return 'head-' . strtr($this->_controller, '_', '-');
+//    }
 
-    /**
-     * Get header HTML
-     *
-     * @return string
-     */
-    public function getHeaderHtml()
-    {
-        return '<h3 class="' . $this->getHeaderCssClass() . '">' . $this->getHeaderText() . '</h3>';
-    }
+//    /**
+//     * Get header HTML
+//     *
+//     * @return string
+//     */
+//    public function getHeaderHtml()
+//    {
+//        return '<h3 class="' . $this->getHeaderCssClass() . '">' . $this->getHeaderText() . '</h3>';
+//    }
 
 //    /**
 //     * Check if there's anything to display in footer

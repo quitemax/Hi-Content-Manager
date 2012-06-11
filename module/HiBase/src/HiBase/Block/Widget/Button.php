@@ -31,10 +31,10 @@ class Button extends Widget
         return ($type = $this->_type) ? $type : 'button';
     }
 
-    public function getOnClick()
-    {
-        return $this->_onClick;
-    }
+//    public function getOnClick()
+//    {
+//        return $this->_onClick;
+//    }
 
     public function setType($type)
     {
@@ -42,15 +42,16 @@ class Button extends Widget
         return $this;
     }
 
-    public function setOnClick($onClick)
-    {
-        $this->_onClick = $onClick;
-        return $this;
-    }
+//    public function setOnClick($onClick)
+//    {
+//        $this->_onClick = $onClick;
+//        return $this;
+//    }
 
     protected function _toHtml()
     {
 //        \Zend\Debug::dump(get_class_methods($this));
+//        \Zend\Debug::dump($this->getVariables());
         $html = $this->getBeforeHtml()
             .'<button '
             . ($this->getId() ? ' id="' . $this->getId() . '"':'')
@@ -59,12 +60,12 @@ class Button extends Widget
             . ($this->getTitle() ? $this->getTitle() : $this->getLabel())
             . '"'
             . ' type="'.$this->getType() . '"'
-            . ' class="scalable ' . $this->getClass() . ($this->getDisabled() ? ' disabled' : '') . '"'
-            . ' onclick="'.$this->getOnClick().'"'
+            . ' class="btn ' . $this->getClass() . ($this->getDisabled() ? ' disabled' : '') . '"' //scalable
+            . ' onclick="'.$this->getOnclick().'"'
             . ' style="'.$this->getStyle() .'"'
             . ($this->getValue()?' value="'.$this->getValue() . '"':'')
             . ($this->getDisabled() ? ' disabled="disabled"' : '')
-            . '><span><span><span>' . $this->getLabel() . '</span></span></span></button>' //. $this->label
+            . '>' . $this->getLabel() . '</button>' //. $this->label
             . $this->getAfterHtml();
 //
         return $html;

@@ -3,6 +3,8 @@
 namespace HiBase\Block\Widget\Grid;
 
 use HiBase\Block\Widget;
+use HiBase\Block\Widget\Grid\MassAction\Item;
+use HiBase\Block\Widget\Button;
 
 ///**
 // * Grid widget massaction block
@@ -21,6 +23,25 @@ class MassAction extends Widget
      * @var array
      */
     protected $_items = array();
+
+    protected $_grid;
+
+
+
+    public function setGrid($grid)
+    {
+        //
+        $this->_grid = $grid;
+
+
+        //
+        return $this;
+    }
+
+    public function getGrid()
+    {
+        return $this->_grid;
+    }
 
     /**
      * Sets Massaction template
@@ -47,46 +68,48 @@ class MassAction extends Widget
 //     * @param array $item
 //     * @return Mage_Adminhtml_Block_Widget_Grid_Massaction_Abstract
 //     */
-//    public function addItem($itemId, array $item)
-//    {
-//        $this->_items[$itemId] =  $this->getLayout()->createBlock('adminhtml/widget_grid_massaction_item')
-//            ->setData($item)
-//            ->setMassaction($this)
-//            ->setId($itemId);
+    public function addItem($itemId, array $item)
+    {
+        $item =  new Item($item);
+////            ->setData($item)
+        $item->setMassaction($this);
+        $item->setId($itemId);
+//
+        $this->_items[$itemId] = $item;
 //
 //        if($this->_items[$itemId]->getAdditional()) {
 //            $this->_items[$itemId]->setAdditionalActionBlock($this->_items[$itemId]->getAdditional());
 //            $this->_items[$itemId]->unsAdditional();
 //        }
-//
-//        return $this;
-//    }
-//
+
+        return $this;
+    }
+
 //    /**
 //     * Retrieve massaction item with id $itemId
 //     *
 //     * @param string $itemId
 //     * @return Mage_Adminhtml_Block_Widget_Grid_Massaction_Item
 //     */
-//    public function getItem($itemId)
-//    {
-//        if(isset($this->_items[$itemId])) {
-//            return $this->_items[$itemId];
-//        }
-//
-//        return null;
-//    }
-//
-//    /**
-//     * Retrieve massaction items
-//     *
-//     * @return array
-//     */
-//    public function getItems()
-//    {
-//        return $this->_items;
-//    }
-//
+    public function getItem($itemId)
+    {
+        if(isset($this->_items[$itemId])) {
+            return $this->_items[$itemId];
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieve massaction items
+     *
+     * @return array
+     */
+    public function getItems()
+    {
+        return $this->_items;
+    }
+
 //    /**
 //     * Retrieve massaction items JSON
 //     *
@@ -142,26 +165,26 @@ class MassAction extends Widget
 //        return  'internal_' . $this->getFormFieldName();
 //    }
 //
-//    /**
-//     * Retrieve massaction block js object name
-//     *
-//     * @return string
-//     */
-//    public function getJsObjectName()
-//    {
-//        return $this->getHtmlId() . 'JsObject';
-//    }
-//
-//    /**
-//     * Retrieve grid block js object name
-//     *
-//     * @return string
-//     */
-//    public function getGridJsObjectName()
-//    {
-//        return $this->getParentBlock()->getJsObjectName();
-//    }
-//
+    /**
+     * Retrieve massaction block js object name
+     *
+     * @return string
+     */
+    public function getJsObjectName()
+    {
+        return $this->getHtmlId() . 'JsObject';
+    }
+
+    /**
+     * Retrieve grid block js object name
+     *
+     * @return string
+     */
+    public function getGridJsObjectName()
+    {
+        return $this->getGrid()->getJsObjectName();
+    }
+
 //    /**
 //     * Retrieve JSON string of selected checkboxes
 //     *
@@ -191,17 +214,69 @@ class MassAction extends Widget
 //            return array();
 //        }
 //    }
+
+    /**
+     * Retrieve apply button html
+     *
+     * @return string
+     */
+    public function getApplyButtonHtml()
+    {
+        $this->setChild(
+            new Button(
+                array(
+//                    'name'      => $this->__('submit'),
+//                    'type'      => 'submit',
+                    'label'     => $this->__('Submit'),
+                    'onclick'   => $this->getJsObjectName() . '.apply()',
+                    'class'   => 'pull-left'
+                )
+            ),
+            'submit_button'
+        );
+        return $this->getChildHtml('submit_button');
+    }
+
+    protected function _beforeToHtml()
+    {
+        $this->_prepareJs();
+        $return = parent::_beforeToHtml();
+        return $return;
+    }
+
+    protected function _prepareJs()
+    {
+        $basePath = $this->basePath();
+
+        $this->headScript()->appendFile(
+            $basePath . '/js/js.js',
+            'text/javascript'
+        );
+        $this->headScript()->appendFile(
+            $basePath . '/js/grid.js',
+            'text/javascript'
+        );
+
+
 //
-//    /**
-//     * Retrieve apply button html
-//     *
-//     * @return string
-//     */
-//    public function getApplyButtonHtml()
-//    {
-//        return $this->getButtonHtml($this->__('Submit'), $this->getJsObjectName() . ".apply()");
-//    }
-//
+//        $pager = $this->getGrid()->getPager();
+        $jsObjectName = $this->getJsObjectName();
+
+
+        $script = <<<HTML
+var {$jsObjectName} = new HiGridMassActionWidget('{$this->getId()}', '{$this->getGridUrl()}');
+HTML;
+
+
+        $this->inlineScript()->appendScript(
+            $script,
+            'text/javascript'
+        );//,
+
+        return $this;
+
+    }
+
 //    public function getJavaScript()
 //    {
 //        return " var {$this->getJsObjectName()} = new varienGridMassaction('{$this->getHtmlId()}', "
@@ -213,7 +288,7 @@ class MassAction extends Widget
 //                . ($this->getUseSelectAll() ? "{$this->getJsObjectName()}.setUseSelectAll(true);" : '')
 //                . "{$this->getJsObjectName()}.errorText = '{$this->getErrorText()}';";
 //    }
-//
+
 //    public function getGridIdsJson()
 //    {
 //        if (!$this->getUseSelectAll()) {
@@ -232,22 +307,22 @@ class MassAction extends Widget
 //    {
 //        return $this->getParentBlock()->getHtmlId() . '_massaction';
 //    }
-//
-//    /**
-//     * Remove existing massaction item by its id
-//     *
-//     * @param string $itemId
-//     * @return Mage_Adminhtml_Block_Widget_Grid_Massaction_Abstract
-//     */
-//    public function removeItem($itemId)
-//    {
-//        if (isset($this->_items[$itemId])) {
-//            unset($this->_items[$itemId]);
-//        }
-//
-//        return $this;
-//    }
-//
+
+    /**
+     * Remove existing massaction item by its id
+     *
+     * @param string $itemId
+     * @return Mage_Adminhtml_Block_Widget_Grid_Massaction_Abstract
+     */
+    public function removeItem($itemId)
+    {
+        if (isset($this->_items[$itemId])) {
+            unset($this->_items[$itemId]);
+        }
+
+        return $this;
+    }
+
 //    /**
 //     * Retrieve select all functionality flag check
 //     *

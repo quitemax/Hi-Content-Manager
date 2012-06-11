@@ -214,12 +214,20 @@ abstract class AbstractBlock extends ViewModel
 
         $html = '';
 
+        $this->_prepareLayout();
+
         $html .= $this->_beforeToHtml();
         $html .= $this->_toHtml();
         $html = $this->_afterToHtml($html);
 
         return $html;
     }
+
+    protected function _prepareLayout()
+    {
+        return $this;
+    }
+
 
     protected function _beforeToHtml()
     {
@@ -314,18 +322,15 @@ abstract class AbstractBlock extends ViewModel
         }
 
         //
-//        $block->setBroker($this->getBroker());
-
-
         $block->setParentBlock($this);
 
-
+        //
         $block->setBlockAlias($alias);
 
-
-
+        //
         $block->setCaptureTo($alias);
 
+        //
         $this->children[$alias] = $block;
 
 //        \Zend\Debug::dump($this->children);
@@ -824,13 +829,32 @@ abstract class AbstractBlock extends ViewModel
                 $key = $this->_underscore(substr($method,3));
                 if (isset($this->variables[$key])) {
                     $data = $this->variables[$key];
+
+//                    ($key == 'value') ? \Zend\Debug::dump($argv, '$$argv'):null;
+                    $arg = array_shift($argv);
+//                    ($key == 'value') ? \Zend\Debug::dump($argv, '$$argv'):null;
+//                    ($key == 'value') ? \Zend\Debug::dump($arg, '$arg'):null;
+//                    ($key == 'value') ? \Zend\Debug::dump($data[$arg], '$data[$arg]'):null;
+//
+                    if (is_string($arg) && isset($data[$arg])) {
+                        return $data[$arg];
+                    } else {
+                        $default = array_shift($argv);
+                        if ($default !== null) {
+//                            \Zend\Debug::dump($default, '$default');
+                            return $default;
+//                        } else {
+//                            return null;
+                        }
+                    }
+
                     return $data;
                 }
                 return null;
 
             case 'set' :
                 $key = $this->_underscore(substr($method,3));
-                $this->variables[$key] = isset($args[0]) ? $args[0] : null;
+                $this->variables[$key] = isset($argv[0]) ? $argv[0] : null;
                 return $this;
 
             case 'uns' :

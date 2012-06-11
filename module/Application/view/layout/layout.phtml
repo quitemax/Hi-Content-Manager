@@ -1,219 +1,138 @@
 <?php
-$this->headTitle()->setSeparator(' - ')
-                  ->setAutoEscape(false);
-
-$basePath = $this->basePath();
-$this->headLink()->appendStylesheet($basePath . '/css/bootstrap.min.css')
-                 ->appendStylesheet($basePath . '/css/style.css')
-                 ->appendStylesheet($basePath . '/css/bootstrap-responsive.min.css')
-                 ->appendStylesheet($basePath . '/css/widget.css')
-                 ->appendStylesheet($basePath . '/css/site.css')
-;
-
-$this->headLink(array(
-            'rel'  => 'shortcut icon',
-            'type' => 'image/vnd.microsoft.icon',
-            'href' => $basePath . '/images/favicon.ico',
-        ));
-
-// HTML5 shim, for IE6-8 support of HTML elements
-$this->headScript()->appendFile($basePath . '/js/html5.js', 'text/javascript',
-    array('conditional' => 'lt IE9',));
-
-$this->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js', 'text/javascript');
-
-$this->headScript()->appendFile('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.js', 'text/javascript');
-
-$this->headLink()->appendStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css', 'screen');
-
 
 echo $this->doctype();
 ?>
 
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <?php echo $this->headTitle('Hi Content Manager') ?>
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('Hi Content Manager') ?>
 
-    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+        <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+        <script type="text/javascript">
+//            var BLANK_URL = 'http://merchline.dev/js/blank.html';
+//            var BLANK_IMG = 'http://merchline.dev/js/spacer.gif';
 
-    <!-- Le styles -->
-    <?php echo $this->headLink() ?>
-    <?php echo $this->headStyle() ?>
+            var BASE_URL = '<?php echo $this->basePath();?>';
+            var CURRENT_URL = '<?php echo $this->url();?>';
 
-    <!-- Scripts -->
-    <?php echo $this->headScript() ?>
+//            var SKIN_URL = 'http://merchline.dev/skin/adminhtml/default/merchline/';
+//            var FORM_KEY = 'qYgzzTJEgl3wzeh8';
+        </script>
 
+        <!-- Le styles -->
+        <?php echo $this->headLink() ?>
+        <?php echo $this->headStyle() ?>
 
+        <!-- Scripts -->
+        <?php echo $this->headScript() ?>
+    </head>
 
-  </head>
+    <body >
+       <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
 
-  <body>
+                    <a class="brand" href="<?php echo $this->url('home') ?>">Hi Content Manager</a>
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <!-- HiUser -->
+                    <div class="btn-group pull-right <?php if (strpos($controller, 'HiUser') !== false) :?>active<?php endif;?>">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" data-target="#" href="<?php //echo $this->url('hi-user') ?>">
+                            <i class="icon-user"></i> HiUser
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<?php //echo $this->url('hi-checkup/checkup') ?>">Account</a></li>
+                            <li><a href="<?php //echo $this->url('hi-checkup/checkup/stats') ?>">Edit avatar</a></li>
+                            <li><a href="<?php //echo $this->url('hi-checkup/checkup/list') ?>">Statistics</a></li>
+                            <li class="divider"></li>
+<!--                                    <li class="nav-header">Actions</li>-->
+                            <li><a href="<?php //echo $this->url('hi-checkup/checkup-profile') ?>">Log out</a></li>
+                        </ul>
+                    </div><!-- /HiUser - collapse -->
 
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="<?php echo $this->url('home') ?>">Hi Content Manager</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-
-
-              <li class="<?php if (strpos($controller, 'Application') !== false) :?>active<?php endif;?>">
-                <a href="<?php echo $this->url('home') ?>">Home</a>
-              </li><!--/Home - collapse -->
-
-              <li class="<?php if (strpos($controller, 'HiCheckup') !== false) :?>active<?php endif;?>">
-                <a href="<?php echo $this->url('hi-checkup') ?>">HiCheckup</a>
-                <ul class="level-1">
-
-                  <li class="">
-                    <a href="<?php echo $this->url('hi-checkup/checkup') ?>">Checkup</a>
-                    <ul class="level-2">
-
-                      <li class="">
-                        <a href="<?php echo $this->url('hi-checkup/checkup/stats') ?>">Stats</a>
-                      </li>
-
-                      <li class="">
-                        <a href="<?php echo $this->url('hi-checkup/checkup/list') ?>">List</a>
-                      </li>
-
-                      <li class="">
-                        <a href="<?php echo $this->url('hi-checkup/checkup/add') ?>">Add new</a>
-                      </li>
-                    </ul>
-
-                  </li>
-                  <li class="">
-                    <a href="<?php echo $this->url('hi-checkup/checkup-profile') ?>">Checkup profile</a>
-                    <ul class="level-2">
-
-                      <li class="">
-                        <a href="<?php echo $this->url('hi-checkup/checkup-profile/list') ?>">List</a>
-                      </li>
-
-                      <li class="">
-                        <a href="<?php echo $this->url('hi-checkup/checkup-profile/add') ?>">Add new</a>
-                      </li>
-                    </ul>
-
-                  </li>
-
-                </ul>
-
-              </li><!--/Checkup - collapse -->
-
-              <li class="<?php if (strpos($controller, 'HiTraining') !== false) :?>active<?php endif;?>">
-                <a href="<?php //echo $this->url('hi-training') ?>">HiTraining</a>
-                <ul class="level-1">
-
-                  <li class="">
-                    <a href="<?php //echo $this->url('hi-training/workout') ?>">Workout</a>
-                    <ul class="level-2">
-
-                      <li class="">
-                        <a href="<?php //echo $this->url('hi-training/workout/stats') ?>">Stats</a>
-                      </li>
-
-                      <li class="">
-                        <a href="<?php //echo $this->url('hi-training/workout/list') ?>">List</a>
-                      </li>
-
-                      <li class="">
-                        <a href="<?php //echo $this->url('hi-training/workout/add') ?>">Add new</a>
-                      </li>
+                    <div class="nav-collapse">
+                        <ul class="nav">
 
 
-                    </ul>
-                  </li>
-
-                  <li class="">
-                    <a href="<?php //echo $this->url('hi-training/workout') ?>">Workout profile</a>
-                    <ul class="level-2">
-
-                      <li class="">
-                        <a href="<?php //echo $this->url('hi-training/workout/list') ?>">List</a>
-                      </li>
-
-                      <li class="">
-                        <a href="<?php //echo $this->url('hi-training/workout/add') ?>">Add new</a>
-                      </li>
 
 
-                    </ul>
-                  </li>
-
-                  <li class="">
-                    <a href="<?php ///echo $this->url('hi-training/exercise-type') ?>">Exercise type</a>
-                    <ul class="level-2">
-
-                      <li class="">
-                        <a href="<?php //echo $this->url('hi-training/exercise-type/stats') ?>">Stats</a>
-                      </li>
-
-                      <li class="">
-                        <a href="<?php //echo $this->url('hi-training/exercise-type/tree') ?>">Tree</a>
-                      </li>
-
-                      <li class="">
-                        <a href="<?php //echo $this->url('hi-training/exercise-type/edit-tree') ?>">Edit tree</a>
-                      </li>
 
 
-                    </ul>
-                  </li>
 
-                </ul>
-              </li><!--/Training - collapse -->
+                            <!-- Home -->
+                            <li class="pull-left <?php if (strpos($controller, 'Application') !== false) :?>active<?php endif;?>">
+                                <a href="<?php echo $this->url('home') ?>">Home</a>
+                            </li><!-- /Home - collapse -->
 
+                            <!-- HiCheckup -->
+                            <li class="dropdown pull-left <?php if (strpos($controller, 'HiCheckup') !== false) :?>active<?php endif;?>" id="menu1">
+                                <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="<?php echo $this->url('hi-checkup') ?>">
+                                    HiCheckup
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?php echo $this->url('hi-checkup/checkup') ?>">Checkup info</a></li>
+                                    <li><a href="<?php echo $this->url('hi-checkup/checkup/stats') ?>">Checkup stats</a></li>
+                                    <li><a href="<?php echo $this->url('hi-checkup/checkup/list') ?>">Checkup list</a></li>
+                                    <li><a href="<?php echo $this->url('hi-checkup/checkup/add') ?>">Add new checkup </a></li>
+                                    <li class="divider"></li>
+                                    <li class="nav-header">Statistics profiles</li>
+                                    <li><a href="<?php echo $this->url('hi-checkup/checkup-profile') ?>">Profiles info</a></li>
+                                    <li><a href="<?php echo $this->url('hi-checkup/checkup-profile/list') ?>">Profiles list</a></li>
+                                    <li><a href="<?php echo $this->url('hi-checkup/checkup-profile/add') ?>">Add new profile</a></li>
+                                </ul>
+                            </li><!-- /HiCheckup - collapse -->
 
-            </ul>
-          </div><!--/.nav-collapse -->
+                            <!-- HiTraining -->
+                            <li class="dropdown pull-left <?php if (strpos($controller, 'HiTraining') !== false) :?>active<?php endif;?>" id="menu1">
+                                <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="<?php //echo $this->url('hi-training') ?>">
+                                    HiTraining
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?php //echo $this->url('hi-training/workout') ?>">Workout</a></li>
+                                    <li><a href="<?php //echo $this->url('hi-training/workout/list') ?>">List</a></li>
+                                    <li><a href="<?php //echo $this->url('hi-training/workout/add') ?>">Add new</a></li>
+                                    <li class="divider"></li>
+                                    <li class="nav-header">Statistics profiles</li>
+                                    <li><a href="<?php //echo $this->url('hi-training/workout') ?>">Profiles info</a></li>
+                                    <li><a href="<?php //echo $this->url('hi-training/workout/list') ?>">Profiles list</a></li>
+                                    <li><a href="<?php //echo $this->url('hi-training/workout/add') ?>">Add new profile</a></li>
+                                    <li class="divider"></li>
+                                    <li class="nav-header">Exercise type</li>
+                                    <li><a href="<?php ///echo $this->url('hi-training/exercise-type') ?>">Exercise type</a></li>
+                                    <li><a href="<?php //echo $this->url('hi-training/exercise-type/stats') ?>">Stats</a></li>
+                                    <li><a href="<?php //echo $this->url('hi-training/exercise-type/tree') ?>">Tree</a></li>
+                                    <li><a href="<?php //echo $this->url('hi-training/exercise-type/edit-tree') ?>">Edit tree</a></li>
+                                </ul>
+                            </li><!-- /HiTraining - collapse -->
+
+                            <li class="divider-vertical pull-right "></li>
+
+                        </ul>
+                    </div><!-- /.nav-collapse -->
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <?php
-    $this->inlineScript()->appendScript(
-        '
-         $(document).ready(function() {
-            $("ul.nav li").mouseenter(function(){
-                $(this).find("ul.level-1").addClass("active");
-            });
 
-            $("ul.nav li").mouseleave(function(){
-                $(this).find("ul.level-1").removeClass("active");
-            });
+        <div class="container">
 
-            $("ul.level-1 li").mouseenter(function(){
-                $(this).find("ul.level-2").addClass("active");
-            });
+            <?php echo $this->content; ?>
 
-            $("ul.level-1 li").mouseleave(function(){
-                $(this).find("ul.level-2").removeClass("active");
-            });
-         });
-        '
-    );
-    ?>
+            <hr>
 
-    <div class="container">
+            <footer>
+            <p>&copy; 2012 by Piotr Socha. All rights reserved.</p>
+            </footer>
 
-      <?php echo $this->content; ?>
+        </div><!-- /.container -->
 
-      <hr>
-
-      <footer>
-        <p>&copy; 2012 by Piotr Socha. All rights reserved.</p>
-      </footer>
-
-    </div> <!-- /container -->
-
-	<?php echo $this->inlineScript() ?>
-  </body>
+        <?php echo $this->inlineScript() ?>
+    </body>
 </html>

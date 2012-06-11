@@ -81,7 +81,7 @@ class Pager extends Widget
     public function getOffset()
     {
         //
-        return $this->_limit * $this->_page;
+        return $this->_limit * ($this->_page - 1);
     }
 
 

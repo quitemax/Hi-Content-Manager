@@ -25,45 +25,42 @@
  */
 
 /**
- * Adminhtml grid item renderer number
+ * Checkbox grid column filter
  *
  * @category   Mage
  * @package    Mage_Adminhtml
- * @author     Magento Core Team <core@magentocommerce.com>
+ * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Number
-    extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
+class Mage_Adminhtml_Block_Widget_Grid_Column_Filter_Radio extends Mage_Adminhtml_Block_Widget_Grid_Column_Filter_Select
 {
-    protected $_defaultWidth = 100;
-
-    /**
-     * Returns value of the row
-     *
-     * @param Varien_Object $row
-     * @return mixed|string
-     */
-    protected function _getValue(Varien_Object $row)
+    protected function _getOptions()
     {
-        $data = parent::_getValue($row);
-        if (!is_null($data)) {
-            $value = $data * 1;
-            $sign = (bool)(int)$this->getColumn()->getShowNumberSign() && ($value > 0) ? '+' : '';
-            if ($sign) {
-                $value = $sign . $value;
-            }
-            return $value ? $value : '0'; // fixed for showing zero in grid
+        return array(
+            array(
+                'label' => Mage::helper('adminhtml')->__('Any'),
+                'value' => ''
+            ),
+            array(
+                'label' => Mage::helper('adminhtml')->__('Yes'),
+                'value' => 1
+            ),
+            array(
+                'label' => Mage::helper('adminhtml')->__('No'),
+                'value' => 0
+            ),
+        );
+    }
+    
+    public function getCondition()
+    {
+        if ($this->getValue()) {
+            return $this->getColumn()->getValue();
         }
-        return $this->getColumn()->getDefault();
+        else {
+            return array(
+                array('neq'=>$this->getColumn()->getValue()),
+                array('is'=>new Zend_Db_Expr('NULL'))
+            );
+        }
     }
-
-    /**
-     * Renders CSS
-     *
-     * @return string
-     */
-    public function renderCss()
-    {
-        return parent::renderCss() . ' a-right';
-    }
-
 }
