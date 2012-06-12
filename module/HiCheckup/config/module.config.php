@@ -19,19 +19,6 @@ return array(
             'CheckupToProfileModel'  => 'HiCheckup\Model\CheckupToProfile\Factory',
         ),
     ),
-    //            'HiCheckup\Model\CheckupProfile' => array(
-//                'parameters' => array(
-//                    'tableName' => 'checkup_profile',
-//                    'adapter' => 'Zend\Db\Adapter\Adapter',
-//                )
-//            ),
-//
-//            'HiCheckup\Model\CheckupToProfile' => array(
-//                'parameters' => array(
-//                    'tableName' => 'checkup_to_profile',
-//                    'adapter' => 'Zend\Db\Adapter\Adapter',
-//                )
-//            ),
 //    'controller' => array(
 //        'classes' => array(
 //            'hicheckup/checkup' => 'HiCheckup\Controller\CheckupController'
@@ -43,6 +30,13 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
+    'controller' => array(
+        'classes' => array(
+            'hicheckup/hicheckup' => 'HiCheckup\Controller\HiCheckupController',
+            'hicheckup/checkup' => 'HiCheckup\Controller\CheckupController',
+            'hicheckup/checkup-profile' => 'HiCheckup\Controller\CheckupProfileController',
+        ),
+    ),
     'router' => array(
         'routes' => array(
             'hi-checkup' => array(
@@ -51,7 +45,7 @@ return array(
                 'options' => array(
                     'route' => '/hi-checkup',
                     'defaults' => array(
-                        'controller' => 'HiCheckup\Controller\HiCheckupController',
+                        'controller' => 'hicheckup/hicheckup',
                         'action'     => 'index',
                     ),
                 ),
@@ -62,7 +56,7 @@ return array(
                         'options' => array(
                             'route' => '/checkup',
                             'defaults' => array(
-                                'controller' => 'HiCheckup\Controller\CheckupController',
+                                'controller' => 'hicheckup/checkup',
                                 'action'     => 'index',
                             ),
                         ),
@@ -73,7 +67,7 @@ return array(
                                 'options' => array(
                                     'route' => '/stats',
                                     'defaults' => array(
-                                        'controller' => 'HiCheckup\Controller\CheckupController',
+                                        'controller' => 'hicheckup/checkup',
                                         'action'     => 'stats',
                                     ),
                                 ),
@@ -89,7 +83,7 @@ return array(
                                 'options' => array(
                                     'route' => '/list',
                                     'defaults' => array(
-                                        'controller' => 'HiCheckup\Controller\CheckupController',
+                                        'controller' => 'hicheckup/checkup',
                                         'action'     => 'list',
                                     ),
                                 ),
@@ -105,7 +99,7 @@ return array(
                                 'options' => array(
                                     'route' => '/add',
                                     'defaults' => array(
-                                        'controller' => 'HiCheckup\Controller\CheckupController',
+                                        'controller' => 'hicheckup/checkup',
                                         'action'     => 'add',
                                     ),
                                 ),
@@ -115,7 +109,7 @@ return array(
                                 'options' => array(
                                     'route' => '/edit',
                                     'defaults' => array(
-                                        'controller' => 'HiCheckup\Controller\CheckupController',
+                                        'controller' => 'hicheckup/checkup',
                                         'action'     => 'edit',
                                     ),
                                 ),
@@ -131,7 +125,7 @@ return array(
                                 'options' => array(
                                     'route' => '/delete',
                                     'defaults' => array(
-                                        'controller' => 'HiCheckup\Controller\CheckupController',
+                                        'controller' => 'hicheckup/checkup',
                                         'action'     => 'delete',
                                     ),
                                 ),
@@ -149,7 +143,7 @@ return array(
                         'options' => array(
                             'route' => '/checkup-profile',
                             'defaults' => array(
-                                'controller' => 'HiCheckup\Controller\CheckupProfileController',
+                                'controller' => 'hicheckup/checkup-profile',
                                 'action'     => 'index',
                             ),
                         ),
@@ -160,7 +154,7 @@ return array(
                                 'options' => array(
                                     'route' => '/list',
                                     'defaults' => array(
-                                        'controller' => 'HiCheckup\Controller\CheckupProfileController',
+                                        'controller' => 'hicheckup/checkup-profile',
                                         'action'     => 'list',
                                     ),
                                 ),
@@ -170,7 +164,7 @@ return array(
                                 'options' => array(
                                     'route' => '/add',
                                     'defaults' => array(
-                                        'controller' => 'HiCheckup\Controller\CheckupProfileController',
+                                        'controller' => 'hicheckup/checkup-profile',
                                         'action'     => 'add',
                                     ),
                                 ),
@@ -180,7 +174,7 @@ return array(
                                 'options' => array(
                                     'route' => '/edit',
                                     'defaults' => array(
-                                        'controller' => 'HiCheckup\Controller\CheckupProfileController',
+                                        'controller' => 'hicheckup/checkup-profile',
                                         'action'     => 'edit',
                                     ),
                                 ),
@@ -196,7 +190,7 @@ return array(
                                 'options' => array(
                                     'route' => '/delete',
                                     'defaults' => array(
-                                        'controller' => 'HiCheckup\Controller\CheckupProfileController',
+                                        'controller' => 'hicheckup/checkup-profile',
                                         'action'     => 'delete',
                                     ),
                                 ),
@@ -211,216 +205,6 @@ return array(
                     ),
                 ),
             ),
-//            'home' => array(
-//                'type' => 'Zend\Mvc\Router\Http\Literal',
-//                'options' => array(
-//                    'route'    => '/',
-//                    'defaults' => array(
-//                        'controller' => 'index',
-//                        'action'     => 'index',
-//                    ),
-//                ),
-//            ),
         ),
     ),
-
-//
-//            /**
-//             * Models
-//             */
-//
-//            'HiCheckup\Model\Checkup' => array(
-//                'parameters' => array(
-//                    'tableName' => 'checkup',
-//                    'adapter' => 'Zend\Db\Adapter\Adapter',
-//                )
-//            ),
-//
-//            'HiCheckup\Model\CheckupProfile' => array(
-//                'parameters' => array(
-//                    'tableName' => 'checkup_profile',
-//                    'adapter' => 'Zend\Db\Adapter\Adapter',
-//                )
-//            ),
-//
-//            'HiCheckup\Model\CheckupToProfile' => array(
-//                'parameters' => array(
-//                    'tableName' => 'checkup_to_profile',
-//                    'adapter' => 'Zend\Db\Adapter\Adapter',
-//                )
-//            ),
-//
-//
-//            /**
-//             * Routes
-//             */
-//
-//            'Zend\Mvc\Router\RouteStackInterface' => array(
-//                'parameters' => array(
-//                    'routes' => array(
-//                        'hi-checkup' => array(
-//                            'type' => 'Literal',
-//                            'priority' => 1000,
-//                            'options' => array(
-//                                'route' => '/hi-checkup',
-//                                'defaults' => array(
-//                                    'controller' => 'HiCheckup\Controller\HiCheckupController',
-//                                    'action'     => 'index',
-//                                ),
-//                            ),
-//                            'may_terminate' => true,
-//                            'child_routes' => array(
-//                                'checkup' => array(
-//                                    'type' => 'Literal',
-//                                    'options' => array(
-//                                        'route' => '/checkup',
-//                                        'defaults' => array(
-//                                            'controller' => 'HiCheckup\Controller\CheckupController',
-//                                            'action'     => 'index',
-//                                        ),
-//                                    ),
-//                                    'may_terminate' => true,
-//                                    'child_routes' => array(
-//                                        'stats' => array(
-//                                            'type' => 'Literal',
-//                                            'options' => array(
-//                                                'route' => '/stats',
-//                                                'defaults' => array(
-//                                                    'controller' => 'HiCheckup\Controller\CheckupController',
-//                                                    'action'     => 'stats',
-//                                                ),
-//                                            ),
-//                                            'may_terminate' => true,
-//                                            'child_routes'  => array(
-//                                                'wildcard' => array(
-//                                                    'type'    => 'wildcard',
-//                                                ),
-//                                            ),
-//                                        ),
-//                                        'list' => array(
-//                                            'type' => 'Literal',
-//                                            'options' => array(
-//                                                'route' => '/list',
-//                                                'defaults' => array(
-//                                                    'controller' => 'HiCheckup\Controller\CheckupController',
-//                                                    'action'     => 'list',
-//                                                ),
-//                                            ),
-//                                        ),
-//                                        'add' => array(
-//                                            'type' => 'Literal',
-//                                            'options' => array(
-//                                                'route' => '/add',
-//                                                'defaults' => array(
-//                                                    'controller' => 'HiCheckup\Controller\CheckupController',
-//                                                    'action'     => 'add',
-//                                                ),
-//                                            ),
-//                                        ),
-//                                        'edit' => array(
-//                                            'type' => 'Literal',
-//                                            'options' => array(
-//                                                'route' => '/edit',
-//                                                'defaults' => array(
-//                                                    'controller' => 'HiCheckup\Controller\CheckupController',
-//                                                    'action'     => 'edit',
-//                                                ),
-//                                            ),
-//                                            'may_terminate' => true,
-//                                            'child_routes'  => array(
-//                                                'wildcard' => array(
-//                                                    'type'    => 'wildcard',
-//                                                ),
-//                                            ),
-//                                        ),
-//                                        'delete' => array(
-//                                            'type' => 'Literal',
-//                                            'options' => array(
-//                                                'route' => '/delete',
-//                                                'defaults' => array(
-//                                                    'controller' => 'HiCheckup\Controller\CheckupController',
-//                                                    'action'     => 'delete',
-//                                                ),
-//                                            ),
-//                                            'may_terminate' => true,
-//                                            'child_routes'  => array(
-//                                                'wildcard' => array(
-//                                                    'type'    => 'wildcard',
-//                                                ),
-//                                            ),
-//                                        ),
-//                                    ),
-//                                ),
-//                                'checkup-profile' => array(
-//                                    'type' => 'Literal',
-//                                    'options' => array(
-//                                        'route' => '/checkup-profile',
-//                                        'defaults' => array(
-//                                            'controller' => 'HiCheckup\Controller\CheckupProfileController',
-//                                            'action'     => 'index',
-//                                        ),
-//                                    ),
-//                                    'may_terminate' => true,
-//                                    'child_routes' => array(
-//                                        'list' => array(
-//                                            'type' => 'Literal',
-//                                            'options' => array(
-//                                                'route' => '/list',
-//                                                'defaults' => array(
-//                                                    'controller' => 'HiCheckup\Controller\CheckupProfileController',
-//                                                    'action'     => 'list',
-//                                                ),
-//                                            ),
-//                                        ),
-//                                        'add' => array(
-//                                            'type' => 'Literal',
-//                                            'options' => array(
-//                                                'route' => '/add',
-//                                                'defaults' => array(
-//                                                    'controller' => 'HiCheckup\Controller\CheckupProfileController',
-//                                                    'action'     => 'add',
-//                                                ),
-//                                            ),
-//                                        ),
-//                                        'edit' => array(
-//                                            'type' => 'Literal',
-//                                            'options' => array(
-//                                                'route' => '/edit',
-//                                                'defaults' => array(
-//                                                    'controller' => 'HiCheckup\Controller\CheckupProfileController',
-//                                                    'action'     => 'edit',
-//                                                ),
-//                                            ),
-//                                            'may_terminate' => true,
-//                                            'child_routes'  => array(
-//                                                'wildcard' => array(
-//                                                    'type'    => 'wildcard',
-//                                                ),
-//                                            ),
-//                                        ),
-//                                        'delete' => array(
-//                                            'type' => 'Literal',
-//                                            'options' => array(
-//                                                'route' => '/delete',
-//                                                'defaults' => array(
-//                                                    'controller' => 'HiCheckup\Controller\CheckupProfileController',
-//                                                    'action'     => 'delete',
-//                                                ),
-//                                            ),
-//                                            'may_terminate' => true,
-//                                            'child_routes'  => array(
-//                                                'wildcard' => array(
-//                                                    'type'    => 'wildcard',
-//                                                ),
-//                                            ),
-//                                        ),
-//                                    ),
-//                                ),
-//                            ),
-//                        ),
-//                    ),
-//                ),
-//            ),
-//        ),
-//    ),
 );

@@ -1,5 +1,6 @@
 <?php
 return array(
+//    'module-config' => {
     'hi-base' => array(
         'ver'          => '0.0.5.0',
 /**
