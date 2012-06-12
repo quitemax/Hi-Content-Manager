@@ -1,17 +1,20 @@
-<div id="breadcrumb">
-    &raquo; <a href="<?php echo $this->url('home');?>">Home</a>
-    &raquo; <a href="<?php echo $this->url('hi-checkup');?>">HiCheckup</a>
-    &raquo; <a href="<?php echo $this->url('hi-checkup/checkup/list');?>">Checkup list</a>
-    &raquo; <a class="selected" href="">Edit Checkup</a>
-
-</div>
-<div id="content">
-	<div class="page-title">
-        <?php
-            $title = 'Edit Checkup (ID: ' . $id . ')';
-            $this->headTitle($title);
-        ?>
-        <h1><?php echo $this->escape($title); ?></h1>
-    </div>
-<?php echo $form;?>
-</div>
+<section id="breadcrumb" >
+    <ul class="breadcrumb">
+        <li>
+            <a href="<?php echo $this->url('home');?>">Home</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="<?php echo $this->url('hi-checkup');?>">HiCheckup</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="<?php echo $this->url('hi-checkup/checkup');?>">Checkup</a> <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="<?php echo $this->url('hi-checkup/checkup/list');?>">Checkup list</a> <span class="divider">/</span>
+        </li>
+        <li class="active">Edit checkup</li>
+    </ul>
+</section>
+<section id="grid" >
+    <?php echo $editContainer;?>
+</section>

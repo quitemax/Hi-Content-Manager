@@ -7,10 +7,8 @@ use Zend\View\Model\ViewModel;
 use HiCheckup\Model\Checkup;
 use HiCheckup\Block\Checkup\Grid\Container as GridContainer;
 use HiCheckup\Block\Checkup\Grid as CheckupGrid;
-//use HiCheckup\Form\Checkup\ResultSet as CheckupResultSet;
-//use HiCheckup\Form\Checkup\Row as CheckupRow;
-//use HiBase\Block\Widget\Grid\Container as GridContaineer;
-//use HiBase\Block\Widget\Grid\Container as GridContaineer;
+use HiCheckup\Block\Checkup\Edit\Container as EditContainer;
+use HiCheckup\Block\Checkup\Edit as CheckupEdit;
 
 class CheckupController extends ActionController
 {
@@ -100,19 +98,7 @@ class CheckupController extends ActionController
 
         //
         $gridContainer->addChild($grid, 'grid');
-//
-////        //
-//        $this->_view->headScript()->appendScript(
-//            $this->_view->render(
-//                'checkup/list.js',
-//                array(
-//                    'delete' => $this->url()->fromRoute('hi-checkup/checkup/delete/wildcard', array('checkup_id' => '')),
-//                    'edit' => $this->url()->fromRoute('hi-checkup/checkup/edit/wildcard', array('checkup_id' => '')),
-//                    'add' => $this->url()->fromRoute('hi-checkup/checkup/add'),
-//                )
-//            )
-//        );
-//
+
         /**
          * POST
          */
@@ -196,106 +182,112 @@ class CheckupController extends ActionController
     public function addAction()
     {
 
-        /**
-         * Grid FORM
-         */
-        $form = new CheckupGrid(
-            array(
-                'view' => $this->_view,
-            )
-        );
-
-        /**
-         * BUILDING Row
-         */
-        $row = new CheckupRow(
-            array(
-                'model' => $this->_checkup,
-                'view' => $this->_view,
-            )
-        );
-
-        $profiles = $this->_profile->getResultSet();
-        $values = array();
-
-        foreach ($profiles as $profile) {
-            $values[(int)$profile['profile_id']] = $profile['name'];
-        }
-
-        $row->addField(
-            'profile_id',
-            'custom',
-            array(
-                'label' => 'profile_id',
-                'values' => $values,
-                'viewScript' => 'checkup/_field_profile.phtml',
-            ),
-            '25'
-        );
-
-        //
-        $row->build();
-
-        //
-        $form->addSubForm($row, $row->getName());
-
+//        /**
+//         * Grid FORM
+//         */
+//        $form = new CheckupGrid(
+//            array(
+//                'view' => $this->_view,
+//            )
+//        );
+//
+//        /**
+//         * BUILDING Row
+//         */
+//        $row = new CheckupRow(
+//            array(
+//                'model' => $this->_checkup,
+//                'view' => $this->_view,
+//            )
+//        );
+//
+//        $profiles = $this->_profile->getResultSet();
+//        $values = array();
+//
+//        foreach ($profiles as $profile) {
+//            $values[(int)$profile['profile_id']] = $profile['name'];
+//        }
+//
+//        $row->addField(
+//            'profile_id',
+//            'custom',
+//            array(
+//                'label' => 'profile_id',
+//                'values' => $values,
+//                'viewScript' => 'checkup/_field_profile.phtml',
+//            ),
+//            '25'
+//        );
+//
 //        //
-        $this->_view->headScript()->appendScript(
-            $this->_view->render(
-                'checkup/add.js',
-                array(
-                    'back' => $this->url()->fromRoute('hi-checkup/checkup/list'),
-                )
-            )
-        );
+//        $row->build();
+//
+//        //
+//        $form->addSubForm($row, $row->getName());
+//
+////        //
+//        $this->_view->headScript()->appendScript(
+//            $this->_view->render(
+//                'checkup/add.js',
+//                array(
+//                    'back' => $this->url()->fromRoute('hi-checkup/checkup/list'),
+//                )
+//            )
+//        );
+//
+//        /**
+//         * POST
+//         */
+//        if ($this->getRequest()->isPost()) {
+//
+//            $formData = $this->getRequest()->post()->toArray();
+//
+////            \Zend\Debug::dump($formData);
+//
+//
+//
+//
+//            if ($form->isValid($formData)) {
+//                if (    isset($formData['header']['formId'])
+//                        && $formData['header']['formId'] == 'CheckupGridForm') {
+//
+//                    if (isset($formData['CheckupRowSubForm']['actions']['save'])) {
+//
+//                        if (is_array($formData['CheckupRowSubForm']['row'])){
+////                            \Zend\Debug::dump($formData);
+//
+//                            $newRow = $this->_checkup->createRow()->populate($formData['CheckupRowSubForm']['row']);
+//                            $newRow->save();
+////                            \Zend\Debug::dump($newRow);
+//
+//                            if ($newRow->getId()) {
+//                                if (is_array($formData['CheckupRowSubForm']['profile_ids'])) {
+//                                    foreach ($formData['CheckupRowSubForm']['profile_ids'] as $profileId) {
+//                                        $newProfileRow = $this->_checkupToProfile->createRow()->populate(
+//                                            array(
+//                                                'checkup_id' => $newRow->getId(),
+//                                                'profile_id' => $profileId,
+//                                            )
+//                                        );
+//                                        $newProfileRow->save();
+//                                    }
+//                                }
+//                            }
+//
+//                            return $this->redirect()->toRoute('hi-checkup/checkup/list');
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        return array('form' => $form);
 
-        /**
-         * POST
-         */
-        if ($this->getRequest()->isPost()) {
+        $view = new ViewModel();
 
-            $formData = $this->getRequest()->post()->toArray();
+        $view->addChild($editContainer, 'editContainer');
 
-//            \Zend\Debug::dump($formData);
-
-
-
-
-            if ($form->isValid($formData)) {
-                if (    isset($formData['header']['formId'])
-                        && $formData['header']['formId'] == 'CheckupGridForm') {
-
-                    if (isset($formData['CheckupRowSubForm']['actions']['save'])) {
-
-                        if (is_array($formData['CheckupRowSubForm']['row'])){
-//                            \Zend\Debug::dump($formData);
-
-                            $newRow = $this->_checkup->createRow()->populate($formData['CheckupRowSubForm']['row']);
-                            $newRow->save();
-//                            \Zend\Debug::dump($newRow);
-
-                            if ($newRow->getId()) {
-                                if (is_array($formData['CheckupRowSubForm']['profile_ids'])) {
-                                    foreach ($formData['CheckupRowSubForm']['profile_ids'] as $profileId) {
-                                        $newProfileRow = $this->_checkupToProfile->createRow()->populate(
-                                            array(
-                                                'checkup_id' => $newRow->getId(),
-                                                'profile_id' => $profileId,
-                                            )
-                                        );
-                                        $newProfileRow->save();
-                                    }
-                                }
-                            }
-
-                            return $this->redirect()->toRoute('hi-checkup/checkup/list');
-                        }
-                    }
-                }
-            }
-        }
-
-        return array('form' => $form);
+        return $view;
     }
 
     /**
@@ -314,234 +306,250 @@ class CheckupController extends ActionController
             return $this->redirect()->toRoute('hi-checkup/checkup/list');
         }
 
-        /**
-         * Grid FORM
-         */
-        $form = new CheckupGrid(
-            array(
-                'view' => $this->_view,
-            )
-        );
+
+//        $locator = $this->getServiceLocator();
 
         /**
-         * BUILDING Row
+         * Edit FORM Container
          */
-        $row = new CheckupRow(
-            array(
-                'model' => $this->_checkup,
-                'view' => $this->_view,
-            )
-        );
-
-        //
-        $profiles = $this->_profile->getResultSet();
-        $values = array();
-
-        foreach ($profiles as $profile) {
-            $values[(int)$profile['profile_id']] = $profile['name'];
-        }
-
-        //
-        $checkupProfiles = $this->_checkupToProfile->getResultSet(
-            array(
-                'checkup_id' => $id,
-            )
-        )->toArray();
-
-
-        $row->addField(
-            'profile_id',
-            'custom',
-            array(
-                'label' => 'profile_id',
-                'values' => $values,
-                'profiles' => $checkupProfiles,
-                'viewScript' => 'checkup/_field_profile.phtml',
-            ),
-            '25'
-        );
-
-        $row->setRowId($id);
-//
-        //
-        $row->build();
-
-        //
-        $form->addSubForm($row, $row->getName());
-
-        //
-        $this->_view->headScript()->appendScript(
-            $this->_view->render(
-                'checkup/edit.js',
-                array(
-                    'delete' => $this->url()->fromRoute('hi-checkup/checkup/delete/wildcard', array('checkup_id' => '')),
-                    'back' => $this->url()->fromRoute('hi-checkup/checkup/list'),
-                )
-            )
-        );
+        $editContainer = new EditContainer();
 
         /**
-         * POST
+         * BUILDING Edit
          */
-        if ($this->getRequest()->isPost()) {
+        $edit = new CheckupEdit();
 
-            $formData = $this->getRequest()->post()->toArray();
-            \Zend\Debug::dump($formData);
-
-            if ($form->isValid($formData)) {
-                if (    isset($formData['header']['formId'])
-                        && $formData['header']['formId'] == 'CheckupGridForm') {
-
-
-                    if (isset($formData['CheckupRowSubForm']['actions']['save'])) {
-
-                        if (is_array($formData['CheckupRowSubForm']['row'])){
-
-                            if ($updateRow = $this->_checkup->getRow(array('checkup_id' => $id))) {
-                                $updateRow->populate($formData['CheckupRowSubForm']['row']);
-                                $updateRow->save();
-
-
-                                $deleteProfiles = array();
-                                $newProfiles = array();
-                                if (is_array($formData['CheckupRowSubForm']['profile_ids'])) {
-
-                                    //
-                                    $deleteProfiles = $checkupProfiles;
-
-                                    //
-                                    foreach ($formData['CheckupRowSubForm']['profile_ids'] as $profileId) {
-
-                                        //
-                                        $newId = $profileId;
-
-                                        //
-                                        foreach($checkupProfiles as $key => $profile) {
-
-                                            //
-                                            if ($profile['profile_id'] == $profileId) {
-//                                                \Zend\Debug::dump($deleteProfiles[$key], '$deleteProfiles[$key]');
-                                                unset($deleteProfiles[$key]);
-                                                $newId = null;
-                                            }
-
-                                        }
-
-                                        if ($newId === $profileId) {
-                                            $newProfiles[] = $newId;
-                                        }
+        //
+        $editContainer->addChild($edit, 'edit');
 //
-
-                                    }
-
-                                    foreach ($deleteProfiles as $deleteProfile) {
-                                        $deleteProfileRow = $this->_checkupToProfile->getRow(
-                                            array(
-                                                'ctp_id' => $deleteProfile['ctp_id'],
-                                            )
-                                        );
-                                        $deleteProfileRow->delete();
-                                    }
-
-                                    foreach ($newProfiles as $newProfile) {
-                                        $newProfileRow = $this->_checkupToProfile->createRow()->populate(
-                                            array(
-                                                'checkup_id' => $updateRow->getId(),
-                                                'profile_id' => $newProfile,
-                                            )
-                                        );
-                                        $newProfileRow->save();
-                                    }
-
-//                                    \Zend\Debug::dump($deleteProfiles);
-//                                    \Zend\Debug::dump($newProfiles);
-                                }
-                            }
-
-                            return $this->redirect()->toRoute('hi-checkup/checkup/list');
-                        }
-                    }
-
-                    if (isset($formData['CheckupRowSubForm']['actions']['saveEdit'])) {
-
-                        if (is_array($formData['CheckupRowSubForm']['row'])){
-
-                            if ($updateRow = $this->_checkup->getRow(array('checkup_id' => $id))) {
-                                $updateRow->populate($formData['CheckupRowSubForm']['row']);
-                                $updateRow->save();
-
-                                $deleteProfiles = array();
-                                $newProfiles = array();
-                                if (is_array($formData['CheckupRowSubForm']['profile_ids'])) {
-
-                                    //
-                                    $deleteProfiles = $checkupProfiles;
-
-                                    //
-                                    foreach ($formData['CheckupRowSubForm']['profile_ids'] as $profileId) {
-
-                                        //
-                                        $newId = $profileId;
-
-                                        //
-                                        foreach($checkupProfiles as $key => $profile) {
-
-                                            //
-                                            if ($profile['profile_id'] == $profileId) {
-//                                                \Zend\Debug::dump($deleteProfiles[$key], '$deleteProfiles[$key]');
-                                                unset($deleteProfiles[$key]);
-                                                $newId = null;
-                                            }
-
-                                        }
-
-                                        if ($newId === $profileId) {
-                                            $newProfiles[] = $newId;
-                                        }
+//        /**
+//         * Grid FORM
+//         */
+//        $form = new CheckupGrid(
+//            array(
+//                'view' => $this->_view,
+//            )
+//        );
 //
-
-                                    }
-
-                                    foreach ($deleteProfiles as $deleteProfile) {
-                                        $deleteProfileRow = $this->_checkupToProfile->getRow(
-                                            array(
-                                                'ctp_id' => $deleteProfile['ctp_id'],
-                                            )
-                                        );
-                                        $deleteProfileRow->delete();
-                                    }
-
-                                    foreach ($newProfiles as $newProfile) {
-                                        $newProfileRow = $this->_checkupToProfile->createRow()->populate(
-                                            array(
-                                                'checkup_id' => $updateRow->getId(),
-                                                'profile_id' => $newProfile,
-                                            )
-                                        );
-                                        $newProfileRow->save();
-                                    }
-
-//                                    \Zend\Debug::dump($deleteProfiles);
-//                                    \Zend\Debug::dump($newProfiles);
-                                }
-
-                            }
-
-
-                            return $this->redirect()->toRoute('hi-checkup/checkup/edit/wildcard', array('checkup_id' => $updateRow->getId()));
-                        }
-                    }
-                }
-            }
-        }
-
-
-
-
-        return array(
-            'form' => $form,
-            'id' => $id,
-        );
+//        /**
+//         * BUILDING Row
+//         */
+//        $row = new CheckupRow(
+//            array(
+//                'model' => $this->_checkup,
+//                'view' => $this->_view,
+//            )
+//        );
+//
+//        //
+//        $profiles = $this->_profile->getResultSet();
+//        $values = array();
+//
+//        foreach ($profiles as $profile) {
+//            $values[(int)$profile['profile_id']] = $profile['name'];
+//        }
+//
+//        //
+//        $checkupProfiles = $this->_checkupToProfile->getResultSet(
+//            array(
+//                'checkup_id' => $id,
+//            )
+//        )->toArray();
+//
+//
+//        $row->addField(
+//            'profile_id',
+//            'custom',
+//            array(
+//                'label' => 'profile_id',
+//                'values' => $values,
+//                'profiles' => $checkupProfiles,
+//                'viewScript' => 'checkup/_field_profile.phtml',
+//            ),
+//            '25'
+//        );
+//
+//        $row->setRowId($id);
+////
+//        //
+//        $row->build();
+//
+//        //
+//        $form->addSubForm($row, $row->getName());
+//
+//        //
+//        $this->_view->headScript()->appendScript(
+//            $this->_view->render(
+//                'checkup/edit.js',
+//                array(
+//                    'delete' => $this->url()->fromRoute('hi-checkup/checkup/delete/wildcard', array('checkup_id' => '')),
+//                    'back' => $this->url()->fromRoute('hi-checkup/checkup/list'),
+//                )
+//            )
+//        );
+//
+//        /**
+//         * POST
+//         */
+//        if ($this->getRequest()->isPost()) {
+//
+//            $formData = $this->getRequest()->post()->toArray();
+//            \Zend\Debug::dump($formData);
+//
+//            if ($form->isValid($formData)) {
+//                if (    isset($formData['header']['formId'])
+//                        && $formData['header']['formId'] == 'CheckupGridForm') {
+//
+//
+//                    if (isset($formData['CheckupRowSubForm']['actions']['save'])) {
+//
+//                        if (is_array($formData['CheckupRowSubForm']['row'])){
+//
+//                            if ($updateRow = $this->_checkup->getRow(array('checkup_id' => $id))) {
+//                                $updateRow->populate($formData['CheckupRowSubForm']['row']);
+//                                $updateRow->save();
+//
+//
+//                                $deleteProfiles = array();
+//                                $newProfiles = array();
+//                                if (is_array($formData['CheckupRowSubForm']['profile_ids'])) {
+//
+//                                    //
+//                                    $deleteProfiles = $checkupProfiles;
+//
+//                                    //
+//                                    foreach ($formData['CheckupRowSubForm']['profile_ids'] as $profileId) {
+//
+//                                        //
+//                                        $newId = $profileId;
+//
+//                                        //
+//                                        foreach($checkupProfiles as $key => $profile) {
+//
+//                                            //
+//                                            if ($profile['profile_id'] == $profileId) {
+////                                                \Zend\Debug::dump($deleteProfiles[$key], '$deleteProfiles[$key]');
+//                                                unset($deleteProfiles[$key]);
+//                                                $newId = null;
+//                                            }
+//
+//                                        }
+//
+//                                        if ($newId === $profileId) {
+//                                            $newProfiles[] = $newId;
+//                                        }
+////
+//
+//                                    }
+//
+//                                    foreach ($deleteProfiles as $deleteProfile) {
+//                                        $deleteProfileRow = $this->_checkupToProfile->getRow(
+//                                            array(
+//                                                'ctp_id' => $deleteProfile['ctp_id'],
+//                                            )
+//                                        );
+//                                        $deleteProfileRow->delete();
+//                                    }
+//
+//                                    foreach ($newProfiles as $newProfile) {
+//                                        $newProfileRow = $this->_checkupToProfile->createRow()->populate(
+//                                            array(
+//                                                'checkup_id' => $updateRow->getId(),
+//                                                'profile_id' => $newProfile,
+//                                            )
+//                                        );
+//                                        $newProfileRow->save();
+//                                    }
+//
+////                                    \Zend\Debug::dump($deleteProfiles);
+////                                    \Zend\Debug::dump($newProfiles);
+//                                }
+//                            }
+//
+//                            return $this->redirect()->toRoute('hi-checkup/checkup/list');
+//                        }
+//                    }
+//
+//                    if (isset($formData['CheckupRowSubForm']['actions']['saveEdit'])) {
+//
+//                        if (is_array($formData['CheckupRowSubForm']['row'])){
+//
+//                            if ($updateRow = $this->_checkup->getRow(array('checkup_id' => $id))) {
+//                                $updateRow->populate($formData['CheckupRowSubForm']['row']);
+//                                $updateRow->save();
+//
+//                                $deleteProfiles = array();
+//                                $newProfiles = array();
+//                                if (is_array($formData['CheckupRowSubForm']['profile_ids'])) {
+//
+//                                    //
+//                                    $deleteProfiles = $checkupProfiles;
+//
+//                                    //
+//                                    foreach ($formData['CheckupRowSubForm']['profile_ids'] as $profileId) {
+//
+//                                        //
+//                                        $newId = $profileId;
+//
+//                                        //
+//                                        foreach($checkupProfiles as $key => $profile) {
+//
+//                                            //
+//                                            if ($profile['profile_id'] == $profileId) {
+////                                                \Zend\Debug::dump($deleteProfiles[$key], '$deleteProfiles[$key]');
+//                                                unset($deleteProfiles[$key]);
+//                                                $newId = null;
+//                                            }
+//
+//                                        }
+//
+//                                        if ($newId === $profileId) {
+//                                            $newProfiles[] = $newId;
+//                                        }
+////
+//
+//                                    }
+//
+//                                    foreach ($deleteProfiles as $deleteProfile) {
+//                                        $deleteProfileRow = $this->_checkupToProfile->getRow(
+//                                            array(
+//                                                'ctp_id' => $deleteProfile['ctp_id'],
+//                                            )
+//                                        );
+//                                        $deleteProfileRow->delete();
+//                                    }
+//
+//                                    foreach ($newProfiles as $newProfile) {
+//                                        $newProfileRow = $this->_checkupToProfile->createRow()->populate(
+//                                            array(
+//                                                'checkup_id' => $updateRow->getId(),
+//                                                'profile_id' => $newProfile,
+//                                            )
+//                                        );
+//                                        $newProfileRow->save();
+//                                    }
+//
+////                                    \Zend\Debug::dump($deleteProfiles);
+////                                    \Zend\Debug::dump($newProfiles);
+//                                }
+//
+//                            }
+//
+//
+//                            return $this->redirect()->toRoute('hi-checkup/checkup/edit/wildcard', array('checkup_id' => $updateRow->getId()));
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//
+//
+//        return array(
+//            'form' => $form,
+//            'id' => $id,
+//        );
 
     }
 
