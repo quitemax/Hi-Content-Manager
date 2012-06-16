@@ -47,7 +47,7 @@ class Number extends AbstractRenderer
     {
         return  '<input type="text" class="input-text-number '
                 . $this->getColumn()->getValidateClass()
-                . '" name="' . $this->getColumn()->getId()
+                . '" name="' . $this->getColumn()->getGrid()->getId() . '[rows][' . $row->getId() . '][' . $this->getColumn()->getId() . ']'
                 . '" value="' . $this->_getInputValue($row) . '"/>';
     }
 

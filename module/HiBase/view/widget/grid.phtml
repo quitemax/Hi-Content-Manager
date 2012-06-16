@@ -14,6 +14,10 @@ $numColumns = sizeof($this->getColumns());
     <?php if($this->getCollection()): ?>
 
 
+
+
+
+
         <?php /*?>
         <?php if($this->canDisplayContainer()): ?>
             <?php if($this->getGridHeader()): ?>
@@ -73,6 +77,12 @@ $numColumns = sizeof($this->getColumns());
         </div>
 
         <?php endif; ?>
+
+
+        <?php if ($this->getHideFormElement() !== true):?>
+        <form action="<?php echo $this->getFormAction();?>" id="<?php echo $this->getHtmlId() ?>-form" method="post">
+        <?php //echo $this->getBlockHtml('formkey')?>
+        <?php endif ?>
 
 
         <?php /*?>
@@ -193,6 +203,10 @@ $numColumns = sizeof($this->getColumns());
                 </table>
             </div>
         </div>
+
+        <?php if ($this->getHideFormElement() !== true):?>
+        </form>
+        <?php endif ?>
 
         <?php if($this->getPagerVisibility()): ?>
         <div class="row" >

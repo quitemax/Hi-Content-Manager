@@ -106,12 +106,12 @@ class DateTime extends Date
         $html = '<div class="range"><div class="range-line date">
             <span class="label">' . $this->__('From').':</span>
             <i class="icon-calendar"></i>
-            <input type="text" name="' . $this->_getHtmlName() . '[from]" id="' . $htmlId . '_from" value="' . $this->getEscapedValue('from') . '" class="input-text no-changes" onkeypress="' . $this->getColumn()->getGrid()->getJsObjectName() . '.doFilter(this, event);"/>
+            <input type="text" name="'.$this->getColumn()->getGrid()->getHtmlId().'[filter][' . $this->_getHtmlName() . '][from]" id="' . $htmlId . '_from" value="' . $this->getEscapedValue('from') . '" class="input-text no-changes" onkeypress="' . $this->getColumn()->getGrid()->getJsObjectName() . '.doFilter(this, event);"/>
             </div>';
         $html.= '<div class="range-line date">
             <span class="label">' . $this->__('To').' :</span>
             <i class="icon-calendar"></i>
-            <input type="text" name="' . $this->_getHtmlName() . '[to]" id="' . $htmlId . '_to" value="' . $this->getEscapedValue('to') . '" class="input-text no-changes" onkeypress="' . $this->getColumn()->getGrid()->getJsObjectName() . '.doFilter(this, event);"/>
+            <input type="text" name="'.$this->getColumn()->getGrid()->getHtmlId().'[filter][' . $this->_getHtmlName() . '][to]" id="' . $htmlId . '_to" value="' . $this->getEscapedValue('to') . '" class="input-text no-changes" onkeypress="' . $this->getColumn()->getGrid()->getJsObjectName() . '.doFilter(this, event);"/>
             </div></div>';
 //        $html.= '<input type="hidden" name="'.$this->_getHtmlName().'[locale]" value="'.$this->getLocale()->getLocaleCode().'"/>';
 //        $html.= '<script type="text/javascript">

@@ -73,10 +73,20 @@ class AbstractRenderer extends AbstractBlock implements ColumnRendererInterface
 //        return $this->render($row);
 //    }
 
+//    protected function _getIndexValue(/*Varien_Object*/ $row)
+//    {
+//        $index = $this->getColumn()->getIndex();
+//        $value = isset($row[$index]) ? $row[$index] : '';
+//
+//        \Zend\Debug::dump($row->getId());
+//
+//        return $value ;
+//    }
+
     protected function _getValue(/*Varien_Object*/ $row)
     {
-        $index = $this->getColumn()->getId();
-        $value = isset($row[$index]) ? $row[$index] : '';
+        $id = $this->getColumn()->getId();
+        $value = isset($row[$id]) ? $row[$id] : '';
 //        \Zend\Debug::dump($value);
 //        \Zend\Debug::dump($this->getAfterHtml());
 //        \Zend\Debug::dump((array)$this->getColumn()->getAfterHtml());
@@ -98,7 +108,7 @@ class AbstractRenderer extends AbstractBlock implements ColumnRendererInterface
     {
         return  '<input type="text" class="input-text '
                 . $this->getColumn()->getValidateClass()
-                . '" name="' . $this->getColumn()->getId()
+                . '" name="' . $this->getColumn()->getGrid()->getId() . '[rows][' . $row->getId() . '][' . $this->getColumn()->getId() . ']'
                 . '" value="' . $this->_getInputValue($row) . '"/>';
     }
 

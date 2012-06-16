@@ -76,6 +76,18 @@ class AbstractFilter extends AbstractBlock implements ColumnFilterInterface
         return htmlspecialchars($this->getValue($index));
     }
 
+//    public function getValue($index=null)
+//    {
+//        if ($index) {
+//            return $this->getData('value', $index);
+//        }
+//        $value = $this->getData('value');
+//        if ((isset($value['from']) && strlen($value['from']) > 0) || (isset($value['to']) && strlen($value['to']) > 0)) {
+//            return $value;
+//        }
+//        return null;
+//    }
+
 //    /**
 //     * Retrieve condition
 //     *

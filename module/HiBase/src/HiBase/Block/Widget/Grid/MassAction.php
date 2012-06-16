@@ -228,7 +228,7 @@ class MassAction extends Widget
 //                    'name'      => $this->__('submit'),
 //                    'type'      => 'submit',
                     'label'     => $this->__('Submit'),
-                    'onclick'   => $this->getJsObjectName() . '.apply()',
+                    'onclick'   => $this->getGridJsObjectName() . '.submitForm()',
                     'class'   => 'pull-left'
                 )
             ),

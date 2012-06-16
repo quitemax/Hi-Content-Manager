@@ -133,8 +133,15 @@ $.extend(HiGridWidget.prototype, {
 
 
         this.filterValue = $.base64.encode(JSON.stringify(filterArray));
+        //document.forms["formName"].elements["field_"+c].value = "";
+        //console.log(document.forms["CheckupGrid-form"].elements);
+        //console.log($.param(elements));
+        //console.log(filterArray);
+        //console.log(JSON.stringify(filterArray));
+        //console.log(JSON.stringify(document.forms));
+        //console.log($(document.forms).serializeArray());
         //console.log(encode_base64(elements.serializeArray()));
-        this.reload(this.getFullGridUrl());
+        //this.reload(this.getFullGridUrl());
 
     },
     resetFilter : function(){
@@ -142,6 +149,14 @@ $.extend(HiGridWidget.prototype, {
         this.filterVar = '';
         //
         this.reload(this.getFullGridUrl())
+    },
+    submitForm : function(){
+        var form = $("#" + this.containerId + "-form");
+        form.submit();
+        //
+        //this.filterVar = '';
+        //
+        //this.reload(this.getFullGridUrl())
     }
 });
 

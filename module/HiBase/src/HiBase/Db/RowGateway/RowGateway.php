@@ -41,9 +41,9 @@ class RowGateway extends ZendRowGateway implements HiBaseObjectInterface
      * @param Sql\Sql $sql
      * @param TableGateway $tableGateway
      */
-    public function __construct($primaryKey, $table, Adapter $adapter = null, Sql\Sql $sql = null, TableGateway $tableGateway = null)
+    public function __construct($primaryKeyColumn, $table, Adapter $adapter = null, Sql\Sql $sql = null, TableGateway $tableGateway = null)
     {
-        parent::__construct($primaryKey, $table, $adapter, $sql);
+        parent::__construct($primaryKeyColumn, $table, $adapter, $sql);
 
         $this->_tableGateway = $tableGateway;
     }
@@ -61,11 +61,11 @@ class RowGateway extends ZendRowGateway implements HiBaseObjectInterface
     public function delete()
     {
 
-        if (is_array($this->primaryKey)) {
+        if (is_array($this->primaryKeyColumn)) {
             // @todo compound primary keys
         }
 
-        $where = array($this->primaryKey => $this->originalData[$this->primaryKey]);
+        $where = array($this->primaryKeyColumn => $this->originalData[$this->primaryKeyColumn]);
 
         $delete = $this->sql->delete();
         $delete->where($where);
@@ -78,8 +78,8 @@ class RowGateway extends ZendRowGateway implements HiBaseObjectInterface
 
     public function getId()
     {
-        if (isset($this->originalData[$this->primaryKey])) {
-            return $this->originalData[$this->primaryKey];
+        if (isset($this->originalData[$this->primaryKeyColumn])) {
+            return $this->originalData[$this->primaryKeyColumn];
         } else {
             return false;
         }
