@@ -126,8 +126,9 @@ $.extend(HiGridWidget.prototype, {
 
         var elements = $("#" + this.containerId + " .filter input, #" + this.containerId + " .filter select");
         elements.each(function(index, domElement) {
-
-            if ($(this).attr('value')) filterArray.push($(this).serializeArray());
+                console.log($(this).attr('value'));
+                console.log($(this).attr('name'));
+            //if ($(this).attr('value')) filterArray.push($(this).serializeArray());
 
         });;
 
