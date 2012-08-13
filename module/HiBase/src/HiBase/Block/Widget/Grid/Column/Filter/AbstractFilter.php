@@ -73,7 +73,7 @@ class AbstractFilter extends AbstractBlock implements ColumnFilterInterface
     public function getEscapedValue($index = null)
     {
 //        \Zend\Debug::dump($this->getValue($index, 'default'));
-        return htmlspecialchars($this->getValue($index));
+        return htmlspecialchars($this->getValue($index), ENT_QUOTES, 'utf-8');
     }
 
 //    public function getValue($index=null)

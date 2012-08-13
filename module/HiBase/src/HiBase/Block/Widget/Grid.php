@@ -338,9 +338,9 @@ class Grid extends Widget
     /**
      * Add column view order
      *
-     * @param string $columnId
+     * @param string
      * @param string $after
-     * @return Mage_Adminhtml_Block_Widget_Grid
+     * @return Mage_Admin$columnIdhtml_Block_Widget_Grid
      */
     public function addColumnsOrder($columnId, $after)
     {
@@ -355,6 +355,7 @@ class Grid extends Widget
      */
     public function getColumnsOrder()
     {
+//        \Zend\Debug::dump($this->_columnsOrder);
         return $this->_columnsOrder;
     }
 
@@ -367,6 +368,10 @@ class Grid extends Widget
     {
         $keys = array_keys($this->_columns);
         $values = array_values($this->_columns);
+
+//        \Zend\Debug::dump($keys);
+//        \Zend\Debug::dump($this->getColumnsOrder());
+//        \Zend\Debug::dump($values);
 
         foreach ($this->getColumnsOrder() as $columnId => $after) {
             if (array_search($after, $keys) !== false) {
@@ -557,40 +562,53 @@ class Grid extends Widget
     {
         $filterArray = array();
         $filters = (array)json_decode(base64_decode($filterString));
-        foreach ($filters as $filter) {
-            if (is_array($filter)) {
-                $filter = array_shift($filter);
-            }
 
-            //range
-            if (false !== strpos($filter->name, '[from]')) {
-                $name = substr($filter->name, 0, strpos($filter->name, '[from]'));
-//                $name = array_shift(explode('[', $filter->name));
-                $filterArray[$name]['from'] = $filter->value;
-                continue;
-            }
-            if (false !== strpos($filter->name, '[to]')) {
-                $name = substr($filter->name, 0, strpos($filter->name, '[to]'));
-//                $name = array_shift(explode('[', $filter->name));
-                $filterArray[$name]['to'] = $filter->value;
-                continue;
-            }
+        foreach ($this->getColumns() as $column) {
+            $filterFieldNameString = $this->getId() . '[filter][' . $column->getId() . ']';
 
 
-//            \Zend\Debug::dump(get_class_methods($filter));
-//            \Zend\Debug::dump((array)$filter);
-//            \Zend\Debug::dump((array)$filter);
-            $filterArray[$filter->name] = $filter->value;
+//            \Zend\Debug::dump($filterFieldNameString);
+
+
+            foreach ($filters as $filter) {
+                if (is_object($filter)) {
+                    if (isset($filter->filterName) && isset($filter->filterValue)) {
+
+                        if (strpos($filter->filterName, $filterFieldNameString) !== false) {
+
+                            switch ($column->getType()) {
+                                case 'datetime':
+                                case 'id':
+                                case 'integer':
+
+                                    if (strpos($filter->filterName, '[from]') !== false) {
+                                        $filterArray[$column->getId()]['from'] = $filter->filterValue;
+                                        break;
+                                    }
+                                    if (strpos($filter->filterName, '[to]') !== false) {
+                                        $filterArray[$column->getId()]['to'] = $filter->filterValue;
+                                        break;
+                                    }
+                                    break;
+                                default:
+                                    $filterArray[$column->getId()] = $filter->filterValue;
+                                    break;
+
+                            }
+                        }
+                    }
+                }
+            }
+//
+//        \Zend\Debug::dump($filterArray, '$filterArray');
         }
-
-        \Zend\Debug::dump($filterArray, '$filterArray');
-
         return $filterArray;
     }
 
     protected function _setFilterValues($data)
     {
 
+//        \Zend\Debug::dump($data, '_setFilterValues::$data');
         foreach ($this->getColumns() as $columnId => $column) {
 //            \Zend\Debug::dump(isset($data[$columnId]));
 //            \Zend\Debug::dump(!empty($data[$columnId]));
@@ -600,7 +618,9 @@ class Grid extends Widget
                 && (!empty($data[$columnId]) || strlen($data[$columnId]) > 0)
                 && $column->getFilter()
             ) {
+//                \Zend\Debug::dump($data[$columnId]);
                 $column->getFilter()->setValue($data[$columnId]);
+//                \Zend\Debug::dump($column->getFilter()->getValue());
 //                $this->_addColumnFilterToCollection($column);
             }
         }
@@ -612,11 +632,13 @@ class Grid extends Widget
         $values = array();
 
         foreach ($this->getColumns() as $columnId => $column) {
+//            \Zend\Debug::dump($column->getFilter()->getValue());
             if ($column->getFilter()->getValue()) {
                 $filter = array();
                 $filter['field'] = $columnId;
                 $filter['values'] = $column->getFilter()->getValue();
-                $filter['type'] = strtolower(array_pop(explode('\\', get_class($column->getFilter()))));
+//                $filter['type'] = strtolower(array_pop(explode('\\', get_class($column->getFilter()))));
+                $filter['type'] = $column->getType();
     //            \Zend\Debug::dump(isset($data[$columnId]));
     //            \Zend\Debug::dump(!empty($data[$columnId]));
     //            \Zend\Debug::dump(strlen($data[$columnId]) > 0);

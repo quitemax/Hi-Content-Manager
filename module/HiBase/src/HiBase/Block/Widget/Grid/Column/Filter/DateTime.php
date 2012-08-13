@@ -151,7 +151,7 @@ class DateTime extends Date
 //            return $value;
 //        }
 
-        return htmlspecialchars($this->getValue($index, ''));
+        return htmlspecialchars($this->getValue($index, ''), ENT_QUOTES, 'utf-8');
     }
 
 }

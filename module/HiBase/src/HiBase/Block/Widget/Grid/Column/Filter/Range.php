@@ -32,11 +32,12 @@ class Range extends AbstractFilter
 
     public function getValue($index=null)
     {
+//        \Zend\Debug::dump((array)$this->getVariables());
         if ($index) {
-            return $this->getVariable('value', $index);
+            return isset($this->value[$index]) ? $this->value[$index] : null;
         }
-        $value = $this->getVariable('value');
-        if ((isset($value['from']) && strlen($value['from']) > 0) || (isset($value['to']) && strlen($value['to']) > 0)) {
+        $value = isset($this->value) ? $this->value : '';
+        if ((isset($this->value['from']) && strlen($this->value['from']) > 0) || (isset($this->value['to']) && strlen($this->value['to']) > 0)) {
             return $value;
         }
         return null;

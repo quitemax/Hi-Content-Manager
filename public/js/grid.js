@@ -126,8 +126,15 @@ $.extend(HiGridWidget.prototype, {
 
         var elements = $("#" + this.containerId + " .filter input, #" + this.containerId + " .filter select");
         elements.each(function(index, domElement) {
-                console.log($(this).attr('value'));
-                console.log($(this).attr('name'));
+            var filterValue = $(this).attr('value');
+            
+            if (filterValue) {
+                var filterName = $(this).attr('name');
+                //console.log({filterName : filterValue});
+                filterArray.push({'filterName' : filterName, 'filterValue' : filterValue});
+            }
+                //console.log($(this).attr('value'));
+                //console.log($(this).attr('name'));
             //if ($(this).attr('value')) filterArray.push($(this).serializeArray());
 
         });;
@@ -142,7 +149,7 @@ $.extend(HiGridWidget.prototype, {
         //console.log(JSON.stringify(document.forms));
         //console.log($(document.forms).serializeArray());
         //console.log(encode_base64(elements.serializeArray()));
-        //this.reload(this.getFullGridUrl());
+        this.reload(this.getFullGridUrl());
 
     },
     resetFilter : function(){
