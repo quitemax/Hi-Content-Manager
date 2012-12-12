@@ -567,7 +567,8 @@ class Grid extends Widget
             $filterFieldNameString = $this->getId() . '[filter][' . $column->getId() . ']';
 
 
-//            \Zend\Debug::dump($filterFieldNameString);
+//            \Zend\Debug\Debug::dump($filterFieldNameString);
+//            \Zend\Debug\Debug::dump($filters);
 
 
             foreach ($filters as $filter) {
@@ -575,9 +576,13 @@ class Grid extends Widget
                     if (isset($filter->filterName) && isset($filter->filterValue)) {
 
                         if (strpos($filter->filterName, $filterFieldNameString) !== false) {
+                            \Zend\Debug\Debug::dump($filterFieldNameString);
+                            \Zend\Debug\Debug::dump($filters);
+                            \Zend\Debug\Debug::dump($column->getType());
 
                             switch ($column->getType()) {
                                 case 'datetime':
+                                case 'decimal':
                                 case 'id':
                                 case 'integer':
 
@@ -694,15 +699,25 @@ class Grid extends Widget
         $pager = $this->getPager();
         $jsObjectName = $this->getJsObjectName();
 
+        $visibleElements = 0;
 
-        $script = <<<HTML
+        if ($pager->getLimit() <= $pager->getSize()) {
+            $visibleElements = $pager->getLimit();
+        } else {
+            $visibleElements = $pager->getSize();
+        }
+
+
+        $script = <<<JS
 var {$jsObjectName} = new HiGridWidget('{$this->getId()}', '{$this->getGridUrl()}', '{$this->getVarNamePage()}', '{$this->getVarNameSort()}', '{$this->getVarNameDir()}', '{$this->getVarNameLimit()}', '{$this->getVarNameFilter()}');
 {$jsObjectName}.pageValue = '{$pager->getCurPage()}';
 {$jsObjectName}.limitValue = '{$pager->getLimit()}';
 {$jsObjectName}.sortValue = '{$sort}';
 {$jsObjectName}.dirValue = '{$dir}';
 {$jsObjectName}.filterValue = '{$filter}';
-HTML;
+{$jsObjectName}.allElements = '{$pager->getSize()}';
+{$jsObjectName}.visibleElements = '{$visibleElements}';
+JS;
 
 
         $this->inlineScript()->appendScript(
@@ -779,12 +794,12 @@ HTML;
     /**
      * Prepare grid massaction block
      *
-     * @return Mage_Adminhtml_Block_Widget_Grid
+     * @return Grid
      */
     protected function _prepareMassactionBlock()
     {
         $massActionBlock = new MassAction();
-        $massActionBlock->setId($this->getId() . 'MassAction');
+        $massActionBlock->setId('MassAction');
 
 //        $massActionBlock->setJsObjectName($this->getJsObjectName());
 
@@ -794,7 +809,7 @@ HTML;
 
         $this->setChild(
             $massActionBlock,
-            'massaction'
+            'MassAction'
         );
 
         $this->_prepareMassaction();
@@ -810,7 +825,7 @@ HTML;
     /**
      * Prepare grid massaction actions
      *
-     * @return Mage_Adminhtml_Block_Widget_Grid
+     * @return Grid
      */
     protected function _prepareMassaction()
     {
@@ -821,11 +836,11 @@ HTML;
     /**
      * Prepare grid massaction column
      *
-     * @return unknown
+     * @return Grid
      */
     protected function _prepareMassactionColumn()
     {
-        $columnId = 'massaction';
+        $columnId = 'MassAction';
         $massactionColumn = new Column(
             array(
                 'index'        => $this->getMassactionIdField(),
@@ -1042,7 +1057,7 @@ HTML;
 //        \Zend\Debug::dump($this->getRequest()->getParam());
 //        $session = Mage::getSingleton('adminhtml/session');
 //        $sessionParamName = $this->getId().$paramName;
-        if ($param = $this->getRequest()->query()->get($paramName, $default)) {
+        if ($param = $this->getRequest()->getQuery()->get($paramName, $default)) {
 //            $param = $this->getRequest()->getParam($paramName);
 //            if ($this->_saveParametersInSession) {
 //                $session->setData($sessionParamName, $param);
@@ -1096,12 +1111,12 @@ HTML;
      */
     public function getMassactionBlock()
     {
-        return $this->getChild('massaction');
+        return $this->getChild('MassAction');
     }
 
     public function getMassactionBlockHtml()
     {
-        return $this->getChildHtml('massaction');
+        return $this->getChildHtml('MassAction');
     }
 
 /**

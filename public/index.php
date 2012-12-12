@@ -1,83 +1,21 @@
 <?php
 /**
- * boot preconditions
+ * This makes our life easier when dealing with paths. Everything is relative
+ * to the application root now.
  */
-require_once 'boot.php';
-
-/**
- *
- */
-use Zend\Loader\AutoloaderFactory,
-    Zend\ServiceManager\ServiceManager,
-    Zend\Mvc\Service\ServiceManagerConfiguration;
-
-
-
-//
 chdir(dirname(__DIR__));
 
-/**
- * path definitions
- *
- */
-//
-define('DS', DIRECTORY_SEPARATOR);
-define('PS', PATH_SEPARATOR);
+// boot preconditions
+include 'init_boot.php';
 
-//
-define('BASE_PATH', dirname(dirname(__FILE__)));
-//
-define('MODULES_PATH', BASE_PATH . DS . 'modules');
-//
-define('VENDOR_PATH', BASE_PATH . DS . 'vendor');
-//
-define('ZF2_PATH', BASE_PATH . DS . '..' . DS . 'zend' . DS . 'library');
-//
-define('PUBLIC_PATH', BASE_PATH . DS . 'public');
-//
-define('SKIN_PATH', PUBLIC_PATH . DS . 'skin');
-//
-define('MEDIA_PATH', PUBLIC_PATH . DS . 'media');
+// path definitions
+include 'init_path.php';
 
-//
-define('BASE_URL', '/sohi/Hi-Content-Manager/public');
+// Setup autoloading
+putenv("ZF2_PATH=".ZF2_PATH);
+include 'init_autoloader.php';
 
-define('MEDIA_URL', '/media');
 
-define('SKIN_URL', '/skin');
-
-/*
- * Ensure libraries are on include_path
- */
-set_include_path(implode(PS, array(
-    realpath(ZF2_PATH),
-    realpath(VENDOR_PATH),
-    get_include_path(),
-)));
-
-/**
- * autoloader
- *
- */
-require_once (getenv('ZF2_PATH') ?: '' ) . '/Zend/Loader/AutoloaderFactory.php';
-AutoloaderFactory::factory();
-
-//array(
-//        'Zend\Loader\StandardAutoloader' => array(
-//            'prefixes' => array(
-////                'Hi' => VENDOR_PATH . '/Hi',
-//             ),
-//             'fallback_autoloader' => true,
-//        )
-//    )
-
-/**
- * application enviroment
- *
- */
-if (!($env = getenv('APPLICATION_ENV'))) {
-    $env = 'local';
-}
 
 /*
  * Application config
@@ -86,49 +24,8 @@ $configuration = include 'config/application.config.php';
 
 
 try {
-
-    /**
-     *
-     *
-     */
-    // Setup service manager
-    $serviceManager = new ServiceManager(new ServiceManagerConfiguration($configuration['service_manager']));
-    $serviceManager->setService('ApplicationConfiguration', $configuration);
-    $serviceManager->get('ModuleManager')->loadModules();
-
-    // Run application
-    $serviceManager->get('Application')->bootstrap()->run()->send();
-
-//    $sharedEvents     = new Zend\EventManager\SharedEventManager();
-//    $listenerOptions  = new Zend\Module\Listener\ListenerOptions($appConfig['module_listener_options']);
-//    $defaultListeners = new Zend\Module\Listener\DefaultListenerAggregate($listenerOptions);
-//    $defaultListeners->getConfigListener()->addConfigGlobPath("config/autoload/{module.*,global,$env,local,database}.config.php");
-//
-//
-//    /*
-//     * Application module manager
-//     */
-//    $moduleManager = new Zend\Module\Manager($appConfig['modules']);
-//    $events        = $moduleManager->events();
-//    $events->setSharedManager($sharedEvents);
-//    $events->attach($defaultListeners);
-//    $moduleManager->loadModules();
-//
-//    // Create application, bootstrap, and run
-//    $bootstrap   = new Zend\Mvc\Bootstrap($defaultListeners->getConfigListener()->getMergedConfig());
-////    echo "<pre>" . '"$defaultListeners->getConfigListener()->getMergedConfig()" ';
-////     print_r($defaultListeners->getConfigListener()->getMergedConfig()->toArray());
-////    echo "</pre>";
-//
-//    $bootstrap->events()->setSharedManager($sharedEvents);
-//    $application = new Zend\Mvc\Application;
-//    $bootstrap->bootstrap($application);
-//    $application->run()->send();
-
-
-
-
-
+    // Run the application!
+    Zend\Mvc\Application::init($configuration)->run();
 }
 catch (Exception $e) {
     echo "<pre>";
@@ -138,7 +35,7 @@ catch (Exception $e) {
     print_r('code:' . $e->getCode() . ' file:' . $e->getFile() . ' line: ' . $e->getLine());
     echo "</pre>";
 
-//    echo "<pre>";
-//    print_r($e->getTraceAsString());
-//    echo "<pre>";
+    echo "<pre>";
+    print_r($e->getTraceAsString());
+    echo "<pre>";
 }

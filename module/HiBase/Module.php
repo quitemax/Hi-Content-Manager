@@ -26,39 +26,22 @@ class Module
         //initialize Block Renderer
         $this->initializeBlockRenderer($e);
 
-        //initialize Block Renderer
+        //initialize Route Listener
+        $this->initializeRouteListener($e);
+
+        //initialize Dispatch Listener
         $this->initializeDispatchListener($e);
 
+
     }
-
-    public function initializeDispatchListener($e)
-    {
-        // Register a dispatch event
-        $app = $e->getParam('application');
-        $app->events()->attach('route', array($this, 'initializeUrlHelper'), -100);
-    }
-
-    public function initializeUrlHelper($e)
-    {
-        $app = $e->getParam('application');
-        $service      = $app->getServiceManager();
-        $renderer     = $service->get('ViewBlockRenderer');
-        $plugin = $renderer->plugin('url');
-
-//        \Zend\Debug::dump($plugin, '$plugin');
-
-        $matches    = $e->getRouteMatch();
-
-        $plugin->setRouteMatch($matches);
-    }
-
 
     public function initializeView($e)
     {
-        $app          = $e->getParam('application');
+        $app          = $e->getApplication();
         $basePath     = $app->getRequest()->getBasePath();
         $service      = $app->getServiceManager();
         $renderer     = $service->get('ViewBlockRenderer');
+
         $plugin = $renderer->plugin('basePath');
         $plugin->setBasePath($basePath);
 
@@ -100,7 +83,7 @@ class Module
 
     public function initializeBlockRenderer($e)
     {
-        $app              = $e->getParam('application');
+        $app              = $e->getApplication();
         $service          = $app->getServiceManager();
 
         $config    = $service->get('Configuration');
@@ -108,17 +91,53 @@ class Module
 
         $blockStrategy     = $service->get('ViewBlockStrategy');
         $view              = $service->get('View');
-        $view->events()->attach($blockStrategy, 100);
+        $view->getEventManager()->attach($blockStrategy, 100);
 
 
     }
 
+    public function initializeRouteListener($e)
+    {
+        // Register a routing event
+        $app              = $e->getApplication();
+        $app->getEventManager()->attach('route', array($this, 'initializeUrlHelper'), -100);
+    }
+
+    public function initializeDispatchListener($e)
+    {
+        // Register a dispatch event
+        $app              = $e->getApplication();
+        $app->getEventManager()->attach('dispatch', array($this, 'setLayoutVars'), -100);
+    }
+
+    public function initializeUrlHelper($e)
+    {
+        $app              = $e->getApplication();
+        $service          = $app->getServiceManager();
+        $renderer         = $service->get('ViewBlockRenderer');
+        $plugin           = $renderer->plugin('url');
+
+//        \Zend\Debug\Debug::dump($plugin, '$plugin');
+
+        $matches          = $e->getRouteMatch();
+
+        $plugin->setRouteMatch($matches);
+    }
+
+    public function setLayoutVars($e)
+    {
+        $matches    = $e->getRouteMatch();
+        $controller = $matches->getParam('controller');
+
+        // Set the layout template
+        $viewModel = $e->getViewModel();
+        $viewModel->setVariable('controller', $controller);
+    }
+
+
     public function getAutoloaderConfig()
     {
         return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
-                __DIR__ . '/autoload_classmap.php',
-            ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,

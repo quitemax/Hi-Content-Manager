@@ -49,20 +49,20 @@ class Widget extends Block
         return $this->getId();
     }
 
-/**
+    /**
      * Set child block
      *
      * @param   string $alias
      * @param   Mage_Core_Block_Abstract $block
      * @return  Mage_Core_Block_Abstract
      */
-    public function setChild(Widget $block, $alias = null)
+    public function setChild(Widget $block, $captureTo = null, $append = false)
     {
-        if ($alias !== null && strpos($block->getId(), 'block-') !== false) {
-            $block->setId($alias);
+        if ($captureTo !== null && strpos($block->getId(), 'block-') !== false) {
+            $block->setId($captureTo);
         }
 
-        return parent::setChild($block, $alias);;
+        return parent::setChild($block, $captureTo, $append);
     }
 
 }

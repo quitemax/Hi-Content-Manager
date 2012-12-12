@@ -21,7 +21,7 @@
 
 namespace HiBase\Block;
 
-use Zend\View\Model\ViewModel;
+//use Zend\View\Model\ViewModel;
 use Zend\View\Model\ModelInterface;
 
 use Zend\View\Exception;
@@ -29,8 +29,10 @@ use Zend\View\Exception;
 use Zend\View\Renderer\RendererInterface;
 use Zend\View\Renderer\TreeRendererInterface;
 use Zend\View\Resolver\ResolverInterface;
-use Zend\View\Variables;
+use Zend\View\Variables as ViewVariables;
 use ArrayAccess;
+use ArrayIterator;
+use Traversable;
 use Zend\Filter\FilterChain;
 use Zend\View\Resolver\TemplatePathStack;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -43,266 +45,340 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 // * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
 // * @license    http://framework.zend.com/license/new-bsd     New BSD License
 // */
-abstract class AbstractBlock extends ViewModel
+abstract class AbstractBlock implements ModelInterface
 {
+    /**
+     *
+     */
+    const DEFAULT_CAPTURE_TO = 'content';
+
+    /**
+     * What variable a parent model should capture this model to
+     *
+     * @var string
+     */
+    protected $__captureTo = 'content';
+
+    /**
+     * Child models
+     * @var array
+     */
+    protected $__children = array();
+
+    /**
+     * Renderer options
+     * @var array
+     */
+    protected $__options = array();
+
+    /**
+     * Template to use when rendering this model
+     *
+     * @var string
+     */
+    protected $__template = '';
+
+    /**
+     * Is this a standalone, or terminal, model?
+     *
+     * @var bool
+     */
+    protected $__terminate = false;
+
+    /**
+     * View variables
+     * @var array|ArrayAccess&Traversable
+     */
+    protected $__variables = array();
+
+
+    /**
+     * Is this append to child  with the same capture?
+     *
+     * @var bool
+     */
+    protected $__append = false;
+
     /**
      * @var \Zend\ServiceManager\ServiceManager
      */
-    protected $_services;
-
-    /**
-     * Short alias of this block that was refered from parent
-     *
-     * @var string
-     */
-    protected $_alias;
-
-    /**
-     * Suffix for name of anonymous block
-     *
-     * @var string
-     */
-    protected $_anonSuffix;
-
-    /**
-     * Sorted children list
-     *
-     * @var array
-     */
-    protected $_sortedChildren              = array();
-
-    /**
-     * Children blocks HTML cache array
-     *
-     * @var array
-     */
-    protected $_childrenHtmlCache           = array();
-
-    /**
-     * Arbitrary groups of child blocks
-     *
-     * @var array
-     */
-    protected $_childGroups                 = array();
-
-    /**
-     * Request object
-     *
-     * @var Zend_Controller_Request_Http
-     */
-    protected $_request;
-
-    /**
-     * Messages block instance
-     *
-     * @var Mage_Core_Block_Messages
-     */
-    protected $_messagesBlock               = null;
-
-//    /**
-//     * Whether this block was not explicitly named
-//     *
-//     * @var boolean
-//     */
-//    protected $_isAnonymous                 = false;
+    protected $__services;
 
     /**
      * Parent block
      *
      * @var Mage_Core_Block_Abstract
      */
-    protected $_parentBlock;
-
-//    /**
-//     * Block html frame open tag
-//     * @var string
-//     */
-//    protected $_frameOpenTag;
-//
-//    /**
-//     * Block html frame close tag
-//     * @var string
-//     */
-//    protected $_frameCloseTag;
-//
-//    /**
-//     * Url object
-//     *
-//     * @var Mage_Core_Model_Url
-//     */
-//    protected static $_urlModel;
-//
-//    /**
-//     * @var Varien_Object
-//     */
-//    private static $_transportObject;
-
-    /**
-     * Array of block sort priority instructions
-     *
-     * @var array
-     */
-    protected $_sortInstructions = array();
+    protected $__parentBlock;
 
     /**
      * Constructor
      *
      * @param  null|array|Traversable $variables
      * @param  array|Traversable $options
-     * @return void
      */
     public function __construct($variables = null, $options = null)
     {
-        parent::__construct($variables, $options);
+        if (null === $variables) {
+            $variables = new ViewVariables();
+        }
 
+        // Initializing the __variables container
+        $this->setVariables($variables, true);
+
+        if (null !== $options) {
+            $this->setOptions($options);
+        }
+
+        //
         $this->init();
     }
 
     /**
      *
-     * Enter description here ...
+     * init method
      */
     public function init()
     {
 
     }
 
-
-    public function toHtml()
+    /**
+     * Property overloading: set variable value
+     *
+     * @param  string $name
+     * @param  mixed $value
+     * @return void
+     */
+    public function __set($name, $value)
     {
-//        Mage::dispatchEvent('core_block_abstract_to_html_before', array('block' => $this));
-//        if (Mage::getStoreConfig('advanced/modules_disable_output/' . $this->getModuleName())) {
-//            return '';
-//        }
-//        $html = $this->_loadCache();
-//        if ($html === false) {
-//            $translate = Mage::getSingleton('core/translate');
-//            /** @var $translate Mage_Core_Model_Translate */
-//            if ($this->hasData('translate_inline')) {
-//                $translate->setTranslateInline($this->getData('translate_inline'));
-//            }
-//
-//            $this->_beforeToHtml();
-//            $html = $this->_toHtml();
-//            $this->_saveCache($html);
-//
-//            if ($this->hasData('translate_inline')) {
-//                $translate->setTranslateInline(true);
-//            }
-//        }
-//        $html = $this->_afterToHtml($html);
-//
-//        /**
-//         * Check framing options
-//         */
-//        if ($this->_frameOpenTag) {
-//            $html = '<'.$this->_frameOpenTag.'>'.$html.'<'.$this->_frameCloseTag.'>';
-//        }
-//
-//        /**
-//         * Use single transport object instance for all blocks
-//         */
-//        if (self::$_transportObject === null) {
-//            self::$_transportObject = new Varien_Object;
-//        }
-//        self::$_transportObject->setHtml($html);
-//        Mage::dispatchEvent('core_block_abstract_to_html_after',
-//                array('block' => $this, 'transport' => self::$_transportObject));
-//        $html = self::$_transportObject->getHtml();
-//
-//        return $html;
-
-        $html = '';
-
-        $this->_prepareLayout();
-
-        $html .= $this->_beforeToHtml();
-        $html .= $this->_toHtml();
-        $html = $this->_afterToHtml($html);
-
-        return $html;
+        $this->setVariable($name, $value);
     }
 
-    protected function _prepareLayout()
+    /**
+     * Property overloading: get variable value
+     *
+     * @param  string $name
+     * @return mixed
+     */
+    public function __get($name)
     {
+        if (!$this->__isset($name)) {
+            if ($child = $this->getChild($name)) {
+                return $child->toHtml();
+            }
+            return null;
+        }
+
+        $variables = $this->getVariables();
+        return $variables[$name];
+    }
+
+
+
+    /**
+     * Property overloading: do we have the requested variable value?
+     *
+     * @param  string $name
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        $variables = $this->getVariables();
+        return isset($variables[$name]);
+    }
+
+    /**
+     * Property overloading: unset the requested variable
+     *
+     * @param  string $name
+     * @return void
+     */
+    public function __unset($name)
+    {
+        if (!$this->__isset($name)) {
+            return null;
+        }
+
+        $variables = $this->getVariables();
+        unset($variables[$name]);
+    }
+
+    /**
+     * Set a single option
+     *
+     * @param  string $name
+     * @param  mixed $value
+     * @return ViewModel
+     */
+    public function setOption($name, $value)
+    {
+        $this->__options[(string) $name] = $value;
         return $this;
     }
 
-
-    protected function _beforeToHtml()
+    /**
+     * Get a single option
+     *
+     * @param  string       $name           The option to get.
+     * @param  mixed|null   $default        (optional) A default value if the option is not yet set.
+     * @return mixed
+     */
+    public function getOption($name, $default = null)
     {
-        return '';
+        $name = (string)$name;
+        return array_key_exists($name, $this->__options) ? $this->__options[$name] : $default;
     }
 
-    protected function _toHtml()
+    /**
+     * Set renderer options/hints en masse
+     *
+     * @param array|\Traversable $options
+     * @throws \Zend\View\Exception\InvalidArgumentException
+     * @return ViewModel
+     */
+    public function setOptions($options)
     {
-        return '';
-    }
+        // Assumption is that lowest common denominator for renderer configuration
+        // is an array
+        if ($options instanceof Traversable) {
+            $options = ArrayUtils::iteratorToArray($options);
+        }
 
-    protected function _afterToHtml($html = '')
-    {
-        return $html;
-    }
+        if (!is_array($options)) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                '%s: expects an array, or Traversable argument; received "%s"',
+                __METHOD__,
+                (is_object($options) ? get_class($options) : gettype($options))
+            ));
+        }
 
-///**
-//     * Set script resolver
-//     *
-//     * @param  Resolver $resolver
-//     * @return PhpRenderer
-//     * @throws Exception\InvalidArgumentException
-//     */
-    public function setServiceManager(ServiceLocatorInterface $sm)
-    {
-//        \HiBase\Debug::precho($resolver, '$resolver');
-        $this->_services = $sm;
+        $this->__options = $options;
         return $this;
     }
 
-///**
-//     * Set script resolver
-//     *
-//     * @param  Resolver $resolver
-//     * @return PhpRenderer
-//     * @throws Exception\InvalidArgumentException
-//     */
-    public function getServiceManager()
+    /**
+     * Get renderer options/hints
+     *
+     * @return array
+     */
+    public function getOptions()
     {
-        return $this->_services;
+        return $this->__options;
     }
 
-/**
-     * Translate block sentence
+    /**
+     * Get a single view variable
+     *
+     * @param  string       $name
+     * @param  mixed|null   $default (optional) default value if the variable is not present.
+     * @return mixed
+     */
+    public function getVariable($name, $default = null)
+    {
+        $name = (string)$name;
+        if (array_key_exists($name,$this->__variables)) {
+            return $this->__variables[$name];
+        } else {
+            return $default;
+        }
+    }
+
+    /**
+     * Set view variable
+     *
+     * @param  string $name
+     * @param  mixed $value
+     * @return ViewModel
+     */
+    public function setVariable($name, $value)
+    {
+        $this->__variables[(string) $name] = $value;
+        return $this;
+    }
+
+    /**
+     * Set view __variables en masse
+     *
+     * Can be an array or a Traversable + ArrayAccess object.
+     *
+     * @param  array|ArrayAccess&Traversable $variables
+     * @param  bool $overwrite Whether or not to overwrite the internal container with $variables
+     * @return ViewModel
+     */
+    public function setVariables($variables, $overwrite = false)
+    {
+        if (!is_array($variables) && !$variables instanceof Traversable) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                '%s: expects an array, or Traversable argument; received "%s"',
+                __METHOD__,
+                (is_object($variables) ? get_class($variables) : gettype($variables))
+            ));
+        }
+
+        if ($overwrite) {
+            if (is_object($variables) && !$variables instanceof ArrayAccess) {
+                $variables = ArrayUtils::iteratorToArray($variables);
+            }
+
+            $this->__variables = $variables;
+            return $this;
+        }
+
+        foreach ($variables as $key => $value) {
+            $this->setVariable($key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get view __variables
+     *
+     * @return array|ArrayAccess|Traversable
+     */
+    public function getVariables()
+    {
+        return $this->__variables;
+    }
+
+    /**
+     * Set the template to be used by this model
+     *
+     * @param  string $template
+     * @return ViewModel
+     */
+    public function setTemplate($template)
+    {
+        $this->__template = (string) $template;
+        return $this;
+    }
+
+    /**
+     * Get the template to be used by this model
      *
      * @return string
      */
-    public function __()
+    public function getTemplate()
     {
-        $args = func_get_args();
-
-        $expr = array_shift($args);
-//        \Zend\Debug::dump($expr);
-//        \Zend\Debug::dump($args);
-//        $expr = new Mage_Core_Model_Translate_Expr(array_shift($args), $this->getModuleName());
-//        array_unshift($args, $expr);
-//        return Mage::app()->getTranslator()->translate($args);
-        return vsprintf($expr, $args);
+        return $this->__template;
     }
-
 
     /**
      * Add a child model
      *
      * @param  ModelInterface $child
      * @param  null|string $captureTo Optional; if specified, the "capture to" value to set on the child
+     * @param  null|bool $append Optional; if specified, append to child  with the same capture
      * @return ViewModel
      */
-    public function addChild(ModelInterface $child, $captureTo = null)
+    public function addChild(ModelInterface $child, $captureTo = null, $append = false)
     {
         if (!$child instanceof AbstractBlock) {
             throw new Exception('not an instance of AbstractBlock', 1);
         }
 
-        $this->setChild($child, $captureTo);
+        $this->setChild($child, $captureTo, $append);
 
         return $this;
     }
@@ -311,55 +387,34 @@ abstract class AbstractBlock extends ViewModel
      * Set child block
      *
      * @param   string $alias
-     * @param   Mage_Core_Block_Abstract $block
-     * @return  Mage_Core_Block_Abstract
+     * @param   AbstractBlock $block
+     * @return  AbstractBlock
      */
-    public function setChild(AbstractBlock $block, $alias = null)
+    public function setChild(AbstractBlock $block, $captureTo = null, $append = false)
     {
         //
-        if ($alias === null) {
-            $alias = 'content';
+        if ($captureTo === null) {
+            $captureTo = self::DEFAULT_CAPTURE_TO;
         }
+
+        //
+        $block->setCaptureTo($captureTo);
 
         //
         $block->setParentBlock($this);
 
         //
-        $block->setBlockAlias($alias);
+        if (null !== $append) {
+            $block->setAppend($append);
+        }
 
         //
-        $block->setCaptureTo($alias);
-
-        //
-        $this->children[$alias] = $block;
-
-//        \Zend\Debug::dump($this->children);
-
-//        if ($block->getIsAnonymous()) {
-//            $suffix = $block->getAnonSuffix();
-//            if (empty($suffix)) {
-//                $suffix = 'child' . sizeof($this->children);
-//            }
-//            $blockName = $this->getNameInLayout() . '.' . $suffix;
-//
-//            if ($this->getLayout()) {
-//                $this->getLayout()->unsetBlock($block->getNameInLayout())
-//                    ->setBlock($blockName, $block);
-//            }
-//
-//            $block->setNameInLayout($blockName);
-//            $block->setIsAnonymous(false);
-//
-//            if (empty($alias)) {
-//                $alias = $blockName;
-//            }
-//        }
-
+        $this->__children[$captureTo] = $block;
 
         return $this;
     }
 
-    /**
+/**
      * Unset child block
      *
      * @param  string $alias
@@ -367,54 +422,12 @@ abstract class AbstractBlock extends ViewModel
      */
     public function unsetChild($alias)
     {
-        if (isset($this->children[$alias])) {
-            unset($this->children[$alias]);
-            $key = array_search($name, $this->_sortedChildren);
-            if ($key !== false) {
-                unset($this->_sortedChildren[$key]);
-            }
+        if (isset($this->__children[$alias])) {
+            unset($this->__children[$alias]);
         }
 
         return $this;
     }
-
-//    /**
-//     * Call a child and unset it, if callback matched result
-//     *
-//     * $params will pass to child callback
-//     * $params may be array, if called from layout with elements with same name, for example:
-//     * ...<foo>value_1</foo><foo>value_2</foo><foo>value_3</foo>
-//     *
-//     * Or, if called like this:
-//     * ...<foo>value_1</foo><bar>value_2</bar><baz>value_3</baz>
-//     * - then it will be $params1, $params2, $params3
-//     *
-//     * It is no difference anyway, because they will be transformed in appropriate way.
-//     *
-//     * @param string $alias
-//     * @param string $callback
-//     * @param mixed $result
-//     * @param array $params
-//     * @return Mage_Core_Block_Abstract
-//     */
-//    public function unsetCallChild($alias, $callback, $result, $params)
-//    {
-//        $child = $this->getChild($alias);
-//        if ($child) {
-//            $args     = func_get_args();
-//            $alias    = array_shift($args);
-//            $callback = array_shift($args);
-//            $result   = (string)array_shift($args);
-//            if (!is_array($params)) {
-//                $params = $args;
-//            }
-//
-//            if ($result == call_user_func_array(array(&$child, $callback), $params)) {
-//                $this->unsetChild($alias);
-//            }
-//        }
-//        return $this;
-//    }
 
     /**
      * Unset all children blocks
@@ -423,8 +436,7 @@ abstract class AbstractBlock extends ViewModel
      */
     public function unsetChildren()
     {
-        $this->children       = array();
-        $this->_sortedChildren = array();
+        $this->__children       = array();
         return $this;
     }
 
@@ -437,354 +449,148 @@ abstract class AbstractBlock extends ViewModel
     public function getChild($name = '')
     {
         if ($name === '') {
-            return $this->children;
-        } elseif (isset($this->children[$name])) {
-            return $this->children[$name];
+            return $this->__children;
+        } elseif (isset($this->__children[$name])) {
+            return $this->__children[$name];
         }
         return false;
     }
 
     /**
-     * Retrieve child block HTML
+     * Return all children.
      *
-     * @param   string $name
-     * @param   boolean $useCache
-     * @param   boolean $sorted
-     * @return  string
+     * Return specifies an array, but may be any iterable object.
+     *
+     * @return array
      */
-    public function getChildHtml($name = '', $useCache = true, $sorted = false)
+    public function getChildren()
     {
-        if ($name === '') {
-//            if ($sorted) {
-//                $children = array();
-//                foreach ($this->getSortedChildren() as $childName) {
-//                    $children[$childName] = $this->getLayout()->getBlock($childName);
-//                }
-//            } else {
-//                $children = $this->getChild();
-//            }
-//            $out = '';
-//            foreach ($children as $child) {
-//                $out .= $this->_getChildHtml($child->getBlockAlias(), $useCache);
-//            }
-//            return $out;
-        } else {
-            return $this->_getChildHtml($name, $useCache);
-        }
+        return $this->__children;
     }
 
-//    /**
-//     * @param string $name          Parent block name
-//     * @param string $childName     OPTIONAL Child block name
-//     * @param bool $useCache        OPTIONAL Use cache flag
-//     * @param bool $sorted          OPTIONAL @see getChildHtml()
-//     * @return string
-//     */
-//    public function getChildChildHtml($name, $childName = '', $useCache = true, $sorted = false)
-//    {
-//        if (empty($name)) {
-//            return '';
-//        }
-//        $child = $this->getChild($name);
-//        if (!$child) {
-//            return '';
-//        }
-//        return $child->getChildHtml($childName, $useCache, $sorted);
-//    }
-//
-//    /**
-//     * Obtain sorted child blocks
-//     *
-//     * @return array
-//     */
-//    public function getSortedChildBlocks()
-//    {
-//        $children = array();
-//        foreach ($this->getSortedChildren() as $childName) {
-//            $children[$childName] = $this->getLayout()->getBlock($childName);
-//        }
-//        return $children;
-//    }
-
     /**
-     * Retrieve child block HTML
+     * Does the model have any children?
      *
-     * @param   string $name
-     * @param   boolean $useCache
-     * @return  string
+     * @return bool
      */
-    protected function _getChildHtml($name, $useCache = true)
+    public function hasChildren()
     {
-        if ($useCache && isset($this->_childrenHtmlCache[$name])) {
-            return $this->_childrenHtmlCache[$name];
-        }
-
-        $child = $this->getChild($name);
-
-        if (!$child) {
-            $html = '';
-        } else {
-//            $this->_beforeChildToHtml($name, $child);
-            $html = $child->toHtml();
-        }
-
-        $this->_childrenHtmlCache[$name] = $html;
-        return $html;
+        return (0 < count($this->__children));
     }
 
-//    /**
-//     * Prepare child block before generate html
-//     *
-//     * @param   string $name
-//     * @param   Mage_Core_Block_Abstract $child
-//     */
-//    protected function _beforeChildToHtml($name, $child)
-//    {
-//    }
-//
-//    /**
-//     * Retrieve block html
-//     *
-//     * @param   string $name
-//     * @return  string
-//     */
-//    public function getBlockHtml($name)
-//    {
-//        if (!($layout = $this->getLayout()) && !($layout = $this->getAction()->getLayout())) {
-//            return '';
-//        }
-//        if (!($block = $layout->getBlock($name))) {
-//            return '';
-//        }
-//        return $block->toHtml();
-//    }
-
     /**
-     * Insert child block
+     * Set the name of the variable to capture this model to, if it is a child model
      *
-     * @param   Mage_Core_Block_Abstract|string $block
-     * @param   string $siblingName
-     * @param   boolean $after
-     * @param   string $alias
-     * @return  object $this
+     * @param  string $capture
+     * @return ViewModel
      */
-    public function insert($block, $siblingName = '', $after = false, $alias = '')
+    public function setCaptureTo($capture)
     {
-//        if (is_string($block)) {
-//            $block = $this->getLayout()->getBlock($block);
-//        }
-//        if (!$block) {
-//            /*
-//             * if we don't have block - don't throw exception because
-//             * block can simply removed using layout method remove
-//             */
-//            //Mage::throwException(Mage::helper('core')->__('Invalid block name to set child %s: %s', $alias, $block));
-//            return $this;
-//        }
-//        if ($block->getIsAnonymous()) {
-//            $this->setChild('', $block);
-//            $name = $block->getNameInLayout();
-//        } elseif ('' != $alias) {
-//            $this->setChild($alias, $block);
-//            $name = $block->getNameInLayout();
-//        } else {
-//            $name = $block->getNameInLayout();
-//            $this->setChild($name, $block);
-//        }
-//
-//        if ($siblingName === '') {
-//            if ($after) {
-//                array_push($this->_sortedChildren, $name);
-//            } else {
-//                array_unshift($this->_sortedChildren, $name);
-//            }
-//        } else {
-//            $key = array_search($siblingName, $this->_sortedChildren);
-//            if (false !== $key) {
-//                if ($after) {
-//                    $key++;
-//                }
-//                array_splice($this->_sortedChildren, $key, 0, $name);
-//            } else {
-//                if ($after) {
-//                    array_push($this->_sortedChildren, $name);
-//                } else {
-//                    array_unshift($this->_sortedChildren, $name);
-//                }
-//            }
-//
-//            $this->_sortInstructions[$name] = array($siblingName, (bool)$after, false !== $key);
-//        }
-
+        $this->__captureTo = (string) $capture;
         return $this;
     }
 
     /**
-     * Sort block's children
-     *
-     * @param boolean $force force re-sort all children
-     * @return Mage_Core_Block_Abstract
-     */
-    public function sortChildren($force = false)
-    {
-//        foreach ($this->_sortInstructions as $name => $list) {
-//            list($siblingName, $after, $exists) = $list;
-//            if ($exists && !$force) {
-//                continue;
-//            }
-//            $this->_sortInstructions[$name][2] = true;
-//
-//            $index      = array_search($name, $this->_sortedChildren);
-//            $siblingKey = array_search($siblingName, $this->_sortedChildren);
-//
-//            if ($index === false || $siblingKey === false) {
-//                continue;
-//            }
-//
-//            if ($after) {
-//                // insert after block
-//                if ($index == $siblingKey + 1) {
-//                    continue;
-//                }
-//                // remove sibling from array
-//                array_splice($this->_sortedChildren, $index, 1, array());
-//                // insert sibling after
-//                array_splice($this->_sortedChildren, $siblingKey + 1, 0, array($name));
-//            } else {
-//                // insert before block
-//                if ($index == $siblingKey - 1) {
-//                    continue;
-//                }
-//                // remove sibling from array
-//                array_splice($this->_sortedChildren, $index, 1, array());
-//                // insert sibling after
-//                array_splice($this->_sortedChildren, $siblingKey, 0, array($name));
-//            }
-//        }
-
-        return $this;
-    }
-
-    /**
-     * Append child block
-     *
-     * @param   Mage_Core_Block_Abstract|string $block
-     * @param   string $alias
-     * @return  Mage_Core_Block_Abstract
-     */
-    public function append($block, $alias = '')
-    {
-        $this->insert($block, '', true, $alias);
-        return $this;
-    }
-
-//    /**
-//     * Make sure specified block will be registered in the specified child groups
-//     *
-//     * @param string $groupName
-//     * @param Mage_Core_Block_Abstract $child
-//     */
-//    public function addToChildGroup($groupName, Mage_Core_Block_Abstract $child)
-//    {
-//        if (!isset($this->_childGroups[$groupName])) {
-//            $this->_childGroups[$groupName] = array();
-//        }
-//        if (!in_array($child->getBlockAlias(), $this->_childGroups[$groupName])) {
-//            $this->_childGroups[$groupName][] = $child->getBlockAlias();
-//        }
-//    }
-//
-//    /**
-//     * Add self to the specified group of parent block
-//     *
-//     * @param string $groupName
-//     * @return Mage_Core_Block_Abstract
-//     */
-//    public function addToParentGroup($groupName)
-//    {
-//        $this->getParentBlock()->addToChildGroup($groupName, $this);
-//        return $this;
-//    }
-//
-//    /**
-//     * Get a group of child blocks
-//     *
-//     * Returns an array of <alias> => <block>
-//     * or an array of <alias> => <callback_result>
-//     * The callback currently supports only $this methods and passes the alias as parameter
-//     *
-//     * @param string $groupName
-//     * @param string $callback
-//     * @param bool $skipEmptyResults
-//     * @return array
-//     */
-//    public function getChildGroup($groupName, $callback = null, $skipEmptyResults = true)
-//    {
-//        $result = array();
-//        if (!isset($this->_childGroups[$groupName])) {
-//            return $result;
-//        }
-//        foreach ($this->getSortedChildBlocks() as $block) {
-//            $alias = $block->getBlockAlias();
-//            if (in_array($alias, $this->_childGroups[$groupName])) {
-//                if ($callback) {
-//                    $row = $this->$callback($alias);
-//                    if (!$skipEmptyResults || $row) {
-//                        $result[$alias] = $row;
-//                    }
-//                } else {
-//                    $result[$alias] = $block;
-//                }
-//
-//            }
-//        }
-//        return $result;
-//    }
-//
-//    /**
-//     * Get a value from child block by specified key
-//     *
-//     * @param string $alias
-//     * @param string $key
-//     * @return mixed
-//     */
-//    public function getChildData($alias, $key = '')
-//    {
-//        $child = $this->getChild($alias);
-//        if ($child) {
-//            return $child->getData($key);
-//        }
-//    }
-
-
-
-
-    /**
-     * Returns block alias
+     * Get the name of the variable to which to capture this model
      *
      * @return string
      */
-    public function getBlockAlias()
+    public function captureTo()
     {
-        return $this->_alias;
+        return $this->__captureTo;
     }
 
     /**
-     * Set block alias
+     * Set flag indicating whether or not this is considered a terminal or standalone model
      *
-     * @param string $alias
-     * @return Mage_Core_Block_Abstract
+     * @param  bool $terminate
+     * @return ViewModel
      */
-    public function setBlockAlias($alias)
+    public function setTerminal($terminate)
     {
-        $this->_alias = $alias;
+        $this->__terminate = (bool) $terminate;
         return $this;
+    }
+
+    /**
+     * Is this considered a terminal or standalone model?
+     *
+     * @return bool
+     */
+    public function terminate()
+    {
+        return $this->__terminate;
+    }
+
+    /**
+     * Set flag indicating whether or not append to child  with the same capture
+     *
+     * @param  bool $append
+     * @return ViewModel
+     */
+    public function setAppend($append)
+    {
+        $this->__append = (bool) $append;
+        return $this;
+    }
+
+    /**
+     * Is this append to child  with the same capture?
+     *
+     * @return bool
+     */
+    public function isAppend()
+    {
+        return $this->__append;
+    }
+
+    /**
+     * Return count of children
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->__children);
+    }
+
+    /**
+     * Get iterator of children
+     *
+     * @return ArrayIterator
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->__children);
+    }
+
+    /**
+     * Set the service manager
+     *
+     * @param  ServiceLocatorInterface $sm
+     * @return $this
+     */
+    public function setServiceManager(ServiceLocatorInterface $sm)
+    {
+        $this->__services = $sm;
+        return $this;
+    }
+
+
+    /**
+     * Retrieve the service manager
+     *
+     * @return ServiceManager
+     */
+    public function getServiceManager()
+    {
+        return $this->__services;
     }
 
     /**
      * Retrieve parent block
      *
-     * @return Mage_Core_Block_Abstract
+     * @return AbstractBlock
      */
     public function getParentBlock()
     {
@@ -794,26 +600,88 @@ abstract class AbstractBlock extends ViewModel
     /**
      * Set parent block
      *
-     * @param   Mage_Core_Block_Abstract $block
-     * @return  Mage_Core_Block_Abstract
+     * @param   AbstractBlock $block
+     * @return  AbstractBlock
      */
     public function setParentBlock(AbstractBlock $block)
     {
-        $this->_parentBlock = $block;
+        $this->__parentBlock = $block;
         return $this;
     }
 
 
 
+    /**
+     *
+     *
+     * @return string
+     */
+    public function toHtml()
+    {
+        $html = '';
+
+        $this->_prepareLayout();
+
+        $html .= $this->_beforeToHtml();
+        $html .= $this->_toHtml();
+        $html = $this->_afterToHtml($html);
+
+        return $html;
+    }
 
     /**
-     * Overloading: proxy to helpers
      *
-     * Proxies to the attached plugin broker to retrieve, return, and potentially
-     * execute helpers.
      *
-     * * If the helper does not define __invoke, it will be returned
-     * * If the helper does define __invoke, it will be called as a functor
+     * @return $this
+     */
+    protected function _prepareLayout()
+    {
+        return $this;
+    }
+
+    /**
+     *
+     *
+     * @return string
+     */
+    protected function _beforeToHtml()
+    {
+        return '';
+    }
+
+    /**
+     *
+     *
+     * @return string
+     */
+    protected function _toHtml()
+    {
+        return '';
+    }
+
+    /**
+     *
+     *
+     * @param  string $html
+     * @return string
+     */
+    protected function _afterToHtml($html = '')
+    {
+        return $html;
+    }
+
+
+
+
+
+    /**
+     * Overloading: proxy to variables
+     *
+//     * Proxies to the attached plugin broker to retrieve, return, and potentially
+//     * execute helpers.
+     *
+//     * * If the helper does not define __invoke, it will be returned
+//     * * If the helper does define __invoke, it will be called as a functor
      *
      * @param  string $method
      * @param  array $argv
@@ -827,8 +695,8 @@ abstract class AbstractBlock extends ViewModel
         switch (substr($method, 0, 3)) {
             case 'get' :
                 $key = $this->_underscore(substr($method,3));
-                if (isset($this->variables[$key])) {
-                    $data = $this->variables[$key];
+                if (isset($this->__variables[$key])) {
+                    $data = $this->__variables[$key];
 
 //                    ($key == 'value') ? \Zend\Debug::dump($argv, '$$argv'):null;
                     $arg = array_shift($argv);
@@ -854,17 +722,17 @@ abstract class AbstractBlock extends ViewModel
 
             case 'set' :
                 $key = $this->_underscore(substr($method,3));
-                $this->variables[$key] = isset($argv[0]) ? $argv[0] : null;
+                $this->__variables[$key] = isset($argv[0]) ? $argv[0] : null;
                 return $this;
 
             case 'uns' :
                 $key = $this->_underscore(substr($method,3));
-                unset($this->variables[$key]);
+                unset($this->__variables[$key]);
                 return $this;
 
             case 'has' :
                 $key = $this->_underscore(substr($method,3));
-                return isset($this->variables[$key]);
+                return isset($this->__variables[$key]);
 
             default:
                 return null;
@@ -903,4 +771,67 @@ abstract class AbstractBlock extends ViewModel
     {
         return uc_words($name, '');
     }
+
+
+
+//    /**
+//     * Request object
+//     *
+//     * @var Zend_Controller_Request_Http
+//     */
+//    protected $_request;
+//
+//    /**
+//     * Messages block instance
+//     *
+//     * @var Mage_Core_Block_Messages
+//     */
+//    protected $_messagesBlock               = null;
+//
+//
+//
+//    /**
+//     * Array of block sort priority instructions
+//     *
+//     * @var array
+//     */
+//    protected $_sortInstructions = array();
+
+
+
+    /**
+     * Translate block sentence
+     *
+     * @return string
+     */
+    public function __()
+    {
+        $args = func_get_args();
+
+        $expr = array_shift($args);
+//        \Zend\Debug::dump($expr);
+//        \Zend\Debug::dump($args);
+//        $expr = new Mage_Core_Model_Translate_Expr(array_shift($args), $this->getModuleName());
+//        array_unshift($args, $expr);
+//        return Mage::app()->getTranslator()->translate($args);
+        return vsprintf($expr, $args);
+    }
+
+
+
+//    /**
+//     * Get a value from child block by specified key
+//     *
+//     * @param string $alias
+//     * @param string $key
+//     * @return mixed
+//     */
+//    public function getChildData($alias, $key = '')
+//    {
+//        $child = $this->getChild($alias);
+//        if ($child) {
+//            return $child->getData($key);
+//        }
+//    }
+
 }

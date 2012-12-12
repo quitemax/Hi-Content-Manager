@@ -2,9 +2,9 @@
 
 namespace HiCheckup\Controller;
 
-use Zend\Mvc\Controller\ActionController;
+use Zend\Mvc\Controller\AbstractActionController;
 
-class HiCheckupController extends ActionController
+class HiCheckupController extends AbstractActionController
 {
     public function indexAction()
     {

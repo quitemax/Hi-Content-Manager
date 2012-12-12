@@ -22,7 +22,6 @@ class Container extends WidgetContainer
 {
     protected $_addButtonLabel  = 'Add New';
     protected $_backButtonLabel = 'Back';
-//    protected $_blockGroup = 'adminhtml';
 
     public function init()
     {
@@ -77,11 +76,6 @@ class Container extends WidgetContainer
             'class'     => 'back',
         ));
     }
-
-//    public function getHeaderCssClass()
-//    {
-//        return 'icon-head ' . parent::getHeaderCssClass();
-//    }
 
     public function getHeaderWidth()
     {

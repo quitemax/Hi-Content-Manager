@@ -1,17 +1,17 @@
 <?php
 return array(
-    'hi-checkup' => array(
-        'ver'          => '0.0.1.0',
-        /**
-         * @todo ver @ 0.0.1.5
-         * -> update to beta4
-         *
-         * @todo ver @ 0.0.2.0
-         * -> 1. weekly, daily, monthly, yearly stats counting
-         * -> 2. how far back do we count stats
-         * -> 3. add event listeners to stats chart points to forward to checkup edit/stats url?
-         */
-    ),
+//    'hi-checkup' => array(
+//        'ver'          => '0.0.1.0',
+//        /**
+//         * @todo ver @ 0.0.1.5
+//         * -> update to beta4
+//         *
+//         * @todo ver @ 0.0.2.0
+//         * -> 1. weekly, daily, monthly, yearly stats counting
+//         * -> 2. how far back do we count stats
+//         * -> 3. add event listeners to stats chart points to forward to checkup edit/stats url?
+//         */
+//    ),
     'service_manager' => array(
         'factories' => array(
             'CheckupModel'           => 'HiCheckup\Model\Checkup\Factory',
@@ -19,22 +19,16 @@ return array(
             'CheckupToProfileModel'  => 'HiCheckup\Model\CheckupToProfile\Factory',
         ),
     ),
-//    'controller' => array(
-//        'classes' => array(
-//            'hicheckup/checkup' => 'HiCheckup\Controller\CheckupController'
-////            'hicheckup/checkup-profile' => 'HiCheckup\Controller\CheckupProfileController'
-//        ),
-//    ),
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
     ),
-    'controller' => array(
-        'classes' => array(
-            'hicheckup/hicheckup' => 'HiCheckup\Controller\HiCheckupController',
-            'hicheckup/checkup' => 'HiCheckup\Controller\CheckupController',
-            'hicheckup/checkup-profile' => 'HiCheckup\Controller\CheckupProfileController',
+    'controllers' => array(
+        'invokables' => array(
+            'HiCheckup\Controller\HiCheckup' => 'HiCheckup\Controller\HiCheckupController',
+            'HiCheckup\Controller\Checkup' => 'HiCheckup\Controller\CheckupController',
+            'HiCheckup\Controller\CheckupProfile' => 'HiCheckup\Controller\CheckupProfileController',
         ),
     ),
     'router' => array(
@@ -45,7 +39,7 @@ return array(
                 'options' => array(
                     'route' => '/hi-checkup',
                     'defaults' => array(
-                        'controller' => 'hicheckup/hicheckup',
+                        'controller' => 'HiCheckup\Controller\HiCheckupController',
                         'action'     => 'index',
                     ),
                 ),
@@ -56,7 +50,7 @@ return array(
                         'options' => array(
                             'route' => '/checkup',
                             'defaults' => array(
-                                'controller' => 'hicheckup/checkup',
+                                'controller' => 'HiCheckup\Controller\Checkup',
                                 'action'     => 'index',
                             ),
                         ),
@@ -67,7 +61,7 @@ return array(
                                 'options' => array(
                                     'route' => '/stats',
                                     'defaults' => array(
-                                        'controller' => 'hicheckup/checkup',
+                                        'controller' => 'HiCheckup\Controller\Checkup',
                                         'action'     => 'stats',
                                     ),
                                 ),
@@ -83,7 +77,7 @@ return array(
                                 'options' => array(
                                     'route' => '/list',
                                     'defaults' => array(
-                                        'controller' => 'hicheckup/checkup',
+                                        'controller' => 'HiCheckup\Controller\Checkup',
                                         'action'     => 'list',
                                     ),
                                 ),
@@ -99,7 +93,7 @@ return array(
                                 'options' => array(
                                     'route' => '/add',
                                     'defaults' => array(
-                                        'controller' => 'hicheckup/checkup',
+                                        'controller' => 'HiCheckup\Controller\Checkup',
                                         'action'     => 'add',
                                     ),
                                 ),
@@ -109,7 +103,7 @@ return array(
                                 'options' => array(
                                     'route' => '/edit',
                                     'defaults' => array(
-                                        'controller' => 'hicheckup/checkup',
+                                        'controller' => 'HiCheckup\Controller\Checkup',
                                         'action'     => 'edit',
                                     ),
                                 ),
@@ -125,7 +119,7 @@ return array(
                                 'options' => array(
                                     'route' => '/delete',
                                     'defaults' => array(
-                                        'controller' => 'hicheckup/checkup',
+                                        'controller' => 'HiCheckup\Controller\Checkup',
                                         'action'     => 'delete',
                                     ),
                                 ),
@@ -143,7 +137,7 @@ return array(
                         'options' => array(
                             'route' => '/checkup-profile',
                             'defaults' => array(
-                                'controller' => 'hicheckup/checkup-profile',
+                                'controller' => 'HiCheckup\Controller\CheckupProfile',
                                 'action'     => 'index',
                             ),
                         ),
@@ -154,7 +148,7 @@ return array(
                                 'options' => array(
                                     'route' => '/list',
                                     'defaults' => array(
-                                        'controller' => 'hicheckup/checkup-profile',
+                                        'controller' => 'HiCheckup\Controller\CheckupProfile',
                                         'action'     => 'list',
                                     ),
                                 ),
@@ -164,7 +158,7 @@ return array(
                                 'options' => array(
                                     'route' => '/add',
                                     'defaults' => array(
-                                        'controller' => 'hicheckup/checkup-profile',
+                                        'controller' => 'HiCheckup\Controller\CheckupProfile',
                                         'action'     => 'add',
                                     ),
                                 ),
@@ -174,7 +168,7 @@ return array(
                                 'options' => array(
                                     'route' => '/edit',
                                     'defaults' => array(
-                                        'controller' => 'hicheckup/checkup-profile',
+                                        'controller' => 'HiCheckup\Controller\CheckupProfile',
                                         'action'     => 'edit',
                                     ),
                                 ),
@@ -190,7 +184,7 @@ return array(
                                 'options' => array(
                                     'route' => '/delete',
                                     'defaults' => array(
-                                        'controller' => 'hicheckup/checkup-profile',
+                                        'controller' => 'HiCheckup\Controller\CheckupProfile',
                                         'action'     => 'delete',
                                     ),
                                 ),

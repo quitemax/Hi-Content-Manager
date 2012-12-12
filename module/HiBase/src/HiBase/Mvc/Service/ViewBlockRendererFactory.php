@@ -34,19 +34,17 @@ use HiBase\View\Renderer\BlockRenderer;
 // */
 class ViewBlockRendererFactory implements FactoryInterface
 {
-//    /**
-//     * Create and return the JSON view renderer
-//     *
-//     * @param  ServiceLocatorInterface $serviceLocator
-//     * @return JsonStrategy
-//     */
+    /**
+     * Create and return the block view renderer
+     *
+     * @param  ServiceLocatorInterface $serviceLocator
+     * @return BlockRenderer
+     */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         //
         $viewResolver = $serviceLocator->get('ViewResolver');
-        $broker = $serviceLocator->get('ViewHelperBroker');
-//        \Zend\Debug::dump($broker);
-//        $config = $serviceLocator->get('Configuration');
+        $manager = $serviceLocator->get('ViewHelperManager');
 
         //
         $blockRenderer = new BlockRenderer();
@@ -55,7 +53,7 @@ class ViewBlockRendererFactory implements FactoryInterface
         $blockRenderer->setResolver($viewResolver);
 
         //
-        $blockRenderer->setBroker($broker);
+        $blockRenderer->setHelperPluginManager($manager);
 
         //
         $blockRenderer->setServiceManager($serviceLocator);

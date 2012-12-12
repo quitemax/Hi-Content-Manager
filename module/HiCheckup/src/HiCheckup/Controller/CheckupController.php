@@ -2,7 +2,7 @@
 
 namespace HiCheckup\Controller;
 
-use Zend\Mvc\Controller\ActionController;
+use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use HiCheckup\Model\Checkup;
 use HiCheckup\Block\Checkup\Grid\Container as GridContainer;
@@ -10,7 +10,7 @@ use HiCheckup\Block\Checkup\Grid as CheckupGrid;
 use HiCheckup\Block\Checkup\Edit\Container as EditContainer;
 use HiCheckup\Block\Checkup\Edit as CheckupEdit;
 
-class CheckupController extends ActionController
+class CheckupController extends AbstractActionController
 {
     /**
      *  INDEX
@@ -24,60 +24,6 @@ class CheckupController extends ActionController
     }
 
     /**
-     *  STATS
-     *
-     * Enter description here ...
-     */
-    public function statsAction()
-    {
-        //
-        $request = $this->getRequest();
-
-        $routeMatch = $this->getEvent()->getRouteMatch();
-        $id     = $routeMatch->getParam('profile_id', 0);
-
-        $currentProfile = $this->_profile->getRow(array('profile_id' => $id));
-//        \Zend\Debug::dump($currentProfile->getId(), '$currentProfile->getId()');
-//        \Zend\Debug::dump($currentProfile, '$currentProfile');
-//        \Zend\Debug::dump($id);
-
-        if (!$currentProfile->getId()) {
-            $currentProfile = $this->_profile->getRow(array('default' => 1));
-        }
-
-
-//        \Zend\Debug::dump($currentProfile->getId());
-//        \Zend\Debug::dump($currentProfile);
-        $profileRows = $this->_checkupToProfile->getResultSet(
-            array('profile_id' => $currentProfile->getId()),
-            null,
-            null,
-            null,
-            array('checkup_id')
-        );
-
-        $where = array();
-
-        foreach ($profileRows as $row) {
-            $where[] = $row['checkup_id'];
-        }
-
-        $checkups = array();
-        if (count($where)) {
-            $checkups = $this->_checkup->getResultSet('checkup_id in (' . implode(',', $where) . ')', array('date asc'));
-        }
-
-//        \Zend\Debug::dump($where);
-
-        return array(
-            'checkups' => $checkups,
-            'profiles' => $this->_profile->getResultSet(),
-            'currentProfile' => $currentProfile,
-        );
-    }
-
-
-	/**
      *  LIST
      *
      * Enter description here ...
@@ -104,66 +50,73 @@ class CheckupController extends ActionController
          */
         if ($this->getRequest()->isPost()) {
 
-            $formData = $this->getRequest()->post()->toArray();
-            \Zend\Debug::dump($formData);
+            $formData = $this->getRequest()->getPost()->toArray();
+            \Zend\Debug\Debug::dump($formData);
+
+//            $form = $grid->getForm();
 //
 //            if ($form->isValid($formData)) {
 
-//                if (    isset($formData['header']['formId'])
-//                        && $formData['header']['formId'] == 'CheckupGridForm') {
-//
-////                    if (isset($formData['WorkoutExerciseRowset']['actions']['saveSelected'])) {
-////                        $allBox = $formData['WorkoutExerciseRowset']['header']['all'];
-////                        $rows = $formData['WorkoutExerciseRowset']['rows'];
+
+
+
+////                if (    isset($formData['header']['formId'])
+////                        && $formData['header']['formId'] == 'CheckupGridForm') {
+////
+//////                    if (isset($formData['WorkoutExerciseRowset']['actions']['saveSelected'])) {
+//////                        $allBox = $formData['WorkoutExerciseRowset']['header']['all'];
+//////                        $rows = $formData['WorkoutExerciseRowset']['rows'];
+//////
+//////                        foreach ($rows as $key => $row) {
+//////                            if ($row['id'] || $allBox) {
+////////                                \HiZend\Debug\Debug::dump($row['row']);
+////////                                \HiZend\Debug\Debug::dump($key);
+//////
+//////                                $exercise = $this->_exercise->getWorkoutExercise($key);
+//////                                $exercise->setFromArray($row['row']);
+//////                                $exercise->save();
+//////
+//////                            }
+//////                        }
+//////
+//////                        return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id));
+//////                    }
+////
+////                    if (isset($formData['CheckupResultSetSubForm']['actions']['massDelete'])) {
+////
+////                        $allBox = $formData['CheckupResultSetSubForm']['header']['all'];
+////                        $rows = $formData['CheckupResultSetSubForm']['rows'];
 ////
 ////                        foreach ($rows as $key => $row) {
 ////                            if ($row['id'] || $allBox) {
-//////                                \HiZend\Debug\Debug::dump($row['row']);
-//////                                \HiZend\Debug\Debug::dump($key);
 ////
-////                                $exercise = $this->_exercise->getWorkoutExercise($key);
-////                                $exercise->setFromArray($row['row']);
-////                                $exercise->save();
+////
+////                                $checkup = $this->_checkup->getRow(array('checkup_id' => $key));
+////                                if ($checkup) {
+////                                    $checkup->delete();
+////                                }
+////
+////                                $checkupToProfiles = $this->_checkupToProfile->getResultSet(
+////                                    array('checkup_id' => $key),
+////                                    null,
+////                                    null,
+////                                    null,
+////                                    array('ctp_id')
+////                                );
+////
+////                                foreach($checkupToProfiles as $checkupToProfile) {
+////                                    $checkupToProfile->delete();
+////                                }
 ////
 ////                            }
 ////                        }
 ////
-////                        return $this->redirect()->toRoute('exercises-workout-exercise-home/wildcard', array('workout_id' => $id));
+////                        return $this->redirect()->toRoute('hi-checkup/checkup/list');
+////
 ////                    }
-//
-//                    if (isset($formData['CheckupResultSetSubForm']['actions']['massDelete'])) {
-//
-//                        $allBox = $formData['CheckupResultSetSubForm']['header']['all'];
-//                        $rows = $formData['CheckupResultSetSubForm']['rows'];
-//
-//                        foreach ($rows as $key => $row) {
-//                            if ($row['id'] || $allBox) {
-//
-//
-//                                $checkup = $this->_checkup->getRow(array('checkup_id' => $key));
-//                                if ($checkup) {
-//                                    $checkup->delete();
-//                                }
-//
-//                                $checkupToProfiles = $this->_checkupToProfile->getResultSet(
-//                                    array('checkup_id' => $key),
-//                                    null,
-//                                    null,
-//                                    null,
-//                                    array('ctp_id')
-//                                );
-//
-//                                foreach($checkupToProfiles as $checkupToProfile) {
-//                                    $checkupToProfile->delete();
-//                                }
-//
-//                            }
-//                        }
-//
-//                        return $this->redirect()->toRoute('hi-checkup/checkup/list');
-//
-//                    }
-//                }
+////                }
+
+
 //            }
         }
 
@@ -589,6 +542,57 @@ class CheckupController extends ActionController
 
     }
 
+    /**
+     *  STATS
+     *
+     * Enter description here ...
+     */
+    public function statsAction()
+    {
+        //
+        $request = $this->getRequest();
 
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $id     = $routeMatch->getParam('profile_id', 0);
+
+        $currentProfile = $this->_profile->getRow(array('profile_id' => $id));
+//        \Zend\Debug::dump($currentProfile->getId(), '$currentProfile->getId()');
+//        \Zend\Debug::dump($currentProfile, '$currentProfile');
+//        \Zend\Debug::dump($id);
+
+        if (!$currentProfile->getId()) {
+            $currentProfile = $this->_profile->getRow(array('default' => 1));
+        }
+
+
+//        \Zend\Debug::dump($currentProfile->getId());
+//        \Zend\Debug::dump($currentProfile);
+        $profileRows = $this->_checkupToProfile->getResultSet(
+            array('profile_id' => $currentProfile->getId()),
+            null,
+            null,
+            null,
+            array('checkup_id')
+        );
+
+        $where = array();
+
+        foreach ($profileRows as $row) {
+            $where[] = $row['checkup_id'];
+        }
+
+        $checkups = array();
+        if (count($where)) {
+            $checkups = $this->_checkup->getResultSet('checkup_id in (' . implode(',', $where) . ')', array('date asc'));
+        }
+
+//        \Zend\Debug::dump($where);
+
+        return array(
+            'checkups' => $checkups,
+            'profiles' => $this->_profile->getResultSet(),
+            'currentProfile' => $currentProfile,
+        );
+    }
 
 }

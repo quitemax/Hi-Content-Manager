@@ -45,6 +45,8 @@ class Number extends AbstractRenderer
 
     public function _getInputValueElement(/*Varien_Object*/ $row)
     {
+
+//        \Zend\Debug\Debug::dump($row);
         return  '<input type="text" class="input-text-number '
                 . $this->getColumn()->getValidateClass()
                 . '" name="' . $this->getColumn()->getGrid()->getId() . '[rows][' . $row->getId() . '][' . $this->getColumn()->getId() . ']'

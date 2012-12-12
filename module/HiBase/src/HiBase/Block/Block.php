@@ -30,8 +30,9 @@ use Zend\View\Exception;
 use ArrayAccess;
 use Zend\Filter\FilterChain;
 use Zend\View\Resolver\TemplatePathStack;
-use Zend\Loader\Pluggable;
-use Zend\View\HelperBroker;
+//use Zend\Loader\Pluggable;
+use Zend\View\HelperPluginManager;
+//use Zend\View\HelperBroker;
 
 ///**
 // * @category   Zend
@@ -40,7 +41,7 @@ use Zend\View\HelperBroker;
 // * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
 // * @license    http://framework.zend.com/license/new-bsd     New BSD License
 // */
-class Block extends AbstractBlock implements RendererInterface, Pluggable
+class Block extends AbstractBlock implements RendererInterface
 {
     /**
      * Template resolver
@@ -55,19 +56,6 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
     private $__content = '';
 
     /**
-     * Template being rendered
-     *
-     * @var null|string
-     */
-    private $__template = null;
-
-    /**
-     * Queue of templates to render
-     * @var array
-     */
-    private $__templates = array();
-
-    /**
      * Script file name to execute
      *
      * @var string
@@ -78,22 +66,22 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
      * @var Zend\Filter\FilterChain
      */
     private $__filterChain;
-    /**
-     * @var
-     */
-    private $__helperBroker;
 
-//    /**
-//     * @var ArrayAccess|array ArrayAccess or associative array representing available variables
-//     */
-//    private $__vars;
+    /**
+     * @var HelperPluginManager
+     */
+    private $__helpers;
+
 
 //    /**
 //     * @var array Temporary variable stack; used when variables passed to render()
 //     */
 //    private $__varsCache = array();
 
-
+    /**
+     *
+     * @return string
+     */
     protected function _toHtml()
     {
         $children = $this->getChildren();
@@ -101,28 +89,31 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
         foreach ($children as $child) {
             $child->setResolver($this->__templateResolver);
             $child->setServiceManager($this->getServiceManager());
-            $child->setBroker($this->getBroker());
+            $child->setHelperPluginManager($this->getHelperPluginManager());
         }
 
         return $this->render();
     }
 
-	/**
+    /**
      *
-     * Enter description here ...
-     * @param unknown_type $template
-     * @param unknown_type $values
+     *
+     * @param string $template
+     * @param array $values
+     *
+     * @return string
      */
     public function render($template = null, $values = null)
     {
-        if ($template !== null ) {
-            if (is_string($template)) {
-                // find the script file name using the parent private method
-                $this->setTemplate($template);
-            }
+//        if ($template !== null ) {
+//            if (is_string($template)) {
+//                // find the script file name using the parent private method
+//                $this->setTemplate($template);
+//            }
 
-            unset($template); // remove $name from local scope
-        }
+//            unset($template); // remove $name from local scope
+//            unset($template); // remove $name from local scope
+//        }
 //        $this->asdfasdfasdfasdf = 'asfdasdf';
 
 //        $values = $this->getVariables();
@@ -155,16 +146,16 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
 //        extract((array)$this->getVariables());
 //        unset($__vars); // remove $__vars from local scope
 
-//        \Zend\Debug::dump($this->__templates);
+//        \Zend\Debug\Debug::dump($this->template);
 
 //        while ($this->__template = array_pop($this->__templates)) {
-            $this->__file = $this->resolver($this->template);
-//            \Zend\Debug::dump($this->__file);
+            $this->__file = $this->resolver($this->__template);
+//            \Zend\Debug\Debug::dump($this->__file);
             if (!$this->__file) {
                 throw new Exception\RuntimeException(sprintf(
                     '%s: Unable to render template "%s"; resolver could not resolve to a file',
                     __METHOD__,
-                    $this->__template
+                    $this->template
                 ));
             }
             ob_start();
@@ -176,7 +167,7 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
         return $this->getFilterChain()->filter($this->__content); // filter output
     }
 
-/**
+    /**
      * Return the template engine object, if any
      *
      * If using a third-party template engine, such as Smarty, patTemplate,
@@ -199,7 +190,6 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
      */
     public function setResolver(ResolverInterface $resolver)
     {
-//        \HiBase\Debug::precho($resolver, '$resolver');
         $this->__templateResolver = $resolver;
         return $this;
     }
@@ -216,53 +206,54 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
             $this->setResolver(new TemplatePathStack());
         }
 
-        if (null !== $name) {
+//        if (null !== $name) {
             return $this->__templateResolver->resolve($name, $this);
-        }
+//        }
 
-        return $this->__templateResolver;
-    }
-
-/**
-     * Set plugin broker instance
-     *
-     * @param  string|HelperBroker $broker
-     * @return void
-     * @throws Exception\InvalidArgumentException
-     */
-    public function setBroker($broker)
-    {
-        if (is_string($broker)) {
-            if (!class_exists($broker)) {
-                throw new Exception\InvalidArgumentException(sprintf(
-                    'Invalid helper broker class provided (%s)',
-                    $broker
-                ));
-            }
-            $broker = new $broker();
-        }
-        if (!$broker instanceof HelperBroker) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Helper broker must extend Zend\View\HelperBroker; got type "%s" instead',
-                (is_object($broker) ? get_class($broker) : gettype($broker))
-            ));
-        }
-        $broker->setView($this);
-        $this->__helperBroker = $broker;
+//        return $this->__templateResolver;
     }
 
     /**
-     * Get plugin broker instance
+     * Set helper plugin manager instance
      *
-     * @return HelperBroker
+     * @param  string|HelperPluginManager $helpers
+     * @return PhpRenderer
+     * @throws Exception\InvalidArgumentException
      */
-    public function getBroker()
+    public function setHelperPluginManager($helpers)
     {
-//        \HiBase\Debug::precho('dada');;
-        if (null === $this->__helperBroker) {
-            $this->setBroker(new HelperBroker());
+        if (is_string($helpers)) {
+            if (!class_exists($helpers)) {
+                throw new Exception\InvalidArgumentException(sprintf(
+                    'Invalid helper helpers class provided (%s)',
+                    $helpers
+                ));
+            }
+            $helpers = new $helpers();
         }
-        return $this->__helperBroker;
+        if (!$helpers instanceof HelperPluginManager) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Helper helpers must extend Zend\View\HelperPluginManager; got type "%s" instead',
+                (is_object($helpers) ? get_class($helpers) : gettype($helpers))
+            ));
+        }
+        $helpers->setRenderer($this);
+        $this->__helpers = $helpers;
+
+        return $this;
+    }
+
+    /**
+     * Get helper plugin manager instance
+     *
+     * @return HelperPluginManager
+     */
+    public function getHelperPluginManager()
+    {
+        if (null === $this->__helpers) {
+            $this->setHelperPluginManager(new HelperPluginManager());
+        }
+        return $this->__helpers;
     }
 
     /**
@@ -274,181 +265,76 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
      */
     public function plugin($name, array $options = null)
     {
-        return $this->getBroker()->load($name, $options);
+        return $this->getHelperPluginManager()->get($name, $options);
     }
 
-/**
+    /**
      * Set child block
      *
      * @param   string $alias
      * @param   Mage_Core_Block_Abstract $block
      * @return  Mage_Core_Block_Abstract
      */
-    public function setChild(Block $block, $alias = null)
+    public function setChild(AbstractBlock $block, $captureTo = null, $append = false)
     {
-        $block->setBroker($this->getBroker());
-//        $block->setResolver($this->getResolver());
+        //
+        $block->setHelperPluginManager($this->getHelperPluginManager());
 
-        parent::setChild($block, $alias);
-
-        return $this;
+        //
+        return parent::setChild($block, $captureTo, $append);
     }
 
     /**
-     * Add a template to the stack
+     * Retrieve child block HTML
      *
-     * @param  string $template
-     * @return PhpRenderer
+     * @param   string $name
+     * @param   boolean $useCache
+     * @param   boolean $sorted
+     * @return  string
      */
-    public function addTemplate($template)
+    public function getChildHtml($name = '', $useCache = true, $sorted = false)
     {
-        $this->__templates[] = $template;
-        return $this;
-    }
-
-///**
-//     * Set variable storage
-//     *
-//     * Expects either an array, or an object implementing ArrayAccess.
-//     *
-//     * @param  array|ArrayAccess $variables
-//     * @return PhpRenderer
-//     * @throws Exception\InvalidArgumentException
-//     */
-//    public function setVars($variables)
-//    {
-
-//
-//        if (!is_array($variables) && !$variables instanceof ArrayAccess) {
-//            throw new Exception\InvalidArgumentException(sprintf(
-//                'Expected array or ArrayAccess object; received "%s"',
-//                (is_object($variables) ? get_class($variables) : gettype($variables))
-//            ));
-//        }
-//
-//        // Enforce a Variables container
-//        if (!$variables instanceof Variables) {
-//            $variablesAsArray = array();
-//            foreach ($variables as $key => $value) {
-//                $variablesAsArray[$key] = $value;
+        if ($name === '') {
+//            if ($sorted) {
+//                $children = array();
+//                foreach ($this->getSortedChildren() as $childName) {
+//                    $children[$childName] = $this->getLayout()->getBlock($childName);
+//                }
+//            } else {
+//                $children = $this->getChild();
 //            }
-//            $variables = new Variables($variablesAsArray);
-//        }
-//
-//        $this->__vars = $variables;
-//        return $this;
-//    }
-
-//    /**
-//     * Get a single variable, or all variables
-//     *
-//     * @param  mixed $key
-//     * @return mixed
-//     */
-//    public function vars($key = null)
-//    {
-//        if (null === $this->__vars) {
-//            $this->setVars(new Variables());
-//        }
-//
-//        if (null === $key) {
-//            return $this->__vars;
-//        }
-//        return $this->__vars[$key];
-//    }
-//
-//    /**
-//     * Get a single variable
-//     *
-//     * @param  mixed $key
-//     * @return mixed
-//     */
-//    public function get($key)
-//    {
-////        \Zend\Debug::dump('dada');
-//        if (null === $this->__vars) {
-//            $this->setVars(new Variables());
-//        }
-//
-//        return $this->__vars[$key];
-//    }
-//
-//    /**
-//     * Overloading: proxy to Variables container
-//     *
-//     * @param  string $name
-//     * @return mixed
-//     */
-//    public function __get($name)
-//    {
-////        \Zend\Debug::dump('dada');
-//        $vars = $this->vars();
-//        return $vars[$name];
-//    }
-//
-//    /**
-//     * Overloading: proxy to Variables container
-//     *
-//     * @param  string $name
-//     * @param  mixed $value
-//     * @return void
-//     */
-//    public function __set($name, $value)
-//    {
-////        \Zend\Debug::dump('dada');
-//        $vars = $this->vars();
-//        $vars[$name] = $value;
-//    }
-//
-//    /**
-//     * Overloading: proxy to Variables container
-//     *
-//     * @param  string $name
-//     * @return bool
-//     */
-//    public function __isset($name)
-//    {
-//        $vars = $this->vars();
-//        return isset($vars[$name]);
-//    }
-//
-//    /**
-//     * Overloading: proxy to Variables container
-//     *
-//     * @param  string $name
-//     * @return void
-//     */
-//    public function __unset($name)
-//    {
-//        $vars = $this->vars();
-//        if (!isset($vars[$name])) {
-//            return;
-//        }
-//        unset($vars[$name]);
-//    }
-
-
-//    /**
-//     * Property overloading: get variable value
-//     *
-//     * @param  string $name
-//     * @return mixed
-//     */
-    public function __get($name)
-    {
-//        \Zend\Debug::dump($name);
-        if (!$this->__isset($name)) {
-            if ($child = $this->getChild($name)) {
-                return $child->toHtml();
-            }
-            return null;
+//            $out = '';
+//            foreach ($children as $child) {
+//                $out .= $this->_getChildHtml($child->getBlockAlias(), $useCache);
+//            }
+//            return $out;
+        } else {
+            return $this->_getChildHtml($name, $useCache);
         }
-//
-        $variables = $this->getVariables();
-        return $variables[$name];
     }
 
-/**
+    /**
+     * Retrieve child block HTML
+     *
+     * @param   string $name
+     * @param   boolean $useCache
+     * @return  string
+     */
+    protected function _getChildHtml($name, $useCache = true)
+    {
+        $child = $this->getChild($name);
+
+        if (!$child) {
+            $html = '';
+        } else {
+            $html = $child->toHtml();
+        }
+
+        return $html;
+    }
+
+
+    /**
      * Overloading: proxy to helpers
      *
      * Proxies to the attached plugin broker to retrieve, return, and potentially
@@ -485,7 +371,7 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
                     }
                 }
                 catch (\Exception $e) {
-                    \Zend\Debug::dump($e->getMessage());
+                    \Zend\Debug\Debug::dump($e->getMessage());
                 }
                 return $helper;
         }
@@ -514,15 +400,5 @@ class Block extends AbstractBlock implements RendererInterface, Pluggable
             $this->setFilterChain(new FilterChain());
         }
         return $this->__filterChain;
-    }
-
-/**
-     * Make sure View variables are cloned when the view is cloned.
-     *
-     * @return PhpRenderer
-     */
-    public function __clone()
-    {
-        $this->__vars = clone $this->vars();
     }
 }

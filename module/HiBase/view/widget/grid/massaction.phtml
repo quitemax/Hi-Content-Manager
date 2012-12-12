@@ -16,7 +16,7 @@
                     <span class="separator">|</span>
                     <a href="#" onclick="return <?php echo $this->getGridJsObjectName() ?>.unselectVisible()"><?php echo $this->__('Unselect Visible') ?></a>
                     <span class="separator">|</span>
-                    <strong id="<?php echo $this->getHtmlId() ?>-count">0</strong> <?php echo $this->__('items selected') ?>
+                    <strong id="<?php echo $this->getGrid()->getId() ?>-<?php echo $this->getHtmlId() ?>-count">0</strong> <?php echo $this->__('items selected') ?>
                 </div>
             </div>
 
@@ -30,7 +30,7 @@
             </div>
             <div class="span2 grid-massaction-actions">
 
-                <select id="<?php echo $this->getHtmlId() ?>-select" name="<?php echo $this->getHtmlId() ?>-select" class="pull-left span2"><!-- required-entry select absolute-advice local-validation-->
+                <select id="<?php echo $this->getHtmlId() ?>-select" name="<?php echo $this->getGrid()->getId(); ?>[<?php echo $this->getHtmlId() ?>]" class="pull-left span2"><!-- required-entry select absolute-advice local-validation-->
                     <option value=""></option>
                     <?php if ($this->getItems()) foreach($this->getItems() as $_item): ?>
                         <option value="<?php echo $_item->getId() ?>"<?php echo ($_item->getSelected() ? ' selected="selected"' : '')?>><?php echo $_item->getLabel() ?></option>

@@ -80,10 +80,7 @@ class BlockStrategy implements ListenerAggregateInterface
     {
         $model = $e->getModel();
 
-//        \Zend\Debug::dump('dada');
-
         if ($model instanceof Block) {
-
             // Block found
             return $this->renderer;
         }
@@ -91,6 +88,8 @@ class BlockStrategy implements ListenerAggregateInterface
         // Not matched!
         return;
     }
+
+
 
 //    /**
 //     * Inject the response with the JSON payload and appropriate Content-Type header

@@ -30,7 +30,7 @@ class DbTable extends TableGateway
     {
         $this->setName('checkup');
 
-        $this->setPrefix('c');
+        $this->setAlias('c');
 
         $this->setPrimaryKey('checkup_id');
 

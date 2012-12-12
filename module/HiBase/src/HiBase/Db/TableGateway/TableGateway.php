@@ -52,7 +52,7 @@ class TableGateway extends ZendTableGateway
      *
      * @var string
      */
-    protected $_prefix = null;
+    protected $_alias = null;
 
     /**
      *
@@ -200,8 +200,8 @@ class TableGateway extends ZendTableGateway
      *
      * @return string
      */
-    public function getPrefix() {
-        return $this->_prefix;
+    public function getAlias() {
+        return $this->_alias;
     }
 
     /**
@@ -209,8 +209,8 @@ class TableGateway extends ZendTableGateway
      *
      * @return string
      */
-    public function setPrefix($prefix) {
-        $this->_prefix = $prefix;
+    public function setAlias($alias) {
+        $this->_alias = $alias;
     }
 
     /**
@@ -354,7 +354,7 @@ class TableGateway extends ZendTableGateway
             $sqlSelect->order($order);
         }
 //        \Zend\Debug::dump($sqlSelect->getSqlString());
-        \Zend\Debug::dump($sqlSelect->getSqlString($this->adapter->getPlatform()));
+        \Zend\Debug\Debug::dump($sqlSelect->getSqlString($this->adapter->getPlatform()));
 //        echo $sqlSelect->getSqlString($this->adapter->getPlatform());
 
         return $sqlSelect;
@@ -406,14 +406,15 @@ class TableGateway extends ZendTableGateway
 //        $statement = $this->adapter->createStatement();
 //        $sqlSelect->prepareStatement($this->adapter, $statement);
 //
-////        \Zend\Debug::dump($sqlSelect, '$sqlSelect');
-////        \Zend\Debug::dump($statement, '$statement');
+//        \Zend\Debug\Debug::dump($sqlSelect->getSqlString($this->adapter->getPlatform()), '$sqlSelect');
+//        \Zend\Debug\Debug::dump($result, '$$result');
+//        \Zend\Debug\Debug::dump($this->resultSetPrototype, '$resultSetPrototype');
 //        $result = $statement->execute();
 
         //
         // build result set
         $resultSet = clone $this->resultSetPrototype;
-        $resultSet->setDataSource($result);
+        $resultSet->initialize($result);
 
         // apply postSelect features
         $this->featureSet->apply('postSelect', array($statement, $result, $resultSet));

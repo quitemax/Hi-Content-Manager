@@ -48,10 +48,6 @@ class RowGateway extends ZendRowGateway implements HiBaseObjectInterface
         $this->_tableGateway = $tableGateway;
     }
 
-    public function getData()
-    {
-
-    }
 
     /**
      * Delete
@@ -65,7 +61,7 @@ class RowGateway extends ZendRowGateway implements HiBaseObjectInterface
             // @todo compound primary keys
         }
 
-        $where = array($this->primaryKeyColumn => $this->originalData[$this->primaryKeyColumn]);
+        $where = array($this->primaryKeyColumn => $this->data[$this->primaryKeyColumn]);
 
         $delete = $this->sql->delete();
         $delete->where($where);
@@ -78,19 +74,28 @@ class RowGateway extends ZendRowGateway implements HiBaseObjectInterface
 
     public function getId()
     {
-        if (isset($this->originalData[$this->primaryKeyColumn])) {
-            return $this->originalData[$this->primaryKeyColumn];
+        //
+        $primaryKeyColumn = '';
+
+        //
+        if (is_array($this->primaryKeyColumn)) {
+            $primaryKeyColumn = array_shift($this->primaryKeyColumn);
+        }
+
+        //
+        if (isset($this->data[$primaryKeyColumn])) {
+            return $this->data[$primaryKeyColumn];
         } else {
             return false;
         }
     }
 
-    public function getOriginalData($index = null)
+    public function getData($index = null)
     {
         if ($index === null) {
-            return $this->originalData;
-        } else if (isset($this->originalData[$index])) {
-            return $this->originalData[$index];
+            return $this->data;
+        } else if (isset($this->data[$index])) {
+            return $this->data[$index];
         } else {
             return null;
         }

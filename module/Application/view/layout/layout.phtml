@@ -1,7 +1,4 @@
-<?php
-
-echo $this->doctype();
-?>
+<?php echo $this->doctype();?>
 
 <html lang="en">
     <head>
@@ -41,6 +38,7 @@ echo $this->doctype();
                     <a class="brand" href="<?php echo $this->url('home') ?>">Hi Content Manager</a>
 
                     <!-- HiUser -->
+                    <?php /*?>
                     <div class="btn-group pull-right <?php if (strpos($controller, 'HiUser') !== false) :?>active<?php endif;?>">
                         <a class="btn dropdown-toggle" data-toggle="dropdown" data-target="#" href="<?php //echo $this->url('hi-user') ?>">
                             <i class="icon-user"></i> HiUser
@@ -55,10 +53,10 @@ echo $this->doctype();
                             <li><a href="<?php //echo $this->url('hi-checkup/checkup-profile') ?>">Log out</a></li>
                         </ul>
                     </div><!-- /HiUser - collapse -->
+                    <?php */ ?>
 
                     <div class="nav-collapse">
                         <ul class="nav">
-
 
 
 
@@ -69,6 +67,7 @@ echo $this->doctype();
                             <li class="pull-left <?php if (strpos($controller, 'Application') !== false) :?>active<?php endif;?>">
                                 <a href="<?php echo $this->url('home') ?>">Home</a>
                             </li><!-- /Home - collapse -->
+
 
                             <!-- HiCheckup -->
                             <li class="dropdown pull-left <?php if (strpos($controller, 'HiCheckup') !== false) :?>active<?php endif;?>" id="menu1">
@@ -89,6 +88,8 @@ echo $this->doctype();
                                 </ul>
                             </li><!-- /HiCheckup - collapse -->
 
+
+                            <?php /*?>
                             <!-- HiTraining -->
                             <li class="dropdown pull-left <?php if (strpos($controller, 'HiTraining') !== false) :?>active<?php endif;?>" id="menu1">
                                 <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="<?php //echo $this->url('hi-training') ?>">
@@ -112,6 +113,7 @@ echo $this->doctype();
                                     <li><a href="<?php //echo $this->url('hi-training/exercise-type/edit-tree') ?>">Edit tree</a></li>
                                 </ul>
                             </li><!-- /HiTraining - collapse -->
+                            <?php */ ?>
 
                             <li class="divider-vertical pull-right "></li>
 

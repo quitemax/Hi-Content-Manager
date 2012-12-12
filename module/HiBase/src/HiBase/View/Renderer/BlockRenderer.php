@@ -33,12 +33,12 @@ use Zend\View\Model\ModelInterface as Model;
 //    Zend\View\Model\ViewModel;
 use Zend\Filter\FilterChain;
 //    Zend\Loader\Pluggable,
-use Zend\View\HelperBroker;
+use Zend\View\HelperPluginManager;
 use HiBase\Block\Block;
 use Zend\View\Resolver\TemplatePathStack;
 //    Zend\View\Renderer\RendererInterface as Renderer,
 //    Zend\View\Resolver\ResolverInterface as Resolver,
-use Zend\Loader\Pluggable;
+//use Zend\Loader\Pluggable;
 use Zend\View\Renderer\RendererInterface;
 use Zend\View\Renderer\TreeRendererInterface;
 use Zend\View\Resolver\ResolverInterface;
@@ -53,7 +53,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 // * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
 // * @license    http://framework.zend.com/license/new-bsd     New BSD License
 // */
-class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterface
+class BlockRenderer implements RendererInterface, TreeRendererInterface
 {
     /**
      * @var \Zend\ServiceManager\ServiceManager
@@ -63,21 +63,21 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
     /**
      * @var bool Whether or not to render trees of view models
      */
-    private $__renderTrees = true;
+    private $renderTrees = true;
 
     /**
      * Template resolver
      *
      * @var Resolver
      */
-    private $__templateResolver;
+    private $templateResolver;
 
     /**
      * Helper broker
      *
      * @var HelperBroker
      */
-    private $__helperBroker;
+    private $helpers;
 
 ///**
 //     * Set script resolver
@@ -128,33 +128,31 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
      */
     public function setResolver(ResolverInterface $resolver)
     {
-        $this->__templateResolver = $resolver;
+        $this->templateResolver = $resolver;
         return $this;
     }
 
     /**
      *
      *
-     * @param unknown_type $block
+     * @param Block $block
      * @param unknown_type $values
      */
     public function render($block, $values = null)
     {
-//        \Zend\Debug::dump('dada');
         //
         if ($block instanceof Block) {
 
             //
-            $block->setBroker($this->getBroker());
-//            $plugin = $this->plugin('basePath');
-//            \Zend\Debug::dump($plugin(), '$pluginnnn');
-//            \Zend\Debug::dump(get_class($this->getBroker()));
+            $block->setHelperPluginManager($this->getHelperPluginManager());
 
             //
-            $block->setResolver($this->__templateResolver);
+            $block->setResolver($this->templateResolver);
 
+            //
             $block->setServiceManager($this->services);
 
+            //
             $return = $block->toHtml();
 
             //
@@ -166,44 +164,46 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
     }
 
     /**
-     * Set plugin broker instance
+     * Set helper plugin manager instance
      *
-     * @param  string|HelperBroker $broker
-     * @return void
+     * @param  string|HelperPluginManager $helpers
+     * @return PhpRenderer
      * @throws Exception\InvalidArgumentException
      */
-    public function setBroker($broker)
+    public function setHelperPluginManager($helpers)
     {
-        if (is_string($broker)) {
-            if (!class_exists($broker)) {
+        if (is_string($helpers)) {
+            if (!class_exists($helpers)) {
                 throw new Exception\InvalidArgumentException(sprintf(
-                    'Invalid helper broker class provided (%s)',
-                    $broker
+                    'Invalid helper helpers class provided (%s)',
+                    $helpers
                 ));
             }
-            $broker = new $broker();
+            $helpers = new $helpers();
         }
-        if (!$broker instanceof HelperBroker) {
+        if (!$helpers instanceof HelperPluginManager) {
             throw new Exception\InvalidArgumentException(sprintf(
-                'Helper broker must extend Zend\View\HelperBroker; got type "%s" instead',
-                (is_object($broker) ? get_class($broker) : gettype($broker))
+                'Helper helpers must extend Zend\View\HelperPluginManager; got type "%s" instead',
+                (is_object($helpers) ? get_class($helpers) : gettype($helpers))
             ));
         }
-        $broker->setView($this);
-        $this->__helperBroker = $broker;
+        $helpers->setRenderer($this);
+        $this->helpers = $helpers;
+
+        return $this;
     }
 
     /**
-     * Get plugin broker instance
+     * Get helper plugin manager instance
      *
-     * @return HelperBroker
+     * @return HelperPluginManager
      */
-    public function getBroker()
+    public function getHelperPluginManager()
     {
-        if (null === $this->__helperBroker) {
-            $this->setBroker(new HelperBroker());
+        if (null === $this->helpers) {
+            $this->setHelperPluginManager(new HelperPluginManager());
         }
-        return $this->__helperBroker;
+        return $this->helpers;
     }
 
     /**
@@ -215,7 +215,7 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
      */
     public function plugin($name, array $options = null)
     {
-        return $this->getBroker()->load($name, $options);
+        return $this->getHelperPluginManager()->get($name, $options);
     }
 
     /**
@@ -231,7 +231,7 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
      */
     public function setCanRenderTrees($renderTrees)
     {
-        $this->__renderTrees = (bool) $renderTrees;
+        $this->renderTrees = (bool) $renderTrees;
         return $this;
     }
 
@@ -242,7 +242,7 @@ class BlockRenderer implements RendererInterface, Pluggable, TreeRendererInterfa
      */
     public function canRenderTrees()
     {
-        return $this->__renderTrees;
+        return $this->renderTrees;
     }
 
 /**

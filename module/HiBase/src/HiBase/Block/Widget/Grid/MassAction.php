@@ -237,45 +237,45 @@ class MassAction extends Widget
         return $this->getChildHtml('submit_button');
     }
 
-    protected function _beforeToHtml()
-    {
-        $this->_prepareJs();
-        $return = parent::_beforeToHtml();
-        return $return;
-    }
+//    protected function _beforeToHtml()
+//    {
+//        $this->_prepareJs();
+//        $return = parent::_beforeToHtml();
+//        return $return;
+//    }
 
-    protected function _prepareJs()
-    {
-        $basePath = $this->basePath();
-
-        $this->headScript()->appendFile(
-            $basePath . '/js/js.js',
-            'text/javascript'
-        );
-        $this->headScript()->appendFile(
-            $basePath . '/js/grid.js',
-            'text/javascript'
-        );
-
-
+//    protected function _prepareJs()
+//    {
+//        $basePath = $this->basePath();
 //
-//        $pager = $this->getGrid()->getPager();
-        $jsObjectName = $this->getJsObjectName();
-
-
-        $script = <<<HTML
-var {$jsObjectName} = new HiGridMassActionWidget('{$this->getId()}', '{$this->getGridUrl()}');
-HTML;
-
-
-        $this->inlineScript()->appendScript(
-            $script,
-            'text/javascript'
-        );//,
-
-        return $this;
-
-    }
+//        $this->headScript()->appendFile(
+//            $basePath . '/js/js.js',
+//            'text/javascript'
+//        );
+//        $this->headScript()->appendFile(
+//            $basePath . '/js/grid.js',
+//            'text/javascript'
+//        );
+//
+//
+////
+////        $pager = $this->getGrid()->getPager();
+//        $jsObjectName = $this->getJsObjectName();
+//
+//
+//        $script = <<<HTML
+//var {$jsObjectName} = new HiGridMassActionWidget('{$this->getId()}', '{$this->getGridUrl()}');
+//HTML;
+//
+//
+//        $this->inlineScript()->appendScript(
+//            $script,
+//            'text/javascript'
+//        );//,
+//
+//        return $this;
+//
+//    }
 
 //    public function getJavaScript()
 //    {

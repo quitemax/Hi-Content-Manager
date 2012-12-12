@@ -106,7 +106,7 @@ class Grid extends WidgetGrid
 //        \Zend\Debug::dump($this->getParam($this->getVarNameDir()), '$this->getParam($this->getVarNameDir())');
 
 //        $this->getFilterValues();
-        \Zend\Debug::dump($this->getFilterValues());
+        \Zend\Debug\Debug::dump($this->getFilterValues());
 
         $where = null;//filter
 
@@ -156,6 +156,8 @@ class Grid extends WidgetGrid
             $cols,
             $joins
         );
+
+//        \Zend\Debug\Debug::dump($resultSet);
 
         $pager->setSize($model->getCountLastSql());
 

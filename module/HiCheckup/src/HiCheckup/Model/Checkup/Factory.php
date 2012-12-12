@@ -56,6 +56,7 @@ class Factory implements FactoryInterface
             );
 
             $resultSet = new ResultSet(
+                null,
                 $row
             );
 

@@ -3,9 +3,9 @@ return array(
     'modules' => array(
         'Application',
         'HiBase',
-        'HiUser',
+//        'HiUser',
         'HiCheckup',
-        'HiTraining',
+//        'HiTraining',
     ),
     'module_listener_options' => array(
         'config_glob_paths'    => array(

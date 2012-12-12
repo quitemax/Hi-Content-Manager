@@ -30,7 +30,14 @@ class MassAction extends Checkbox
      */
     public function renderHeader()
     {
-        return '&nbsp;';
+        $html = '&nbsp;<input type="hidden" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][rest]" ';
+        $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-rest" ';
+        $html .= 'value="0" />';
+        $html .= '&nbsp;<input type="hidden" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][all]" ';
+        $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-all" ';
+        $html .= 'value="0" />';
+        return $html;
+//        return '&nbsp;';
     }
 
     /**
@@ -46,19 +53,19 @@ class MassAction extends Checkbox
         return $out;
     }
 
-    /**
-     * Returns HTML of the object
-     *
-     * @param Varien_Object $row
-     * @return string
-     */
-    public function render(/*Varien_Object*/ $row)
-    {
-//        if ($this->getColumn()->getGrid()->getMassactionIdFieldOnlyIndexValue()) {
-//            $this->setNoObjectId(true);
-//        }
-        return parent::render($row);
-    }
+//    /**
+//     * Returns HTML of the object
+//     *
+//     * @param Varien_Object $row
+//     * @return string
+//     */
+//    public function render(/*Varien_Object*/ $row)
+//    {
+////        if ($this->getColumn()->getGrid()->getMassactionIdFieldOnlyIndexValue()) {
+////            $this->setNoObjectId(true);
+////        }
+//        return parent::render($row);
+//    }
 
     /**
      * Returns HTML of the checkbox
@@ -69,7 +76,8 @@ class MassAction extends Checkbox
      */
     protected function _getCheckboxHtml($value, $checked)
     {
-        $html = '<input type="checkbox" name="' . $this->getColumn()->getId() . '" ';
+        $html = '<input type="checkbox" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][' . $value . ']" ';
+        $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-' . $value . '" ';
         $html .= 'value="' . $value . '" class="massaction-checkbox"' . $checked . '/>';
         return $html;
     }
