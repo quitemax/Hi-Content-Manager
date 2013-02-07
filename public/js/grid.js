@@ -193,32 +193,26 @@ $.extend(HiGridWidget.prototype, {
     },
     selectAll: function() {
         this.checkCheckboxes();
-        this.checkRest();
+        this.checkAll();
         this.updateCount();
         return false;
     },
     unselectAll: function() {
         this.uncheckCheckboxes();
-        this.uncheckRest();
+        this.uncheckAll();
         this.updateCount();
         return false;
     },
     selectVisible: function() {
-        console.log('selectVisible');
-        //this.setCheckedValues(this.getCheckboxesValuesAsString());
-        //this.checkCheckboxes();
-        //this.updateCount();
-        //this.clearLastChecked();
+        //console.log('selectVisible');
+        this.checkCheckboxes();
+        this.uncheckAll();
+        this.updateCount();
         return false;
     },
     unselectVisible: function() {
-        console.log('unselectVisible');
-        //this.getCheckboxesValues().each(function(key){
-        //    this.checkedString = varienStringArray.remove(key, this.checkedString);
-        //}.bind(this));
-        //this.checkCheckboxes();
-        //this.updateCount();
-        //this.clearLastChecked();
+        this.uncheckCheckboxes();
+        this.updateCount();
         return false;
     },
     checkCheckboxes: function() {
@@ -227,39 +221,37 @@ $.extend(HiGridWidget.prototype, {
     uncheckCheckboxes: function() {
         $('.massaction-checkbox[name^="' + this.containerId + '"]').attr ('checked', false);
     },
-    checkRest: function() {
-        $('#' + this.containerId + '-MassAction-rest').attr ('value', '1');
+    checkAll: function() {
+        $('#' + this.containerId + '-MassAction-all').attr ('value', '1');
     },
-    uncheckRest: function() {
-        $('#' + this.containerId + '-MassAction-rest').attr ('value', '0');
+    uncheckAll: function() {
+        $('#' + this.containerId + '-MassAction-all').attr ('value', '0');
     },
     updateCount: function() {
         
         var rest = this.allElements - this.visibleElements;
         var count = 0;
-        console.log(count);
-        console.log(rest);
+        //console.log(count);
+        //console.log(rest);
         
-        if ($('#' + this.containerId + '-MassAction-rest').attr ('value') == 1) {
+        if ($('#' + this.containerId + '-MassAction-all').attr ('value') == 1) {
             count = count + rest;
-            console.log(count);
+            
         }
         
-        console.log($('#' + this.containerId + '-MassAction-rest').attr ('value'));
-        console.log($('.massaction-checkbox[name^="' + this.containerId + '"]'));
-        console.log($('strong#' + this.containerId + '-MassAction-count'));
-        $('#' + this.containerId + '-MassAction-rest').attr ('value');
+        //console.log($('.massaction-checkbox[name^="' + this.containerId + '"]'));
+        //console.log($('strong#' + this.containerId + '-MassAction-count'));
+        
+        $('.massaction-checkbox[name^="' + this.containerId + '"]').each(function(index, el) {
+            if ($(el).attr('checked') == 'checked') {
+                count++;
+            }
+        });
+        
+        //console.log(count);
         
         this.selectedElements = count;
         $('strong#' + this.containerId + '-MassAction-count').text(this.selectedElements);
-        //var result = [];
-        //this.grid.rows.each(function(row){
-        //    var checkboxes = row.select('.massaction-checkbox');
-        //    checkboxes.each(function(checkbox){
-        //        result.push(checkbox);
-        //    });
-        //});
-        //return result;
     }
     //<strong id="< ?php echo $this->getHtmlId () ? >-count CheckupGrid[massaction][rest]
     /*findCheckbox: function(evt) {

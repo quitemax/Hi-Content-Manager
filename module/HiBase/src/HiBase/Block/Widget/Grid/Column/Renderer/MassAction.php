@@ -30,10 +30,10 @@ class MassAction extends Checkbox
      */
     public function renderHeader()
     {
-        $html = '&nbsp;<input type="hidden" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][rest]" ';
-        $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-rest" ';
-        $html .= 'value="0" />';
-        $html .= '&nbsp;<input type="hidden" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][all]" ';
+//        $html = '&nbsp;<input type="hidden" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][rest]" ';
+//        $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-rest" ';
+//        $html .= 'value="0" />';
+        $html = '&nbsp;<input type="hidden" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][all]" ';
         $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-all" ';
         $html .= 'value="0" />';
         return $html;
@@ -79,6 +79,9 @@ class MassAction extends Checkbox
         $html = '<input type="checkbox" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][' . $value . ']" ';
         $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-' . $value . '" ';
         $html .= 'value="' . $value . '" class="massaction-checkbox"' . $checked . '/>';
+        $html .= '<input type="hidden" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][' . $value . ']" ';
+//        $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-' . $value . '" ';
+        $html .= 'value="0"' . '/>';
         return $html;
     }
 
