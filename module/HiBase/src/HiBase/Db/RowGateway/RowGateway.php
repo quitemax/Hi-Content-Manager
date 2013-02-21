@@ -16,7 +16,6 @@ use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\ResultSet\Row;
 use Zend\Db\ResultSet\RowObjectInterface;
 use Zend\Db\Sql;
-use HiBase\Object\ObjectInterface as HiBaseObjectInterface;
 
 /**
  * Refited Zend_Db_Table class for use with HiCms
@@ -27,7 +26,7 @@ use HiBase\Object\ObjectInterface as HiBaseObjectInterface;
  * @copyright  Copyright (c) 2009 Piotr Maxymilian Socha
  * @license
  */
-class RowGateway extends ZendRowGateway implements HiBaseObjectInterface
+class RowGateway extends ZendRowGateway
 {
 
     protected $_tableGateway = null;

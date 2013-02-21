@@ -42,14 +42,22 @@ $.extend(HiGridWidget.prototype, {
        
         
         $('.massaction-checkbox').click (this, this.onMassActionCheckboxChange);
-        
+        this.updateCount();
     },
     
     onMassActionCheckboxChange: function(event) {
         console.log(event.data.containerId);;
         console.log(event.currentTarget.checked == true);;
-        console.log(event);;
-        event.data.selectedElements += 1;
+        console.log(event.currentTarget.name);;
+        console.log(event.currentTarget.id);;
+        console.log(event);
+        event.data.updateCount();
+        if (event.currentTarget.checked == true) {
+            $('#' + event.currentTarget.id + '-unselected').attr('value', 0);
+        } else {
+            $('#' + event.currentTarget.id + '-unselected').attr('value', 1);
+        }
+        //event.data.selectedElements += 1;
         console.log(event.data.selectedElements);;
         console.log($('select.massaction-checkbox'));;
         /*if (event.which == 13) {  
@@ -222,10 +230,10 @@ $.extend(HiGridWidget.prototype, {
         $('.massaction-checkbox[name^="' + this.containerId + '"]').attr ('checked', false);
     },
     checkAll: function() {
-        $('#' + this.containerId + '-MassAction-all').attr ('value', '1');
+        $('#' + this.containerId + '-MassAction-all').attr ('checked', 'checked');;
     },
     uncheckAll: function() {
-        $('#' + this.containerId + '-MassAction-all').attr ('value', '0');
+        $('#' + this.containerId + '-MassAction-all').attr ('checked', false);
     },
     updateCount: function() {
         
@@ -234,7 +242,7 @@ $.extend(HiGridWidget.prototype, {
         //console.log(count);
         //console.log(rest);
         
-        if ($('#' + this.containerId + '-MassAction-all').attr ('value') == 1) {
+        if ($('#' + this.containerId + '-MassAction-all').attr ('checked') == 'checked') {
             count = count + rest;
             
         }
@@ -245,6 +253,9 @@ $.extend(HiGridWidget.prototype, {
         $('.massaction-checkbox[name^="' + this.containerId + '"]').each(function(index, el) {
             if ($(el).attr('checked') == 'checked') {
                 count++;
+                $( '#' + $(el).attr('id') + '-unselected' ).attr('checked', false);
+            } else {
+                $( '#' + $(el).attr('id') + '-unselected' ).attr('checked', 'checked');
             }
         });
         

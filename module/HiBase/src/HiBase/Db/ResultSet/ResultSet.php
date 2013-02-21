@@ -11,7 +11,6 @@ namespace HiBase\Db\ResultSet;
  */
 
 use Zend\Db\ResultSet\ResultSet as ZendResultSet;
-use HiBase\Object\CollectionInterface as HiBaseCollectionInterface;
 
 /**
  * Refited Zend\Db\Table class for use with Hi
@@ -22,7 +21,7 @@ use HiBase\Object\CollectionInterface as HiBaseCollectionInterface;
  * @copyright  Copyright (c) 2009 Piotr Maxymilian Socha
  * @license
  */
-class ResultSet extends ZendResultSet implements HiBaseCollectionInterface
+class ResultSet extends ZendResultSet
 {
     public function getData()
     {

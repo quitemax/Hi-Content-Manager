@@ -33,9 +33,9 @@ class MassAction extends Checkbox
 //        $html = '&nbsp;<input type="hidden" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][rest]" ';
 //        $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-rest" ';
 //        $html .= 'value="0" />';
-        $html = '&nbsp;<input type="hidden" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][all]" ';
+        $html = '&nbsp;<input type="checkbox" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][all]" ';
         $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-all" ';
-        $html .= 'value="0" />';
+        $html .= 'value="all" style="display: none;"  />';
         return $html;
 //        return '&nbsp;';
     }
@@ -76,12 +76,12 @@ class MassAction extends Checkbox
      */
     protected function _getCheckboxHtml($value, $checked)
     {
-        $html = '<input type="checkbox" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][' . $value . ']" ';
+        $html = '<input type="checkbox" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][selected][' . $value . ']" ';
         $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-' . $value . '" ';
-        $html .= 'value="' . $value . '" class="massaction-checkbox"' . $checked . '/>';
-        $html .= '<input type="hidden" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][' . $value . ']" ';
-//        $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-' . $value . '" ';
-        $html .= 'value="0"' . '/>';
+        $html .= 'value="' . $value . '" class="massaction-checkbox" ' . $checked . ' />';
+        $html .= '<input type="checkbox" name="' . $this->getColumn()->getGrid()->getId() . '['. $this->getColumn()->getId() . '][unselected][' . $value . ']" ';
+        $html .= 'id="' . $this->getColumn()->getGrid()->getId() . '-' . $this->getColumn()->getId() . '-' . $value . '-unselected" ';
+        $html .= 'value="' . $value . '" style="display: none;" ' . '/>';
         return $html;
     }
 

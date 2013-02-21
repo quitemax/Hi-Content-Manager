@@ -107,16 +107,16 @@ class TableGateway extends ZendTableGateway
 
         $this->setTableDefinition();
 
-        $this->setBehaviours();
+//        $this->setBehaviours();
     }
 
-    /**
-     *
-     * Enter description here ...
-     */
-    protected function setBehaviours()
-    {
-    }
+//    /**
+//     *
+//     * Enter description here ...
+//     */
+//    protected function setBehaviours()
+//    {
+//    }
 
 //    /**
 //     *
@@ -604,91 +604,93 @@ class TableGateway extends ZendTableGateway
         }
     }
 //
-    /*
-     * Get table name (Hi use)
-     *
-     * @return string
-     */
-    public function hasBehaviour($behaviour = null) {
-        return isset($this->_behaviours[$behaviour]);
-    }
-
-    /**
-     * Get table name (Hi use)
-     *
-     * @return string
-     */
-    public function getBehaviour($behaviour = null) {
-
-        if (isset($this->_behaviours[$behaviour])) {
-            return $this->_behaviours[$behaviour];
-        }
-
-        return false;
-    }
-
-    /**
-     * Get table name (Hi use)
-     *
-     * @return string
-     */
-    public function getBehaviours() {
-
-        if (isset($this->_behaviours)) {
-            return $this->_behaviours;
-        }
-
-        return false;
-    }
-
-    /**
-     * Get table name (Hi use)
-     *
-     * @return string
-     */
-    public function setBehaviour($behaviourName = null, $behaviourType = null, $options = null) {
-
-//        foreach ($this->_behaviours as $behaviourName => $behaviourOptions) {
-            switch ($behaviourType) {
-//                case 'i18n':
-//                    $behaviourObject = new I18n(
+//    /*
+//     * Get table name (Hi use)
+//     *
+//     * @return string
+//     */
+//    public function hasBehaviour($behaviour = null) {
+//        return isset($this->_behaviours[$behaviour]);
+//    }
+//
+//    /**
+//     * Get table name (Hi use)
+//     *
+//     * @return string
+//     */
+//    public function getBehaviour($behaviour = null) {
+//
+//        if (isset($this->_behaviours[$behaviour])) {
+//            return $this->_behaviours[$behaviour];
+//        }
+//
+//        return false;
+//    }
+//
+//    /**
+//     * Get table name (Hi use)
+//     *
+//     * @return string
+//     */
+//    public function getBehaviours() {
+//
+//        if (isset($this->_behaviours)) {
+//            return $this->_behaviours;
+//        }
+//
+//        return false;
+//    }
+//
+//    /**
+//     * Get table name (Hi use)
+//     *
+//     * @return string
+//     */
+//    public function setBehaviour($behaviourName = null, $behaviourType = null, $options = null) {
+//
+////        foreach ($this->_behaviours as $behaviourName => $behaviourOptions) {
+//            switch ($behaviourType) {
+////                case 'i18n':
+////                    $behaviourObject = new I18n(
+////                        $this,
+////                        $options
+////                    );
+////                    $this->_behaviours[$behaviour] = $behaviourObject;
+////                    break;
+//                case 'nestedSet':
+//                    $behaviourObject = new NestedSet(
 //                        $this,
 //                        $options
 //                    );
-//                    $this->_behaviours[$behaviour] = $behaviourObject;
+//                    $this->_behaviours[$behaviourName] = $behaviourObject;
 //                    break;
-                case 'nestedSet':
-                    $behaviourObject = new NestedSet(
-                        $this,
-                        $options
-                    );
-                    $this->_behaviours[$behaviourName] = $behaviourObject;
-                    break;
-                case 'image':
-                    $behaviourObject = new Image(
-                        $this,
-                        $options
-                    );
-                    $this->_behaviours[$behaviourName] = $behaviourObject;
-                    break;
-                case 'imageArray':
-                    $behaviourObject = new ImageArray(
-                        $this,
-                        $options
-                    );
-                    $this->_behaviours[$behaviourName] = $behaviourObject;
-                    break;
-                default:
-                    break;
-            }
-
-
-
+//                case 'image':
+//                    $behaviourObject = new Image(
+//                        $this,
+//                        $options
+//                    );
+//                    $this->_behaviours[$behaviourName] = $behaviourObject;
+//                    break;
+//                case 'imageArray':
+//                    $behaviourObject = new ImageArray(
+//                        $this,
+//                        $options
+//                    );
+//                    $this->_behaviours[$behaviourName] = $behaviourObject;
+//                    break;
+//                default:
+//                    break;
 //            }
-//    if (isset($this->_behaviourObjects[$behaviour])) {
-//            return $this->_behaviourObjects[$behaviour];
-//        }
-    }
+//
+//
+//
+////            }
+////    if (isset($this->_behaviourObjects[$behaviour])) {
+////            return $this->_behaviourObjects[$behaviour];
+////        }
+//    }
+
+
 ////
 ////
 ////    public function update($data = null, $where = null) {
